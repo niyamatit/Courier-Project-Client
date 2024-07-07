@@ -1,0 +1,28 @@
+[
+    {
+      "title": "Customer places order",
+      "description": "Inspection and quality check of goods",
+      "icon": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/order.png"
+    },
+    {
+      "title": "Payment successful",
+      "description": "Payoneer, Paypal, or Visa master card",
+      "icon": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/payment.png"
+    },
+    {
+      "title": "Warehouse receives order",
+      "description": "Check the accuracy of the goods.",
+      "icon": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/warehouse.png"
+    },
+    {
+      "title": "Item picked, packed & shipped",
+      "description": "Ship the goods to a local carrier",
+      "icon": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/picked.png"
+    },
+    {
+      "title": "Delivered & Measure success",
+      "description": "Update order status on the system",
+      "icon": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/delivery.png"
+    }
+  ]
+  

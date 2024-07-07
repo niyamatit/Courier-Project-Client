@@ -1,0 +1,33 @@
+[
+    {
+      "title": "Sea Forwarding",
+      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments.",
+      "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/cargo-ship.png"
+    },
+    {
+      "title": "Air Freight Forwarding",
+      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments.",
+      "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/plane.png"
+    },
+    {
+      "title": "Land Transportation",
+      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments.",
+      "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/delivery.png"
+    },
+    {
+      "title": "Warehouse & Distribution",
+      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments..",
+      "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/forklift.png"
+    },
+    {
+      "title": "Railway Logistics",
+      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments..",
+      "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/train.png"
+    },
+    {
+      "title": "Cross Border",
+      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments..",
+      "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/worldwide.png"
+    }
+  ]
+  
