@@ -22,6 +22,8 @@ import AdminStatistics from "../Components/DashBoard/Admin/Statistics";
 import About from "../Components/Pages/Home/About/About";
 import PackageTracking from "../Components/Pages/Home/PackageTracking/PackageTracking";
 import OnlineTracking from "../Components/Pages/Home/OnlineBookedTracking/OnlineTracking";
+import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
+
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
 // import Tracking1 from "../Components/Pages/Home/WorkForce/UserPackageTracking/Tracking1";
 
@@ -125,16 +127,20 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
+              path: "MerchantDashboard",
+              element:<MerchantDashboard></MerchantDashboard>
+            },
+            {
                 path: "my-bookings",
                 element: <PrivateRoute><MyBookings /></PrivateRoute>
             },
 
         ]
-    }
+    },
 
 
-    // Merchant  Dashboard
-    
+   
+
 
 
 ]);

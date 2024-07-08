@@ -2,11 +2,17 @@ import { FaCartPlus, FaClipboardList, FaSearchPlus, FaShareAltSquare } from "rea
 import MenuItem from "./MenuItem";
 import { MdAccountBalance, MdAddBox } from "react-icons/md";
 import { TbCoinTaka } from "react-icons/tb";
+import { IoHomeOutline } from "react-icons/io5";
 
 
 const MerchantMenu = () => {
     return (
         <>
+      <MenuItem
+        icon={ IoHomeOutline }
+        label='Dashboard'
+        address='/dashboard/MerchantDashboard'
+      />
       <MenuItem
         icon={ MdAddBox }
         label='Add Parcel'
