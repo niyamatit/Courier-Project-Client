@@ -1,9 +1,9 @@
-
 import StatsCard from "./StartsCard";
 import OrdersTable from './OrdersTable';
 import ParcelChart from './ParcelChart';
 import ParcelPieChart from './ParcelPieChart'
-import { FaTruck, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaSyncAlt, FaMoneyBillWave } from 'react-icons/fa';
+import { FaTruck, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaSyncAlt, FaMoneyBillWave, FaMoneyCheckAlt, FaBoxOpen, FaUndo } from 'react-icons/fa';
+
 const data = {
     parcelBooking: 20,
     delivered: 30,
@@ -12,12 +12,18 @@ const data = {
     cancelled: 5,
     deleted: 2,
 };
+
 const MerchantDashboard = () => {
     const orders = [
         { id: '2407042BS0TKD', customerName: 'Akbar', phone: '01721689955', status: 'On The Way To Delivery Hub' },
         { id: '240703P6E0SZN', customerName: 'Md Omar Faruq', phone: '01988599390', status: 'Out For Delivery' },
-        
+        { id: '240703626OZIM', customerName: 'Sohel Rana', phone: '01785402517', status: 'At Delivery Hub' },
+        { id: '240703P000SZK', customerName: 'Ranjan Jhan', phone: '01724393398', status: 'At Delivery Hub' },
+        { id: '2407034ODSZI', customerName: 'Ripon Rana', phone: '01786761077', status: 'At Delivery Hub' },
+        { id: '2407034OZSI', customerName: 'Santo', phone: '01319690519', status: 'At Delivery Hub' },
+        { id: '240703QXNOYSR', customerName: 'Eftekhar Uddin', phone: '01701030437', status: 'On The Way To Delivery Hub' },
     ];
+    
 
     const chartData = {
         labels: ['Today', 'Yesterday', '2 days ago', '3 days ago', '4 days ago', '5 days ago', '6 days ago'],
@@ -37,25 +43,28 @@ const MerchantDashboard = () => {
                 <StatsCard title="Delivered" value="38" icon={<FaCheckCircle />} color="bg-green-100" />
                 <StatsCard title="Cancelled" value="2" icon={<FaTimesCircle />} color="bg-red-100" />
                 <StatsCard title="Delivery Pending" value="13" icon={<FaSyncAlt />} color="bg-yellow-100" />
-                <StatsCard title="Total Collected" value="1,630.00 TK" icon={<FaMoneyBillWave />} color="bg-green-100" />
-                <StatsCard title="Total Service Charge" value="1,120.00 TK" icon={<FaMoneyBillWave />} color="bg-blue-100" />
-                <StatsCard title="Unpaid Amount" value="-263.70 TK" icon={<FaMoneyBillWave />} color="bg-purple-100" />
-                <StatsCard title="Parcel In Processing Amount" value="6,790.00 TK" icon={<FaMoneyBillWave />} color="bg-orange-100" />
+                <StatsCard title="Payment Invoice" value="1,630.00 TK" icon={<FaMoneyBillWave />} color="bg-green-100" />
+                <StatsCard title="Total Collected" value="1,120.00 TK" icon={<FaMoneyBillWave />} color="bg-blue-100" />
+                <StatsCard title="Total Service Charge" value="-263.70 TK" icon={<FaMoneyBillWave />} color="bg-purple-100" />
+                <StatsCard title="Total Paid" value="6,790.00 TK" icon={<FaMoneyBillWave />} color="bg-orange-100" />
+                <StatsCard title="Unpaid Amount" value="500.00 TK" icon={<FaMoneyCheckAlt />} color="bg-red-100" />
+                <StatsCard title="Parcel in Processing" value="15" icon={<FaSyncAlt />} color="bg-yellow-100" />
+                <StatsCard title="All Parcel COD" value="40,000.00 TK" icon={<FaBoxOpen />} color="bg-blue-100" />
+                <StatsCard title="Return Parcel COD" value="3,000.00 TK" icon={<FaUndo />} color="bg-red-100" />
             </div>
-            <div className="mb-8">
-                <h2 className="text-xl font-bold mb-4">Latest Orders</h2>
+            <div className="mb-8 border-[2px] border-blue-400">
+            
                 <OrdersTable orders={orders} />
             </div>
             <div className="flex gap-5">
-            <div className="flex-1 border-[2px] hover:shadow-2xl border-blue-400 rounded-md p-3">
-                <h2 className="text-xl font-bold mb-4">Last 7 Days Parcel</h2>
-                
-                <ParcelChart data={chartData} />
-            </div>
-            <div className="p-3 flex-1 hover:shadow-2xl border-blue-400 border-[2px] rounded-md "> 
-            <h2 className="text-xl font-bold mb-4">Parcel Statistics</h2>
-            <ParcelPieChart data={data} />
-        </div>
+                <div className="flex-1 border-[2px] hover:shadow-2xl border-blue-400 rounded-md p-3">
+                    <h2 className="text-xl font-bold mb-4">Last 7 Days Parcel</h2>
+                    <ParcelChart data={chartData} />
+                </div>
+                <div className="p-3 flex-1 hover:shadow-2xl border-blue-400 border-[2px] rounded-md"> 
+                    <h2 className="text-xl font-bold mb-4">Parcel Statistics</h2>
+                    <ParcelPieChart data={data} />
+                </div>
             </div>
         </div>
     );
