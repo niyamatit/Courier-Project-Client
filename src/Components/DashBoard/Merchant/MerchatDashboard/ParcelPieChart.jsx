@@ -28,6 +28,7 @@ const ParcelPieChart = ({ data }) => {
                         4: { color: '#e74c3c' },
                         5: { color: '#95a5a6' },
                     },
+                    is3D:true
                 }}
                 width={"100%"}
                 height={"400px"}
