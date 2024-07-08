@@ -86,12 +86,12 @@ const MerchantDashboard = () => {
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-8">Merchant Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-8">Merchant Dashboard</h1>
       <div className="mb-8 flex items-center">
         <div className="flex-grow flex">
           <input
             type="text"
-            placeholder="Search orders..."
+            placeholder="Enter Oder ID or Customer Name for Search....."
             className="w-full p-3 border-2 border-blue-400 rounded-l-md shadow-sm focus:outline-none  focus:ring-blue-500"
           />
           <button
