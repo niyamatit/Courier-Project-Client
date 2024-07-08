@@ -3,7 +3,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 
 const StatsCard = ({ title, value, icon, color }) => {
     return (
-        <div className={`p-4 shadow-lg rounded-lg ${color}`}>
+        <div className={`p-4 shadow-lg hover:shadow-2xl rounded-lg ${color}`}>
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <div className="text-2xl">{icon}</div>
@@ -12,7 +12,7 @@ const StatsCard = ({ title, value, icon, color }) => {
                         <p className="text-xl">{value}</p>
                     </div>
                 </div>
-                <button className="text-blue-500 flex items-center hover:text-blue-700">
+                <button className="text-blue-500 flex mt-2 items-center hover:text-blue-700">
                     <FaInfoCircle className="mr-1" /> Details
                 </button>
             </div>
