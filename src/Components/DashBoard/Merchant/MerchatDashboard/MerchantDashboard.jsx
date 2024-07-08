@@ -47,11 +47,12 @@ const MerchantDashboard = () => {
                 <OrdersTable orders={orders} />
             </div>
             <div className="flex gap-5">
-            <div className="flex-1 border-2 p-3">
+            <div className="flex-1 border-[2px] hover:shadow-2xl rounded-md p-3">
                 <h2 className="text-xl font-bold mb-4">Last 7 Days Parcel</h2>
+                
                 <ParcelChart data={chartData} />
             </div>
-            <div className="p-4 flex-1">
+            <div className="p-3 flex-1 hover:shadow-2xl  border-[2px] rounded-md "> 
             <h2 className="text-xl font-bold mb-4">Parcel Statistics</h2>
             <ParcelPieChart data={data} />
         </div>
