@@ -4,20 +4,25 @@ const OrdersTable = ({ orders }) => {
             <h2 className="text-xl font-bold mb-4">Latest Orders</h2>
             <table className="min-w-full bg-white rounded-lg shadow-lg">
                 <thead>
-                    <tr className="bg-gray-100">
-                        <th className="p-4 text-left font-semibold text-gray-600">Order ID</th>
-                        <th className="p-4 text-left font-semibold text-gray-600">Customer Name</th>
-                        <th className="p-4 text-left font-semibold text-gray-600">Phone</th>
-                        <th className="p-4 text-left font-semibold text-gray-600">Status</th>
+                    <tr className="bg-blue-500 text-white">
+                        <th className="p-4 text-left font-semibold">Order ID</th>
+                        <th className="p-4 text-left font-semibold">Customer Name</th>
+                        <th className="p-4 text-left font-semibold">Phone</th>
+                        <th className="p-4 text-left font-semibold">Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.map(order => (
-                        <tr key={order.id} className="hover:bg-gray-50">
-                            <td className="p-4 border-t">{order.id}</td>
-                            <td className="p-4 border-t">{order.customerName}</td>
-                            <td className="p-4 border-t">{order.phone}</td>
-                            <td className="p-4 border-t">
+                    {orders.map((order, index) => (
+                        <tr
+                            key={order.id}
+                            className={`${
+                                index % 2 === 0 ? 'bg-blue-50' : 'bg-orange-50'
+                            } hover:bg-gray-50`}
+                        >
+                            <td className="p-4">{order.id}</td>
+                            <td className="p-4">{order.customerName}</td>
+                            <td className="p-4">{order.phone}</td>
+                            <td className="p-4">
                                 <span
                                     className={`px-3 py-1 rounded-full text-white ${
                                         order.status === 'On The Way To Delivery Hub'
