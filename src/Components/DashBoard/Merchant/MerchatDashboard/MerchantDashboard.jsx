@@ -94,10 +94,7 @@ const MerchantDashboard = () => {
             placeholder="Enter Oder ID or Customer Name for Search....."
             className="w-full p-3 border-2 border-blue-400 rounded-l-md shadow-sm focus:outline-none  focus:ring-blue-500"
           />
-          <button
-            className="p-3 bg-blue-500 text-white rounded-r-md shadow-sm hover:bg-blue-600 focus:outline-none  focus:ring-blue-500"
-           
-          >
+          <button className="p-3 bg-blue-500 text-white rounded-r-md shadow-sm hover:bg-blue-600 focus:outline-none  focus:ring-blue-500">
             <FaSearch />
           </button>
         </div>

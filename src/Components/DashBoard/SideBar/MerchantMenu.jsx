@@ -16,7 +16,7 @@ const MerchantMenu = () => {
       <MenuItem
         icon={ MdAddBox }
         label='Add Parcel'
-        address='/'
+        address='/dashboard/MerchantAddPercel'
       />
 
       {/* <MenuItem

@@ -23,6 +23,7 @@ import About from "../Components/Pages/Home/About/About";
 import PackageTracking from "../Components/Pages/Home/PackageTracking/PackageTracking";
 import OnlineTracking from "../Components/Pages/Home/OnlineBookedTracking/OnlineTracking";
 import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
+import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
 // import Tracking1 from "../Components/Pages/Home/WorkForce/UserPackageTracking/Tracking1";
@@ -128,7 +129,11 @@ export const router = createBrowserRouter([
             },
             {
               path: "MerchantDashboard",
-              element:<MerchantDashboard></MerchantDashboard>
+              element:<MerchantDashboard/>
+            },
+            {
+             path:"MerchantAddPercel",
+             element:<MerchantAddPercel/>
             },
             {
                 path: "my-bookings",
