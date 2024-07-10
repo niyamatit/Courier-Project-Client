@@ -794,7 +794,7 @@ const Areas =[
                 {errors.serviceType && (
                   <span className="text-red-500">This field is required</span>
                 )}
-              </div>
+               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Item Type*
