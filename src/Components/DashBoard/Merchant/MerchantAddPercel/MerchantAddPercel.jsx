@@ -627,8 +627,8 @@ const Areas =[
             <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
               Customer Information
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="col-span-1 sm:col-span-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
+              <div className="col-span-2 ">
                 <label className="block text-gray-700 font-medium mb-1">
                   Customer Contact Number*
                 </label>
@@ -643,7 +643,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-1">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Customer Name*
                 </label>
@@ -673,7 +673,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-2">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Districts*
                 </label>
@@ -695,7 +695,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-2">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Area*
                 </label>
@@ -740,7 +740,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Weight Package*
                 </label>
@@ -761,7 +761,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Total Collection Amount*
                 </label>
@@ -776,7 +776,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Service Type*
                 </label>
@@ -795,7 +795,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Item Type*
                 </label>
