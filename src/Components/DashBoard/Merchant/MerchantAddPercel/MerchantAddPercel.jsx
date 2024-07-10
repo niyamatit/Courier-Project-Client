@@ -4,10 +4,10 @@ import "tailwindcss/tailwind.css";
 
 const MerchantAddParcel = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  
+  const [WeightPackage,setWeightPackage] = useState("");
   const [filteredAreas, setFilteredAreas] = useState([]);
-  
- 
+  const [ServiceType,setServiceType] = useState("");
+  const [ItemType,setItemType] = useState('')
 
   const {
     register,
@@ -744,18 +744,20 @@ const Areas =[
                 <label className="block text-gray-700 font-medium mb-1">
                   Weight Package*
                 </label>
+               
                 <select
                   {...register('weightPackage', { required: true })}
                   className={`select select-bordered w-full p-2 rounded-lg border ${
                     errors.weightPackage ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  onChange={(e) => setWeightPackage(e.target.value)}
                 >
                   <option value="">Select Weight Package</option>
-                  <option value="0-1kg">0-1kg</option>
-                  <option value="1-5kg">1-5kg</option>
-                  <option value="6-10kg">6-10kg</option>
-                  <option value="10-15kg">10-15kg</option>
-                  <option value="15-30kg">15-30kg</option>
+                  <option value="0.5">0.5kg</option>
+                  <option value="1">1 kg</option>
+                  <option value="2">2 kg</option>
+                  <option value="3">3 kg</option>
+                  <option value="4">4 kg</option>
                 </select>
                 {errors.weightPackage && (
                   <span className="text-red-500">This field is required</span>
@@ -785,6 +787,7 @@ const Areas =[
                   className={`select select-bordered w-full p-2 rounded-lg border ${
                     errors.serviceType ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  onChange={(e) => setServiceType(e.target.value)}
                 >
                   <option value="">Select Type</option>
                   {getServiceTypes().map(service => (
@@ -804,6 +807,7 @@ const Areas =[
                   className={`select select-bordered w-full p-2 rounded-lg border ${
                     errors.itemType ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  onChange={(e) => setItemType(e.target.value)}
                 >
                   <option value="">Select Item Type</option>
                   <option value="Parcel">Parcel</option>
@@ -860,15 +864,15 @@ const Areas =[
           <div className="space-y-2 md:space-y-4">
             <div className="flex justify-between">
               <span className="text-gray-700">Weight Package</span>
-              <span className="text-gray-500">Not Confirm</span>
+              <span className="text-gray-500">{WeightPackage || "Not Confirm"} kg</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Service Type</span>
-              <span className="text-gray-500">Not Confirm</span>
+              <span className="text-gray-500">{ServiceType || "Not Confirm"}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Item Type</span>
-              <span className="text-gray-500">Not Confirm</span>
+              <span className="text-gray-500">{ItemType || "Not Confirm"}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Collection Amount</span>
