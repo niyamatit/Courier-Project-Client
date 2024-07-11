@@ -22,6 +22,7 @@ import AdminStatistics from "../Components/DashBoard/Admin/Statistics";
 import About from "../Components/Pages/Home/About/About";
 import PackageTracking from "../Components/Pages/Home/PackageTracking/PackageTracking";
 import OnlineTracking from "../Components/Pages/Home/OnlineBookedTracking/OnlineTracking";
+import HostDashboard from "../Components/DashBoard/Host/HostDashboard/HostDashboard";
 import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
 import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
 
@@ -51,7 +52,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/online-tracking",
-                element: <OnlineTracking/>
+                element: <OnlineTracking />
             },
             {
                 path: "/about",
@@ -90,6 +91,14 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <HostRoute>
                         <CreatePackage />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "host-dashboard",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <HostDashboard />
                     </HostRoute>
                 </PrivateRoute>
             },

@@ -1,4 +1,4 @@
-import  { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { addPackage } from "../../../../api/package";
 import toast from "react-hot-toast";
 import PrintModal from "./PrintModal";
@@ -11,7 +11,11 @@ const CreatePackage = () => {
     const closeModal = () => {
         setIsOpen(false);
     }
+    const [deliveryOption, setDeliveryOption] = useState('');
 
+    const handleSelectChange = (event) => {
+        setDeliveryOption(event.target.value);
+      };
 
     const generateTrackingNumber = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -36,26 +40,40 @@ const CreatePackage = () => {
         const form = e.target;
         const senderName = form.senderName.value;
         const recipientName = form.recipientName.value;
-        const senderEmail = form.senderEmail.value;
+        const senderMobile = form.senderMobile.value;
         const recipientMobile = form.recipientMobile.value;
+        const productDetails = form.productDetails.value;
+        const qty = form.qty.value;
         const origin = form.origin.value;
         const destination = form.destination.value;
-        const pickup = form.pickup.value;
-        const delivery = form.delivery.value;
+        const amount = form.amount.value;
+        const booking = form.booking.value;
+
+        let cod;
+        if (amount <= 1000) {
+            cod = amount * 0.1 + parseInt(amount); // 10% of the amount
+        } else {
+            cod = amount * 0.15+ parseInt(amount); // 15% of the amount
+        }
 
         const packageData = {
             packageTrackingNumber: packageTrackingNumber.trackingNumber,
             senderName,
-            senderEmail,
+            senderMobile,
             recipientName,
             recipientMobile,
+            productDetails,
+            qty,
             origin,
             destination,
-            pickup,
-            delivery,
-            update
+            amount,
+            booking,
+            update,
+            cod,
+            deliveryOption
         };
 
+        // console.table(packageData)
         setBookingInfo(packageData);
         setIsOpen(true)
         try {
@@ -71,7 +89,7 @@ const CreatePackage = () => {
 
     const formRef = useRef();
 
-    
+
 
     return (
         <div>
@@ -101,15 +119,30 @@ const CreatePackage = () => {
                 <div className='md:flex md:px-24'>
                     <div className="form-control md:w-1/2">
                         <label className="label">
-                            <span className="label-text font-rancho text-xl">Sender Email</span>
+                            <span className="label-text font-rancho text-xl">Sender Mobile</span>
                         </label>
-                        <input type="text" placeholder="Enter Sender Email" className="input input-bordered" name='senderEmail' required />
+                        <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
                     </div>
                     <div className="form-control md:ml-4 md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Recipient Mobile Number</span>
                         </label>
                         <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile' required />
+                    </div>
+                </div>
+                {/* Product Details and quantity */}
+                <div className='md:flex md:px-24'>
+                    <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Product Details</span>
+                        </label>
+                        <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='productDetails' required />
+                    </div>
+                    <div className="form-control md:ml-4 md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Product Quantity</span>
+                        </label>
+                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='qty' required />
                     </div>
                 </div>
 
@@ -130,24 +163,36 @@ const CreatePackage = () => {
                 <div className='md:flex md:px-24'>
                     <div className="form-control md:w-1/2">
                         <label className="label">
-                            <span className="label-text font-rancho text-xl">Delivery Date</span>
+                            <span className="label-text font-rancho text-xl">Booking Date</span>
                         </label>
-                        <input type="date" placeholder="Enter Delivery Date" className="input input-bordered" name='delivery' required />
+                        <input type="date" placeholder="Enter Booking Date" className="input input-bordered" name='booking' required />
                     </div>
                     <div className="form-control md:ml-4 md:w-1/2">
                         <label className="label">
-                            <span className="label-text font-rancho text-xl">Pickup Date</span>
+                            <span className="label-text font-rancho text-xl">Enter Amount</span>
                         </label>
-                        <input type="date" placeholder="Enter Pickup Date" className="input input-bordered" name='pickup' required />
+                        <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' required />
                     </div>
                 </div>
+                <div className='md:flex md:px-24 mt-5 mb-5'>
+                    <div className="form-control md:w-1/2">
+                        <select onChange={handleSelectChange} className="select select-bordered text-xl w-full ">
+                            <option disabled selected>Pick Up System</option>
+                            <option>Office Delivery</option>
+                            <option>Home Delivery</option>
+                            <option>Credit Delivery</option>
+                        </select>
+                    </div>
+
+                </div>
+
                 <div className="form-control md:px-24  w-full">
                     <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Create Package" />
                 </div>
             </form>
 
-    
-            <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo}/>
+
+            <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
         </div>
     );
 };
