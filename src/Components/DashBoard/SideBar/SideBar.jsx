@@ -10,6 +10,7 @@ import GuestMenu from './GuestMenu'
 import HostMenu from './HostMenu'
 import useRole from '../../../hooks/useRole'
 import { Link } from 'react-router-dom'
+import MerchantMenu from './MerchantMenu'
 
 
 
@@ -71,6 +72,8 @@ const Sidebar = () => {
 
               {/*Admin Menu Items */}
               {role === 'admin' && <AdminMenu />}
+
+              {role === 'merchant' && <MerchantMenu/>}
 
 
             </nav>
