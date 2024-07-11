@@ -58,7 +58,6 @@ export const router = createBrowserRouter([
             {
                 path: "/online-tracking",
                 element: <OnlineTracking />
-                element: <OnlineTracking />
             },
             {
                 path: "/about",
