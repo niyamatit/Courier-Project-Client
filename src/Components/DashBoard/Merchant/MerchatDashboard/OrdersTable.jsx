@@ -24,7 +24,7 @@ const OrdersTable = ({ orders }) => {
                             <td className="p-4">{order.phone}</td>
                             <td className="p-4">
                                 <span
-                                    className={`px-3 py-1 rounded-full text-white ${
+                                    className={`hidden lg:inline-block px-3 py-1 rounded-full text-white ${
                                         order.status === 'On The Way To Delivery Hub'
                                             ? 'bg-blue-500'
                                             : order.status === 'Out For Delivery'
@@ -34,16 +34,17 @@ const OrdersTable = ({ orders }) => {
                                 >
                                     {order.status}
                                 </span>
+                                <span className="inline-block lg:hidden">{order.status}</span>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div className="flex justify-between mt-4">
-                <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            <div className="flex  md:gap-20 lg:gap-20 justify-between mt-4">
+                <button className="px-2 md:px-4 lg:px-4 text-xs md:text-base lg:text-base py-2 md:py-2 lg:py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                     Place New Order
                 </button>
-                <button className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                <button className="px-2 md:px-4 lg:px-4 text-xs md:text-base lg:text-base  py-2 md:py-2 lg:py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
                     View All Orders
                 </button>
             </div>

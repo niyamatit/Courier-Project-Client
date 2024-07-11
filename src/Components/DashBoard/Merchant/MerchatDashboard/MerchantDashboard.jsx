@@ -72,17 +72,18 @@ const MerchantDashboard = () => {
 
   const chartData = {
     labels: [
-      "Today",
-      "Yesterday",
-      "2 days ago",
-      "3 days ago",
-      "4 days ago",
-      "5 days ago",
-      "6 days ago",
+        '2024-07-04',
+        '2024-07-05',
+        '2024-07-06',
+        '2024-07-07',
+        '2024-07-08',
+        '2024-07-09',
+        '2024-07-10',
     ],
-    pickup: [2, 3, 4, 5, 6, 7, 8],
-    delivered: [1, 2, 3, 4, 5, 6, 7],
-  };
+    pickup: [8, 7, 6, 5, 4, 3, 2],
+    delivered: [7, 6, 5, 4, 3, 2, 1],
+};
+
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -99,7 +100,7 @@ const MerchantDashboard = () => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
         <StatsCard
           title="Today Pickup"
           value="6"
@@ -197,10 +198,10 @@ const MerchantDashboard = () => {
           color="bg-red-100"
         />
       </div>
-      <div className="mb-8 border-[2px] hover:shadow-2xl rounded-md  border-blue-400">
-        <OrdersTable orders={orders} />
-      </div>
-      <div className="flex gap-5">
+      <div className="mb-8 border-[2px] hover:shadow-2xl rounded-md border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
+            <OrdersTable orders={orders} />
+        </div>
+      <div className="flex flex-col lg:flex-row gap-5">
         <div className="flex-1 border-[2px] hover:shadow-2xl border-blue-400 rounded-md p-3">
           <h2 className="text-xl font-bold mb-4">Last 7 Days Parcel</h2>
           <ParcelChart data={chartData} />
