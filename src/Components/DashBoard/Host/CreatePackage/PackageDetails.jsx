@@ -7,6 +7,7 @@ export const PackageDetails = ({ bookingInfo }) => (
     <>
 
         <div className="invoice-container">
+            <p>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
             <header className="header">
                 <div className="logo">
                     <img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo.svg" alt="Niyamat Express Logo" />
@@ -32,14 +33,14 @@ export const PackageDetails = ({ bookingInfo }) => (
                 <div className="booking-details">
                     <div className='flex'>
                         <div>
-                            <strong>Booking: </strong>Rangpur
+                            <strong>Booking: </strong>{bookingInfo?.origin}
                         </div>
                         <div>
-                            <strong>Booking Date: </strong>03 Jul 24
+                            <strong>Booking Date: </strong>{bookingInfo?.booking}
                         </div>
                     </div>
                     <div>
-                        <strong>Destination: </strong>Chittagong Road
+                        <strong>Destination: </strong>{bookingInfo?.destination}
                     </div>
                 </div>
             </div>
@@ -48,14 +49,14 @@ export const PackageDetails = ({ bookingInfo }) => (
 
             <div className="contact-details">
                 <div className="sender-details">
-                    <h2>Sender: Name</h2>
-                    <p><strong>Contact: </strong>01883337565</p>
-                    <p><strong>Address: </strong>Rangpur</p>
+                    <h2>Sender: {bookingInfo?.senderName}</h2>
+                    <p><strong>Contact: </strong>{bookingInfo?.senderMobile}</p>
+                    <p><strong>Address: </strong>{bookingInfo?.origin}</p>
                 </div>
                 <div className="receiver-details">
-                    <h2>Receiver:Name</h2>
-                    <p><strong>Contact: </strong>01737699786</p>
-                    <p><strong>Address: </strong>Chittagong Road</p>
+                    <h2>Receiver:{bookingInfo?.recipientName}</h2>
+                    <p><strong>Contact: </strong>{bookingInfo?.recipientMobile}</p>
+                    <p><strong>Address: </strong>{bookingInfo?.destination}</p>
                 </div>
             </div>
 
@@ -66,9 +67,9 @@ export const PackageDetails = ({ bookingInfo }) => (
                     <div className="table-cell">Amount</div>
                 </div>
                 <div className="table-row">
-                    <div className="table-cell">3</div>
-                    <div className="table-cell">Mango 60KG 3L101</div>
-                    <div className="table-cell">540.00</div>
+                    <div className="table-cell">{bookingInfo?.qty}</div>
+                    <div className="table-cell">{bookingInfo?.productDetails}</div>
+                    <div className="table-cell">{bookingInfo?.amount}</div>
                 </div>
             </div>
 
@@ -79,10 +80,13 @@ export const PackageDetails = ({ bookingInfo }) => (
                 <div>
                     <strong>Booking Officer: </strong>SEL00063</div>
                 <div>
-                    <strong>Date: </strong>04-Jul-24 12:09 AM
+                    <strong>Date: </strong>{bookingInfo?.booking}
                 </div>
                 <div>
-                    <strong>Cash - O/D</strong>
+                    condition+charge: {bookingInfo?.cod}
+                </div>
+                <div>
+                    <strong>Cash - {bookingInfo?. deliveryOption}</strong>
                 </div>
             </div>
         </div>

@@ -19,6 +19,7 @@
     "firebase": "^10.12.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
+    "number-to-words": "^1.2.4",
     "react": "^18.2.0",
     "react-barcode": "^1.5.3",
     "react-dom": "^18.2.0",
