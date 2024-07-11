@@ -27,6 +27,10 @@ import PickupparcelList from "../Components/DashBoard/Rider/PickupparcelList";
 import DeliveryparcelList from "../Components/DashBoard/Rider/DeliveryparcelList";
 import DeliveryComplete from "../Components/DashBoard/Rider/DeliveryComplete";
 import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
+import HostDashboard from "../Components/DashBoard/Host/HostDashboard/HostDashboard";
+import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
+import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
+
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
 // import Tracking1 from "../Components/Pages/Home/WorkForce/UserPackageTracking/Tracking1";
 
@@ -53,6 +57,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/online-tracking",
+                element: <OnlineTracking />
                 element: <OnlineTracking />
             },
             {
@@ -96,6 +101,14 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
+                path: "host-dashboard",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <HostDashboard />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
                 path: "delivery-scheduling",
                 element: <PrivateRoute>
                     <HostRoute>
@@ -130,6 +143,14 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
+                path: "MerchantDashboard",
+                element: <MerchantDashboard />
+            },
+            {
+                path: "MerchantAddPercel",
+                element: <MerchantAddPercel />
+            },
+            {
                 path: "my-bookings",
                 element: <PrivateRoute><MyBookings /></PrivateRoute>
             },
@@ -157,8 +178,35 @@ export const router = createBrowserRouter([
             },
 
 
+            // Rider Dashboard
+            {
+                path: "rider-home",
+                element: <PrivateRoute><RiderHome></RiderHome></PrivateRoute>
+            },
+            {
+                path: "pickup-list",
+                element: <PrivateRoute><PickupparcelList></PickupparcelList></PrivateRoute>
+            },
+            {
+                path: "delivery-list",
+                element: <PrivateRoute><DeliveryparcelList></DeliveryparcelList></PrivateRoute>
+            },
+            {
+                path: "delivery-complete",
+                element: <PrivateRoute><DeliveryComplete></DeliveryComplete></PrivateRoute>
+            },
+            {
+                path: "return-parcel",
+                element: <PrivateRoute><ReturnPercel></ReturnPercel></PrivateRoute>
+            },
+
+
         ]
-    }
+    },
+
+
+
+
 
 
 ]);
