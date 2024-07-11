@@ -22,11 +22,15 @@ import AdminStatistics from "../Components/DashBoard/Admin/Statistics";
 import About from "../Components/Pages/Home/About/About";
 import PackageTracking from "../Components/Pages/Home/PackageTracking/PackageTracking";
 import OnlineTracking from "../Components/Pages/Home/OnlineBookedTracking/OnlineTracking";
+
+import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
+import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
 import RiderHome from "../Components/DashBoard/Rider/RiderHome";
 import PickupparcelList from "../Components/DashBoard/Rider/PickupparcelList";
 import DeliveryparcelList from "../Components/DashBoard/Rider/DeliveryparcelList";
 import DeliveryComplete from "../Components/DashBoard/Rider/DeliveryComplete";
 import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
+
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
 // import Tracking1 from "../Components/Pages/Home/WorkForce/UserPackageTracking/Tracking1";
 
@@ -130,6 +134,14 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
+              path: "MerchantDashboard",
+              element:<MerchantDashboard/>
+            },
+            {
+             path:"MerchantAddPercel",
+             element:<MerchantAddPercel/>
+            },
+            {
                 path: "my-bookings",
                 element: <PrivateRoute><MyBookings /></PrivateRoute>
             },
@@ -158,7 +170,11 @@ export const router = createBrowserRouter([
 
 
         ]
-    }
+    },
+
+
+   
+
 
 
 ]);
