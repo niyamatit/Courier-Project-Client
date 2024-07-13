@@ -281,7 +281,7 @@ const MerchantDashboard = () => {
     <DatePicker
       selected={fromDate}
       onChange={(date) => setFromDate(date)}
-      className="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+      className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
     />
   </div>
   <div>
@@ -289,7 +289,7 @@ const MerchantDashboard = () => {
     <DatePicker
       selected={toDate}
       onChange={(date) => setToDate(date)}
-      className="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+      className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
     />
   </div>
 </div>
@@ -299,9 +299,9 @@ const MerchantDashboard = () => {
     <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
     <ParcelChart data={filteredChartData} />
   </div>
-  <div className="flex-1 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+  <div className="flex-1 bg-white border w-full border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
     <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
-    <ParcelPieChart data={filteredPieData} />
+    <ParcelPieChart  data={filteredPieData} />
   </div>
 </div>
     </div>
