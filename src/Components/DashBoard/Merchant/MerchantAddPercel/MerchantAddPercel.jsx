@@ -725,7 +725,26 @@ const Areas =[
               Parcel Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+            <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block text-gray-700 font-medium mb-1">
+                Select Your Store*
+                </label>
+               
+                <select
+                  {...register('store', { required: true })}
+                  className={`select select-bordered w-full p-2 rounded-lg border ${
+                    errors.store ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  
+                >
+                  <option value="">Select Your Store*</option>
+                  <option value="Niyamat Express">Niyamat Express</option>
+                </select>
+                {errors.store && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Merchant Order ID*
                 </label>
@@ -820,7 +839,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Product Value*
                 </label>
@@ -835,7 +854,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Product Details*
                 </label>
@@ -844,7 +863,7 @@ const Areas =[
                   className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
                 />
               </div>
-              <div className="col-span-1 sm:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Remark
                 </label>
