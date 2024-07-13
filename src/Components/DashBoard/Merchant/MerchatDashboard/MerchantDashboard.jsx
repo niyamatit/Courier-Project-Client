@@ -274,7 +274,8 @@ const MerchantDashboard = () => {
         <OrdersTable orders={orders} />
       </div>
       {/* Filter */}
-      <div className="flex gap-6 mb-4">
+    <div className="border-[2px] hover:shadow-2xl rounded-md border-blue-400 p-10">
+    <div className="flex gap-6 mb-4">
   <div>
     <label className="font-semibold text-gray-700">From: </label>
     <DatePicker
@@ -303,6 +304,7 @@ const MerchantDashboard = () => {
     <ParcelPieChart data={filteredPieData} />
   </div>
 </div>
+    </div>
 
     </div>
   );
