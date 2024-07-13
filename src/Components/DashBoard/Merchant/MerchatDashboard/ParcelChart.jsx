@@ -1,5 +1,4 @@
-import  { useEffect, useRef } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 
 const ParcelChart = ({ data }) => {
@@ -31,6 +30,10 @@ const ParcelChart = ({ data }) => {
                         },
                     ],
                 },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                },
             });
 
             chartRef.current = chartInstance;
@@ -43,7 +46,11 @@ const ParcelChart = ({ data }) => {
         };
     }, [data]);
 
-    return <canvas ref={canvasRef} />;
+    return (
+        <div className="w-full h-[300px] sm:h-[400px] md:h-[500px]">
+            <canvas ref={canvasRef} />
+        </div>
+    );
 };
 
 export default ParcelChart;

@@ -274,7 +274,7 @@ const MerchantDashboard = () => {
         <OrdersTable orders={orders} />
       </div>
       {/* Filter */}
-    <div className="border-[2px] hover:shadow-2xl rounded-md border-blue-400 p-10">
+    <div className="border-[2px] hover:shadow-2xl rounded-md border-blue-400 p-2 md:p-3 lg:p-10">
     <div className="flex gap-6 mb-4">
   <div>
     <label className="font-semibold text-gray-700">From: </label>
@@ -299,7 +299,7 @@ const MerchantDashboard = () => {
     <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
     <ParcelChart data={filteredChartData} />
   </div>
-  <div className="flex-1 bg-white border w-full border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+  <div className="flex-1 bg-white border  border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
     <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
     <ParcelPieChart  data={filteredPieData} />
   </div>
