@@ -7,7 +7,8 @@ const MerchantAddParcel = () => {
   const [WeightPackage,setWeightPackage] = useState("");
   const [filteredAreas, setFilteredAreas] = useState([]);
   const [ServiceType,setServiceType] = useState("");
-  const [ItemType,setItemType] = useState('')
+  const [ItemType,setItemType] = useState('');
+  const [store, setStore] = useState("");
 
   const {
     register,
@@ -735,7 +736,7 @@ const Areas =[
                   className={`select select-bordered w-full p-2 rounded-lg border ${
                     errors.store ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  
+                  onChange={(e) => setStore(e.target.value)}
                 >
                   <option value="">Select Your Store*</option>
                   <option value="Niyamat Express">Niyamat Express</option>
@@ -881,6 +882,10 @@ const Areas =[
             Parcel Charge
           </h2>
           <div className="space-y-2 md:space-y-4">
+            <div className="flex justify-between">
+              <span className="text-gray-700">Store</span>
+              <span className="text-gray-500">{store || "Not Confirm"} </span>
+            </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Weight Package</span>
               <span className="text-gray-500">{WeightPackage || "Not Confirm"} kg</span>
