@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
 import StatsCard from "./StartsCard";
 import OrdersTable from "./OrdersTable";
 import ParcelChart from "./ParcelChart";
 import ParcelPieChart from "./ParcelPieChart";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import {
   FaTruck,
   FaSearch,
@@ -15,7 +18,7 @@ import {
   FaUndo,
 } from "react-icons/fa";
 
-const data = {
+const initialData = {
   parcelBooking: 20,
   delivered: 30,
   partiallyDelivered: 10,
@@ -24,7 +27,26 @@ const data = {
   deleted: 2,
 };
 
+const initialChartData = {
+  labels: [
+    "2024-07-04",
+    "2024-07-05",
+    "2024-07-06",
+    "2024-07-07",
+    "2024-07-08",
+    "2024-07-09",
+    "2024-07-10",
+  ],
+  pickup: [8, 7, 6, 5, 4, 3, 2],
+  delivered: [7, 6, 5, 4, 3, 2, 1],
+};
+
 const MerchantDashboard = () => {
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [filteredChartData, setFilteredChartData] = useState(initialChartData);
+  const [filteredPieData, setFilteredPieData] = useState(initialData);
+
   const orders = [
     {
       id: "2407042BS0TKD",
@@ -70,20 +92,69 @@ const MerchantDashboard = () => {
     },
   ];
 
-  const chartData = {
-    labels: [
-        '2024-07-04',
-        '2024-07-05',
-        '2024-07-06',
-        '2024-07-07',
-        '2024-07-08',
-        '2024-07-09',
-        '2024-07-10',
-    ],
-    pickup: [8, 7, 6, 5, 4, 3, 2],
-    delivered: [7, 6, 5, 4, 3, 2, 1],
-};
+  // Filtering Bar chart
+  const filterData = (data, from, to) => {
+    if (!from && !to) return data;
 
+    const fromDate = from ? new Date(from) : new Date("1999-01-01");
+    const toDate = to ? new Date(to) : new Date();
+
+    console.log("fromDate", fromDate);
+    console.log("toDate", toDate);
+
+    const FilteredIndics = data.labels
+      .map((label, index) => ({ label, index }))
+      .filter((item) => {
+        const date = new Date(item.label);
+        return date >= fromDate && date <= toDate;
+      })
+      .map((item) => item.index);
+    console.log("FilteredIndics", FilteredIndics);
+    const filteredLabels = FilteredIndics.map((index) => data.labels[index]);
+    const filteredPickedup = FilteredIndics.map((index) => data.pickup[index]);
+    const filteredDelivered = FilteredIndics.map(
+      (index) => data.delivered[index]
+    );
+
+    console.log("filteredLabels :", filteredLabels);
+    console.log("filteredPickedup :", filteredPickedup);
+    console.log("filteredDelivered :", filteredDelivered);
+
+    return {
+      labels: filteredLabels,
+      pickup: filteredPickedup,
+      delivered: filteredDelivered,
+    };
+  };
+
+  // Filtering Pie Chart
+
+  const filterpieChart = (data, chartData) => {
+    const totalDays = chartData.labels.length;
+    const sum = (arr) => arr.reduce((a, b) => a + b, 0);
+    const pickupSum = sum(chartData.pickup);
+    const deliveredSum = sum(chartData.delivered);
+    const remaining = totalDays * initialChartData.pickup[0] - pickupSum;
+     console.log("totalDays",totalDays)
+     console.log("pickupSum",pickupSum)
+     console.log("deliveredSum",deliveredSum)
+     console.log("remaining",remaining)
+    return {
+      ...data,
+      parcelBooking: pickupSum,
+      delivered: deliveredSum,
+      partiallyDelivered: remaining,
+      processing: remaining,
+      cancelled: data.cancelled,
+      deleted: data.deleted,
+    };
+  };
+
+  useEffect(() => {
+    const newFilterData = filterData(initialChartData, fromDate, toDate);
+    setFilteredChartData(newFilterData);
+    setFilteredPieData(filterpieChart(initialData, newFilterData));
+  }, [fromDate, toDate]);
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -92,14 +163,15 @@ const MerchantDashboard = () => {
         <div className="flex-grow flex">
           <input
             type="text"
-            placeholder="Enter Oder ID or Customer Name for Search....."
-            className="w-full p-3 border-2 border-blue-400 rounded-l-md shadow-sm focus:outline-none  focus:ring-blue-500"
+            placeholder="Enter Order ID or Customer Name for Search..."
+            className="w-full p-3 border-2 border-blue-400 rounded-l-md shadow-sm focus:outline-none focus:ring-blue-500"
           />
-          <button className="p-3 bg-blue-500 text-white rounded-r-md shadow-sm hover:bg-blue-600 focus:outline-none  focus:ring-blue-500">
+          <button className="p-3 bg-blue-500 text-white rounded-r-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-blue-500">
             <FaSearch />
           </button>
         </div>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
         <StatsCard
           title="Today Pickup"
@@ -199,18 +271,41 @@ const MerchantDashboard = () => {
         />
       </div>
       <div className="mb-8 border-[2px] hover:shadow-2xl rounded-md border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
-            <OrdersTable orders={orders} />
-        </div>
-      <div className="flex flex-col lg:flex-row gap-5">
-        <div className="flex-1 border-[2px] hover:shadow-2xl border-blue-400 rounded-md p-3">
-          <h2 className="text-xl font-bold mb-4">Last 7 Days Parcel</h2>
-          <ParcelChart data={chartData} />
-        </div>
-        <div className="p-3 flex-1 hover:shadow-2xl border-blue-400 border-[2px] rounded-md">
-          <h2 className="text-xl font-bold mb-4">Parcel Statistics</h2>
-          <ParcelPieChart data={data} />
-        </div>
+        <OrdersTable orders={orders} />
       </div>
+      {/* Filter */}
+    <div className="border-[2px] hover:shadow-2xl rounded-md border-blue-400 p-2 md:p-3 lg:p-10">
+    <div className="flex gap-6 mb-4">
+  <div>
+    <label className="font-semibold text-gray-700">From: </label>
+    <DatePicker
+      selected={fromDate}
+      onChange={(date) => setFromDate(date)}
+      className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+  <div>
+    <label className="font-semibold text-gray-700">To: </label>
+    <DatePicker
+      selected={toDate}
+      onChange={(date) => setToDate(date)}
+      className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+</div>
+
+<div className="flex flex-col lg:flex-row gap-6">
+  <div className="flex-1 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+    <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
+    <ParcelChart data={filteredChartData} />
+  </div>
+  <div className="flex-1 bg-white border  border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+    <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
+    <ParcelPieChart  data={filteredPieData} />
+  </div>
+</div>
+    </div>
+
     </div>
   );
 };
