@@ -92,40 +92,53 @@ const MerchantDashboard = () => {
     },
   ];
 
+  // Filtering Bar chart
   const filterData = (data, from, to) => {
     if (!from && !to) return data;
 
-    const fromDate = from ? new Date(from) : new Date("1970-01-01");
+    const fromDate = from ? new Date(from) : new Date("1999-01-01");
     const toDate = to ? new Date(to) : new Date();
 
-    const filteredIndices = data.labels
+    console.log("fromDate", fromDate);
+    console.log("toDate", toDate);
+
+    const FilteredIndics = data.labels
       .map((label, index) => ({ label, index }))
       .filter((item) => {
         const date = new Date(item.label);
         return date >= fromDate && date <= toDate;
       })
       .map((item) => item.index);
-
-    const filteredLabels = filteredIndices.map((index) => data.labels[index]);
-    const filteredPickup = filteredIndices.map((index) => data.pickup[index]);
-    const filteredDelivered = filteredIndices.map(
+    console.log("FilteredIndics", FilteredIndics);
+    const filteredLabels = FilteredIndics.map((index) => data.labels[index]);
+    const filteredPickedup = FilteredIndics.map((index) => data.pickup[index]);
+    const filteredDelivered = FilteredIndics.map(
       (index) => data.delivered[index]
     );
 
+    console.log("filteredLabels :", filteredLabels);
+    console.log("filteredPickedup :", filteredPickedup);
+    console.log("filteredDelivered :", filteredDelivered);
+
     return {
       labels: filteredLabels,
-      pickup: filteredPickup,
+      pickup: filteredPickedup,
       delivered: filteredDelivered,
     };
   };
 
-  const filterPieData = (data, chartData) => {
+  // Filtering Pie Chart
+
+  const filterpieChart = (data, chartData) => {
     const totalDays = chartData.labels.length;
     const sum = (arr) => arr.reduce((a, b) => a + b, 0);
     const pickupSum = sum(chartData.pickup);
     const deliveredSum = sum(chartData.delivered);
     const remaining = totalDays * initialChartData.pickup[0] - pickupSum;
-
+     console.log("totalDays",totalDays)
+     console.log("pickupSum",pickupSum)
+     console.log("deliveredSum",deliveredSum)
+     console.log("remaining",remaining)
     return {
       ...data,
       parcelBooking: pickupSum,
@@ -138,9 +151,9 @@ const MerchantDashboard = () => {
   };
 
   useEffect(() => {
-    const newFilteredData = filterData(initialChartData, fromDate, toDate);
-    setFilteredChartData(newFilteredData);
-    setFilteredPieData(filterPieData(initialData, newFilteredData));
+    const newFilterData = filterData(initialChartData, fromDate, toDate);
+    setFilteredChartData(newFilterData);
+    setFilteredPieData(filterpieChart(initialData, newFilterData));
   }, [fromDate, toDate]);
 
   return (
@@ -158,7 +171,7 @@ const MerchantDashboard = () => {
           </button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
         <StatsCard
           title="Today Pickup"
@@ -261,35 +274,36 @@ const MerchantDashboard = () => {
         <OrdersTable orders={orders} />
       </div>
       {/* Filter */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "1rem",
-        }}
-      >
-        <div>
-          <label>From Date: </label>
-          <DatePicker
-            selected={fromDate}
-            onChange={(date) => setFromDate(date)}
-          />
-        </div>
-        <div>
-          <label>To Date: </label>
-          <DatePicker selected={toDate} onChange={(date) => setToDate(date)} />
-        </div>
-      </div>
-      <div className="flex flex-col lg:flex-row gap-5">
-        <div className="flex-1 border-[2px] hover:shadow-2xl border-blue-400 rounded-md p-3">
-          <h2 className="text-xl font-bold mb-4">Last 7 Days Parcel</h2>
-          <ParcelChart data={filteredChartData} />
-        </div>
-        <div className="p-3 flex-1 hover:shadow-2xl border-blue-400 border-[2px] rounded-md">
-          <h2 className="text-xl font-bold mb-4">Parcel Statistics</h2>
-          <ParcelPieChart data={filteredPieData} />
-        </div>
-      </div>
+      <div className="flex gap-6 mb-4">
+  <div>
+    <label className="font-semibold text-gray-700">From: </label>
+    <DatePicker
+      selected={fromDate}
+      onChange={(date) => setFromDate(date)}
+      className="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+  <div>
+    <label className="font-semibold text-gray-700">To: </label>
+    <DatePicker
+      selected={toDate}
+      onChange={(date) => setToDate(date)}
+      className="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+</div>
+
+<div className="flex flex-col lg:flex-row gap-6">
+  <div className="flex-1 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+    <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
+    <ParcelChart data={filteredChartData} />
+  </div>
+  <div className="flex-1 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+    <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
+    <ParcelPieChart data={filteredPieData} />
+  </div>
+</div>
+
     </div>
   );
 };
