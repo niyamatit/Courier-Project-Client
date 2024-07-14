@@ -179,9 +179,10 @@ const MerchantDashboard = () => {
           title="Total Delivered"
           value={initialData.delivered}
           percentage={"15%"}
-          icon={<FontAwesomeIcon icon={faCheckCircle}/>}
+          icon={<FaCheckCircle />}
           color="bg-blue-100"
           percentageColor="text-green-600"
+          iconColor="text-green-400"
         />
         {/* <StatsCard
           title="Today Delivered"
