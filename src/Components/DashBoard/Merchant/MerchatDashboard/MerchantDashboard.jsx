@@ -5,6 +5,8 @@ import ParcelChart from "./ParcelChart";
 import ParcelPieChart from "./ParcelPieChart";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   FaTruck,
   FaSearch,
@@ -174,12 +176,14 @@ const MerchantDashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
         <StatsCard
-          title="Today Pickup"
-          value="6"
-          icon={<FaTruck />}
+          title="Total Delivered"
+          value={initialData.delivered}
+          percentage={"15%"}
+          icon={<FontAwesomeIcon icon={faCheckCircle}/>}
           color="bg-blue-100"
+          percentageColor="text-green-600"
         />
-        <StatsCard
+        {/* <StatsCard
           title="Today Delivered"
           value="2"
           icon={<FaCheckCircle />}
@@ -205,7 +209,7 @@ const MerchantDashboard = () => {
         />
         <StatsCard
           title="Delivered"
-          value="38"
+          value={initialData.delivered}
           icon={<FaCheckCircle />}
           color="bg-green-100"
         />
@@ -268,7 +272,7 @@ const MerchantDashboard = () => {
           value="3,000.00 TK"
           icon={<FaUndo />}
           color="bg-red-100"
-        />
+        /> */}
       </div>
       <div className="mb-8 border-[2px] hover:shadow-2xl rounded  hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
         <OrdersTable orders={orders} />
