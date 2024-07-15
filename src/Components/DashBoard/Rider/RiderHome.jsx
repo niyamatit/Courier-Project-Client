@@ -1,4 +1,3 @@
-import { FaRegArrowAltCircleRight } from "react-icons/fa";
 
 
 function Card({ info }) {
@@ -9,7 +8,22 @@ function Card({ info }) {
         <div className="text-center flex flex-col justify-between h-full">
           <h2 className="font-bold text-2xl">{numbers}</h2>
           <h2 className="font-semibold text-2xl">{title}</h2>
-          <button className="btn hover:text-white text-gray-800 mt-3 glass w-full">More Info<FaRegArrowAltCircleRight /></button>
+          {/* <button className="btn hover:text-white text-gray-800 mt-3 glass w-full">More Info<FaRegArrowAltCircleRight /></button>
+         */}
+          {/* Open the modal using document.getElementById('ID').showModal() method */}
+          <button className="btn hover:text-white text-gray-700 mt-3 glass w-full" onClick={() => document.getElementById('my_modal_5').showModal()}>More Info</button>
+          <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+            <div className="modal-box bg-white">
+              <h3 className="font-bold text-lg">Hello!</h3>
+              <p className="py-4">Press ESC key or click the button below to close</p>
+              <div className="modal-action">
+                <form method="dialog">
+                  {/* if there is a button in form, it will close the modal */}
+                  <button className="btn">Close</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
         </div>
       </div>
     </div>
