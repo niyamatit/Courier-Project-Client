@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import {  FaClock, } from 'react-icons/fa';
 import {
   FaTruck,
   FaSearch,
@@ -28,6 +29,8 @@ const initialData = {
   cancelled: 5,
   deleted: 2,
 };
+
+
 
 const initialChartData = {
   labels: [
@@ -178,13 +181,14 @@ const MerchantDashboard = () => {
         <StatsCard
           title="Total Delivered"
           value={initialData.delivered}
-          percentage={"15%"}
+          percentage={"(15%)"}
           icon={<FaCheckCircle />}
           color="bg-blue-100"
           percentageColor="text-green-600"
           iconColor="text-green-400"
         />
-        {/* <StatsCard
+         
+        <StatsCard
           title="Today Delivered"
           value="2"
           icon={<FaCheckCircle />}
@@ -209,22 +213,26 @@ const MerchantDashboard = () => {
           color="bg-blue-100"
         />
         <StatsCard
-          title="Delivered"
-          value={initialData.delivered}
-          icon={<FaCheckCircle />}
+          title="Total Pickup"
+          value="40"
+          icon={<FaTruck />}
           color="bg-green-100"
         />
         <StatsCard
-          title="Cancelled"
+          title="Total Returned"
           value="2"
-          icon={<FaTimesCircle />}
+          icon={<FaUndo />}
           color="bg-red-100"
+          percentage="(2%)"
+          percentageColor="text-red-600"
         />
         <StatsCard
-          title="Delivery Pending"
+          title="Total Delivery Pending"
           value="13"
-          icon={<FaSyncAlt />}
+          icon={<FaClock />}
           color="bg-yellow-100"
+          percentage="(10%)"
+          percentageColor="text-blue-600"
         />
         <StatsCard
           title="Payment Invoice"
@@ -273,7 +281,7 @@ const MerchantDashboard = () => {
           value="3,000.00 TK"
           icon={<FaUndo />}
           color="bg-red-100"
-        /> */}
+        />
       </div>
       <div className="mb-8 border-[2px] hover:shadow-2xl rounded  hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
         <OrdersTable orders={orders} />
