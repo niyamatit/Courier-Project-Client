@@ -3,7 +3,7 @@ import MenuItem from "./MenuItem";
 import { MdAccountBalance, MdAddBox } from "react-icons/md";
 import { TbCoinTaka } from "react-icons/tb";
 import { IoHomeOutline } from "react-icons/io5";
-
+import { FaTruck } from 'react-icons/fa';
 
 const MerchantMenu = () => {
     return (
@@ -17,6 +17,11 @@ const MerchantMenu = () => {
         icon={ MdAddBox }
         label='Add Parcel'
         address='/dashboard/MerchantAddPercel'
+      />
+      <MenuItem
+        icon={ FaTruck }
+        label='Deliveries'
+        address='/dashboard/MerchantDeliveries'
       />
 
       {/* <MenuItem

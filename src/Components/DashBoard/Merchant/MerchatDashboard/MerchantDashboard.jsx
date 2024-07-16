@@ -4,14 +4,18 @@ import OrdersTable from "./OrdersTable";
 import ParcelChart from "./ParcelChart";
 import ParcelPieChart from "./ParcelPieChart";
 import DatePicker from "react-datepicker";
+import DeliveryCard from "./DeliveryCard";
 import "react-datepicker/dist/react-datepicker.css";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import {  FaClock, } from 'react-icons/fa';
 import {
-  FaTruck,
+  
   FaSearch,
   FaCheckCircle,
   FaTimesCircle,
-  FaHourglassHalf,
-  FaSyncAlt,
+  
+  
   FaMoneyBillWave,
   FaMoneyCheckAlt,
   FaBoxOpen,
@@ -26,6 +30,8 @@ const initialData = {
   cancelled: 5,
   deleted: 2,
 };
+
+
 
 const initialChartData = {
   labels: [
@@ -156,6 +162,19 @@ const MerchantDashboard = () => {
     setFilteredPieData(filterpieChart(initialData, newFilterData));
   }, [fromDate, toDate]);
 
+
+  const DeliveryData = {
+    outForDelivery: [
+      { name: 'Biswajit Halder', consignmentId: '240707M1J0WHM', phone: '01722265886', amount: '0' },
+      { name: 'Rowsanara', consignmentId: '240709TDCOXUC', phone: '01938560491', amount: '0' },
+    ],
+    pickUpPending: [
+      { name: 'Nibir', consignmentId: '240713SHZ9492', phone: '01905204410', amount: '0' },
+      { name: 'Hridoy', consignmentId: '240713HCYO493', phone: '01970751218', amount: '0' },
+    ],
+  };
+  
+
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-8">Merchant Dashboard</h1>
@@ -174,12 +193,51 @@ const MerchantDashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
         <StatsCard
-          title="Today Pickup"
-          value="6"
+          title="Total Delivered"
+          value={initialData.delivered}
+          percentage={"(15%)"}
+          icon={<FaCheckCircle />}
+          color="bg-blue-100"
+          percentageColor="text-green-600"
+          iconColor="text-green-400"
+        />
+         
+       
+        {/* <StatsCard
+          title="Pickup Pending"
+          value="0"
+          icon={<FaHourglassHalf />}
+          color="bg-yellow-100"
+        /> */}
+        {/* <StatsCard
+          title="Total Parcel"
+          value="54"
           icon={<FaTruck />}
           color="bg-blue-100"
         />
         <StatsCard
+          title="Total Pickup"
+          value="40"
+          icon={<FaTruck />}
+          color="bg-green-100"
+        /> */}
+        <StatsCard
+          title="Total Returned"
+          value="2"
+          icon={<FaUndo />}
+          color="bg-red-100"
+          percentage="(2%)"
+          percentageColor="text-red-600"
+        />
+        <StatsCard
+          title="Total Delivery Pending"
+          value="13"
+          icon={<FaClock />}
+          color="bg-yellow-100"
+          percentage="(10%)"
+          percentageColor="text-blue-600"
+        />
+         <StatsCard
           title="Today Delivered"
           value="2"
           icon={<FaCheckCircle />}
@@ -190,36 +248,6 @@ const MerchantDashboard = () => {
           value="0"
           icon={<FaTimesCircle />}
           color="bg-red-100"
-        />
-        <StatsCard
-          title="Pickup Pending"
-          value="0"
-          icon={<FaHourglassHalf />}
-          color="bg-yellow-100"
-        />
-        <StatsCard
-          title="Total Parcel"
-          value="54"
-          icon={<FaTruck />}
-          color="bg-blue-100"
-        />
-        <StatsCard
-          title="Delivered"
-          value="38"
-          icon={<FaCheckCircle />}
-          color="bg-green-100"
-        />
-        <StatsCard
-          title="Cancelled"
-          value="2"
-          icon={<FaTimesCircle />}
-          color="bg-red-100"
-        />
-        <StatsCard
-          title="Delivery Pending"
-          value="13"
-          icon={<FaSyncAlt />}
-          color="bg-yellow-100"
         />
         <StatsCard
           title="Payment Invoice"
@@ -251,12 +279,12 @@ const MerchantDashboard = () => {
           icon={<FaMoneyCheckAlt />}
           color="bg-red-100"
         />
-        <StatsCard
+        {/* <StatsCard
           title="Parcel in Processing"
           value="15"
           icon={<FaSyncAlt />}
           color="bg-yellow-100"
-        />
+        /> */}
         <StatsCard
           title="All Parcel COD"
           value="40,000.00 TK"
@@ -270,11 +298,16 @@ const MerchantDashboard = () => {
           color="bg-red-100"
         />
       </div>
-      <div className="mb-8 border-[2px] hover:shadow-2xl rounded-md border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
+
+      <div className="flex  gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
+      <DeliveryCard title="Out for Delivery" items={DeliveryData.outForDelivery} />
+      <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} />
+    </div>
+      <div className="mb-8 border-[2px] hover:shadow-2xl rounded  hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
         <OrdersTable orders={orders} />
       </div>
       {/* Filter */}
-    <div className="border-[2px] hover:shadow-2xl rounded-md border-blue-400 p-2 md:p-3 lg:p-10">
+    <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
     <div className="flex gap-6 mb-4">
   <div>
     <label className="font-semibold text-gray-700">From: </label>
@@ -295,11 +328,11 @@ const MerchantDashboard = () => {
 </div>
 
 <div className="flex flex-col lg:flex-row gap-6">
-  <div className="flex-1 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+  <div className="flex-1 hover:border-blue-400 border-[2px] bg-white  border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
     <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
     <ParcelChart data={filteredChartData} />
   </div>
-  <div className="flex-1 bg-white border  border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+  <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
     <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
     <ParcelPieChart  data={filteredPieData} />
   </div>
