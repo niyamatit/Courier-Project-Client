@@ -4,17 +4,18 @@ import OrdersTable from "./OrdersTable";
 import ParcelChart from "./ParcelChart";
 import ParcelPieChart from "./ParcelPieChart";
 import DatePicker from "react-datepicker";
+import DeliveryCard from "./DeliveryCard";
 import "react-datepicker/dist/react-datepicker.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import {  FaClock, } from 'react-icons/fa';
 import {
-  FaTruck,
+  
   FaSearch,
   FaCheckCircle,
   FaTimesCircle,
-  FaHourglassHalf,
-  FaSyncAlt,
+  
+  
   FaMoneyBillWave,
   FaMoneyCheckAlt,
   FaBoxOpen,
@@ -161,6 +162,19 @@ const MerchantDashboard = () => {
     setFilteredPieData(filterpieChart(initialData, newFilterData));
   }, [fromDate, toDate]);
 
+
+  const DeliveryData = {
+    outForDelivery: [
+      { name: 'Biswajit Halder', consignmentId: '240707M1J0WHM', phone: '01722265886', amount: '0' },
+      { name: 'Rowsanara', consignmentId: '240709TDCOXUC', phone: '01938560491', amount: '0' },
+    ],
+    pickUpPending: [
+      { name: 'Nibir', consignmentId: '240713SHZ9492', phone: '01905204410', amount: '0' },
+      { name: 'Hridoy', consignmentId: '240713HCYO493', phone: '01970751218', amount: '0' },
+    ],
+  };
+  
+
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-8">Merchant Dashboard</h1>
@@ -188,25 +202,14 @@ const MerchantDashboard = () => {
           iconColor="text-green-400"
         />
          
-        <StatsCard
-          title="Today Delivered"
-          value="2"
-          icon={<FaCheckCircle />}
-          color="bg-green-100"
-        />
-        <StatsCard
-          title="Today Cancelled"
-          value="0"
-          icon={<FaTimesCircle />}
-          color="bg-red-100"
-        />
-        <StatsCard
+       
+        {/* <StatsCard
           title="Pickup Pending"
           value="0"
           icon={<FaHourglassHalf />}
           color="bg-yellow-100"
-        />
-        <StatsCard
+        /> */}
+        {/* <StatsCard
           title="Total Parcel"
           value="54"
           icon={<FaTruck />}
@@ -217,7 +220,7 @@ const MerchantDashboard = () => {
           value="40"
           icon={<FaTruck />}
           color="bg-green-100"
-        />
+        /> */}
         <StatsCard
           title="Total Returned"
           value="2"
@@ -233,6 +236,18 @@ const MerchantDashboard = () => {
           color="bg-yellow-100"
           percentage="(10%)"
           percentageColor="text-blue-600"
+        />
+         <StatsCard
+          title="Today Delivered"
+          value="2"
+          icon={<FaCheckCircle />}
+          color="bg-green-100"
+        />
+        <StatsCard
+          title="Today Cancelled"
+          value="0"
+          icon={<FaTimesCircle />}
+          color="bg-red-100"
         />
         <StatsCard
           title="Payment Invoice"
@@ -264,12 +279,12 @@ const MerchantDashboard = () => {
           icon={<FaMoneyCheckAlt />}
           color="bg-red-100"
         />
-        <StatsCard
+        {/* <StatsCard
           title="Parcel in Processing"
           value="15"
           icon={<FaSyncAlt />}
           color="bg-yellow-100"
-        />
+        /> */}
         <StatsCard
           title="All Parcel COD"
           value="40,000.00 TK"
@@ -283,6 +298,11 @@ const MerchantDashboard = () => {
           color="bg-red-100"
         />
       </div>
+
+      <div className="flex  gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
+      <DeliveryCard title="Out for Delivery" items={DeliveryData.outForDelivery} />
+      <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} />
+    </div>
       <div className="mb-8 border-[2px] hover:shadow-2xl rounded  hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
         <OrdersTable orders={orders} />
       </div>
