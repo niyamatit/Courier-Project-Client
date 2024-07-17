@@ -11,7 +11,7 @@ import HostMenu from './HostMenu'
 import useRole from '../../../hooks/useRole'
 import { Link } from 'react-router-dom'
 import MerchantMenu from './MerchantMenu'
-
+import logo from "../../../../src/assets/logo.png"
 
 
 
@@ -53,8 +53,8 @@ const Sidebar = () => {
       >
         <div>
           <div>
-            <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-secondary mx-auto'>
-              <Link to="/"><img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo.svg" alt="Logo" /></Link>
+            <div className='w-full hidden md:flex px-4 py-2  rounded-lg justify-center items-center  mx-auto'>
+              <Link to="/"><img src={logo} alt="Logo" /></Link>
             </div>
           </div>
 

@@ -1,7 +1,7 @@
-import { FaCartPlus, FaClipboardList, FaSearchPlus, FaShareAltSquare } from "react-icons/fa";
+
 import MenuItem from "./MenuItem";
-import { MdAccountBalance, MdAddBox } from "react-icons/md";
-import { TbCoinTaka } from "react-icons/tb";
+import { MdAddBox } from "react-icons/md";
+
 import { IoHomeOutline } from "react-icons/io5";
 import { FaTruck } from 'react-icons/fa';
 import { FaFileInvoice } from 'react-icons/fa';
@@ -36,7 +36,7 @@ const MerchantMenu = () => {
         address='/dashboard/MerchantInvoices'
       />
 
-      <MenuItem
+      {/* <MenuItem
         icon={FaClipboardList}
         label='All Orders'
         address='/'
@@ -60,7 +60,7 @@ const MerchantMenu = () => {
         icon={TbCoinTaka}
         label='Service Charge'
         address='/'
-      />
+      /> */}
     </>
     );
 };
