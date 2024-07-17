@@ -22,6 +22,12 @@ import AdminStatistics from "../Components/DashBoard/Admin/Statistics";
 import About from "../Components/Pages/Home/About/About";
 import PackageTracking from "../Components/Pages/Home/PackageTracking/PackageTracking";
 import OnlineTracking from "../Components/Pages/Home/OnlineBookedTracking/OnlineTracking";
+import RiderHome from "../Components/DashBoard/Rider/RiderHome";
+import PickupparcelList from "../Components/DashBoard/Rider/PickupparcelList";
+import DeliveryparcelList from "../Components/DashBoard/Rider/DeliveryparcelList";
+import DeliveryComplete from "../Components/DashBoard/Rider/DeliveryComplete";
+import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
+import HostDashboard from "../Components/DashBoard/Host/HostDashboard/HostDashboard";
 import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
 import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
 import MerchantDeliveries from "../Components/DashBoard/Merchant/MerchantDeliveries/MerchantDeliveries";
@@ -54,7 +60,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/online-tracking",
-                element: <OnlineTracking/>
+                element: <OnlineTracking />
             },
             {
                 path: "/about",
@@ -97,6 +103,14 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
+                path: "host-dashboard",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <HostDashboard />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
                 path: "delivery-scheduling",
                 element: <PrivateRoute>
                     <HostRoute>
@@ -131,12 +145,12 @@ export const router = createBrowserRouter([
                 </PrivateRoute>
             },
             {
-              path: "MerchantDashboard",
-              element:<MerchantDashboard/>
+                path: "MerchantDashboard",
+                element: <MerchantDashboard />
             },
             {
-             path:"MerchantAddPercel",
-             element:<MerchantAddPercel/>
+                path: "MerchantAddPercel",
+                element: <MerchantAddPercel />
             },
             {
               path:"MerchantDeliveries",
@@ -152,11 +166,57 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><MyBookings /></PrivateRoute>
             },
 
+            // Rider Dashboard
+            {
+                path: "rider-home",
+                element: <PrivateRoute><RiderHome></RiderHome></PrivateRoute>
+            },
+            {
+                path: "pickup-list",
+                element: <PrivateRoute><PickupparcelList></PickupparcelList></PrivateRoute>
+            },
+            {
+                path: "delivery-list",
+                element: <PrivateRoute><DeliveryparcelList></DeliveryparcelList></PrivateRoute>
+            },
+            {
+                path: "delivery-complete",
+                element: <PrivateRoute><DeliveryComplete></DeliveryComplete></PrivateRoute>
+            },
+            {
+                path: "return-parcel",
+                element: <PrivateRoute><ReturnPercel></ReturnPercel></PrivateRoute>
+            },
+
+
+            // Rider Dashboard
+            {
+                path: "rider-home",
+                element: <PrivateRoute><RiderHome></RiderHome></PrivateRoute>
+            },
+            {
+                path: "pickup-list",
+                element: <PrivateRoute><PickupparcelList></PickupparcelList></PrivateRoute>
+            },
+            {
+                path: "delivery-list",
+                element: <PrivateRoute><DeliveryparcelList></DeliveryparcelList></PrivateRoute>
+            },
+            {
+                path: "delivery-complete",
+                element: <PrivateRoute><DeliveryComplete></DeliveryComplete></PrivateRoute>
+            },
+            {
+                path: "return-parcel",
+                element: <PrivateRoute><ReturnPercel></ReturnPercel></PrivateRoute>
+            },
+
+
         ]
     },
 
 
-   
+
 
 
 

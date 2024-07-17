@@ -1,11 +1,18 @@
 import { BsHouseAddFill } from "react-icons/bs";
 import MenuItem from "./MenuItem";
+import { IoHome } from "react-icons/io5";
 import {  MdOutlineManageHistory } from "react-icons/md";
 
 
 const HostMenu = () => {
   return (
     <>
+      <MenuItem
+        icon={IoHome}
+        label='Dashboard'
+        address='host-dashboard'
+      />
+
       <MenuItem
         icon={BsHouseAddFill}
         label='Create Package'
