@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import logoImg from '../../assets/nexp-update.png'
 const Footer = () => {
   
 
@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <a href="" className="flex items-center">
-              <img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo-footer.svg" className="h-20 rounded-lg mr-3" alt="" />
+              <img src={logoImg } className="h-20 rounded-lg mr-3" alt="" />
             </a>
             <div className="md:w-[400px] lg:w-[600px] md:mr-10">
               <p className="text-justify">

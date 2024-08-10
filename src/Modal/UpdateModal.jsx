@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 import { Dialog, Listbox, Transition } from '@headlessui/react'
 import { BsCheckLg } from 'react-icons/bs'
 import { AiOutlineDown } from 'react-icons/ai'
-const actions = ['processing', 'in-transit', 'delivered']
+const actions = ['processing','pickup request','Rider pickup','in-transit','on the way to delivery half','on the way to delivery','Rider Assign','Ready For Delivery', 'delivered','canceled']
 
 const UpdateModal = ({ setIsOpen, isOpen, modalHandler,pack }) => {
   const [selected, setSelected] = useState(pack?.update)
@@ -39,16 +39,16 @@ const UpdateModal = ({ setIsOpen, isOpen, modalHandler,pack }) => {
               leaveFrom='opacity-100 scale-100'
               leaveTo='opacity-0 scale-95'
             >
-              <Dialog.Panel className='w-full h-56 max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+              <Dialog.Panel className='w-full h-[350px] max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
                 <Dialog.Title
                   as='h3'
                   className='text-lg font-medium text-center leading-6 text-gray-900'
                 >
                   Action Update
                 </Dialog.Title>
-                <div className='mt-4 w-full'>
+                <div className='mt-6 w-full'>
                   <Listbox value={selected} onChange={setSelected}>
-                    <div className='relative mt-1'>
+                    <div className='relative mt-6'>
                       <Listbox.Button className='relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
                         <span className='block truncate'>{selected}</span>
                         <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
@@ -104,9 +104,9 @@ const UpdateModal = ({ setIsOpen, isOpen, modalHandler,pack }) => {
                     </div>
                   </Listbox>
                 </div>
-                <hr className='mt-16 ' />
+                <hr className='mt-20 ' />
 
-                <div className='flex mt-2 justify-center gap-5'>
+                <div className='flex mt-10 justify-center gap-5'>
                   <button
                     type='button'
                     className='inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'

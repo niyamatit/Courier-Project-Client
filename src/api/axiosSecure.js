@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 const axiosSecure = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'https://courier-server.vercel.app',
   withCredentials: true, // Include credentials with the requests
 });
 
 export default axiosSecure;
+
