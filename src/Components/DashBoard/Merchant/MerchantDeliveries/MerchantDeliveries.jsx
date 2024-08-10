@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { MdPrint } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
-
+import { AiFillFileExcel } from 'react-icons/ai';
 const MerchantDeliveries = () => {
   const [status, setStatus] = useState("all");
   const [dateRange, setDateRange] = useState("");
-
   const deliveries = [
     {
       invoice: "240713GIQ9496",
@@ -65,6 +64,9 @@ const MerchantDeliveries = () => {
             >
               All
             </button>
+
+            
+
             <button
               className={`px-6 py-2 rounded-full font-semibold ${
                 status === "active" ? "bg-blue-600 text-white" : "bg-gray-300"
@@ -84,7 +86,7 @@ const MerchantDeliveries = () => {
               Delivered
             </button>
             <button
-              className={`px-6 py-2 rounded-full font-semibold ${
+              className={`px-6 py-2 rounded-full  font-semibold ${
                 status === "returned" ? "bg-blue-600 text-white" : "bg-gray-300"
               }`}
               onClick={() => setStatus("returned")}
@@ -94,7 +96,19 @@ const MerchantDeliveries = () => {
           </div>
          
            
-            <div className="flex space-x-4"></div>
+            <div className="flex items-center space-x-10 text-center">
+           <div>
+            <p className="font-semibold text-sm">Excel</p>
+           <button className="border p-1 border-blue-400 rounded-[3px]">
+              <AiFillFileExcel className="text-2xl text-blue-500" />
+            </button>
+           </div>
+            <div>
+            <p className="font-semibold text-sm">Print</p>
+            <button className="border p-1 border-blue-400 rounded-[3px]">
+              <MdPrint className="text-[23px]  text-blue-500" />
+            </button>
+            </div>
             <input
               type="text"
               className="border rounded-full p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -102,12 +116,8 @@ const MerchantDeliveries = () => {
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
             />
-           <button className="">
-              <MdPrint className="text-2xl text-blue-500" />
-            </button>
-            <button className="">
-              <MdPrint className="text-2xl text-blue-500" />
-            </button>
+        
+            </div>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
