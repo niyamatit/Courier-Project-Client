@@ -7,12 +7,20 @@ const OrderProcess = () => {
     const [process, setProcess] = useState([])
 
     useEffect(() => {
-        fetch('../../../../../public/steps.json')
-            .then(res => res.json())
-            .then(data => {
-                setProcess(data)
+        fetch('/steps.json')
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
             })
-    }, [])
+            .then(data => {
+                setProcess(data);
+            })
+            .catch(error => {
+                console.error('Error fetching the JSON:', error);
+            });
+    }, []);
 
     return (
         <div>

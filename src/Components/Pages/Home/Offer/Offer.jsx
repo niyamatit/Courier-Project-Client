@@ -7,13 +7,22 @@ const Offer = () => {
     const [offerData, setOfferData] = useState();
 
     useEffect(() => {
-
-        fetch('../../../../../public/Offer.json')
-            .then(res => res.json())
-            .then(data => {
-                setOfferData(data)
+        fetch('/Offer.json')
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
             })
-    }, [])
+            .then(data => {
+                setOfferData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching the JSON:', error);
+            });
+    }, []);
+
+    console.log(offerData)
 
     return (
         <div className=" mt-20 space-y-5  mb-20">

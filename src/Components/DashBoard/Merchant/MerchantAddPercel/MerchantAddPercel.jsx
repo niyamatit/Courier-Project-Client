@@ -613,7 +613,9 @@ const Areas =[
     const districtName = getDistrictName(data.district);
     const formData = { ...data, district: districtName };
     console.log(formData);
+
   };
+  
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
   <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">

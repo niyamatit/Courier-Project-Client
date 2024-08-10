@@ -12,8 +12,7 @@ import useRole from '../../../hooks/useRole'
 import { Link } from 'react-router-dom'
 import MerchantMenu from './MerchantMenu'
 import RiderMenu from './RiderMenu'
-
-
+import logoImg from '../../../assets/nexp-update.png'
 
 
 const Sidebar = () => {
@@ -36,7 +35,7 @@ const Sidebar = () => {
       <div className='bg-gray-100 text-gray-800 flex justify-between md:hidden'>
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
-            <Link to="/"><img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo-footer.svg" alt="Logo" /></Link>
+            <Link className='h-[100px] w-[100px]'  to="/"><img src={logoImg} alt="Logo" /></Link>
           </div>
         </div>
 
@@ -54,8 +53,8 @@ const Sidebar = () => {
       >
         <div>
           <div>
-            <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-secondary mx-auto'>
-              <Link to="/"><img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo.svg" alt="Logo" /></Link>
+            <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-primary mx-auto'>
+              <Link className='h-[100px] w-[100px]' to="/"><img  src={logoImg} alt="Logo" /></Link>
             </div>
           </div>
 

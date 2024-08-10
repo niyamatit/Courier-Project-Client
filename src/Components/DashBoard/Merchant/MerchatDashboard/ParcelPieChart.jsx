@@ -4,12 +4,12 @@ import { Chart } from 'react-google-charts';
 const ParcelPieChart = ({ data }) => {
     const chartData = [
         ['Category', 'Value'],
-        ['Parcel Booking', data.parcelBooking],
-        ['Delivered', data.delivered],
-        ['Partially Delivered', data.partiallyDelivered],
-        ['Processing', data.processing],
-        ['Cancelled', data.cancelled],
-        ['Deleted', data.deleted],
+        ['Parcel Booking', data?.parcelBooking],
+        ['Delivered', data?.delivered],
+        ['Partially Delivered', data?.partiallyDelivered],
+        ['Processing', data?.processing],
+        ['Cancelled', data?.cancelled],
+        ['Deleted', data?.deleted],
     ];
 
     return (
