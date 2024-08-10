@@ -30,6 +30,9 @@ import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
 import HostDashboard from "../Components/DashBoard/Host/HostDashboard/HostDashboard";
 import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
 import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
+import MerchantDeliveries from "../Components/DashBoard/Merchant/MerchantDeliveries/MerchantDeliveries";
+import MerchantInvoices from "../Components/DashBoard/Merchant/MerchantInvoices/MerchantInvoices";
+
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
 // import Tracking1 from "../Components/Pages/Home/WorkForce/UserPackageTracking/Tracking1";
@@ -149,6 +152,15 @@ export const router = createBrowserRouter([
                 path: "MerchantAddPercel",
                 element: <MerchantAddPercel />
             },
+            {
+              path:"MerchantDeliveries",
+              element:<MerchantDeliveries/>
+            },
+            {
+               path:"MerchantInvoices",
+               element:<MerchantInvoices/>
+            },
+            
             {
                 path: "my-bookings",
                 element: <PrivateRoute><MyBookings /></PrivateRoute>

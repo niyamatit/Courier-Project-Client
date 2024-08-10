@@ -7,7 +7,8 @@ const MerchantAddParcel = () => {
   const [WeightPackage,setWeightPackage] = useState("");
   const [filteredAreas, setFilteredAreas] = useState([]);
   const [ServiceType,setServiceType] = useState("");
-  const [ItemType,setItemType] = useState('')
+  const [ItemType,setItemType] = useState('');
+  const [store, setStore] = useState("");
 
   const {
     register,
@@ -727,7 +728,26 @@ const Areas =[
               Parcel Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+            <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block text-gray-700 font-medium mb-1">
+                Select Your Store*
+                </label>
+               
+                <select
+                  {...register('store', { required: true })}
+                  className={`select select-bordered w-full p-2 rounded-lg border ${
+                    errors.store ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  onChange={(e) => setStore(e.target.value)}
+                >
+                  <option value="">Select Your Store*</option>
+                  <option value="Niyamat Express">Niyamat Express</option>
+                </select>
+                {errors.store && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Merchant Order ID*
                 </label>
@@ -822,7 +842,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Product Value*
                 </label>
@@ -837,7 +857,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Product Details*
                 </label>
@@ -846,7 +866,7 @@ const Areas =[
                   className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
                 />
               </div>
-              <div className="col-span-1 sm:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Remark
                 </label>
@@ -864,6 +884,10 @@ const Areas =[
             Parcel Charge
           </h2>
           <div className="space-y-2 md:space-y-4">
+            <div className="flex justify-between">
+              <span className="text-gray-700">Store</span>
+              <span className="text-gray-500">{store || "Not Confirm"} </span>
+            </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Weight Package</span>
               <span className="text-gray-500">{WeightPackage || "Not Confirm"} kg</span>

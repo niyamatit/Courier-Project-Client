@@ -11,6 +11,7 @@ import HostMenu from './HostMenu'
 import useRole from '../../../hooks/useRole'
 import { Link } from 'react-router-dom'
 import MerchantMenu from './MerchantMenu'
+import logo from "../../../../src/assets/logo.png"
 import RiderMenu from './RiderMenu'
 import logoImg from '../../../assets/nexp-update.png'
 
@@ -53,8 +54,13 @@ const Sidebar = () => {
       >
         <div>
           <div>
+
             <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-primary mx-auto'>
               <Link className='h-[100px] w-[100px]' to="/"><img  src={logoImg} alt="Logo" /></Link>
+
+            <div className='w-full hidden md:flex px-4 py-2  rounded-lg justify-center items-center  mx-auto'>
+              <Link to="/"><img src={logo} alt="Logo" /></Link>
+
             </div>
           </div>
 
