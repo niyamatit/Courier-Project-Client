@@ -4,7 +4,7 @@ import { FaEye } from "react-icons/fa";
 import { AiFillFileExcel } from 'react-icons/ai';
 const MerchantDeliveries = () => {
   const [status, setStatus] = useState("all");
-  const [dateRange, setDateRange] = useState("");
+  
   const deliveries = [
     {
       invoice: "240713GIQ9496",
@@ -55,7 +55,7 @@ const MerchantDeliveries = () => {
       </h1>
       <div className="bg-white p-6 shadow-xl rounded-lg">
         <div className="flex flex-col sm:flex-row justify-between mb-6 space-y-4 sm:space-y-0">
-          <div className="flex flex-wrap space-x-4">
+          <div className="grid  grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
             <button
               className={`px-6 py-2 rounded-full font-semibold ${
                 status === "all" ? "bg-blue-600 text-white" : "bg-gray-300"
@@ -96,7 +96,7 @@ const MerchantDeliveries = () => {
           </div>
          
            
-            <div className="flex items-center space-x-10 text-center">
+            <div className="flex items-center space-x-5  md:space-x-10 lg:space-x-10 text-center">
            <div>
             <p className="font-semibold text-sm">Excel</p>
            <button className="border p-1 border-blue-400 rounded-[3px]">
@@ -111,10 +111,9 @@ const MerchantDeliveries = () => {
             </div>
             <input
               type="text"
-              className="border rounded-full p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border w-3/4 md:w-full lg:w-full rounded-full p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Search..."
-              value={dateRange}
-              onChange={(e) => setDateRange(e.target.value)}
+             
             />
         
             </div>
