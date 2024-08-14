@@ -13,8 +13,7 @@ import { Link } from 'react-router-dom'
 import MerchantMenu from './MerchantMenu'
 import logo from "../../../../src/assets/logo.png"
 import RiderMenu from './RiderMenu'
-
-
+import logoImg from '../../../assets/nexp-update.png'
 
 
 const Sidebar = () => {
@@ -37,7 +36,7 @@ const Sidebar = () => {
       <div className='bg-gray-100 text-gray-800 flex justify-between md:hidden'>
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
-            <Link to="/"><img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo-footer.svg" alt="Logo" /></Link>
+            <Link className='h-[100px] w-[100px]'  to="/"><img src={logoImg} alt="Logo" /></Link>
           </div>
         </div>
 
@@ -55,8 +54,13 @@ const Sidebar = () => {
       >
         <div>
           <div>
+
+            <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-primary mx-auto'>
+              <Link className='h-[100px] w-[100px]' to="/"><img  src={logoImg} alt="Logo" /></Link>
+
             <div className='w-full hidden md:flex px-4 py-2  rounded-lg justify-center items-center  mx-auto'>
               <Link to="/"><img src={logo} alt="Logo" /></Link>
+
             </div>
           </div>
 
@@ -98,6 +102,7 @@ const Sidebar = () => {
             <span className='mx-4 font-medium'>Logout</span>
           </button>
         </div>
+      </div>
       </div>
     </>
   )
