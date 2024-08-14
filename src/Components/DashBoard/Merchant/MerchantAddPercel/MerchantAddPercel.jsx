@@ -968,13 +968,13 @@ const Areas =[
         <button
           type="button"
           onClick={() => reset()}
-          className="btn btn-secondary bg-red-500 text-white py-2 px-4 rounded-lg"
+          className="btn  bg-gray-500 text-white py-2 px-4 rounded-lg"
         >
           Reset
         </button>
         <button
           type="submit"
-          className="btn  bg-blue-500 text-white py-2 px-4 rounded-lg"
+          className="btn hover:bg-blue-600 bg-blue-500 text-white py-2 px-4 rounded-lg"
         >
           Submit
         </button>
