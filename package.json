@@ -44,6 +44,7 @@
     "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0",
     "stripe-client": "^1.1.5",
+    "sweetalert2": "^11.12.4",
     "swiper": "^11.1.4"
   },
   "devDependencies": {

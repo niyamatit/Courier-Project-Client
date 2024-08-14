@@ -103,6 +103,7 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
+      </div>
     </>
   )
 }

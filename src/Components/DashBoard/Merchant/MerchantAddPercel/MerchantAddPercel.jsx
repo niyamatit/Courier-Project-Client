@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
+import axiosSecure from "../../../../api/axiosSecure";
+import Swal from "sweetalert2";
 
 const MerchantAddParcel = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -9,6 +11,7 @@ const MerchantAddParcel = () => {
   const [ServiceType,setServiceType] = useState("");
   const [ItemType,setItemType] = useState('');
   const [store, setStore] = useState("");
+  
 
   const {
     register,
@@ -610,9 +613,45 @@ const Areas =[
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const districtName = getDistrictName(data.district);
     const formData = { ...data, district: districtName };
+    
+    const PercelInformation = {
+      Customer_Contact_Number: formData?.contactNumber || "",
+      Customer_Name:formData?.customerName || "",
+      Customer_Address:formData?.customerAddress || "",
+      Customer_District_Name: formData?.district || "",
+      Customer_Area: formData?.area || "",
+      Store_Name: formData?.store || "",
+      Merchant_Order_ID: formData?.orderId || "",
+      Parcel_Weight: parseFloat(formData?.weightPackage) || "",
+      Total_Collection_Amount: parseFloat(formData?.totalAmount) || "",
+      Service_Type: formData?.serviceType || "",
+      Item_Type: formData?.itemType || "",
+      Product_Value: parseFloat(formData?.productValue) || "",
+      Product_Details: formData?.productDetails || "",
+      Product_Remark: formData?.remark || "",
+      Cod_Perchent: 0 || "",
+      Weight_Charge: 0 || "",
+      Cod_Charge: 0 || "",
+      Delivary_Charge: 70 || "",
+      Total_Charge: 100 || "",
+      
+ }
+   console.log("Parcel Information:",PercelInformation)
+
+   const ParcelProductDetails = await axiosSecure.post("/Parcel",PercelInformation);
+   console.log(ParcelProductDetails.data);
+      if (ParcelProductDetails.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Parcel Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     console.log(formData);
 
   };
@@ -931,13 +970,13 @@ const Areas =[
         <button
           type="button"
           onClick={() => reset()}
-          className="btn btn-secondary bg-red-500 text-white py-2 px-4 rounded-lg"
+          className="btn  bg-gray-500 text-white py-2 px-4 rounded-lg"
         >
           Reset
         </button>
         <button
           type="submit"
-          className="btn btn-primary bg-green-500 text-white py-2 px-4 rounded-lg"
+          className="btn hover:bg-blue-600 bg-blue-500 text-white py-2 px-4 rounded-lg"
         >
           Submit
         </button>

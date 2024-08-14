@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { MdPrint } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
+import { AiFillFileExcel } from "react-icons/ai";
 const MerchantDeliveries = () => {
   const [status, setStatus] = useState("all");
-  const [dateRange, setDateRange] = useState("");
 
   const deliveries = [
     {
@@ -49,134 +49,166 @@ const MerchantDeliveries = () => {
   ];
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-semibold mb-4">
+    <div className="p-6 sm:p-8 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-gray-800">
         Recent Deliveries Last 90 Days | {deliveries.length} Orders
       </h1>
-      <div className="bg-white p-4 shadow rounded-lg">
-        <div className="flex justify-between mb-4">
-          <div className="flex space-x-2">
+      <div className="bg-white p-6 shadow-xl rounded-lg">
+        <div className="flex flex-col sm:flex-row justify-between mb-6 space-y-4 sm:space-y-0">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
             <button
-              className={`px-4 py-2 rounded ${
-                status === "all" ? "bg-blue-500 text-white" : "bg-gray-200"
+              className={`px-4 py-1 rounded-full font-semibold ${
+                status === "all" ? "bg-blue-600 text-white" : "bg-gray-300"
               }`}
               onClick={() => setStatus("all")}
             >
               All
             </button>
-            <Link to="/dashboard/MerchantDeliveries">
+
             <button
-              className={`px-4 py-2 rounded ${
-                status === "active" ? "bg-blue-500 text-white" : "bg-gray-200"
+              className={`px-4 py-1 rounded-full font-semibold ${
+                status === "active" ? "bg-blue-600 text-white" : "bg-gray-300"
               }`}
               onClick={() => setStatus("active")}
             >
               Active
             </button>
-            </Link>
+
             <button
-              className={`px-4 py-2 rounded ${
+              className={`px-4 py-1 rounded-full font-semibold ${
                 status === "delivered"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-300"
               }`}
               onClick={() => setStatus("delivered")}
             >
               Delivered
             </button>
+
             <button
-              className={`px-4 py-2 rounded ${
-                status === "returned" ? "bg-blue-500 text-white" : "bg-gray-200"
+              className={`px-4 py-1 rounded-full font-semibold ${
+                status === "returned" ? "bg-blue-600 text-white" : "bg-gray-300"
               }`}
               onClick={() => setStatus("returned")}
             >
               Returned
             </button>
           </div>
-          <div className="flex space-x-2">
+
+          <div className="flex items-center space-x-5  md:space-x-10 lg:space-x-10 text-center">
+            <div>
+              <p className="font-semibold text-sm">Excel</p>
+              <button className="border p-1 border-blue-400 rounded-[3px]">
+                <AiFillFileExcel className="text-2xl text-blue-500" />
+              </button>
+            </div>
+            <div>
+              <p className="font-semibold text-sm">Print</p>
+              <button className="border p-1 border-blue-400 rounded-[3px]">
+                <MdPrint className="text-[23px]  text-blue-500" />
+              </button>
+            </div>
             <input
               type="text"
-              className="border rounded p-2"
-              placeholder="Date/Date Range"
-              value={dateRange}
-              onChange={(e) => setDateRange(e.target.value)}
+              className="border w-3/4 md:w-full lg:w-full rounded-full p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Search..."
             />
-            <button className="px-4 py-2 bg-blue-500 text-white rounded">
-              Excel
-            </button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded">
-              Print
-            </button>
           </div>
         </div>
-        <table className="min-w-full bg-white">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 border-b">SL</th>
-              <th className="py-2 px-4 border-b">INVOICE</th>
-              <th className="py-2 px-4 border-b">PARCEL</th>
-              <th className="py-2 px-4 border-b">CUSTOMER</th>
-              <th className="py-2 px-4 border-b">AMOUNT</th>
-              <th className="py-2 px-4 border-b">PAYMENT / RETURN STATUS</th>
-              <th className="py-2 px-4 border-b">CHANGE STATUS</th>
-              <th className="py-2 px-4 border-b">ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {deliveries.map((delivery, index) => (
-              <tr key={index}>
-                <td className="py-2 px-4 border-b">{index + 1}</td>
-                <td className="py-2 px-4 border-b">{delivery?.invoice}</td>
-                <td className="py-2 px-4 border-b">
-                  <div className="bg-green-200 text-green-800 px-2 py-1 rounded">
-                    Pickup Request
-                  </div>
-                  <div>{delivery?.date}</div>
-                </td>
-                <td className="py-2 px-8 border-b">
-                  <div>
-                    <strong>Name:</strong> {delivery?.customer.name}
-                  </div>
-                  <div>
-                    <strong>Number:</strong> {delivery?.customer.number}
-                  </div>
-                  <div>
-                    <strong>District:</strong> {delivery?.customer.district}
-                  </div>
-                  <div>
-                    <strong>Area:</strong> {delivery?.customer.area}
-                  </div>
-                  <div>
-                    <strong>Address:</strong> {delivery.customer.address}
-                  </div>
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <div>
-                    <strong>COD:</strong> {delivery.amount.cod}
-                  </div>
-                  <div>
-                    <strong>Collected:</strong> {delivery.amount.collected}
-                  </div>
-                  <div>
-                    <strong>Delivery Charge:</strong>{" "}
-                    {delivery.amount.deliveryCharge}
-                  </div>
-                </td>
-                <td className="py-2 px-4 border-b">Pending</td>
-                <td className="py-2 px-4 border-b">
-                  <button className="px-4 py-2 bg-yellow-500 text-white rounded">
-                    Change Status
-                  </button>
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <button className="px-4 py-2 bg-blue-500 text-white rounded">
-                    Action
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white">
+            <thead className="bg-blue-600">
+              <tr>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  SL
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  INVOICE
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  PARCEL
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  CUSTOMER
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  AMOUNT
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  PAYMENT/RETURN STATUS
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  PRINT
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  ACTIONS
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {deliveries.map((delivery, index) => (
+                <tr key={index} className="border-b last:border-0">
+                  <td className="py-4 px-6 text-base text-gray-700">
+                    {index + 1}
+                  </td>
+                  <td className="py-4 px-6 text-base text-gray-700">
+                    {delivery.invoice}
+                  </td>
+                  <td className="py-4 px-6 text-sm text-gray-700">
+                    <div className="bg-green-100 mr-2 text-green-800 px-3 py-1 rounded-full inline-block">
+                      Pickup Request
+                    </div>
+                    <div className="mt-1 ml-2 text-gray-500">
+                      {delivery.date}
+                    </div>
+                  </td>
+                  <td className="py-4 px-8 text-base text-gray-700">
+                    <div>
+                      <strong>Name:</strong> {delivery.customer.name}
+                    </div>
+                    <div>
+                      <strong>Number:</strong> {delivery.customer.number}
+                    </div>
+                    <div>
+                      <strong>District:</strong> {delivery.customer.district}
+                    </div>
+                    <div>
+                      <strong>Area:</strong> {delivery.customer.area}
+                    </div>
+                    <div>
+                      <strong>Address:</strong> {delivery.customer.address}
+                    </div>
+                  </td>
+                  <td className="py-4 px-6 text-base text-gray-700">
+                    <div>
+                      <strong>COD:</strong> {delivery.amount.cod}
+                    </div>
+                    <div>
+                      <strong>Collected:</strong> {delivery.amount.collected}
+                    </div>
+                    <div>
+                      <strong>Delivery Charge:</strong>{" "}
+                      {delivery.amount.deliveryCharge}
+                    </div>
+                  </td>
+                  <td className="py-4 px-10 text-base text-gray-700">
+                    Pending
+                  </td>
+                  <td className="py-4 px-6 text-base text-gray-700">
+                    <button className="px-4 py-2">
+                      <MdPrint className="text-2xl text-blue-500" />
+                    </button>
+                  </td>
+                  <td className="py-4 px-6 text-base text-gray-700">
+                    <button className="px-4 py-2">
+                      <FaEye className="text-2xl text-blue-500" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
