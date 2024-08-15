@@ -53,6 +53,7 @@ const MerchantInterNationalAddParcel = () => {
       Cod_Charge: 0 || "",
       Delivary_Charge: 70 || "",
       Total_Charge: 100 || "",
+      Date: new Date().toISOString().split('T')[0],
       International_Parcel:"International"
     };
     console.log("Parcel Information:", PercelInformation);

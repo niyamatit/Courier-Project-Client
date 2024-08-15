@@ -1,9 +1,9 @@
-import { useState } from "react";
+
 import { MdPrint } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { AiFillFileExcel } from "react-icons/ai";
 const MerchantDeliveries = () => {
-  const [status, setStatus] = useState("all");
+ 
 
   const deliveries = [
     {
@@ -55,7 +55,7 @@ const MerchantDeliveries = () => {
       </h1>
       <div className="bg-white p-6 shadow-xl rounded-lg">
         <div className="flex flex-col sm:flex-row justify-between mb-6 space-y-4 sm:space-y-0">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+           {/* <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
             <button
               className={`px-4 py-1 rounded-full font-semibold ${
                 status === "all" ? "bg-blue-600 text-white" : "bg-gray-300"
@@ -93,8 +93,8 @@ const MerchantDeliveries = () => {
             >
               Returned
             </button>
-          </div>
-
+          </div> */}
+            
           <div className="flex items-center space-x-5  md:space-x-10 lg:space-x-10 text-center">
             <div>
               <p className="font-semibold text-sm">Excel</p>
@@ -135,7 +135,7 @@ const MerchantDeliveries = () => {
                   AMOUNT
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  PAYMENT/RETURN STATUS
+                  DELIVERY STATUS
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
                   PRINT

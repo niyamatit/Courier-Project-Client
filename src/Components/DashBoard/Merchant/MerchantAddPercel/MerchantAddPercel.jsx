@@ -637,6 +637,7 @@ const Areas =[
       Cod_Charge: 0 || "",
       Delivary_Charge: 70 || "",
       Total_Charge: 100 || "",
+      Date: new Date().toISOString().split('T')[0] || "2024-08-15"
       
  }
    console.log("Parcel Information:",PercelInformation)
