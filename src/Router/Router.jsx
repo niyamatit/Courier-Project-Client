@@ -32,6 +32,7 @@ import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard
 import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
 import MerchantDeliveries from "../Components/DashBoard/Merchant/MerchantDeliveries/MerchantDeliveries";
 import MerchantInvoices from "../Components/DashBoard/Merchant/MerchantInvoices/MerchantInvoices";
+import DemoPackage from "../Components/DashBoard/Host/CreatePackage/DemoPackage";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -95,10 +96,19 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><Profile /></PrivateRoute>
             },
             {
-                path: "create-package",
+                path: "branch-booking",
                 element: <PrivateRoute>
                     <HostRoute>
                         <CreatePackage />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            
+            {
+                path: "demo-pack",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <DemoPackage/>
                     </HostRoute>
                 </PrivateRoute>
             },

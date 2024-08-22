@@ -1,12 +1,18 @@
 import { BsHouseAddFill } from "react-icons/bs";
 import MenuItem from "./MenuItem";
 import { IoHome } from "react-icons/io5";
-import {  MdOutlineManageHistory } from "react-icons/md";
+import { MdOutlineManageHistory } from "react-icons/md";
+
 
 
 const HostMenu = () => {
+
+
+
   return (
     <>
+      
+
       <MenuItem
         icon={IoHome}
         label='Dashboard'
@@ -15,15 +21,15 @@ const HostMenu = () => {
 
       <MenuItem
         icon={BsHouseAddFill}
-        label='Create Package'
-        address='create-package'
+        label='Branch Booking'
+        address='branch-booking'
       />
 
-      {/* <MenuItem
-        icon={MdHomeWork}
-        label='My Listings'
-        address='my-listings'
-      /> */}
+      <MenuItem
+        icon={BsHouseAddFill}
+        label='Demo Package'
+        address='demo-pack'
+      />
 
       <MenuItem
         icon={MdOutlineManageHistory}

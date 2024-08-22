@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 import { Dialog, Listbox, Transition } from '@headlessui/react'
 import { BsCheckLg } from 'react-icons/bs'
 import { AiOutlineDown } from 'react-icons/ai'
-const actions = ['processing','pickup request','Rider pickup','in-transit','on the way to delivery half','on the way to delivery','Rider Assign','Ready For Delivery', 'delivered','canceled']
+const actions = ['processing','pickup request','Rider pickup','in-transit','on the way to delivery hub','on the way to delivery','Rider Assign','Ready For Delivery', 'delivered','canceled']
 
 const UpdateModal = ({ setIsOpen, isOpen, modalHandler,pack }) => {
   const [selected, setSelected] = useState(pack?.update)
