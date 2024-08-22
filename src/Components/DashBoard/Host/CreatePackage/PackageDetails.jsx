@@ -18,11 +18,12 @@ export const PackageDetails = ({ bookingInfo }) => (
                 </div>
                 <div className="company-details flex gap-5">
                     <div>
-                        <h3>Niyamat Express Limited</h3>
+                        <h3>Niyamat Express</h3>
                         <p>Chittagong Road, Narayanganj 1430</p>
                     </div>
-                    <div className='justify-end'>
+                    <div className='justify-end text-sm'>
                         <p>https://niyamatit.com/</p>
+                        <p>email:info@niyamatit.com</p>
                         <p>Hotline: 01852583209</p>
                     </div>
                 </div>
@@ -43,7 +44,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                         <strong>Booking Date: </strong>{bookingInfo?.booking}
                     </div>
                     <div>
-                        <p className='font-bold'>Destination: {bookingInfo?.destination}</p>
+                        <p className='font-bold'>Destination: {bookingInfo?.selectedArea}</p>
                     </div>
                 </div>
 
@@ -53,14 +54,14 @@ export const PackageDetails = ({ bookingInfo }) => (
             <div className="contact-details">
 
                 <div className="sender-details">
-                    <h2 className='text-bold'><strong>Sender: {bookingInfo?.senderName}</strong></h2>
+                    <h3 className='text-bold'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
                     <p><strong>Contact:{bookingInfo?.senderMobile} </strong></p>
-                    <p><strong>Address: </strong>{bookingInfo?.origin}</p>
+                    {/* <p><strong>Address: </strong>{bookingInfo?.origin}</p> */}
                 </div>
                 <div className="receiver-details">
-                    <h2 className='text-bold'><strong>Receiver:{bookingInfo?.recipientName}</strong></h2>
+                    <h3 className='text-bold'><strong>Receiver:{bookingInfo?.recipientName}</strong></h3>
                     <p><strong>Contact: {bookingInfo?.recipientMobile}</strong></p>
-                    <p><strong>Address: </strong>{bookingInfo?.destination}</p>
+                    <p><strong>Address: {bookingInfo?.selectedArea}</strong></p>
                 </div>
             </div>
 
@@ -85,7 +86,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                     {/* <strong>Booking Officer: </strong>SEL00063 */}
                 </div>
 
-                <div>
+                <div className='mt-5'>
                     condition+charge: {bookingInfo?.cod}
                 </div>
                 <div>
