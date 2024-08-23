@@ -1,52 +1,42 @@
-
 import { MdPrint } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { AiFillFileExcel } from "react-icons/ai";
-const MerchantDeliveries = () => {
- 
+import useAuth from "../../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import axiosSecure from "../../../../api/axiosSecure";
 
-  const deliveries = [
-    {
-      invoice: "240713GIQ9496",
-      date: "7/13/2024",
-      companyName: "Niyamat Express",
-      storeName: "Niyamat Express",
-      orderId: "M-0368",
-      serviceType: "Regular Delivery",
-      customer: {
-        name: "Anik Khan",
-        number: "01316187667",
-        district: "Narail",
-        area: "Narail Sadar",
-        address: "Barashula, Khanpara, Tematha Mor, Narail Sadar",
-      },
-      amount: {
-        cod: 0,
-        collected: 0,
-        deliveryCharge: 0,
-      },
+const MerchantDeliveries = () => {
+  const { user } = useAuth();
+  const { data: deliveries = [], isLoading } = useQuery({
+    queryKey: ["deliveries", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/parcel");
+      return res.data;
     },
-    {
-      invoice: "240713GIQ9496",
-      date: "7/05/2024",
-      companyName: "Express",
-      storeName: "Express",
-      orderId: "M-0368",
-      serviceType: "Regular",
-      customer: {
-        name: "Anik Khan",
-        number: "+8801316187667",
-        district: "Narail Sadar",
-        area: "Narail Sadar",
-        address: "Barashula, Khanpara, Tematha Mor, Narail Sadar",
-      },
-      amount: {
-        cod: 20,
-        collected: 10,
-        deliveryCharge: 30,
-      },
-    },
-  ];
+    enabled: !!user?.email,
+  });
+
+  
+  const getStatusClass = (status) => {
+    if (!status) {
+      return "text-gray-800 font-bold"; 
+    }
+  
+    switch (status.toLowerCase()) {
+      case "delivered":
+        return "text-green-600 font-bold";
+      case "ongoing":
+        return "text-yellow-600 font-bold";
+      case "pending":
+        return "text-gray-600 font-bold";
+      case "cancelled":
+        return "text-red-600 font-bold";
+      default:
+        return "text-gray-800 font-bold"; 
+    }
+  };
+  
+  
 
   return (
     <div className="p-6 sm:p-8 bg-gray-100 min-h-screen">
@@ -55,47 +45,7 @@ const MerchantDeliveries = () => {
       </h1>
       <div className="bg-white p-6 shadow-xl rounded-lg">
         <div className="flex flex-col sm:flex-row justify-between mb-6 space-y-4 sm:space-y-0">
-           {/* <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-            <button
-              className={`px-4 py-1 rounded-full font-semibold ${
-                status === "all" ? "bg-blue-600 text-white" : "bg-gray-300"
-              }`}
-              onClick={() => setStatus("all")}
-            >
-              All
-            </button>
-
-            <button
-              className={`px-4 py-1 rounded-full font-semibold ${
-                status === "active" ? "bg-blue-600 text-white" : "bg-gray-300"
-              }`}
-              onClick={() => setStatus("active")}
-            >
-              Active
-            </button>
-
-            <button
-              className={`px-4 py-1 rounded-full font-semibold ${
-                status === "delivered"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-300"
-              }`}
-              onClick={() => setStatus("delivered")}
-            >
-              Delivered
-            </button>
-
-            <button
-              className={`px-4 py-1 rounded-full font-semibold ${
-                status === "returned" ? "bg-blue-600 text-white" : "bg-gray-300"
-              }`}
-              onClick={() => setStatus("returned")}
-            >
-              Returned
-            </button>
-          </div> */}
-            
-          <div className="flex items-center space-x-5  md:space-x-10 lg:space-x-10 text-center">
+          <div className="flex items-center space-x-5 md:space-x-10 lg:space-x-10 text-center">
             <div>
               <p className="font-semibold text-sm">Excel</p>
               <button className="border p-1 border-blue-400 rounded-[3px]">
@@ -105,7 +55,7 @@ const MerchantDeliveries = () => {
             <div>
               <p className="font-semibold text-sm">Print</p>
               <button className="border p-1 border-blue-400 rounded-[3px]">
-                <MdPrint className="text-[23px]  text-blue-500" />
+                <MdPrint className="text-[23px] text-blue-500" />
               </button>
             </div>
             <input
@@ -123,76 +73,51 @@ const MerchantDeliveries = () => {
                   SL
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  INVOICE
+                  Customer
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  PARCEL
+                  Address
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  CUSTOMER
+                  Parcel Details
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  AMOUNT
+                  Amount
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  DELIVERY STATUS
+                  Delivery Status
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  PRINT
+                  Print
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  ACTIONS
+                  Actions
                 </th>
               </tr>
             </thead>
             <tbody>
               {deliveries.map((delivery, index) => (
                 <tr key={index} className="border-b last:border-0">
+                  <td className="py-4 px-6 text-base text-gray-700">{index + 1}</td>
                   <td className="py-4 px-6 text-base text-gray-700">
-                    {index + 1}
-                  </td>
-                  <td className="py-4 px-6 text-base text-gray-700">
-                    {delivery.invoice}
-                  </td>
-                  <td className="py-4 px-6 text-sm text-gray-700">
-                    <div className="bg-green-100 mr-2 text-green-800 px-3 py-1 rounded-full inline-block">
-                      Pickup Request
-                    </div>
-                    <div className="mt-1 ml-2 text-gray-500">
-                      {delivery.date}
-                    </div>
-                  </td>
-                  <td className="py-4 px-8 text-base text-gray-700">
-                    <div>
-                      <strong>Name:</strong> {delivery.customer.name}
-                    </div>
-                    <div>
-                      <strong>Number:</strong> {delivery.customer.number}
-                    </div>
-                    <div>
-                      <strong>District:</strong> {delivery.customer.district}
-                    </div>
-                    <div>
-                      <strong>Area:</strong> {delivery.customer.area}
-                    </div>
-                    <div>
-                      <strong>Address:</strong> {delivery.customer.address}
-                    </div>
+                    {delivery.Customer_Name}
                   </td>
                   <td className="py-4 px-6 text-base text-gray-700">
-                    <div>
-                      <strong>COD:</strong> {delivery.amount.cod}
-                    </div>
-                    <div>
-                      <strong>Collected:</strong> {delivery.amount.collected}
-                    </div>
-                    <div>
-                      <strong>Delivery Charge:</strong>{" "}
-                      {delivery.amount.deliveryCharge}
-                    </div>
+                    <div>{delivery.Customer_Address}</div>
+                    <div>{delivery.Customer_District_Name}</div>
+                    <div>{delivery.Customer_Area}</div>
                   </td>
-                  <td className="py-4 px-10 text-base text-gray-700">
-                    Pending
+                  <td className="py-4 px-6 text-base text-gray-700">
+                    <div><strong>Type:</strong> {delivery.Item_Type}</div>
+                    <div><strong>Weight:</strong> {delivery.Parcel_Weight}kg</div>
+                    <div><strong>Service:</strong> {delivery.Service_Type}</div>
+                  </td>
+                  <td className="py-4 px-6 text-base text-gray-700">
+                    <div><strong>Total:</strong> {delivery.Total_Collection_Amount} ট</div>
+                    <div><strong>Delivery Charge:</strong> {delivery.Delivary_Charge} ট</div>
+                  </td>
+                  <td className={`py-4 px-6 text-base text-gray-700 ${getStatusClass(delivery.deliveryStatus)}`}>
+                    {delivery.deliveryStatus || "Pending"}
                   </td>
                   <td className="py-4 px-6 text-base text-gray-700">
                     <button className="px-4 py-2">
