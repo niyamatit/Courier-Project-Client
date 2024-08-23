@@ -1,20 +1,37 @@
 import { MdPrint } from "react-icons/md";
-import { FaEye } from "react-icons/fa";
 import { AiFillFileExcel } from "react-icons/ai";
 import useAuth from "../../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
+import ReactToPrint from 'react-to-print';
+import PrintComponent from './PrintableDeliveries';
+import { useRef, useState } from "react";
 
 const MerchantDeliveries = () => {
   const { user } = useAuth();
+  const componentRef = useRef();
+  const [searchQuery, setSearchQuery] = useState({
+    customer: '',
+    invoice: ''
+  });
+
   const { data: deliveries = [], isLoading } = useQuery({
-    queryKey: ["deliveries", user?.email],
+    queryKey: ["deliveries", user?.email, searchQuery],
     queryFn: async () => {
-      const res = await axiosSecure.get("/parcel");
+      const params = new URLSearchParams();
+      if (searchQuery.customer) {
+        params.append("customer", searchQuery.customer);
+      }
+      if (searchQuery.invoice) {
+        params.append("invoice", searchQuery.invoice);
+      }
+      const res = await axiosSecure.get(`/parcel?${params.toString()}`);
       return res.data;
     },
     enabled: !!user?.email,
   });
+
+  const printRef = useRef();
 
   const printRow = (id) => {
     const row = document.getElementById(id).outerHTML;
@@ -36,7 +53,6 @@ const MerchantDeliveries = () => {
     printWindow.document.close();
     printWindow.print();
   };
-   
 
   const getStatusClass = (status) => {
     if (!status) {
@@ -56,6 +72,14 @@ const MerchantDeliveries = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    const { name, value } = e.target;
+    setSearchQuery((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="p-6 sm:p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-gray-800">
@@ -72,18 +96,34 @@ const MerchantDeliveries = () => {
             </div>
             <div>
               <p className="font-semibold text-sm">Print</p>
-              <button className="border p-1 border-blue-400 rounded-[3px]">
-                <MdPrint className="text-[23px] text-blue-500" />
-              </button>
+              <ReactToPrint
+                trigger={() => (
+                  <button className="border p-1 border-blue-400 rounded-[3px]">
+                    <MdPrint className="text-[23px] text-blue-500" />
+                  </button>
+                )}
+                content={() => componentRef.current}
+              />
             </div>
             <input
               type="text"
+              name="customer"
+              value={searchQuery.customer}
+              onChange={handleSearchChange}
               className="border w-3/4 md:w-full lg:w-full rounded-full p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Search..."
+              placeholder="Search by Customer..."
             />
+            {/* <input
+              type="text"
+              name="invoice"
+              value={searchQuery.invoice}
+              onChange={handleSearchChange}
+              className="border w-3/4 md:w-full lg:w-full rounded-full p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Search by Invoice..."
+            /> */}
           </div>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" ref={componentRef}>
           <table className="min-w-full bg-white">
             <thead className="bg-blue-600">
               <tr>
@@ -110,9 +150,6 @@ const MerchantDeliveries = () => {
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
                   Print
-                </th>
-                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
-                  Actions
                 </th>
               </tr>
             </thead>
@@ -146,11 +183,6 @@ const MerchantDeliveries = () => {
                   <td className="py-4 px-6 text-base text-gray-700">
                     <button className="px-4 py-2" onClick={() => printRow(`row-${delivery._id}`)}>
                       <MdPrint className="text-2xl text-blue-500" />
-                    </button>
-                  </td>
-                  <td className="py-4 px-6 text-base text-gray-700">
-                    <button className="px-4 py-2">
-                      <FaEye className="text-2xl text-blue-500" />
                     </button>
                   </td>
                 </tr>
