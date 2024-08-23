@@ -1,14 +1,17 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
-import { CitySelect, CountrySelect, StateSelect } from "react-country-state-city";
+import {
+  CitySelect,
+  CountrySelect,
+  StateSelect,
+} from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 const MerchantInterNationalAddParcel = () => {
-  
   const [WeightPackage, setWeightPackage] = useState("");
- 
+
   const [ServiceType, setServiceType] = useState("");
   const [ItemType, setItemType] = useState("");
   const [store, setStore] = useState("");
@@ -25,11 +28,9 @@ const MerchantInterNationalAddParcel = () => {
 
   // All District Name
 
- 
-
   const onSubmit = async (data) => {
     const formData = { ...data };
-    console.log("FormData:,",formData)
+    console.log("FormData:,", formData);
     const PercelInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
       Customer_Name: formData?.customerName || "",
@@ -53,8 +54,8 @@ const MerchantInterNationalAddParcel = () => {
       Cod_Charge: 0 || "",
       Delivary_Charge: 70 || "",
       Total_Charge: 100 || "",
-      Date: new Date().toISOString().split('T')[0],
-      International_Parcel:"International"
+      Date: new Date().toISOString().split("T")[0],
+      International_Parcel: "International",
     };
     console.log("Parcel Information:", PercelInformation);
 
@@ -151,58 +152,64 @@ const MerchantInterNationalAddParcel = () => {
                   </div>
                   {/* Country Code */}
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-        Country*
-      </label>
-      <CountrySelect
-        onChange={(value) => {
-          setCountryId(value?.id);
-          setValue('country', value);
-        }}
-        className={`select select-bordered w-full p-2 rounded-lg border ${
-          errors.country ? 'border-red-500' : 'border-gray-300'
-        }`}
-        placeHolder="Select Country"
-      />
-      {errors.country && (
-        <span className="text-red-500">This field is required</span>
-      )}
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Country*
+                    </label>
+                    <CountrySelect
+                      onChange={(value) => {
+                        setCountryId(value?.id);
+                        setValue("country", value);
+                      }}
+                      className={`select select-bordered w-full p-2 rounded-lg border ${
+                        errors.country ? "border-red-500" : "border-gray-300 focus:outline-none ring-2 focus:ring-blue-400"
+                      }`}
+                      placeHolder="Select Country"
+                    />
+                    {errors.country && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-        State*
-      </label>
-      <StateSelect
-        countryid={countryId}
-        onChange={(value) => {
-          setStateId(value?.id);
-          setValue('state', value);
-        }}
-        className={`select select-bordered w-full p-2 rounded-lg border ${
-          errors.state ? 'border-red-500' : 'border-gray-300'
-        }`}
-        placeHolder="Select State"
-      />
-      {errors.state && (
-        <span className="text-red-500">This field is required</span>
-      )}
+                    <label className="block text-gray-700 font-medium mb-1">
+                      State*
+                    </label>
+                    <StateSelect
+                      countryid={countryId}
+                      onChange={(value) => {
+                        setStateId(value?.id);
+                        setValue("state", value);
+                      }}
+                      className={`select select-bordered w-full p-2 rounded-lg border ${
+                        errors.state ? "border-red-500" : "border-gray-300"
+                      }`}
+                      placeHolder="Select State"
+                    />
+                    {errors.state && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   <div className="col-span-2">
-                  <label className="block text-gray-700 font-medium mb-1">
-        City*
-      </label>
-      <CitySelect
-        countryid={countryId}
-        stateid={stateId}
-        onChange={(value) => {
-          setValue('city', value);
-        }}
-        className="select select-bordered w-full p-2 rounded-lg border-gray-300"
-        placeHolder="Select City"
-      />
-      {errors.city && (
-        <span className="text-red-500">This field is required</span>
-      )}
+                    <label className="block text-gray-700 font-medium mb-1">
+                      City*
+                    </label>
+                    <CitySelect
+                      countryid={countryId}
+                      stateid={stateId}
+                      onChange={(value) => {
+                        setValue("city", value);
+                      }}
+                      className="select select-bordered w-full p-2 rounded-lg border-gray-300"
+                      placeHolder="Select City"
+                    />
+                    {errors.city && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -310,9 +317,8 @@ const MerchantInterNationalAddParcel = () => {
                       }`}
                       onChange={(e) => setServiceType(e.target.value)}
                     >
-                       <option value="">Select Service</option>
+                      <option value="">Select Service</option>
                       <option value="Regular Delivery">Regular Delivery</option>
-                      
                     </select>
                     {errors.serviceType && (
                       <span className="text-red-500">
@@ -445,18 +451,13 @@ const MerchantInterNationalAddParcel = () => {
             <button
               type="button"
               onClick={() => {
-
                 reset();
-                setCountryId(null); 
-                setStateId(null);    
-                setValue('country', null); 
-                setValue('state', null);  
-                setValue('city', null); 
-              }
-                
-             
-
-              }
+                setCountryId(null);
+                setStateId(null);
+                setValue("country", null);
+                setValue("state", null);
+                setValue("city", null);
+              }}
               className="btn  bg-gray-500 text-white py-2 px-4 rounded-lg"
             >
               Reset

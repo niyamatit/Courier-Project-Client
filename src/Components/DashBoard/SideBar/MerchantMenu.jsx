@@ -15,7 +15,7 @@ const MerchantMenu = () => {
       />
       <MenuItem
         icon={ MdAddBox }
-        label='Add Parcel'
+        label='Add Parcel(National)'
         address='/dashboard/MerchantAddPercel'
       />
       <MenuItem
@@ -37,7 +37,7 @@ const MerchantMenu = () => {
       />
       <MenuItem
         icon={FaBox}
-        label='International Add Parcel'
+        label='Add Parcel(International)'
         address='/dashboard/MerchantInterNationalAddPercel'
       />
 

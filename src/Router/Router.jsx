@@ -33,6 +33,7 @@ import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPerce
 import MerchantDeliveries from "../Components/DashBoard/Merchant/MerchantDeliveries/MerchantDeliveries";
 import MerchantInvoices from "../Components/DashBoard/Merchant/MerchantInvoices/MerchantInvoices";
 import MerchantInterNationalAddParcel from "../Components/DashBoard/Merchant/MerchantInterNationalAddParcel/MerchantInterNationalAddParcel";
+import Apply from "../Components/Pages/Home/Apply/Apply";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
             {
                 path: "/online-booking",
                 element: <PrivateRoute><OnlineBookings /></PrivateRoute>
+            },
+            {
+                path: "/apply",
+                element: <PrivateRoute><Apply/></PrivateRoute>
             },
 
 
