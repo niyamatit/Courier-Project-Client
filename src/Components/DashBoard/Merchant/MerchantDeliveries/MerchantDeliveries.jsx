@@ -16,12 +16,32 @@ const MerchantDeliveries = () => {
     enabled: !!user?.email,
   });
 
-  
+  const printRow = (id) => {
+    const row = document.getElementById(id).outerHTML;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Print</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            table { width: 100%; border-collapse: collapse; }
+            td, th { border: 1px solid #ddd; padding: 8px; }
+            th { background-color: #f2f2f2; }
+          </style>
+        </head>
+        <body>${row}</body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+  };
+   
+
   const getStatusClass = (status) => {
     if (!status) {
       return "text-gray-800 font-bold"; 
     }
-  
     switch (status.toLowerCase()) {
       case "delivered":
         return "text-green-600 font-bold";
@@ -35,8 +55,6 @@ const MerchantDeliveries = () => {
         return "text-gray-800 font-bold"; 
     }
   };
-  
-  
 
   return (
     <div className="p-6 sm:p-8 bg-gray-100 min-h-screen">
@@ -73,6 +91,9 @@ const MerchantDeliveries = () => {
                   SL
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
+                  Invoice
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-white">
                   Customer
                 </th>
                 <th className="py-3 px-6 text-left text-sm font-semibold text-white">
@@ -97,8 +118,11 @@ const MerchantDeliveries = () => {
             </thead>
             <tbody>
               {deliveries.map((delivery, index) => (
-                <tr key={index} className="border-b last:border-0">
+                <tr key={delivery._id} id={`row-${delivery._id}`} className="border-b last:border-0">
                   <td className="py-4 px-6 text-base text-gray-700">{index + 1}</td>
+                  <td className="py-4 px-6 text-base text-gray-700">
+                    {delivery._id.slice(-6)}
+                  </td>
                   <td className="py-4 px-6 text-base text-gray-700">
                     {delivery.Customer_Name}
                   </td>
@@ -120,7 +144,7 @@ const MerchantDeliveries = () => {
                     {delivery.deliveryStatus || "Pending"}
                   </td>
                   <td className="py-4 px-6 text-base text-gray-700">
-                    <button className="px-4 py-2">
+                    <button className="px-4 py-2" onClick={() => printRow(`row-${delivery._id}`)}>
                       <MdPrint className="text-2xl text-blue-500" />
                     </button>
                   </td>
