@@ -5,6 +5,7 @@ import { FaBox } from 'react-icons/fa';
 import { IoHomeOutline } from "react-icons/io5";
 import { FaTruck } from 'react-icons/fa';
 import { FaFileInvoice } from 'react-icons/fa';
+import { MdStore } from 'react-icons/md';
 const MerchantMenu = () => {
     return (
         <>
@@ -39,6 +40,11 @@ const MerchantMenu = () => {
         icon={FaBox}
         label='Add Parcel(International)'
         address='/dashboard/MerchantInterNationalAddPercel'
+      />
+      <MenuItem
+        icon={MdStore}
+        label='Shop List'
+        address='/dashboard/MerchantShopList'
       />
 
       {/* <MenuItem

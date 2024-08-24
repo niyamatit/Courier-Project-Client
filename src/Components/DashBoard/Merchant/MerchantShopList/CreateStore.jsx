@@ -6,11 +6,13 @@ import Swal from "sweetalert2";
 import { imageUpload } from "../../../../api/utils";
 import useAuth from "../../../../hooks/useAuth";
 
-const Apply = () => {
+
+const CreateStore = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [apply,setApply] = useState("")
   const [filteredAreas, setFilteredAreas] = useState([]);
   const {user} = useAuth();
+  console.log("User:",user)
   
 
   const {
@@ -616,62 +618,47 @@ const Areas =[
   const onSubmit = async (data) => {
     const districtName = getDistrictName(data.district);
     const formData = { ...data, district: districtName };
-    const yourImage = await imageUpload(data.yourImage[0]);
-    const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
-    const nidBackImage = await imageUpload(data.nidBackImage[0]);
-    const TradeLicense  = await imageUpload(data.TradeLicense[0])
+   
     
-    const ApplyInformation = {
-      Customer_Contact_Number: formData?.contactNumber || "",
-      Customer_Name:formData?.YourName || "",
+    const StoreInformation = {
+      Store_Contact_Number: formData?.contactNumber || "",
+      Store_Name:formData?.StoreName || "",
       Customer_Email:user?.email || "",
-      Customer_Father_Name:formData?.FatherName || "",
-      Customer_Mother_Name:formData?.MotherName || "",
-      Customer_Current_Address:formData?.YourCurrentAddress || "",
-      Customer_Permanant_Address:formData?.YourParmanentAddress || "",
-      Customer_Date_Of_Birth:formData?.date_of_birth || "",
-      Customer_Married_Status:formData?.married_status || "",
+      Customer_Name:user?.displayName || "",
+      
+      Store_Address:formData?.YourCurrentAddress || "",
+     
       Customer_District_Name: formData?.district || "",
       Customer_Area: formData?.area || "",
-      Customer_Apply_For: formData?.apply || "",
-      Company_Name: formData?.CompanyName || "",
-      TIN_BIN: formData?.TinBin || "",
-      Reference: formData?.Reference || "",
-      Business_Address: formData?.BusinessAddress || "",
-      Customer_Image: yourImage?.data?.display_url || "",
-      NID_Front_Image: nidFrontImage?.data?.display_url || "",
-      NID_Back_Image: nidBackImage?.data?.display_url || "",
-      TradeLicense_Image: TradeLicense?.data?.display_url || "",
-      Role: "Pending",
       
       
       Date: new Date().toISOString().split('T')[0] || "2024-08-15"
       
  }
-   console.log("Parcel Information:",ApplyInformation)
+   console.log("Store Information:",StoreInformation)
 
-   const ApplyCustomerInfo = await axiosSecure.post("/apply", ApplyInformation);
-   console.log(ApplyCustomerInfo.data); 
+//    const ApplyCustomerInfo = await axiosSecure.post("/apply", ApplyInformation);
+//    console.log(ApplyCustomerInfo.data); 
    
-   if (ApplyCustomerInfo.data.insertedId) {
-     Swal.fire({
-       position: "top-end",
-       icon: "success",
-       title: "Parcel Added Successfully",
-       showConfirmButton: false,
-       timer: 1500,
-     });
-   } else {
-     console.log("Debugging Else Block:", ApplyCustomerInfo.data);
-     Swal.fire({
-       position: "top-end",
-       icon: "error",
-       title: "Already Applied",
-       showConfirmButton: false,
-       timer: 1500,
-     });
-   }
-   console.log(formData);
+//    if (ApplyCustomerInfo.data.insertedId) {
+//      Swal.fire({
+//        position: "top-end",
+//        icon: "success",
+//        title: "Parcel Added Successfully",
+//        showConfirmButton: false,
+//        timer: 1500,
+//      });
+//    } else {
+//      console.log("Debugging Else Block:", ApplyCustomerInfo.data);
+//      Swal.fire({
+//        position: "top-end",
+//        icon: "error",
+//        title: "Already Applied",
+//        showConfirmButton: false,
+//        timer: 1500,
+//      });
+//    }
+   
    
 
   };
@@ -680,35 +667,35 @@ const Areas =[
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
   <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
     <h1 className="text-2xl sm:text-3xl md:text-3xl font-bold mb-4 sm:mb-6 md:mb-6 text-center text-blue-700">
-      Apply System
+      Create Store
     </h1>
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 md:space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 lg:gap-6">
         <div className="col-span-2 space-y-4 sm:space-y-6 md:space-y-6">
           <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
             <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
-              Your Personal Information
+              New Store Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
               
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Name*
+                  Store Name*
                 </label>
                 <input
                   type="text"
-                  {...register('YourName', { required: true })}
+                  {...register('StoreName', { required: true })}
                   className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.YourName ? 'border-red-500' : 'border-gray-300'
+                    errors.StoreName ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
-                {errors.YourName && (
+                {errors.StoreName && (
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Contact Number*
+                  Contact Number*
                 </label>
                 <input
                   type="text"
@@ -721,76 +708,12 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              {/* Father and Mother Name */}
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Your Father Name*
-                </label>
-                <input
-                  type="text"
-                  {...register('FatherName', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.FatherName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.FatherName && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Your Mother Name*
-                </label>
-                <input
-                  type="text"
-                  {...register('MotherName', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.MotherName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.MotherName && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Your Date of Birth*
-                </label>
-                <input
-                  type="date"
-                  {...register('date_of_birth', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.date_of_birth ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.date_of_birth && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Your Married Status*
-                </label>
-                 <select
-                  {...register('married_status', { required: true })}
-                  className={`select select-bordered w-full p-2 rounded-lg border ${
-                    errors.married_status ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  
-                >
-                  <option value="">Married Status</option>
-                  <option value="Married">Married</option>
-                  <option value="Unmarried">Unmarried</option>
-                  
-                </select>
-                {errors.married_status && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
+              
+             
               {/* Current Address */}
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Current  Address*
+                  Your Store  Address*
                 </label>
                 <input
                   type="text"
@@ -805,16 +728,16 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Parmanent  Address*
+                 Email*
                 </label>
                 <input
-                  type="text"
-                  {...register('YourParmanentAddress', { required: true })}
+                  type="text" placeholder={user?.email} readOnly
+                  {...register('email')}
                   className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.YourParmanentAddress ? 'border-red-500' : 'border-gray-300'
+                    errors.email ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
-                {errors.YourParmanentAddress && (
+                {errors.email && (
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
@@ -863,171 +786,11 @@ const Areas =[
               </div>
             </div>
              {/* Your Image */}
-             <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Your Image*
-                  </label>
-                  <input
-                    type="file"
-                    {...register("yourImage", { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${
-                      errors.yourImage ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.yourImage && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
-            <div className="col-span-2">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    NID Front Image*
-                  </label>
-                  <input
-                    type="file"
-                    {...register("nidFrontImage", { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${
-                      errors.nidFrontImage ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.nidFrontImage && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
-                {/* NID Back Image */}
-                <div className="col-span-2">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    NID Back Image*
-                  </label>
-                  <input required
-                    type="file"
-                    {...register("nidBackImage", { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${
-                      errors.nidBackImage ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.nidBackImage && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
+             
           </div>
 
           {/* Parcel Area */}
-          <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
-              Business Information
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                Your Company Name*
-                </label>
-               
-                <input
-                  type="text"
-                  {...register('CompanyName', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.CompanyName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.CompanyName && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Your Business Address*
-                </label>
-                <input
-                  type="text"
-                  {...register('BusinessAddress', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.BusinessAddress ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.BusinessAddress && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              
-              <div className="col-span-2">
-                <label className="block text-gray-700 font-medium mb-1">
-                  TIN/BIN (Optional)
-                </label>
-                <input
-                  type="text"
-                  {...register('TinBin')}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.TinBin ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.TinBin && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Email*
-                </label>
-                <input placeholder={user?.email} readOnly
-                  type="text"
-                  {...register('email')}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.TinBin ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.email && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-                  Trade License Image*
-                  </label>
-                  <input
-                    type="file"
-                    {...register("TradeLicense", { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${
-                      errors.TradeLicense ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.TradeLicense && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
-                <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Apply For*
-                </label>
-                 <select
-                  {...register('apply', { required: true })}
-                  className={`select select-bordered w-full p-2 rounded-lg border ${
-                    errors.apply ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  onChange={(e) => setApply(e.target.value)}
-                >
-                  <option value="">Apply For*</option>
-                  <option value="Agent">Agent</option>
-                  <option value="Sub Agent">Sub Agent</option>
-                  <option value="Merchant">Merchant</option>
-                  <option value="Rider">Rider</option>
-                  <option value="Company Login">Company Login</option>
-                  
-                </select>
-                {errors.apply && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Reference(Optional)
-                </label>
-                <textarea
-                  {...register('Reference')}
-                  className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
-                />
-              </div>
-            </div>
-          </div>
+          
         </div>
 
         
@@ -1038,7 +801,7 @@ const Areas =[
           type="submit"
           className="btn w-full hover:bg-blue-600 bg-blue-500 text-white py-2 px-4 rounded-lg"
         >
-         Apply For {apply}
+         Create Store
         </button>
       
     </form>
@@ -1050,4 +813,4 @@ const Areas =[
   );
 };
 
-export default Apply;
+export default CreateStore;

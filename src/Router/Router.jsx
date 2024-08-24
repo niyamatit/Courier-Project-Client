@@ -34,6 +34,8 @@ import MerchantDeliveries from "../Components/DashBoard/Merchant/MerchantDeliver
 import MerchantInvoices from "../Components/DashBoard/Merchant/MerchantInvoices/MerchantInvoices";
 import MerchantInterNationalAddParcel from "../Components/DashBoard/Merchant/MerchantInterNationalAddParcel/MerchantInterNationalAddParcel";
 import Apply from "../Components/Pages/Home/Apply/Apply";
+import MerchantShopList from "../Components/DashBoard/Merchant/MerchantShopList/MerchantShopList";
+import CreateStore from "../Components/DashBoard/Merchant/MerchantShopList/CreateStore";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -169,6 +171,14 @@ export const router = createBrowserRouter([
             {
                path:"MerchantInvoices",
                element:<MerchantInvoices/>
+            },
+            {
+               path:"MerchantShopList",
+               element:<MerchantShopList/>
+            },
+            {
+               path:"CreateStore",
+               element:<CreateStore/>
             },
             
             {
