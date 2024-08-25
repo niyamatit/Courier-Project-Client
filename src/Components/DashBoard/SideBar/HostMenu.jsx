@@ -1,12 +1,20 @@
 import { BsHouseAddFill } from "react-icons/bs";
 import MenuItem from "./MenuItem";
 import { IoHome } from "react-icons/io5";
-import {  MdOutlineManageHistory } from "react-icons/md";
+import { MdOutlineManageHistory } from "react-icons/md";
+import { FaBiking } from "react-icons/fa";
+import { FaList } from "react-icons/fa6";
+
 
 
 const HostMenu = () => {
+
+
+
   return (
     <>
+      
+
       <MenuItem
         icon={IoHome}
         label='Dashboard'
@@ -15,26 +23,38 @@ const HostMenu = () => {
 
       <MenuItem
         icon={BsHouseAddFill}
-        label='Create Package'
-        address='create-package'
+        label='Branch Booking'
+        address='branch-booking'
       />
 
-      {/* <MenuItem
-        icon={MdHomeWork}
-        label='My Listings'
-        address='my-listings'
-      /> */}
+      <MenuItem
+        icon={BsHouseAddFill}
+        label='International Booking'
+        address='demo-pack'
+      />
 
       <MenuItem
         icon={MdOutlineManageHistory}
-        label='Delivery Schedule'
+        label='All Parcel List Offline'
         address='delivery-scheduling'
       />
 
       <MenuItem
-        icon={MdOutlineManageHistory}
-        label='Online Schedule'
+        icon={FaList}
+        label='All Parcel List Online'
         address='online-scheduling'
+      />
+
+      <MenuItem
+        icon={FaBiking}
+        label='Rider List'
+        address='rider-list'
+      />
+
+      <MenuItem
+        icon={MdOutlineManageHistory}
+        label='Merchant List'
+        address='merchant-list'
       />
     </>
   );

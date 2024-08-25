@@ -36,6 +36,9 @@ import MerchantInterNationalAddParcel from "../Components/DashBoard/Merchant/Mer
 import Apply from "../Components/Pages/Home/Apply/Apply";
 import MerchantShopList from "../Components/DashBoard/Merchant/MerchantShopList/MerchantShopList";
 import CreateStore from "../Components/DashBoard/Merchant/MerchantShopList/CreateStore";
+import DemoPackage from "../Components/DashBoard/Host/CreatePackage/DemoPackage";
+import RiderList from "../Components/DashBoard/Host/RiderList/RiderList";
+import MerchantList from "../Components/DashBoard/Host/MerchantList/MerchantList";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -103,10 +106,35 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><Profile /></PrivateRoute>
             },
             {
-                path: "create-package",
+                path: "branch-booking",
                 element: <PrivateRoute>
                     <HostRoute>
                         <CreatePackage />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            
+            {
+                path: "demo-pack",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <DemoPackage/>
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "rider-list",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <RiderList/>
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "merchant-list",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <MerchantList/>
                     </HostRoute>
                 </PrivateRoute>
             },

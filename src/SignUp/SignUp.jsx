@@ -53,6 +53,7 @@ const SignUp = () => {
     
       //2. User Registration
       const result = await signInWithGoogle()
+      
 
       //4. save user data in database
       const dbResponse = await saveUser(result?.user)
