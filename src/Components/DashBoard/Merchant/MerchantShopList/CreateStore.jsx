@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
-import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
-import { imageUpload } from "../../../../api/utils";
 import useAuth from "../../../../hooks/useAuth";
+import axiosSecure from "../../../../api/axiosSecure";
 
 
 const CreateStore = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [apply,setApply] = useState("")
   const [filteredAreas, setFilteredAreas] = useState([]);
   const {user} = useAuth();
-  console.log("User:",user)
-  
-
   const {
     register,
     handleSubmit,
@@ -616,51 +611,48 @@ const Areas =[
   };
 
   const onSubmit = async (data) => {
-    const districtName = getDistrictName(data.district);
-    const formData = { ...data, district: districtName };
-   
-    
-    const StoreInformation = {
-      Store_Contact_Number: formData?.contactNumber || "",
-      Store_Name:formData?.StoreName || "",
-      Customer_Email:user?.email || "",
-      Customer_Name:user?.displayName || "",
+    try {
+      const districtName = getDistrictName(data.district);
+      const formData = { ...data, district: districtName };
       
-      Store_Address:formData?.YourCurrentAddress || "",
-     
-      Customer_District_Name: formData?.district || "",
-      Customer_Area: formData?.area || "",
-      
-      
-      Date: new Date().toISOString().split('T')[0] || "2024-08-15"
-      
- }
-   console.log("Store Information:",StoreInformation)
-
-//    const ApplyCustomerInfo = await axiosSecure.post("/apply", ApplyInformation);
-//    console.log(ApplyCustomerInfo.data); 
-   
-//    if (ApplyCustomerInfo.data.insertedId) {
-//      Swal.fire({
-//        position: "top-end",
-//        icon: "success",
-//        title: "Parcel Added Successfully",
-//        showConfirmButton: false,
-//        timer: 1500,
-//      });
-//    } else {
-//      console.log("Debugging Else Block:", ApplyCustomerInfo.data);
-//      Swal.fire({
-//        position: "top-end",
-//        icon: "error",
-//        title: "Already Applied",
-//        showConfirmButton: false,
-//        timer: 1500,
-//      });
-//    }
-   
-   
-
+      const StoreInformation = {
+        Store_Contact_Number: formData?.contactNumber || "",
+        Store_Name: formData?.StoreName || "",
+        Customer_Email: user?.email || "",
+        Customer_Name: user?.displayName || "",
+        Store_Address: formData?.YourCurrentAddress || "",
+        Customer_District_Name: formData?.district || "",
+        Customer_Area: formData?.area || "",
+        Status: "Pending",
+        Date: new Date().toISOString().split('T')[0] || "2024-08-15"
+      };
+  
+      console.log("Store Information:", StoreInformation);
+  
+      const CustomerStoreInformation = await axiosSecure.post("/store", StoreInformation);
+      console.log("Store Info",CustomerStoreInformation.data);
+       
+      if (CustomerStoreInformation.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Store Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        throw new Error('Unexpected response');
+      }
+    } catch (error) {
+      console.log("Error in submission:", error.message);
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: error.response?.data.message || "Failed to add store",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
   
   return (

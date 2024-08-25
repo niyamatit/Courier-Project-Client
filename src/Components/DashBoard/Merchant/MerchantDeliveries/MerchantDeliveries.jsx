@@ -4,7 +4,7 @@ import useAuth from "../../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 import ReactToPrint from 'react-to-print';
-import PrintComponent from './PrintableDeliveries';
+
 import { useRef, useState } from "react";
 
 const MerchantDeliveries = () => {
@@ -15,7 +15,7 @@ const MerchantDeliveries = () => {
     invoice: ''
   });
 
-  const { data: deliveries = [], isLoading } = useQuery({
+  const { data: deliveries = [] } = useQuery({
     queryKey: ["deliveries", user?.email, searchQuery],
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -31,7 +31,7 @@ const MerchantDeliveries = () => {
     enabled: !!user?.email,
   });
 
-  const printRef = useRef();
+  
 
   const printRow = (id) => {
     const row = document.getElementById(id).outerHTML;
