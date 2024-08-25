@@ -1,36 +1,25 @@
-
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../../hooks/useAuth";
+import axiosSecure from "../../../../api/axiosSecure";
+import React from 'react';
 
 const MerchantInvoices = () => {
-  
-  const invoices = [
-    {
-      date: "7/8/2024",
-      paymentId: "MPAY-01873",
-      totalParcel: 34,
-      amountToBeCollect: 7940,
-      collected: 7940,
-      totalCharge: 3579.1,
-      paymentAmount: 436,
-      status: "Paid",
+  const { user } = useAuth();
+
+  const { data: InvoiceData = [], refetch } = useQuery({
+    queryKey: ["InvoiceData", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/parcel");
+      return res.data;
     },
-    {
-      date: "6/23/2024",
-      paymentId: "MPAY-01720",
-      totalParcel: 11,
-      amountToBeCollect: 80,
-      collected: 80,
-      totalCharge: 112,
-      paymentAmount: -104,
-      status: "Paid",
-    },
-  ];
+    enabled: !!user?.email,
+  });
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-semibold mb-4">All Invoices</h1>
       <div className="bg-white p-4 shadow rounded-lg">
         <div className="flex justify-between mb-4">
-         
           <div>
             <input
               type="text"
@@ -43,31 +32,31 @@ const MerchantInvoices = () => {
           <thead className="bg-blue-600">
             <tr>
               <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">DATE</th>
-              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white" >PAYMENT ID</th>
-              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white" >TOTAL PARCEL</th>
-              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white" >AMOUNT TO BE COLLECT</th>
-              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white" >COLLECTED</th>
-              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white" >TOTAL CHARGE</th>
-              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white" >PAYMENT AMOUNT</th>
-              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white" >STATUS</th>
-              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white" >ACTIONS</th>
+              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">PAYMENT ID</th>
+              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">TOTAL PARCEL</th>
+              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">AMOUNT TO BE COLLECT</th>
+              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">COLLECTED</th>
+              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">TOTAL CHARGE</th>
+              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">PAYMENT AMOUNT</th>
+              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">STATUS</th>
+              <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
-            {invoices.map((invoice, index) => (
+            {InvoiceData.map((invoice, index) => (
               <tr key={index}>
-                <td className="py-4 px-4   border-b">{invoice.date}</td>
-                <td className="py-4 px-4 border-b">{invoice.paymentId}</td>
-                <td className="py-4 px-8 border-b">{invoice.totalParcel}</td>
+                <td className="py-4 px-4 border-b">{invoice.Date}</td>
+                <td className="py-4 px-4 border-b">{invoice._id.slice(-6)}</td>
+                <td className="py-4 px-8 border-b">{invoice.Parcel_Weight} kg</td>
                 <td className="py-4 px-8 border-b">
-                  {invoice.amountToBeCollect}
+                  {invoice.Total_Collection_Amount}
                 </td>
-                <td className="py-4 px-8 border-b">{invoice.collected}</td>
-                <td className="py-4 px-8 border-b">{invoice.totalCharge}</td>
-                <td className="py-4 px-8 border-b">{invoice.paymentAmount}</td>
+                <td className="py-4 px-8 border-b">{invoice.Total_Collection_Amount}</td>
+                <td className="py-4 px-8 border-b">{invoice.Total_Charge}</td>
+                <td className="py-4 px-8 border-b">{invoice.Total_Collection_Amount - invoice.Total_Charge}</td>
                 <td className="py-4 px-6 border-b">
-                  <span className="bg-green-200 text-green-800 px-2 py-1 rounded">
-                    {invoice.status}
+                  <span className={`px-2 py-1 rounded ${invoice.deliveryStatus === "Delivered" ? "bg-green-200 text-green-800" : invoice.deliveryStatus === "Ongoing" ? "bg-yellow-200 text-yellow-800" : "bg-gray-200 text-gray-800"}`}>
+                    {invoice.deliveryStatus || "N/A"}
                   </span>
                 </td>
                 <td className="py-2 px-4 border-b">
