@@ -20,9 +20,9 @@ const MerchantInvoices = () => {
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-semibold mb-4">All Invoices</h1>
       <div className="bg-white p-4 shadow rounded-lg">
-        {isLoading ? ( // Display the loader when data is loading
+        {isLoading ? ( 
           <div className="flex justify-center items-center h-64">
-            <ClipLoader color={"#3498db"} loading={isLoading} size={50} /> {/* Loader customization */}
+            <ClipLoader color="blue" loading={isLoading} size={50} /> 
           </div>
         ) : (
           <>

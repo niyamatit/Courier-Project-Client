@@ -86,7 +86,7 @@ const MerchantDeliveries = () => {
       <div className="bg-white p-6 shadow-xl rounded-lg">
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <ClipLoader color={"#3498db"} loading={isLoading} size={50} />
+            <ClipLoader color="blue" loading={isLoading} size={50} />
           </div>
         ) : (
           <>

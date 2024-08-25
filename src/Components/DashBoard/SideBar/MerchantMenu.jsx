@@ -6,9 +6,15 @@ import { IoHomeOutline } from "react-icons/io5";
 import { FaTruck } from 'react-icons/fa';
 import { FaFileInvoice } from 'react-icons/fa';
 import { MdStore } from 'react-icons/md';
+import useAuth from "../../../hooks/useAuth";
 const MerchantMenu = () => {
+  const {user} = useAuth();
     return (
         <>
+        <div className="mb-10">
+        <p className="ml-5 -mt-5 font-semibold text-lg">{user?.displayName}</p>
+        <p className="text-sm  ml-7 font-semibold">({user?.email})</p>
+        </div>
       <MenuItem
         icon={ IoHomeOutline }
         label='Dashboard'
