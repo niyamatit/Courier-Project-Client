@@ -22,14 +22,17 @@ import AdminStatistics from "../Components/DashBoard/Admin/Statistics";
 import About from "../Components/Pages/Home/About/About";
 import PackageTracking from "../Components/Pages/Home/PackageTracking/PackageTracking";
 import OnlineTracking from "../Components/Pages/Home/OnlineBookedTracking/OnlineTracking";
+
+import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
+import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
 import RiderHome from "../Components/DashBoard/Rider/RiderHome";
 import PickupparcelList from "../Components/DashBoard/Rider/PickupparcelList";
 import DeliveryparcelList from "../Components/DashBoard/Rider/DeliveryparcelList";
 import DeliveryComplete from "../Components/DashBoard/Rider/DeliveryComplete";
 import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
 import HostDashboard from "../Components/DashBoard/Host/HostDashboard/HostDashboard";
-import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard/MerchantDashboard";
-import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
+
+
 import MerchantDeliveries from "../Components/DashBoard/Merchant/MerchantDeliveries/MerchantDeliveries";
 import MerchantInvoices from "../Components/DashBoard/Merchant/MerchantInvoices/MerchantInvoices";
 import MerchantInterNationalAddParcel from "../Components/DashBoard/Merchant/MerchantInterNationalAddParcel/MerchantInterNationalAddParcel";
