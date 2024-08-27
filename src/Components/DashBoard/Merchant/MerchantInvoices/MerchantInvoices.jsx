@@ -63,7 +63,7 @@ const MerchantInvoices = () => {
                     <td className="py-4 px-8 border-b">{invoice.Total_Collection_Amount - invoice.Total_Charge}</td>
                     <td className="py-4 px-6 border-b">
                       <span className={`px-2 py-1 rounded ${invoice.deliveryStatus === "Delivered" ? "bg-green-200 text-green-800" : invoice.deliveryStatus === "Ongoing" ? "bg-yellow-200 text-yellow-800" : "bg-gray-200 text-gray-800"}`}>
-                        {invoice.deliveryStatus || "N/A"}
+                        {invoice.deliveryStatus || "Pending"}
                       </span>
                     </td>
                     <td className="py-2 px-4 border-b">
@@ -75,7 +75,7 @@ const MerchantInvoices = () => {
                 ))}
               </tbody>
             </table>
-            <div className="flex justify-between mt-4">
+            {/* <div className="flex justify-between mt-4">
               <div>
                 <select className="border rounded p-2">
                   <option>Show 10</option>
@@ -88,7 +88,7 @@ const MerchantInvoices = () => {
                 <span className="px-4 py-2">Page 1 of 1</span>
                 <button className="px-4 py-2 bg-gray-300 rounded">Next</button>
               </div>
-            </div>
+            </div> */}
           </>
         )}
       </div>

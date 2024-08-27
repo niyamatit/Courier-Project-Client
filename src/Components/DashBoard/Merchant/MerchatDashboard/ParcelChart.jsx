@@ -6,10 +6,12 @@ const ParcelChart = ({ data }) => {
     const canvasRef = useRef(null);
 
     useEffect(() => {
-        let chartInstance = null;
+        if (chartRef.current) {
+            chartRef.current.destroy(); 
+        }
 
         if (canvasRef.current) {
-            chartInstance = new Chart(canvasRef.current, {
+            chartRef.current = new Chart(canvasRef.current, {
                 type: 'bar',
                 data: {
                     labels: data.labels,
@@ -33,18 +35,27 @@ const ParcelChart = ({ data }) => {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
                 },
             });
-
-            chartRef.current = chartInstance;
         }
 
+        // Cleanup the chart instance on component unmount
         return () => {
             if (chartRef.current) {
                 chartRef.current.destroy();
             }
         };
-    }, [data]);
+    }, [data]); // Ensure that this effect runs whenever `data` changes
 
     return (
         <div className="w-full h-[300px] sm:h-[400px] md:h-[500px]">
