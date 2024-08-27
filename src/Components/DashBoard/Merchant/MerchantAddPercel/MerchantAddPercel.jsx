@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
+import axiosSecure from "../../../../api/axiosSecure";
+import Swal from "sweetalert2";
 
 const MerchantAddParcel = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [WeightPackage,setWeightPackage] = useState("");
   const [filteredAreas, setFilteredAreas] = useState([]);
   const [ServiceType,setServiceType] = useState("");
-  const [ItemType,setItemType] = useState('')
+  const [ItemType,setItemType] = useState('');
+  const [store, setStore] = useState("");
+  
 
   const {
     register,
@@ -609,11 +613,50 @@ const Areas =[
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const districtName = getDistrictName(data.district);
     const formData = { ...data, district: districtName };
+    
+    const PercelInformation = {
+      Customer_Contact_Number: formData?.contactNumber || "",
+      Customer_Name:formData?.customerName || "",
+      Customer_Address:formData?.customerAddress || "",
+      Customer_District_Name: formData?.district || "",
+      Customer_Area: formData?.area || "",
+      Store_Name: formData?.store || "",
+      Merchant_Order_ID: formData?.orderId || "",
+      Parcel_Weight: parseFloat(formData?.weightPackage) || "",
+      Total_Collection_Amount: parseFloat(formData?.totalAmount) || "",
+      Service_Type: formData?.serviceType || "",
+      Item_Type: formData?.itemType || "",
+      Product_Value: parseFloat(formData?.productValue) || "",
+      Product_Details: formData?.productDetails || "",
+      Product_Remark: formData?.remark || "",
+      Cod_Perchent: 0 || "",
+      Weight_Charge: 0 || "",
+      Cod_Charge: 0 || "",
+      Delivary_Charge: 70 || "",
+      Total_Charge: 100 || "",
+      Date: new Date().toISOString().split('T')[0] || "2024-08-15"
+      
+ }
+   console.log("Parcel Information:",PercelInformation)
+
+   const ParcelProductDetails = await axiosSecure.post("/Parcel",PercelInformation);
+   console.log(ParcelProductDetails.data);
+      if (ParcelProductDetails.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Parcel Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     console.log(formData);
+
   };
+  
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
   <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
@@ -725,7 +768,26 @@ const Areas =[
               Parcel Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+            <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block text-gray-700 font-medium mb-1">
+                Select Your Store*
+                </label>
+               
+                <select
+                  {...register('store', { required: true })}
+                  className={`select select-bordered w-full p-2 rounded-lg border ${
+                    errors.store ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  onChange={(e) => setStore(e.target.value)}
+                >
+                  <option value="">Select Your Store*</option>
+                  <option value="Niyamat Express">Niyamat Express</option>
+                </select>
+                {errors.store && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Merchant Order ID*
                 </label>
@@ -820,7 +882,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-1 md:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Product Value*
                 </label>
@@ -835,7 +897,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-1 sm:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Product Details*
                 </label>
@@ -844,7 +906,7 @@ const Areas =[
                   className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
                 />
               </div>
-              <div className="col-span-1 sm:col-span-2">
+              <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Remark
                 </label>
@@ -862,6 +924,10 @@ const Areas =[
             Parcel Charge
           </h2>
           <div className="space-y-2 md:space-y-4">
+            <div className="flex justify-between">
+              <span className="text-gray-700">Store</span>
+              <span className="text-gray-500">{store || "Not Confirm"} </span>
+            </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Weight Package</span>
               <span className="text-gray-500">{WeightPackage || "Not Confirm"} kg</span>
@@ -905,13 +971,13 @@ const Areas =[
         <button
           type="button"
           onClick={() => reset()}
-          className="btn btn-secondary bg-red-500 text-white py-2 px-4 rounded-lg"
+          className="btn  bg-gray-500 text-white py-2 px-4 rounded-lg"
         >
           Reset
         </button>
         <button
           type="submit"
-          className="btn btn-primary bg-green-500 text-white py-2 px-4 rounded-lg"
+          className="btn hover:bg-blue-600 bg-blue-500 text-white py-2 px-4 rounded-lg"
         >
           Submit
         </button>

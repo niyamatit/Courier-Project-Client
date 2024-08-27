@@ -3,86 +3,98 @@
 import Barcode from 'react-barcode';
 import './CourierSlip.css';
 import { PiScissorsLight } from 'react-icons/pi';
+// import QRCode from 'react-qr-code';
+import logoImg from '../../../../assets/nexp-update.png'
 export const PackageDetails = ({ bookingInfo }) => (
+
+
     <>
 
         <div className="invoice-container">
+            <p className='text-sm'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
             <header className="header">
                 <div className="logo">
-                    <img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo.svg" alt="Niyamat Express Logo" />
+                    <img className='h-[30px] w-[50px]' src={logoImg} alt="Niyamat Express" />
                 </div>
                 <div className="company-details flex gap-5">
                     <div>
-                        <h1>Niyamat Express Limited</h1>
-                        <p>Waspur (Near to Bosila Bridge), Keraniganj, Dhaka-1312</p>
+                        <h3>Niyamat Express</h3>
+                        <p>Chittagong Road, Narayanganj 1430</p>
                     </div>
-                    <div>
-                        <p>www.Niyamatexpress.net</p>
-                        <p>Hotline: 09639-333888</p>
+                    <div className='justify-end text-sm'>
+                        <p>https://niyamatit.com/</p>
+                        <p>email:info@niyamatit.com</p>
+                        <p>Hotline: 01852583209</p>
                     </div>
                 </div>
             </header>
 
-            <div className="barcode-container flex justify-between">
-                <div>
-                    <Barcode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
-                    {/* <p>{bookingInfo?.packageTrackingNumber}</p> */}
-                </div>
+            <div className="booking-details ">
+                <div className='flex justify-around'>
+                    <div>
+                        <Barcode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
+                        {/* <p>{bookingInfo?.packageTrackingNumber}</p> */}
+                        {/* <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} /> */}
 
-                <div className="booking-details">
-                    <div className='flex'>
-                        <div>
-                            <strong>Booking: </strong>Rangpur
-                        </div>
-                        <div>
-                            <strong>Booking Date: </strong>03 Jul 24
-                        </div>
                     </div>
                     <div>
-                        <strong>Destination: </strong>Chittagong Road
+                        <strong>Booking: </strong>{bookingInfo?.origin}
+                    </div>
+                    <div>
+                        <strong>Booking Date: </strong>{bookingInfo?.booking}
+                    </div>
+                    <div>
+                        <p className='font-bold'>Destination: {bookingInfo?.selectedArea}</p>
                     </div>
                 </div>
+
             </div>
 
 
-
             <div className="contact-details">
+
                 <div className="sender-details">
-                    <h2>Sender: Name</h2>
-                    <p><strong>Contact: </strong>01883337565</p>
-                    <p><strong>Address: </strong>Rangpur</p>
+                    <h3 className='text-bold'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
+                    <p><strong>Contact:{bookingInfo?.senderMobile} </strong></p>
+                    {/* <p><strong>Address: </strong>{bookingInfo?.origin}</p> */}
                 </div>
                 <div className="receiver-details">
-                    <h2>Receiver:Name</h2>
-                    <p><strong>Contact: </strong>01737699786</p>
-                    <p><strong>Address: </strong>Chittagong Road</p>
+                    <h3 className='text-bold'><strong>Receiver:{bookingInfo?.recipientName}</strong></h3>
+                    <p><strong>Contact: {bookingInfo?.recipientMobile}</strong></p>
+                    <p><strong>Address: {bookingInfo?.selectedArea}</strong></p>
                 </div>
             </div>
 
             <div className="table">
-                <div className="table-row bg-black text-white">
+                <div className="table-row bg-blue-600 text-white">
                     <div className="table-cell">Qty</div>
                     <div className="table-cell">Details</div>
                     <div className="table-cell">Amount</div>
                 </div>
                 <div className="table-row">
-                    <div className="table-cell">3</div>
-                    <div className="table-cell">Mango 60KG 3L101</div>
-                    <div className="table-cell">540.00</div>
+                    <div className="table-cell">{bookingInfo?.qty}</div>
+                    <div className="table-cell">{bookingInfo?.productDetails}</div>
+                    <div className="table-cell">{bookingInfo?.amount}</div>
                 </div>
             </div>
 
             <div className="footer flex justify-around">
                 <div>
-                    <strong>In word: </strong>Five Hundred Forty Only
+                    <strong>In word: </strong>{bookingInfo?.wordAmount}
                 </div>
                 <div>
-                    <strong>Booking Officer: </strong>SEL00063</div>
-                <div>
-                    <strong>Date: </strong>04-Jul-24 12:09 AM
+                    {/* <strong>Booking Officer: </strong>SEL00063 */}
+                </div>
+
+                <div className='mt-5'>
+                    condition+charge: {bookingInfo?.cod}
                 </div>
                 <div>
-                    <strong>Cash - O/D</strong>
+                    {
+                        bookingInfo?.paymentOption === 'Cash'
+                            ? <strong>Cash - {bookingInfo?.deliveryOption}</strong>
+                            : <strong>Payment - {bookingInfo?.paymentOption}</strong>
+                    }
                 </div>
             </div>
         </div>

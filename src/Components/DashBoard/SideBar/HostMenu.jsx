@@ -1,33 +1,67 @@
 import { BsHouseAddFill } from "react-icons/bs";
 import MenuItem from "./MenuItem";
-import {  MdOutlineManageHistory } from "react-icons/md";
+import { IoHome } from "react-icons/io5";
+import { MdOutlineManageHistory } from "react-icons/md";
+import { FaBiking } from "react-icons/fa";
+import { FaList } from "react-icons/fa6";
+import useAuth from "../../../hooks/useAuth";
+
 
 
 const HostMenu = () => {
+
+const {user} = useAuth()
+
   return (
     <>
+      <p className="text-2xl text-center font-semibold text-secondary">{user?.displayName}</p>
+
       <MenuItem
-        icon={BsHouseAddFill}
-        label='Create Package'
-        address='create-package'
+        icon={IoHome}
+        label='Dashboard'
+        address='host-dashboard'
       />
 
-      {/* <MenuItem
-        icon={MdHomeWork}
-        label='My Listings'
-        address='my-listings'
-      /> */}
+      <MenuItem
+        icon={IoHome}
+        label='Pickup Parcel'
+        address='pickup-parcel'
+      />
+
+      <MenuItem
+        icon={BsHouseAddFill}
+        label='Branch Booking'
+        address='branch-booking'
+      />
+
+      <MenuItem
+        icon={BsHouseAddFill}
+        label='International Booking'
+        address='demo-pack'
+      />
 
       <MenuItem
         icon={MdOutlineManageHistory}
-        label='Delivery Schedule'
+        label='All Parcel List Offline'
         address='delivery-scheduling'
       />
 
       <MenuItem
-        icon={MdOutlineManageHistory}
-        label='Online Schedule'
+        icon={FaList}
+        label='All Parcel List Online'
         address='online-scheduling'
+      />
+
+      <MenuItem
+        icon={FaBiking}
+        label='Rider List'
+        address='rider-list'
+      />
+
+      <MenuItem
+        icon={MdOutlineManageHistory}
+        label='Merchant List'
+        address='merchant-list'
       />
     </>
   );

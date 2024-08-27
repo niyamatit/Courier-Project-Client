@@ -1,6 +1,7 @@
 
 import { NavLink } from "react-router-dom";
 import MenuDropdown from "./MenuDropDown";
+import logoImg from '../../assets/nexp-update.png'
 
 
 const Navbar = () => {
@@ -12,6 +13,7 @@ const Navbar = () => {
         <li><NavLink to="/contact">Contact</NavLink></li>
         <li><NavLink to="/tracking">Tracking</NavLink></li>
         <li><NavLink to="/online-tracking">Online Booked Tracking</NavLink></li>
+        <li><NavLink to="/apply">Apply</NavLink></li>
     </>
 
     return (
@@ -26,7 +28,7 @@ const Navbar = () => {
                         {navLinks}
                     </ul>
                 </div>
-                <img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo.svg" alt="Logo" />
+                <img className="h-[70px] w-[120px]" src={logoImg} alt="Logo" />
             </div>
             <div className="navbar-center hidden  lg:flex">
                 <ul className="menu menu-horizontal text-lg px-1">

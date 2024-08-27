@@ -11,9 +11,10 @@ import HostMenu from './HostMenu'
 import useRole from '../../../hooks/useRole'
 import { Link } from 'react-router-dom'
 import MerchantMenu from './MerchantMenu'
+// import logo from "../../../../src/assets/logo.png"
 import RiderMenu from './RiderMenu'
-
-
+import logoImg from '../../../assets/nexp-update.png'
+import SuperAdminMenu from './SuperAdminMenu'
 
 
 const Sidebar = () => {
@@ -25,21 +26,23 @@ const Sidebar = () => {
 
   const [isActive, setActive] = useState(false)
 
-
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive)
   }
+
   return (
     <>
       {/* Small Screen Navbar */}
       <div className='bg-gray-100 text-gray-800 flex justify-between md:hidden'>
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
-            <Link to="/"><img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo-footer.svg" alt="Logo" /></Link>
+            <Link className='h-[100px] w-[100px]' to="/"><img src={logoImg} alt="Logo" /></Link>
+            
           </div>
+          
         </div>
-
+        
         <button
           onClick={handleToggle}
           className='mobile-menu-button p-4 focus:outline-none focus:bg-gray-200'
@@ -54,31 +57,31 @@ const Sidebar = () => {
       >
         <div>
           <div>
-            <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-secondary mx-auto'>
-              <Link to="/"><img src="https://transp-nextjs.vercel.app/assets/imgs/template/logo.svg" alt="Logo" /></Link>
+            <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-emerald-400 mx-auto'>
+              <Link className='h-[100px] w-[100px]' to="/"><img src={logoImg} alt="Logo" /></Link>
             </div>
+            {/* <div className='w-full hidden md:flex px-4 py-2 rounded-lg justify-center items-center mx-auto'>
+              <Link to="/"><img src={logo} alt="Logo" /></Link>
+            </div> */}
           </div>
 
           {/* Nav Items */}
           <div className='flex flex-col justify-between flex-1 mt-6'>
-
             <nav>
-
-
-              {/*Host Menu Items */}
+              {/* Host Menu Items */}
               {role === 'host' && <HostMenu />}
 
-              {/*Guest Menu Items */}
+              {/* Guest Menu Items */}
               {role === 'guest' && <GuestMenu />}
 
-              {/*Admin Menu Items */}
+              {/* Admin Menu Items */}
               {role === 'admin' && <AdminMenu />}
 
               {role === 'merchant' && <MerchantMenu />}
 
-              {role === 'rider' && <RiderMenu></RiderMenu>}
+              {role === 'rider' && <RiderMenu />}
 
-
+              {role === 'sup-admin' && <SuperAdminMenu />}
             </nav>
           </div>
         </div>
@@ -91,13 +94,13 @@ const Sidebar = () => {
             label='Profile'
             address='/dashboard/profile'
           />
-          <button onClick={logOut} className='flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform'>
+          <button onClick={logOut} className='flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300 hover:text-gray-700 transition-colors duration-300 transform'>
             <GrLogout className='w-5 h-5' />
-
             <span className='mx-4 font-medium'>Logout</span>
           </button>
         </div>
       </div>
+
     </>
   )
 }

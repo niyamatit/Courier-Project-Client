@@ -6,6 +6,7 @@ import useRole from "../../hooks/useRole"
 const Profile = () => {
   const { user } = useAuth()
   const [role] = useRole()
+  console.log("Role:",role)
   console.log(user)
   return (
     <div className='flex justify-center items-center h-screen'>
@@ -29,7 +30,17 @@ const Profile = () => {
             {role && role.toUpperCase()}
           </p>
           <p className='mt-2 text-xl font-medium text-gray-800 '>
-            User Id: {user.uid}
+            
+
+            {
+              role === "merchant" ? <div> <p>Merchant Id: {user.uid}</p>
+              
+              
+              
+              
+              
+              </div> : <>User Id: {user.uid}</>
+            }
           </p>
           <div className='w-full p-2 mt-4 rounded-lg'>
             <div className='flex flex-wrap items-center justify-between text-sm text-gray-600 '>

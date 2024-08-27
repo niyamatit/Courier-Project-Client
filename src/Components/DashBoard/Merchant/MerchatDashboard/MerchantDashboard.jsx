@@ -1,89 +1,115 @@
+import { useEffect, useState } from "react";
 import StatsCard from "./StartsCard";
 import OrdersTable from "./OrdersTable";
 import ParcelChart from "./ParcelChart";
 import ParcelPieChart from "./ParcelPieChart";
-import {
-  FaTruck,
-  FaSearch,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaHourglassHalf,
-  FaSyncAlt,
-  FaMoneyBillWave,
-  FaMoneyCheckAlt,
-  FaBoxOpen,
-  FaUndo,
-} from "react-icons/fa";
-
-const data = {
-  parcelBooking: 20,
-  delivered: 30,
-  partiallyDelivered: 10,
-  processing: 15,
-  cancelled: 5,
-  deleted: 2,
-};
+import DatePicker from "react-datepicker";
+import DeliveryCard from "./DeliveryCard";
+import "react-datepicker/dist/react-datepicker.css";
+import { FaClock, FaSearch, FaCheckCircle, FaTimesCircle, FaMoneyBillWave, FaMoneyCheckAlt, FaBoxOpen, FaUndo } from "react-icons/fa";
+import useAuth from "../../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import axiosSecure from "../../../../api/axiosSecure";
 
 const MerchantDashboard = () => {
-  const orders = [
-    {
-      id: "2407042BS0TKD",
-      customerName: "Akbar",
-      phone: "01721689955",
-      status: "On The Way To Delivery Hub",
-    },
-    {
-      id: "240703P6E0SZN",
-      customerName: "Md Omar Faruq",
-      phone: "01988599390",
-      status: "Out For Delivery",
-    },
-    {
-      id: "240703626OZIM",
-      customerName: "Sohel Rana",
-      phone: "01785402517",
-      status: "At Delivery Hub",
-    },
-    {
-      id: "240703P000SZK",
-      customerName: "Ranjan Jhan",
-      phone: "01724393398",
-      status: "At Delivery Hub",
-    },
-    {
-      id: "2407034ODSZI",
-      customerName: "Ripon Rana",
-      phone: "01786761077",
-      status: "At Delivery Hub",
-    },
-    {
-      id: "2407034OZSI",
-      customerName: "Santo",
-      phone: "01319690519",
-      status: "At Delivery Hub",
-    },
-    {
-      id: "240703QXNOYSR",
-      customerName: "Eftekhar Uddin",
-      phone: "01701030437",
-      status: "On The Way To Delivery Hub",
-    },
-  ];
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [filteredChartData, setFilteredChartData] = useState(null);
+  const [filteredPieData, setFilteredPieData] = useState(null);
+  const [financialStats, setFinancialStats] = useState({
+    paymentInvoice: 0,
+    totalCollected: 0,
+    totalServiceCharge: 0,
+    totalPaid: 0,
+    unpaidAmount: 0,
+    allParcelCOD: 0,
+    returnParcelCOD: 0,
+  });
 
-  const chartData = {
-    labels: [
-        '2024-07-04',
-        '2024-07-05',
-        '2024-07-06',
-        '2024-07-07',
-        '2024-07-08',
-        '2024-07-09',
-        '2024-07-10',
-    ],
-    pickup: [8, 7, 6, 5, 4, 3, 2],
-    delivered: [7, 6, 5, 4, 3, 2, 1],
-};
+  const { user } = useAuth();
+  const { data: parcelData = [] } = useQuery({
+    queryKey: ["parcelData", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/parcel");
+      return res.data;
+    },
+    enabled: !!user?.email,
+  });
 
+  useEffect(() => {
+    if (parcelData.length > 0) {
+      const filteredData = parcelData.filter((item) => {
+        const itemDate = new Date(item.Date);
+        const isAfterStartDate = fromDate ? itemDate >= fromDate : true;
+        const isBeforeEndDate = toDate ? itemDate <= toDate : true;
+        return isAfterStartDate && isBeforeEndDate;
+      });
+  
+      const totalWeight = filteredData.reduce((sum, item) => sum + item.Parcel_Weight, 0);
+      const deliveredWeight = filteredData.filter(item => item.deliveryStatus === "Delivered").reduce((sum, item) => sum + item.Parcel_Weight, 0);
+      const cancelledWeight = filteredData.filter(item => item.deliveryStatus === "Cancel").reduce((sum, item) => sum + item.Parcel_Weight, 0);
+      const processingWeight = filteredData.filter(item => item.deliveryStatus === "Processing").reduce((sum, item) => sum + item.Parcel_Weight, 0);
+      
+  
+     
+      const pendingDeliveries = filteredData.filter(item => item.deliveryStatus !== "Delivered").length;
+      const returnedWeight = filteredData.filter(item => item.deliveryStatus === "Cancel").reduce((sum, item) => sum + item.Parcel_Weight, 0);
+  
+      const chartData = {
+        labels: filteredData.map(item => item.Date),
+        pickup: filteredData.map(item => item.Parcel_Weight),
+        delivered: filteredData.map(item => (item.deliveryStatus === "Delivered" ? item.Parcel_Weight : 0)),
+      };
+  
+      setFilteredChartData(chartData);
+  
+      const pieData = {
+        parcelBooking: totalWeight,
+        delivered: deliveredWeight,
+        partiallyDelivered: filteredData.filter(item => item.deliveryStatus === "Partial").reduce((sum, item) => sum + item.Parcel_Weight, 0),
+        processing: processingWeight,
+        cancelled: cancelledWeight,
+        deleted: 0,
+        pendingDeliveries, 
+        returned: returnedWeight
+      };
+  
+      setFilteredPieData(pieData);
+  
+      const paymentInvoice = filteredData.reduce((sum, item) => sum + item.Total_Charge, 0);
+      const totalCollected = filteredData.reduce((sum, item) => sum + item.Total_Collection_Amount, 0);
+      const totalServiceCharge = paymentInvoice;
+      const totalPaid = totalCollected;
+      const unpaidAmount = paymentInvoice - totalCollected;
+      const allParcelCOD = filteredData.reduce((sum, item) => sum + item.Product_Value, 0); 
+      const returnParcelCOD = filteredData.filter(item => item.deliveryStatus === "Cancel").reduce((sum, item) => sum + item.Product_Value, 0);
+  
+      setFinancialStats({
+        paymentInvoice,
+        totalCollected,
+        totalServiceCharge,
+        totalPaid,
+        unpaidAmount,
+        allParcelCOD,
+        returnParcelCOD,
+      });
+    }
+  }, [parcelData, fromDate, toDate]);
+  
+
+  const getPercentage = (part, total) => total > 0 ? `(${((part / total) * 100).toFixed(2)}%)` : "(0%)";
+
+  const orders = parcelData.map(item => ({
+    id: item.Merchant_Order_ID,
+    customerName: item.Customer_Name,
+    phone: item.Customer_Contact_Number,
+    status: item.deliveryStatus,
+  }));
+
+  const DeliveryData = {
+    outForDelivery: parcelData.filter(item => item.deliveryStatus === "Out For Delivery"),
+    pickUpPending: parcelData.filter(item => item.deliveryStatus !== "Delivered"),
+  };
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -92,123 +118,135 @@ const MerchantDashboard = () => {
         <div className="flex-grow flex">
           <input
             type="text"
-            placeholder="Enter Oder ID or Customer Name for Search....."
-            className="w-full p-3 border-2 border-blue-400 rounded-l-md shadow-sm focus:outline-none  focus:ring-blue-500"
+            placeholder="Enter Order ID or Customer Name for Search..."
+            className="w-full p-3 border-2 border-blue-400 rounded-l-md shadow-sm focus:outline-none focus:ring-blue-500"
           />
-          <button className="p-3 bg-blue-500 text-white rounded-r-md shadow-sm hover:bg-blue-600 focus:outline-none  focus:ring-blue-500">
+          <button className="p-3 bg-blue-500 text-white rounded-r-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-blue-500">
             <FaSearch />
           </button>
         </div>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
         <StatsCard
-          title="Today Pickup"
-          value="6"
-          icon={<FaTruck />}
+          title="Total Delivered"
+          value={filteredPieData?.delivered || 0}
+          percentage={getPercentage(filteredPieData?.delivered, filteredPieData?.parcelBooking)}
+          icon={<FaCheckCircle />}
           color="bg-blue-100"
+          percentageColor="text-green-600"
+          iconColor="text-green-400"
         />
         <StatsCard
+  title="Total Returned"
+  value={filteredPieData?.returned || 0} 
+  percentage={getPercentage(filteredPieData?.returned, filteredPieData?.parcelBooking)}
+  icon={<FaUndo />}
+  color="bg-red-100"
+  percentageColor="text-red-600"
+/>
+
+        <StatsCard
+  title="Total Delivery Pending"
+  value={filteredPieData?.pendingDeliveries || 0} 
+  percentage={getPercentage(filteredPieData?.pendingDeliveries, filteredPieData?.parcelBooking)}
+  icon={<FaClock />}
+  color="bg-yellow-100"
+  percentageColor="text-blue-600"
+/>
+        <StatsCard
           title="Today Delivered"
-          value="2"
+          value={filteredPieData?.delivered || 0}
           icon={<FaCheckCircle />}
           color="bg-green-100"
         />
         <StatsCard
           title="Today Cancelled"
-          value="0"
+          value={filteredPieData?.cancelled || 0}
           icon={<FaTimesCircle />}
           color="bg-red-100"
         />
-        <StatsCard
-          title="Pickup Pending"
-          value="0"
-          icon={<FaHourglassHalf />}
-          color="bg-yellow-100"
-        />
-        <StatsCard
-          title="Total Parcel"
-          value="54"
-          icon={<FaTruck />}
-          color="bg-blue-100"
-        />
-        <StatsCard
-          title="Delivered"
-          value="38"
-          icon={<FaCheckCircle />}
-          color="bg-green-100"
-        />
-        <StatsCard
-          title="Cancelled"
-          value="2"
-          icon={<FaTimesCircle />}
-          color="bg-red-100"
-        />
-        <StatsCard
-          title="Delivery Pending"
-          value="13"
-          icon={<FaSyncAlt />}
-          color="bg-yellow-100"
-        />
-        <StatsCard
+         <StatsCard
           title="Payment Invoice"
-          value="1,630.00 TK"
+          value={`${financialStats.paymentInvoice.toFixed(2)} TK`}
           icon={<FaMoneyBillWave />}
           color="bg-green-100"
         />
         <StatsCard
           title="Total Collected"
-          value="1,120.00 TK"
+          value={`${financialStats.totalCollected.toFixed(2)} TK`}
           icon={<FaMoneyBillWave />}
           color="bg-blue-100"
         />
         <StatsCard
           title="Total Service Charge"
-          value="-263.70 TK"
+          value={`${financialStats.totalServiceCharge.toFixed(2)} TK`}
           icon={<FaMoneyBillWave />}
           color="bg-purple-100"
         />
         <StatsCard
           title="Total Paid"
-          value="6,790.00 TK"
+          value={`${financialStats.totalPaid.toFixed(2)} TK`}
           icon={<FaMoneyBillWave />}
           color="bg-orange-100"
         />
         <StatsCard
           title="Unpaid Amount"
-          value="500.00 TK"
+          value={`${financialStats.unpaidAmount.toFixed(2)} TK`}
           icon={<FaMoneyCheckAlt />}
           color="bg-red-100"
         />
         <StatsCard
-          title="Parcel in Processing"
-          value="15"
-          icon={<FaSyncAlt />}
-          color="bg-yellow-100"
-        />
-        <StatsCard
           title="All Parcel COD"
-          value="40,000.00 TK"
+          value={`${financialStats.allParcelCOD.toFixed(2)} TK`}
           icon={<FaBoxOpen />}
           color="bg-blue-100"
         />
         <StatsCard
           title="Return Parcel COD"
-          value="3,000.00 TK"
+          value={`${financialStats.returnParcelCOD.toFixed(2)} TK`}
           icon={<FaUndo />}
           color="bg-red-100"
         />
       </div>
-      <div className="mb-8 border-[2px] hover:shadow-2xl rounded-md border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
-            <OrdersTable orders={orders} />
+
+      <div className="flex  gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
+        <DeliveryCard title="Out for Delivery" items={DeliveryData.outForDelivery} />
+        <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} />
+      </div>
+      <div className="mb-8 border-[2px] hover:shadow-2xl rounded hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
+        <OrdersTable orders={orders} />
+      </div>
+      {/* Filter */}
+      <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
+        <div className="flex gap-6 mb-4">
+          <div>
+            <label className="font-semibold text-gray-700">From: </label>
+            <DatePicker
+              selected={fromDate}
+              onChange={(date) => setFromDate(date)}
+              className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+          <div>
+            <label className="font-semibold text-gray-700">To: </label>
+            <DatePicker
+              selected={toDate}
+              onChange={(date) => setToDate(date)}
+              className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
         </div>
-      <div className="flex flex-col lg:flex-row gap-5">
-        <div className="flex-1 border-[2px] hover:shadow-2xl border-blue-400 rounded-md p-3">
-          <h2 className="text-xl font-bold mb-4">Last 7 Days Parcel</h2>
-          <ParcelChart data={chartData} />
-        </div>
-        <div className="p-3 flex-1 hover:shadow-2xl border-blue-400 border-[2px] rounded-md">
-          <h2 className="text-xl font-bold mb-4">Parcel Statistics</h2>
-          <ParcelPieChart data={data} />
+
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex-1 hover:border-blue-400 border-[2px] bg-white border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
+            <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
+          </div>
+          <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
+            <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
+          </div>
         </div>
       </div>
     </div>
