@@ -32,6 +32,10 @@ import MerchantDashboard from "../Components/DashBoard/Merchant/MerchatDashboard
 import MerchantAddPercel from "../Components/DashBoard/Merchant/MerchantAddPercel/MerchantAddPercel";
 import MerchantDeliveries from "../Components/DashBoard/Merchant/MerchantDeliveries/MerchantDeliveries";
 import MerchantInvoices from "../Components/DashBoard/Merchant/MerchantInvoices/MerchantInvoices";
+import MerchantInterNationalAddParcel from "../Components/DashBoard/Merchant/MerchantInterNationalAddParcel/MerchantInterNationalAddParcel";
+import Apply from "../Components/Pages/Home/Apply/Apply";
+import MerchantShopList from "../Components/DashBoard/Merchant/MerchantShopList/MerchantShopList";
+import CreateStore from "../Components/DashBoard/Merchant/MerchantShopList/CreateStore";
 import DemoPackage from "../Components/DashBoard/Host/CreatePackage/DemoPackage";
 import RiderList from "../Components/DashBoard/Host/RiderList/RiderList";
 import MerchantList from "../Components/DashBoard/Host/MerchantList/MerchantList";
@@ -72,6 +76,10 @@ export const router = createBrowserRouter([
             {
                 path: "/online-booking",
                 element: <PrivateRoute><OnlineBookings /></PrivateRoute>
+            },
+            {
+                path: "/apply",
+                element: <PrivateRoute><Apply/></PrivateRoute>
             },
 
 
@@ -181,12 +189,24 @@ export const router = createBrowserRouter([
                 element: <MerchantAddPercel />
             },
             {
+                path: "MerchantInterNationalAddPercel",
+                element: <MerchantInterNationalAddParcel />
+            },
+            {
               path:"MerchantDeliveries",
               element:<MerchantDeliveries/>
             },
             {
                path:"MerchantInvoices",
                element:<MerchantInvoices/>
+            },
+            {
+               path:"MerchantShopList",
+               element:<MerchantShopList/>
+            },
+            {
+               path:"CreateStore",
+               element:<CreateStore/>
             },
             
             {
