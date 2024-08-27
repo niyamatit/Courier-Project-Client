@@ -4,21 +4,28 @@ import { IoHome } from "react-icons/io5";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { FaBiking } from "react-icons/fa";
 import { FaList } from "react-icons/fa6";
+import useAuth from "../../../hooks/useAuth";
 
 
 
 const HostMenu = () => {
 
-
+const {user} = useAuth()
 
   return (
     <>
-      
+      <p className="text-2xl text-center font-semibold text-secondary">{user?.displayName}</p>
 
       <MenuItem
         icon={IoHome}
         label='Dashboard'
         address='host-dashboard'
+      />
+
+      <MenuItem
+        icon={IoHome}
+        label='Pickup Parcel'
+        address='pickup-parcel'
       />
 
       <MenuItem

@@ -3,9 +3,9 @@ import { Fragment, useState } from 'react'
 import { Dialog, Listbox, Transition } from '@headlessui/react'
 import { BsCheckLg } from 'react-icons/bs'
 import { AiOutlineDown } from 'react-icons/ai'
-const roles = ['rider','host', 'merchant']
+const roles = ['sup-admin','company']
 
-const UpdateUserModal = ({ setIsOpen, isOpen, modalHandler, user }) => {
+const UpdateAdminModal = ({ setIsOpen, isOpen, modalHandler, user }) => {
   const [selected, setSelected] = useState(user?.role)
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -128,4 +128,4 @@ const UpdateUserModal = ({ setIsOpen, isOpen, modalHandler, user }) => {
   )
 }
 
-export default UpdateUserModal
+export default UpdateAdminModal
