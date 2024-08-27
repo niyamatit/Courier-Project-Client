@@ -4,11 +4,14 @@ import MenuItem from "./MenuItem";
 import { MdHome } from "react-icons/md";
 import { GiCardPickup } from "react-icons/gi";
 import { Link } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
 
 const RiderMenu = () => {
+    const{user} = useAuth()
     return (
         <div>
+        <p className="text-2xl font-semibold text-center text-secondary">{user?.displayName}</p>
             <MenuItem
                 icon={MdHome}
                 label='Rider Home'

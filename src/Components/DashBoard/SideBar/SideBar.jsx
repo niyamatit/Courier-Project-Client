@@ -14,6 +14,7 @@ import MerchantMenu from './MerchantMenu'
 // import logo from "../../../../src/assets/logo.png"
 import RiderMenu from './RiderMenu'
 import logoImg from '../../../assets/nexp-update.png'
+import SuperAdminMenu from './SuperAdminMenu'
 
 
 const Sidebar = () => {
@@ -79,6 +80,8 @@ const Sidebar = () => {
               {role === 'merchant' && <MerchantMenu />}
 
               {role === 'rider' && <RiderMenu />}
+
+              {role === 'sup-admin' && <SuperAdminMenu />}
             </nav>
           </div>
         </div>
@@ -97,7 +100,7 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
-     
+
     </>
   )
 }

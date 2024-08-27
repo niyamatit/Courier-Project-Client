@@ -39,6 +39,8 @@ import CreateStore from "../Components/DashBoard/Merchant/MerchantShopList/Creat
 import DemoPackage from "../Components/DashBoard/Host/CreatePackage/DemoPackage";
 import RiderList from "../Components/DashBoard/Host/RiderList/RiderList";
 import MerchantList from "../Components/DashBoard/Host/MerchantList/MerchantList";
+import PickupParcel from "../Components/DashBoard/Host/Pickup Parcel/PickupParcel";
+import ManageAdmin from "../Components/DashBoard/SuperAdmin/ManageAdmin";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -113,12 +115,12 @@ export const router = createBrowserRouter([
                     </HostRoute>
                 </PrivateRoute>
             },
-            
+
             {
                 path: "demo-pack",
                 element: <PrivateRoute>
                     <HostRoute>
-                        <DemoPackage/>
+                        <DemoPackage />
                     </HostRoute>
                 </PrivateRoute>
             },
@@ -126,7 +128,7 @@ export const router = createBrowserRouter([
                 path: "rider-list",
                 element: <PrivateRoute>
                     <HostRoute>
-                        <RiderList/>
+                        <RiderList />
                     </HostRoute>
                 </PrivateRoute>
             },
@@ -134,7 +136,15 @@ export const router = createBrowserRouter([
                 path: "merchant-list",
                 element: <PrivateRoute>
                     <HostRoute>
-                        <MerchantList/>
+                        <MerchantList />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "pickup-parcel",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <PickupParcel />
                     </HostRoute>
                 </PrivateRoute>
             },
@@ -195,10 +205,11 @@ export const router = createBrowserRouter([
             {
               path:"MerchantDeliveries",
               element:<MerchantDeliveries/>
+             
             },
             {
-               path:"MerchantInvoices",
-               element:<MerchantInvoices/>
+                path: "MerchantInvoices",
+                element: <MerchantInvoices />
             },
             {
                path:"MerchantShopList",
@@ -259,6 +270,10 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><ReturnPercel></ReturnPercel></PrivateRoute>
             },
 
+            {
+                path: "manage-admin",
+                element: <ManageAdmin />
+            }
 
         ]
     },
