@@ -29,7 +29,7 @@ import RiderHome from "../Components/DashBoard/Rider/RiderHome";
 import PickupparcelList from "../Components/DashBoard/Rider/PickupparcelList";
 import DeliveryparcelList from "../Components/DashBoard/Rider/DeliveryparcelList";
 import DeliveryComplete from "../Components/DashBoard/Rider/DeliveryComplete";
-import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
+ import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
 import HostDashboard from "../Components/DashBoard/Host/HostDashboard/HostDashboard";
 
 
