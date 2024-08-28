@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
-import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import {
   CitySelect,
@@ -9,12 +8,14 @@ import {
   StateSelect,
 } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
+import axiosSecure from "../../../../api/axiosSecure";
+
 const MerchantInterNationalAddParcel = () => {
   const [WeightPackage, setWeightPackage] = useState("");
 
   const [ServiceType, setServiceType] = useState("");
   const [ItemType, setItemType] = useState("");
-  const [store, setStore] = useState("");
+  // const [store, setStore] = useState("");
   const [countryId, setCountryId] = useState(null);
   const [stateId, setStateId] = useState(null);
 
@@ -30,18 +31,16 @@ const MerchantInterNationalAddParcel = () => {
 
   const onSubmit = async (data) => {
     const formData = { ...data };
-    console.log("FormData:,", formData);
+    
     const PercelInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
       Customer_Name: formData?.customerName || "",
       Customer_Address: formData?.customerAddress || "",
-      Customer_Country_Name: formData?.country.name || "",
-      Customer_Country_Currency: formData?.country.currency_name || "",
-      Customer_Country_Capital_Name: formData?.country.capital || "",
-      Customer_State: formData?.state.name || "",
-      Customer_City: formData?.city.name || "",
-      Store_Name: formData?.store || "",
-      Merchant_Order_ID: formData?.orderId || "",
+      Customer_Country_Name: formData?.country?.name || "",
+      Customer_Country_Currency: formData?.country?.currency_name || "",
+      Customer_Country_Capital_Name: formData?.country?.capital || "",
+      Customer_State: formData?.state?.name || "",
+      Customer_City: formData?.city?.name || "",
       Parcel_Weight: parseFloat(formData?.weightPackage) || "",
       Total_Collection_Amount: parseFloat(formData?.totalAmount) || "",
       Service_Type: formData?.serviceType || "",
@@ -56,11 +55,17 @@ const MerchantInterNationalAddParcel = () => {
       Total_Charge: 100 || "",
       Date: new Date().toISOString().split("T")[0],
       International_Parcel: "International",
+      Sender_Contact_Number:formData?.SenderContactNumber || "",
+      Sender_Name:formData?.SenderName || "",
+      Sender_Address:formData?.SenderAddress || "",
+      Sender_NID_Number:formData?.SenderNidNumber || "",
+      Sender_Purpose:formData?.SenderPurpose || "",
+      Tax_Number:formData?.TaxNumber || "",
     };
     console.log("Parcel Information:", PercelInformation);
 
     const ParcelProductDetails = await axiosSecure.post(
-      "/Parcel",
+      "/parcel",
       PercelInformation
     );
     console.log(ParcelProductDetails.data);
@@ -161,7 +166,7 @@ const MerchantInterNationalAddParcel = () => {
                         setValue("country", value);
                       }}
                       className={`select select-bordered w-full p-2 rounded-lg border ${
-                        errors.country ? "border-red-500" : "border-gray-300 focus:outline-none ring-2 focus:ring-blue-400"
+                        errors.country ? "border-red-500" : "border-gray-300"
                       }`}
                       placeHolder="Select Country"
                     />
@@ -222,44 +227,6 @@ const MerchantInterNationalAddParcel = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
-                      Select Your Store*
-                    </label>
-
-                    <select
-                      {...register("store", { required: true })}
-                      className={`select select-bordered w-full p-2 rounded-lg border ${
-                        errors.store ? "border-red-500" : "border-gray-300"
-                      }`}
-                      onChange={(e) => setStore(e.target.value)}
-                    >
-                      <option value="">Select Your Store*</option>
-                      <option value="Niyamat Express">Niyamat Express</option>
-                    </select>
-                    {errors.store && (
-                      <span className="text-red-500">
-                        This field is required
-                      </span>
-                    )}
-                  </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Merchant Order ID*
-                    </label>
-                    <input
-                      type="text"
-                      {...register("orderId", { required: true })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${
-                        errors.orderId ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.orderId && (
-                      <span className="text-red-500">
-                        This field is required
-                      </span>
-                    )}
-                  </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
                       Weight Package*
                     </label>
 
@@ -318,7 +285,8 @@ const MerchantInterNationalAddParcel = () => {
                       onChange={(e) => setServiceType(e.target.value)}
                     >
                       <option value="">Select Service</option>
-                      <option value="Regular Delivery">Regular Delivery</option>
+                      <option value="Ship Delivery">Ship Delivery</option>
+                      <option value="Air Delivery">Air Delivery</option>
                     </select>
                     {errors.serviceType && (
                       <span className="text-red-500">
@@ -343,6 +311,7 @@ const MerchantInterNationalAddParcel = () => {
                       <option value="Fragile">Fragile</option>
                       <option value="Medicine">Medicine</option>
                       <option value="Food">Food</option>
+                      <option value="Device">Device</option>
                     </select>
                     {errors.itemType && (
                       <span className="text-red-500">
@@ -371,6 +340,25 @@ const MerchantInterNationalAddParcel = () => {
                   </div>
                   <div className="col-span-2">
                     <label className="block text-gray-700 font-medium mb-1">
+                      Tax Number(Optional)
+                    </label>
+                    <input
+                      type="text"
+                      {...register("TaxNumber")}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.TaxNumber
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.TaxNumber && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
                       Product Details*
                     </label>
                     <textarea
@@ -389,6 +377,101 @@ const MerchantInterNationalAddParcel = () => {
                   </div>
                 </div>
               </div>
+              {/* Sender Info */}
+              <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
+                  Sender Information
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
+                  <div className="col-span-2 ">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Sender Contact Number*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("SenderContactNumber", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.SenderContactNumber
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.SenderContactNumber && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Sender Name*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("SenderName", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.SenderName
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.SenderName && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Sender Address*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("SenderAddress", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.SenderAddress
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.SenderAddress && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Sender NID Number*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("SenderNidNumber", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.SenderNidNumber
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.SenderNidNumber && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Purpose*
+                    </label>
+                    <textarea
+                      {...register("SenderPurpose")}
+                      className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
+                    />
+                  </div>
+                  
+                 
+                </div>
+              </div>
             </div>
 
             <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
@@ -396,12 +479,7 @@ const MerchantInterNationalAddParcel = () => {
                 Parcel Charge
               </h2>
               <div className="space-y-2 md:space-y-4">
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Store</span>
-                  <span className="text-gray-500">
-                    {store || "Not Confirm"}{" "}
-                  </span>
-                </div>
+                <div className="flex justify-between"></div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Weight Package</span>
                   <span className="text-gray-500">
@@ -446,7 +524,10 @@ const MerchantInterNationalAddParcel = () => {
                 </div>
               </div>
             </div>
+
+            {/* Sender Information */}
           </div>
+
           <div className="flex justify-end space-x-4">
             <button
               type="button"

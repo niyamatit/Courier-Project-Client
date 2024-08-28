@@ -1,6 +1,4 @@
-import {
-    createBrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../LayOuts/MainLayout";
 import Home from "../Components/Pages/Home/Home/Home";
 import ErrorPage from "../ErrorPage/ErrorPage";
@@ -29,9 +27,8 @@ import RiderHome from "../Components/DashBoard/Rider/RiderHome";
 import PickupparcelList from "../Components/DashBoard/Rider/PickupparcelList";
 import DeliveryparcelList from "../Components/DashBoard/Rider/DeliveryparcelList";
 import DeliveryComplete from "../Components/DashBoard/Rider/DeliveryComplete";
- import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
+import ReturnPercel from "../Components/DashBoard/Rider/ReturnPercel";
 import HostDashboard from "../Components/DashBoard/Host/HostDashboard/HostDashboard";
-
 
 import MerchantDeliveries from "../Components/DashBoard/Merchant/MerchantDeliveries/MerchantDeliveries";
 import MerchantInvoices from "../Components/DashBoard/Merchant/MerchantInvoices/MerchantInvoices";
@@ -45,245 +42,305 @@ import MerchantList from "../Components/DashBoard/Host/MerchantList/MerchantList
 import PickupParcel from "../Components/DashBoard/Host/Pickup Parcel/PickupParcel";
 import ManageAdmin from "../Components/DashBoard/SuperAdmin/ManageAdmin";
 
-
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
 // import Tracking1 from "../Components/Pages/Home/WorkForce/UserPackageTracking/Tracking1";
 
-
 export const router = createBrowserRouter([
-
-
-    {
+  {
+    path: "/",
+    errorElement: <ErrorPage />,
+    element: <MainLayout />,
+    children: [
+      {
         path: "/",
-        errorElement: <ErrorPage />,
-        element: <MainLayout />,
-        children: [
-            {
-                path: "/",
-                element: <Home />
-            },
-            {
-                path: "/contact",
-                element: <Contact />
-            },
-            {
-                path: "/tracking",
-                element: <PackageTracking />
-            },
-            {
-                path: "/online-tracking",
-                element: <OnlineTracking />
-            },
-            {
-                path: "/about",
-                element: <About />
-            },
-            {
-                path: "/online-booking",
-                element: <PrivateRoute><OnlineBookings /></PrivateRoute>
-            },
-            {
-                path: "/apply",
-                element: <PrivateRoute><Apply/></PrivateRoute>
-            },
+        element: <Home />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/tracking",
+        element: <PackageTracking />,
+      },
+      {
+        path: "/online-tracking",
+        element: <OnlineTracking />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/online-booking",
+        element: (
+          <PrivateRoute>
+            <OnlineBookings />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/apply",
+        element: (
+          <PrivateRoute>
+            <Apply />
+          </PrivateRoute>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
 
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "branch-booking",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <CreatePackage />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
 
-        ]
-    },
-    {
-        path: "/signup",
-        element: <SignUp />
-    },
-    {
-        path: "/login",
-        element: <Login />
-    },
+      {
+        path: "demo-pack",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <DemoPackage />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "rider-list",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <RiderList />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "merchant-list",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <MerchantList />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pickup-parcel",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <PickupParcel />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "host-dashboard",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <HostDashboard />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "delivery-scheduling",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <DeliverySchedule />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "online-scheduling",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <OnlineSchedule />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "manage-users",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <ManageUsers />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "statistics",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AdminStatistics />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "MerchantDashboard",
+        element: <MerchantDashboard />,
+      },
+      {
+        path: "MerchantAddPercel",
+        element: <MerchantAddPercel />,
+      },
+      {
+        path: "MerchantInterNationalAddPercel",
+        element: <MerchantInterNationalAddParcel />,
+      },
+      {
+        path: "MerchantDeliveries",
+        element: <MerchantDeliveries />,
+      },
+      {
+        path: "MerchantInvoices",
+        element: <MerchantInvoices />,
+      },
+      {
+        path: "MerchantShopList",
+        element: <MerchantShopList />,
+      },
+      {
+        path: "CreateStore",
+        element: <CreateStore />,
+      },
 
-    {
-        path: "/dashboard",
-        element:
-            <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>
-        ,
-        children: [
+      {
+        path: "my-bookings",
+        element: (
+          <PrivateRoute>
+            <MyBookings />
+          </PrivateRoute>
+        ),
+      },
 
-            {
-                path: "profile",
-                element: <PrivateRoute><Profile /></PrivateRoute>
-            },
-            {
-                path: "branch-booking",
-                element: <PrivateRoute>
-                    <HostRoute>
-                        <CreatePackage />
-                    </HostRoute>
-                </PrivateRoute>
-            },
+      // Rider Dashboard
+      {
+        path: "rider-home",
+        element: (
+          <PrivateRoute>
+            <RiderHome></RiderHome>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pickup-list",
+        element: (
+          <PrivateRoute>
+            <PickupparcelList></PickupparcelList>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "delivery-list",
+        element: (
+          <PrivateRoute>
+            <DeliveryparcelList></DeliveryparcelList>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "delivery-complete",
+        element: (
+          <PrivateRoute>
+            <DeliveryComplete></DeliveryComplete>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "return-parcel",
+        element: (
+          <PrivateRoute>
+            <ReturnPercel></ReturnPercel>
+          </PrivateRoute>
+        ),
+      },
 
-            {
-                path: "demo-pack",
-                element: <PrivateRoute>
-                    <HostRoute>
-                        <DemoPackage />
-                    </HostRoute>
-                </PrivateRoute>
-            },
-            {
-                path: "rider-list",
-                element: <PrivateRoute>
-                    <HostRoute>
-                        <RiderList />
-                    </HostRoute>
-                </PrivateRoute>
-            },
-            {
-                path: "merchant-list",
-                element: <PrivateRoute>
-                    <HostRoute>
-                        <MerchantList />
-                    </HostRoute>
-                </PrivateRoute>
-            },
-            {
-                path: "pickup-parcel",
-                element: <PrivateRoute>
-                    <HostRoute>
-                        <PickupParcel />
-                    </HostRoute>
-                </PrivateRoute>
-            },
-            {
-                path: "host-dashboard",
-                element: <PrivateRoute>
-                    <HostRoute>
-                        <HostDashboard />
-                    </HostRoute>
-                </PrivateRoute>
-            },
-            {
-                path: "delivery-scheduling",
-                element: <PrivateRoute>
-                    <HostRoute>
-                        <DeliverySchedule />
-                    </HostRoute>
-                </PrivateRoute>
-            }
-            ,
-            {
-                path: "online-scheduling",
-                element: <PrivateRoute>
-                    <HostRoute>
-                        <OnlineSchedule />
-                    </HostRoute>
-                </PrivateRoute>
-            }
-            ,
-            {
-                path: "manage-users",
-                element: <PrivateRoute>
-                    <AdminRoute>
-                        <ManageUsers />
-                    </AdminRoute>
-                </PrivateRoute>
-            },
-            {
-                path: "statistics",
-                element: <PrivateRoute>
-                    <AdminRoute>
-                        <AdminStatistics />
-                    </AdminRoute>
-                </PrivateRoute>
-            },
-            {
-                path: "MerchantDashboard",
-                element: <MerchantDashboard />
-            },
-            {
-                path: "MerchantAddPercel",
-                element: <MerchantAddPercel />
-            },
-            {
-                path: "MerchantInterNationalAddPercel",
-                element: <MerchantInterNationalAddParcel />
-            },
-            {
-              path:"MerchantDeliveries",
-              element:<MerchantDeliveries/>
-             
-            },
-            {
-                path: "MerchantInvoices",
-                element: <MerchantInvoices />
-            },
-            {
-               path:"MerchantShopList",
-               element:<MerchantShopList/>
-            },
-            {
-               path:"CreateStore",
-               element:<CreateStore/>
-            },
-            
-            {
-                path: "my-bookings",
-                element: <PrivateRoute><MyBookings /></PrivateRoute>
-            },
+      // Rider Dashboard
+      {
+        path: "rider-home",
+        element: (
+          <PrivateRoute>
+            <RiderHome></RiderHome>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pickup-list",
+        element: (
+          <PrivateRoute>
+            <PickupparcelList></PickupparcelList>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "delivery-list",
+        element: (
+          <PrivateRoute>
+            <DeliveryparcelList></DeliveryparcelList>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "delivery-complete",
+        element: (
+          <PrivateRoute>
+            <DeliveryComplete></DeliveryComplete>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "return-parcel",
+        element: (
+          <PrivateRoute>
+            <ReturnPercel></ReturnPercel>
+          </PrivateRoute>
+        ),
+      },
 
-            // Rider Dashboard
-            {
-                path: "rider-home",
-                element: <PrivateRoute><RiderHome></RiderHome></PrivateRoute>
-            },
-            {
-                path: "pickup-list",
-                element: <PrivateRoute><PickupparcelList></PickupparcelList></PrivateRoute>
-            },
-            {
-                path: "delivery-list",
-                element: <PrivateRoute><DeliveryparcelList></DeliveryparcelList></PrivateRoute>
-            },
-            {
-                path: "delivery-complete",
-                element: <PrivateRoute><DeliveryComplete></DeliveryComplete></PrivateRoute>
-            },
-            {
-                path: "return-parcel",
-                element: <PrivateRoute><ReturnPercel></ReturnPercel></PrivateRoute>
-            },
-
-
-            // Rider Dashboard
-            {
-                path: "rider-home",
-                element: <PrivateRoute><RiderHome></RiderHome></PrivateRoute>
-            },
-            {
-                path: "pickup-list",
-                element: <PrivateRoute><PickupparcelList></PickupparcelList></PrivateRoute>
-            },
-            {
-                path: "delivery-list",
-                element: <PrivateRoute><DeliveryparcelList></DeliveryparcelList></PrivateRoute>
-            },
-            {
-                path: "delivery-complete",
-                element: <PrivateRoute><DeliveryComplete></DeliveryComplete></PrivateRoute>
-            },
-            {
-                path: "return-parcel",
-                element: <PrivateRoute><ReturnPercel></ReturnPercel></PrivateRoute>
-            },
-
-            {
-                path: "manage-admin",
-                element: <ManageAdmin />
-            }
-
-        ]
-    },
-
-
-
-
-
-
+      {
+        path: "manage-admin",
+        element: <ManageAdmin />,
+      },
+    ],
+  },
 ]);
