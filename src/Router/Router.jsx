@@ -44,6 +44,7 @@ import RiderList from "../Components/DashBoard/Host/RiderList/RiderList";
 import MerchantList from "../Components/DashBoard/Host/MerchantList/MerchantList";
 import PickupParcel from "../Components/DashBoard/Host/Pickup Parcel/PickupParcel";
 import ManageAdmin from "../Components/DashBoard/SuperAdmin/ManageAdmin";
+import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -84,7 +85,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/apply",
-                element: <PrivateRoute><Apply/></PrivateRoute>
+                element: <PrivateRoute><Apply /></PrivateRoute>
             },
 
 
@@ -124,6 +125,14 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <HostRoute>
                         <DemoPackage />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "booking-form",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <BookingForm />
                     </HostRoute>
                 </PrivateRoute>
             },
@@ -206,23 +215,23 @@ export const router = createBrowserRouter([
                 element: <MerchantInterNationalAddParcel />
             },
             {
-              path:"MerchantDeliveries",
-              element:<MerchantDeliveries/>
-             
+                path: "MerchantDeliveries",
+                element: <MerchantDeliveries />
+
             },
             {
                 path: "MerchantInvoices",
                 element: <MerchantInvoices />
             },
             {
-               path:"MerchantShopList",
-               element:<MerchantShopList/>
+                path: "MerchantShopList",
+                element: <MerchantShopList />
             },
             {
-               path:"CreateStore",
-               element:<CreateStore/>
+                path: "CreateStore",
+                element: <CreateStore />
             },
-            
+
             {
                 path: "my-bookings",
                 element: <PrivateRoute><MyBookings /></PrivateRoute>
