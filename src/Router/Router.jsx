@@ -37,6 +37,15 @@ import RiderList from "../Components/DashBoard/Host/RiderList/RiderList";
 import MerchantList from "../Components/DashBoard/Host/MerchantList/MerchantList";
 import PickupParcel from "../Components/DashBoard/Host/Pickup Parcel/PickupParcel";
 import ManageAdmin from "../Components/DashBoard/SuperAdmin/ManageAdmin";
+import RiderParcel from "../Components/DashBoard/Host/RiderParcelList/RiderParcel";
+import ReturnParcel from "../Components/DashBoard/Host/ReturnParcelList/ReturnParcel";
+import DeliveryBranchList from "../Components/DashBoard/Host/DeliveryBranchList/DeliveryBranchList";
+import PickUpProcessing from "../Components/DashBoard/Host/PickUpProcessing/PickUpProcessing";
+import DeliveryParcelList from "../Components/DashBoard/Host/DeliveryParcleList/DeliveryParcleList";
+import PendingParcelList from "../Components/DashBoard/Host/PendingParcelList/PendingPacelList";
+import ReceivedBranchList from "../Components/DashBoard/Host/ReceivedBranchList/ReceivedBranchList";
+import CompleteDeliveryPayment from "../Components/DashBoard/Host/CompleteDeliveryPayment/CompleteDeliveryPayment";
+import RiderAllParcelList from "../Components/DashBoard/Host/RiderAllParcelList/RiderAllParcelList";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -137,6 +146,78 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <HostRoute>
                         <PickupParcel />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "pickup-processing",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <PickUpProcessing />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "pending-parcel-list",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <PendingParcelList />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "received-branch",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <ReceivedBranchList />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "rider-parcel-list",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <RiderAllParcelList/>
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "delivery-payment",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <CompleteDeliveryPayment />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "delivery-parcel-list",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <DeliveryParcelList />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "delivery-branch",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <DeliveryBranchList />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "return-parcel",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <ReturnParcel />
+                    </HostRoute>
+                </PrivateRoute>
+            },
+            {
+                path: "rider-parcel",
+                element: <PrivateRoute>
+                    <HostRoute>
+                        <RiderParcel />
                     </HostRoute>
                 </PrivateRoute>
             },
