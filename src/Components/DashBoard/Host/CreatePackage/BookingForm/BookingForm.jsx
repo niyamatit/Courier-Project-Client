@@ -96,8 +96,18 @@ const BookingForm = () => {
                             <InputField label="Remarks" placeholder="remarks" required />
                         </Section>
                     </div>
+
+                </div>
+                <div className='flex gap-5 justify-center'>
+                    <button className='btn bg-[#E8F0FE]'>Clear Form</button>
+                    <button className='btn bg-[#E8F0FE]'>Submit</button>
+                    <button className='btn bg-[#E8F0FE]'>View CN</button>
+                    <button className='btn bg-[#E8F0FE]'>Re-Print CN</button>
+                    <button className='btn bg-[#E8F0FE]'>Re-Print Barcode</button>
+                    <button className='btn bg-[#E8F0FE]'>Close</button>
                 </div>
             </div>
+
         </div>
     );
 }
