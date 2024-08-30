@@ -41,7 +41,7 @@ import RiderList from "../Components/DashBoard/Host/RiderList/RiderList";
 import MerchantList from "../Components/DashBoard/Host/MerchantList/MerchantList";
 import PickupParcel from "../Components/DashBoard/Host/Pickup Parcel/PickupParcel";
 import ManageAdmin from "../Components/DashBoard/SuperAdmin/ManageAdmin";
-import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm";
+import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -122,6 +122,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <CreatePackage />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "booking-form",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <BookingForm />
             </HostRoute>
           </PrivateRoute>
         ),
