@@ -3,7 +3,7 @@ import MenuItem from "./MenuItem";
 import { IoHome } from "react-icons/io5";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { FaBiking, FaWpforms } from "react-icons/fa";
-import { FaBiking, FaMoneyBill } from "react-icons/fa";
+import { FaMoneyBill } from "react-icons/fa";
 import { FaList } from "react-icons/fa6";
 import useAuth from "../../../hooks/useAuth";
 
