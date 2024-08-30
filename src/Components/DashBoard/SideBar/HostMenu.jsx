@@ -2,7 +2,8 @@ import { BsHouseAddFill } from "react-icons/bs";
 import MenuItem from "./MenuItem";
 import { IoHome } from "react-icons/io5";
 import { MdOutlineManageHistory } from "react-icons/md";
-import { FaBiking, FaMoneyBill } from "react-icons/fa";
+import { FaBiking, FaWpforms } from "react-icons/fa";
+import { FaMoneyBill } from "react-icons/fa";
 import { FaList } from "react-icons/fa6";
 import useAuth from "../../../hooks/useAuth";
 
@@ -10,6 +11,7 @@ import useAuth from "../../../hooks/useAuth";
 
 const HostMenu = () => {
 
+  const { user } = useAuth()
   const { user } = useAuth()
 
   return (
@@ -56,7 +58,7 @@ const HostMenu = () => {
         </ul>
       </div>
 
-      
+
 
 
 
@@ -84,6 +86,12 @@ const HostMenu = () => {
         icon={BsHouseAddFill}
         label='International Booking'
         address='demo-pack'
+      />
+
+      <MenuItem
+        icon={FaWpforms}
+        label='Booking Form'
+        address='booking-form'
       />
 
       <MenuItem

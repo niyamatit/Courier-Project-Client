@@ -50,6 +50,8 @@ import PendingParcelList from "../Components/DashBoard/Host/PendingParcelList/Pe
 import ReceivedBranchList from "../Components/DashBoard/Host/ReceivedBranchList/ReceivedBranchList";
 import CompleteDeliveryPayment from "../Components/DashBoard/Host/CompleteDeliveryPayment/CompleteDeliveryPayment";
 import RiderAllParcelList from "../Components/DashBoard/Host/RiderAllParcelList/RiderAllParcelList";
+import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm";
+
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
 // import Tracking1 from "../Components/Pages/Home/WorkForce/UserPackageTracking/Tracking1";
@@ -129,6 +131,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <CreatePackage />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "booking-form",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <BookingForm />
             </HostRoute>
           </PrivateRoute>
         ),
