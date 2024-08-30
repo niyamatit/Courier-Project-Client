@@ -38,9 +38,11 @@ const Sidebar = () => {
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
             <Link className='h-[100px] w-[100px]' to="/"><img src={logoImg} alt="Logo" /></Link>
+            
           </div>
+          
         </div>
-
+        
         <button
           onClick={handleToggle}
           className='mobile-menu-button p-4 focus:outline-none focus:bg-gray-200'

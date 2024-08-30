@@ -10,7 +10,7 @@ import {
 import "react-country-state-city/dist/react-country-state-city.css";
 import axiosSecure from "../../../../api/axiosSecure";
 
-const DemoPackage = () => {
+const MerchantInterNationalAddParcel = () => {
   const [WeightPackage, setWeightPackage] = useState("");
 
   const [ServiceType, setServiceType] = useState("");
@@ -31,7 +31,7 @@ const DemoPackage = () => {
 
   const onSubmit = async (data) => {
     const formData = { ...data };
-    console.log("FormData:,", formData);
+    
     const PercelInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
       Customer_Name: formData?.customerName || "",
@@ -65,7 +65,7 @@ const DemoPackage = () => {
     console.log("Parcel Information:", PercelInformation);
 
     const ParcelProductDetails = await axiosSecure.post(
-      "/international",
+      "/parcel",
       PercelInformation
     );
     console.log(ParcelProductDetails.data);
@@ -556,4 +556,4 @@ const DemoPackage = () => {
   );
 };
 
-export default DemoPackage;
+export default MerchantInterNationalAddParcel;

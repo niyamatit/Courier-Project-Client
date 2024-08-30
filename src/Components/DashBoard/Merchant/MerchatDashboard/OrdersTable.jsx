@@ -32,7 +32,7 @@ const OrdersTable = ({ orders }) => {
                                             : 'bg-gray-500'
                                     }`}
                                 >
-                                    {order.status}
+                                    {order.status || "Pending"}
                                 </span>
                                 <span className="inline-block lg:hidden">{order.status}</span>
                             </td>
