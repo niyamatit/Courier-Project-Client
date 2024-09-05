@@ -51,6 +51,7 @@ import ReceivedBranchList from "../Components/DashBoard/Host/ReceivedBranchList/
 import CompleteDeliveryPayment from "../Components/DashBoard/Host/CompleteDeliveryPayment/CompleteDeliveryPayment";
 import RiderAllParcelList from "../Components/DashBoard/Host/RiderAllParcelList/RiderAllParcelList";
 import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm";
+import Payment from "../Components/DashBoard/Rider/Payment";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -516,6 +517,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ReturnPercel></ReturnPercel>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment",
+        element: (
+          <PrivateRoute>
+            <Payment></Payment>
           </PrivateRoute>
         ),
       },

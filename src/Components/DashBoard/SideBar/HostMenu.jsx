@@ -12,7 +12,7 @@ import useAuth from "../../../hooks/useAuth";
 const HostMenu = () => {
 
   const { user } = useAuth()
-  const { user } = useAuth()
+
 
   return (
     <>
