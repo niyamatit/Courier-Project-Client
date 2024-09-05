@@ -75,7 +75,11 @@ const HostMenu = () => {
             label='Branch Booking'
             address='branch-booking'
           /></li>
-          <li><a>Item 2</a></li>
+          <li><MenuItem
+            icon={FaWpforms}
+            label='Booking Form'
+            address='booking-form'
+          /></li>
         </ul>
       </div>
 
@@ -88,11 +92,7 @@ const HostMenu = () => {
         address='demo-pack'
       />
 
-      <MenuItem
-        icon={FaWpforms}
-        label='Booking Form'
-        address='booking-form'
-      />
+
 
       <MenuItem
         icon={MdOutlineManageHistory}
