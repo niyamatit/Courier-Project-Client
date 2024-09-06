@@ -93,6 +93,101 @@ const DemoPackage = () => {
         >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-3 lg:gap-6">
             <div className="col-span-2 space-y-4 sm:space-y-6 md:space-y-6">
+              {/* Sender Info */}
+              <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
+                  Sender Information
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
+                  <div className="col-span-2 ">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Sender Contact Number*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("SenderContactNumber", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.SenderContactNumber
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.SenderContactNumber && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Sender Name*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("SenderName", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.SenderName
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.SenderName && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Sender Address*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("SenderAddress", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.SenderAddress
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.SenderAddress && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Sender NID Number*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("SenderNidNumber", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${
+                        errors.SenderNidNumber
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.SenderNidNumber && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Purpose*
+                    </label>
+                    <textarea
+                      {...register("SenderPurpose")}
+                      className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
+                    />
+                  </div>
+                  
+                 
+                </div>
+              </div>
               <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
                 <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
                   Customer Information
@@ -377,101 +472,7 @@ const DemoPackage = () => {
                   </div>
                 </div>
               </div>
-              {/* Sender Info */}
-              <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
-                <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
-                  Sender Information
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
-                  <div className="col-span-2 ">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Sender Contact Number*
-                    </label>
-                    <input
-                      type="text"
-                      {...register("SenderContactNumber", { required: true })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${
-                        errors.SenderContactNumber
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
-                    />
-                    {errors.SenderContactNumber && (
-                      <span className="text-red-500">
-                        This field is required
-                      </span>
-                    )}
-                  </div>
-                  <div className="col-span-2">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Sender Name*
-                    </label>
-                    <input
-                      type="text"
-                      {...register("SenderName", { required: true })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${
-                        errors.SenderName
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
-                    />
-                    {errors.SenderName && (
-                      <span className="text-red-500">
-                        This field is required
-                      </span>
-                    )}
-                  </div>
-                  <div className="col-span-2">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Sender Address*
-                    </label>
-                    <input
-                      type="text"
-                      {...register("SenderAddress", { required: true })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${
-                        errors.SenderAddress
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
-                    />
-                    {errors.SenderAddress && (
-                      <span className="text-red-500">
-                        This field is required
-                      </span>
-                    )}
-                  </div>
-                  <div className="col-span-2">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Sender NID Number*
-                    </label>
-                    <input
-                      type="text"
-                      {...register("SenderNidNumber", { required: true })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${
-                        errors.SenderNidNumber
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
-                    />
-                    {errors.SenderNidNumber && (
-                      <span className="text-red-500">
-                        This field is required
-                      </span>
-                    )}
-                  </div>
-                  <div className="col-span-2">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Purpose*
-                    </label>
-                    <textarea
-                      {...register("SenderPurpose")}
-                      className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
-                    />
-                  </div>
-                  
-                 
-                </div>
-              </div>
+              
             </div>
 
             <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">

@@ -11,7 +11,12 @@ const MerchantAddParcel = () => {
   const [ServiceType,setServiceType] = useState("");
   const [ItemType,setItemType] = useState('');
   const [store, setStore] = useState("");
-  
+  const [contactNumber, setContactNumber] = useState('');
+  const [customerInfo, setCustomerInfo] = useState({
+    name: '',
+    address: '',
+   
+  });
 
   const {
     register,
@@ -619,8 +624,8 @@ const Areas =[
     
     const PercelInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
-      Customer_Name:formData?.customerName || "",
-      Customer_Address:formData?.customerAddress || "",
+      Customer_Name:formData?.customerName || customerInfo.name || "",
+      Customer_Address:formData?.customerAddress || customerInfo.address || "",
       Customer_District_Name: formData?.district || "",
       Customer_Area: formData?.area || "",
       Store_Name: formData?.store || "",
@@ -637,7 +642,7 @@ const Areas =[
       Cod_Charge: 0 || "",
       Delivary_Charge: 70 || "",
       Total_Charge: 100 || "",
-      Date: new Date().toISOString().split('T')[0] || "2024-08-15"
+      Date: new Date().toISOString().split('T')[0] || ""
       
  }
    console.log("Parcel Information:",PercelInformation)
@@ -653,9 +658,31 @@ const Areas =[
           timer: 1500,
         });
       }
-    console.log(formData);
+    
 
   };
+
+  useEffect(() => {
+    const fetchCustomerDetails = async () => {
+      if (contactNumber) {
+        try {
+          const response = await axiosSecure.get(`/parcel/${contactNumber}`);
+          if (response.data) {
+            setCustomerInfo({
+              name: response.data.Customer_Name,
+              address: response.data.Customer_Address,
+              
+            });
+          }
+        } catch (error) {
+         
+          setCustomerInfo({ name: '', address: '' });
+        }
+      }
+    };
+
+    fetchCustomerDetails();
+  }, [contactNumber]);
   
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -681,6 +708,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.contactNumber ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  onChange={(e) => setContactNumber(e.target.value)}
                 />
                 {errors.contactNumber && (
                   <span className="text-red-500">This field is required</span>
@@ -692,30 +720,35 @@ const Areas =[
                 </label>
                 <input
                   type="text"
-                  {...register('customerName', { required: true })}
+                  defaultValue={customerInfo.name}
+                  {...register('customerName', { required:  customerInfo.name? false: true })}
+                  
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.customerName ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  
                 />
                 {errors.customerName && (
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
               <div className="col-span-2">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Customer Address*
-                </label>
-                <input
-                  type="text"
-                  {...register('customerAddress', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.customerAddress ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.customerAddress && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
+  <label className="block text-gray-700 font-medium mb-1">
+    Customer Address*
+  </label>
+  <input
+    type="text"
+    defaultValue={customerInfo.address}
+    {...register('customerAddress', { required: !customerInfo.address ? true : false })}
+    className={`input input-bordered w-full p-2 rounded-lg border ${
+      errors.customerAddress ? 'border-red-500' : 'border-gray-300'
+    }`}
+  />
+  {errors.customerAddress && (
+    <span className="text-red-500">This field is required</span>
+  )}
+</div>
+
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Districts*
@@ -726,6 +759,7 @@ const Areas =[
                     errors.district ? 'border-red-500' : 'border-gray-300'
                   }`}
                   onChange={(e) => setSelectedDistrict(e.target.value)}
+                  
                 >
                   <option value="">Select District</option>
                   {Districts.map((district) => (
