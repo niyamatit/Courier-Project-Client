@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
 import Swal from "sweetalert2";
@@ -18,7 +18,14 @@ const MerchantInterNationalAddParcel = () => {
   // const [store, setStore] = useState("");
   const [countryId, setCountryId] = useState(null);
   const [stateId, setStateId] = useState(null);
-
+  const [contactNumber, setContactNumber] = useState('');
+  const [customerInfo, setCustomerInfo] = useState({
+    name: '',
+    address: '', });
+  const [SendercontactNumber, setSenderContactNumber] = useState('');
+  const [SenderInfo, setSenderInfo] = useState({
+    SenderName: '',
+    SenderAddress: '', });
   const {
     register,
     handleSubmit,
@@ -34,8 +41,8 @@ const MerchantInterNationalAddParcel = () => {
     
     const PercelInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
-      Customer_Name: formData?.customerName || "",
-      Customer_Address: formData?.customerAddress || "",
+      Customer_Name: formData?.customerName || customerInfo.name ||"",
+      Customer_Address: formData?.customerAddress ||customerInfo.address || "",
       Customer_Country_Name: formData?.country?.name || "",
       Customer_Country_Currency: formData?.country?.currency_name || "",
       Customer_Country_Capital_Name: formData?.country?.capital || "",
@@ -80,7 +87,49 @@ const MerchantInterNationalAddParcel = () => {
     }
     console.log(formData);
   };
+  useEffect(() => {
+    const fetchCustomerDetails = async () => {
+      if (contactNumber) {
+        try {
+          const response = await axiosSecure.get(`/parcel/international/${contactNumber}`);
+          if (response.data) {
+            setCustomerInfo({
+              name: response.data.Customer_Name,
+              address: response.data.Customer_Address,
+              
+            });
+          }
+        } catch (error) {
+         
+          setCustomerInfo({ name: '', address: '' });
+        }
+      }
+    };
 
+    fetchCustomerDetails();
+  }, [contactNumber]);
+  useEffect(() => {
+    const fetchSenderDetails = async () => {
+      if (SendercontactNumber) {
+        try {
+          const response = await axiosSecure.get(`/parcel/international/sender/${SendercontactNumber}`);
+          if (response.data) {
+            setSenderInfo({
+              SenderName: response.data.Sender_Name,
+              SenderAddress: response.data.Sender_Address,
+              
+            });
+          }
+        } catch (error) {
+         
+          setSenderInfo({ SenderName: '', SenderAddress: '' });
+        }
+      }
+    };
+
+    fetchSenderDetails();
+  }, [SendercontactNumber]);
+  
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
       <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
@@ -110,6 +159,7 @@ const MerchantInterNationalAddParcel = () => {
                           ? "border-red-500"
                           : "border-gray-300"
                       }`}
+                      onChange={(e) => setContactNumber(e.target.value)}
                     />
                     {errors.contactNumber && (
                       <span className="text-red-500">
@@ -123,7 +173,8 @@ const MerchantInterNationalAddParcel = () => {
                     </label>
                     <input
                       type="text"
-                      {...register("customerName", { required: true })}
+                      defaultValue={customerInfo.name}
+                      {...register('customerName', { required:  customerInfo.name? false: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${
                         errors.customerName
                           ? "border-red-500"
@@ -142,7 +193,8 @@ const MerchantInterNationalAddParcel = () => {
                     </label>
                     <input
                       type="text"
-                      {...register("customerAddress", { required: true })}
+                      defaultValue={customerInfo.address}
+    {...register('customerAddress', { required: !customerInfo.address ? true : false })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${
                         errors.customerAddress
                           ? "border-red-500"
@@ -395,6 +447,7 @@ const MerchantInterNationalAddParcel = () => {
                           ? "border-red-500"
                           : "border-gray-300"
                       }`}
+                      onChange={(e) => setSenderContactNumber(e.target.value)}
                     />
                     {errors.SenderContactNumber && (
                       <span className="text-red-500">
@@ -408,7 +461,8 @@ const MerchantInterNationalAddParcel = () => {
                     </label>
                     <input
                       type="text"
-                      {...register("SenderName", { required: true })}
+                      defaultValue={SenderInfo.SenderName}
+                      {...register("SenderName", { required: SenderInfo.SenderName? false: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${
                         errors.SenderName
                           ? "border-red-500"
@@ -427,7 +481,8 @@ const MerchantInterNationalAddParcel = () => {
                     </label>
                     <input
                       type="text"
-                      {...register("SenderAddress", { required: true })}
+                      defaultValue={SenderInfo.SenderAddress}
+                      {...register("SenderAddress", { required: SenderInfo.SenderAddress ? false : true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${
                         errors.SenderAddress
                           ? "border-red-500"
