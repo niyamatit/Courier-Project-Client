@@ -1,5 +1,5 @@
 
-import { CgWebsite } from "react-icons/cg";
+import { CgPaypal, CgWebsite } from "react-icons/cg";
 import MenuItem from "./MenuItem";
 import { MdHome } from "react-icons/md";
 import { GiCardPickup } from "react-icons/gi";
@@ -8,10 +8,10 @@ import useAuth from "../../../hooks/useAuth";
 
 
 const RiderMenu = () => {
-    const{user} = useAuth()
+    const { user } = useAuth()
     return (
         <div>
-        <p className="text-2xl font-semibold text-center text-secondary">{user?.displayName}</p>
+            <p className="text-2xl font-semibold text-center text-secondary">{user?.displayName}</p>
             <MenuItem
                 icon={MdHome}
                 label='Rider Home'
@@ -21,6 +21,12 @@ const RiderMenu = () => {
                 icon={CgWebsite}
                 label='Website'
                 address='/'
+            />
+
+            <MenuItem
+                icon={CgPaypal}
+                label='Payment'
+                address='payment'
             />
             <div className="dropdown w-full">
 

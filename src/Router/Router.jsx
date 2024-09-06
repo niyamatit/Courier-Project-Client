@@ -52,6 +52,7 @@ import CompleteDeliveryPayment from "../Components/DashBoard/Host/CompleteDelive
 import RiderAllParcelList from "../Components/DashBoard/Host/RiderAllParcelList/RiderAllParcelList";
 import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm";
 import PendingPayment from "../Components/DashBoard/Host/PendingPayment/PendingPayment";
+import Payment from "../Components/DashBoard/Rider/Payment";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -527,6 +528,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ReturnPercel></ReturnPercel>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment",
+        element: (
+          <PrivateRoute>
+            <Payment></Payment>
           </PrivateRoute>
         ),
       },

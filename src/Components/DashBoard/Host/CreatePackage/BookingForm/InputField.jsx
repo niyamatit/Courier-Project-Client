@@ -1,4 +1,4 @@
-const InputField = ({ label, placeholder, type = "text", required = false, className, ...props }) => (
+const InputField = ({ label, placeholder, type = "text", required = false, className, register, name, watchValues, registerOptions, errors, ...props }) => (
     <div className={`form-control ${className}`}>
         <label className="label">
             <span className="label-text text-gray-500 font-semibold">{label}</span>
@@ -7,9 +7,12 @@ const InputField = ({ label, placeholder, type = "text", required = false, class
             type={type}
             placeholder={placeholder}
             className="input input-bordered bg-[#E8F0FE] text-black"
-            required={required}
+            // required={required}
+            {...register(name, registerOptions)}
             {...props}
         />
+        {errors[name] && !watchValues[name] && <p className="text-red-500">This field is required</p>}
+
     </div>
 );
 
