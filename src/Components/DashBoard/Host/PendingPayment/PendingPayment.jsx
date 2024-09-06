@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllPackage } from "../../../../api/auth";
-import DeliveryRaw from "./DeliveryRaw";
+import DeliveryRaw from "../CompleteDeliveryPayment/DeliveryRaw";
 
 
 
 
-const CompleteDeliveryPayment = () => {
+
+const PendingPayment = () => {
 
     const { data: packages = [], refetch } = useQuery({
         queryKey: ['packages'],
@@ -13,7 +14,7 @@ const CompleteDeliveryPayment = () => {
       });
       
       // Filter the packages to only include those with the role of 'rider'
-      const payments = packages.filter(payment => payment.update === 'delivered');
+      const payments = packages.filter(payment => payment.update === 'Processing');
 
 
     return (
@@ -75,4 +76,4 @@ const CompleteDeliveryPayment = () => {
     );
 };
 
-export default CompleteDeliveryPayment;
+export default PendingPayment;

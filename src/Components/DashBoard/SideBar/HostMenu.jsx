@@ -72,12 +72,12 @@ const HostMenu = () => {
         <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
           <li><MenuItem
             icon={BsHouseAddFill}
-            label='Branch Booking'
+            label='Online Booking'
             address='branch-booking'
           /></li>
           <li><MenuItem
             icon={FaWpforms}
-            label='Booking Form'
+            label='Offline Booking'
             address='booking-form'
           /></li>
         </ul>
@@ -137,6 +137,11 @@ const HostMenu = () => {
         icon={FaMoneyBill}
         label='Complete Delivery Payment'
         address='delivery-payment'
+      />
+      <MenuItem
+        icon={FaMoneyBill}
+        label='Pending Payment'
+        address='pending-payment'
       />
       <MenuItem
         icon={FaBiking}

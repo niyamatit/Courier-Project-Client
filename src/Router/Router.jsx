@@ -51,6 +51,7 @@ import ReceivedBranchList from "../Components/DashBoard/Host/ReceivedBranchList/
 import CompleteDeliveryPayment from "../Components/DashBoard/Host/CompleteDeliveryPayment/CompleteDeliveryPayment";
 import RiderAllParcelList from "../Components/DashBoard/Host/RiderAllParcelList/RiderAllParcelList";
 import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm";
+import PendingPayment from "../Components/DashBoard/Host/PendingPayment/PendingPayment";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -212,6 +213,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <OnlineSchedule />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pending-payment",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <PendingPayment />
             </HostRoute>
           </PrivateRoute>
         ),
