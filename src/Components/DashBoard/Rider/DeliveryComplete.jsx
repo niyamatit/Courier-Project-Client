@@ -24,7 +24,7 @@ const DeliveryComplete = () => {
 
             <Column
               field="idx"
-              header="#"
+              header="SL"
             />
             <Column
               field="Date"
