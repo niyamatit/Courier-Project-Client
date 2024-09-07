@@ -26,6 +26,7 @@ const MerchantInterNationalAddParcel = () => {
   const [SenderInfo, setSenderInfo] = useState({
     SenderName: '',
     SenderAddress: '', });
+    const [collected, setCollected] = useState("");
   const {
     register,
     handleSubmit,
@@ -55,12 +56,12 @@ const MerchantInterNationalAddParcel = () => {
       Product_Value: parseFloat(formData?.productValue) || "",
       Product_Details: formData?.productDetails || "",
       Product_Remark: formData?.remark || "",
-      Cod_Perchent: 0 || "",
-      Weight_Charge: 0 || "",
-      Cod_Charge: 0 || "",
-      Delivary_Charge: 70 || "",
-      Total_Charge: 100 || "",
-      Date: new Date().toISOString().split("T")[0],
+      Cod_Perchent: 5 || 0,
+      Weight_Charge: weightCharge || 0,
+      Cod_Charge: 5000 || 0,
+      Delivary_Charge: 70000 ||0,
+      Total_Charge: finalCharge || 0,
+      Date: new Date().toISOString().split("T")[0] || "",
       International_Parcel: "International",
       Sender_Contact_Number:formData?.SenderContactNumber || "",
       Sender_Name:formData?.SenderName || "",
@@ -129,7 +130,12 @@ const MerchantInterNationalAddParcel = () => {
 
     fetchSenderDetails();
   }, [SendercontactNumber]);
-  
+  const codCharge = 5000; 
+  const deliveryCharge = 7000;
+const weightCharge = (WeightPackage * 2500) || 0; 
+const totalCharge = weightCharge + codCharge + deliveryCharge;
+const codPercentage =totalCharge*0.05
+const finalCharge = totalCharge + codPercentage
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
       <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
@@ -316,6 +322,7 @@ const MerchantInterNationalAddParcel = () => {
                           ? "border-red-500"
                           : "border-gray-300"
                       }`}
+                      onChange={(e) => setCollected(e.target.value)}
                     />
                     {errors.totalAmount && (
                       <span className="text-red-500">
@@ -363,7 +370,9 @@ const MerchantInterNationalAddParcel = () => {
                       <option value="Fragile">Fragile</option>
                       <option value="Medicine">Medicine</option>
                       <option value="Food">Food</option>
-                      <option value="Device">Device</option>
+                      <option value="Mobile">Mobile</option>
+                      <option value="Laptop">Laptop</option>
+                      <option value="Other Device">Other Device</option>
                     </select>
                     {errors.itemType && (
                       <span className="text-red-500">
@@ -555,27 +564,27 @@ const MerchantInterNationalAddParcel = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Collection Amount</span>
-                  <span className="text-gray-500">0.00</span>
+                  <span className="text-gray-500">{collected || 0} Tk</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Cod Percent</span>
-                  <span className="text-gray-500">0 %</span>
+                  <span className="text-gray-500">5 %</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Weight Charge</span>
-                  <span className="text-gray-500">0.00</span>
+                  <span className="text-gray-500">{weightCharge || 0} Tk</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Cod Charge</span>
-                  <span className="text-gray-500">0.00</span>
+                  <span className="text-gray-500">5000.00 Tk</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Delivery Charge</span>
-                  <span className="text-gray-500">0.00</span>
+                  <span className="text-gray-500">7000.00 Tk</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Total Charge</span>
-                  <span className="text-gray-500">0.00</span>
+                  <span className="text-gray-700 font-semibold">Total Charge</span>
+                  <span className="text-gray-500 font-semibold">{finalCharge} Tk</span>
                 </div>
               </div>
             </div>

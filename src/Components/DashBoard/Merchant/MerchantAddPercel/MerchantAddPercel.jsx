@@ -17,6 +17,7 @@ const MerchantAddParcel = () => {
     address: '',
    
   });
+  const [collected, setCollected] = useState("");
 
   const {
     register,
@@ -637,11 +638,11 @@ const Areas =[
       Product_Value: parseFloat(formData?.productValue) || "",
       Product_Details: formData?.productDetails || "",
       Product_Remark: formData?.remark || "",
-      Cod_Perchent: 0 || "",
-      Weight_Charge: 0 || "",
-      Cod_Charge: 0 || "",
-      Delivary_Charge: 70 || "",
-      Total_Charge: 100 || "",
+      Cod_Perchent: 1 || 0,
+      Weight_Charge: weightCharge || 0,
+      Cod_Charge: 50 || 0,
+      Delivary_Charge: 100 || 0,
+      Total_Charge: finalCharge || 0,
       Date: new Date().toISOString().split('T')[0] || ""
       
  }
@@ -683,7 +684,13 @@ const Areas =[
 
     fetchCustomerDetails();
   }, [contactNumber]);
+  const codCharge = 50; 
   
+const deliveryCharge = 100;
+const weightCharge = (WeightPackage * 25) || 0; 
+const totalCharge = weightCharge + codCharge + deliveryCharge;
+const codPercentage =totalCharge*0.01
+const finalCharge = totalCharge + codPercentage
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
   <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
@@ -869,6 +876,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.totalAmount ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  onChange={(e) => setCollected(e.target.value)}
                 />
                 {errors.totalAmount && (
                   <span className="text-red-500">This field is required</span>
@@ -911,6 +919,9 @@ const Areas =[
                   <option value="Fragile">Fragile</option>
                   <option value="Medicine">Medicine</option>
                   <option value="Food">Food</option>
+                  <option value="Mobile">Mobile</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Other Device">Other Device</option>
                 </select>
                 {errors.itemType && (
                   <span className="text-red-500">This field is required</span>
@@ -976,27 +987,27 @@ const Areas =[
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Collection Amount</span>
-              <span className="text-gray-500">0.00</span>
+              <span className="text-gray-500">{collected || 0}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Cod Percent</span>
-              <span className="text-gray-500">0 %</span>
+              <span className="text-gray-500">1 %</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Weight Charge</span>
-              <span className="text-gray-500">0.00</span>
+              <span className="text-gray-500">{(WeightPackage*25) || 0} Tk</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Cod Charge</span>
-              <span className="text-gray-500">0.00</span>
+              <span className="text-gray-500">50.00 Tk</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Delivery Charge</span>
-              <span className="text-gray-500">0.00</span>
+              <span className="text-gray-500">100.00 Tk</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Total Charge</span>
-              <span className="text-gray-500">0.00</span>
+              <span className="text-gray-500 font-semibold">{finalCharge} Tk</span>
             </div>
           </div>
         </div>
