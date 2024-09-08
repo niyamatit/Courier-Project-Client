@@ -125,7 +125,7 @@ const MerchantInterNationalAddParcel = () => {
           }
         } catch (error) {
          
-          setSenderInfo({ SenderName: '', SenderAddress: '' });
+           setSenderInfo({ SenderName: '', SenderAddress: '' });
         }
       }
     };
