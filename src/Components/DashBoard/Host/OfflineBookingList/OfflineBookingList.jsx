@@ -1,23 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllPackage } from "../../../../api/auth";
-import DeliveryRaw from "./DeliveryRaw";
+import TableRow from "./TableRow";
+import { getBookings } from "../../../../api/bookings";
 
 
 
-
-const CompleteDeliveryPayment = () => {
+const OfflineBookingList = () => {
 
     const { data: packages = [], refetch } = useQuery({
-        queryKey: ['packages'],
-        queryFn: async () => await getAllPackage(),
-      });
-      
-      // Filter the packages to only include those with the role of 'rider'
-      const payments = packages.filter(payment => payment.update === 'delivered');
+        queryKey: ['package'],
+        queryFn: async () => await getBookings(),
+      })
 
+    //   console.log(packages)
 
     return (
         <>
+        <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Online Booking Schedule</h1>
         <div className='container mx-auto px-4 sm:px-8'>
          
           <div className='py-8'>
@@ -25,42 +23,53 @@ const CompleteDeliveryPayment = () => {
               <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
                 <table className='min-w-full leading-normal'>
                   <thead>
-                    <tr>
+                    <tr className="text-lg font-rancho">
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Sender Name
+                       Your Name
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Receiver Name
+                       Receiver Name
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Status
+                        Delivery Date
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Amount
+                        PickUp Date
                       </th>
   
-                     
+                      <th
+                        scope='col'
+                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                      >
+                        Receiver Contact No
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                      >
+                        Action
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                      {/* payment data table row */}
-                      {payments &&
-                      payments.map(payment => (
-                        <DeliveryRaw
-                          key={payment._id}
-                          payment={payment}
+                      {/* User data table row */}
+                      {packages &&
+                      packages.map(pack => (
+                        <TableRow
+                          key={pack._id}
+                          pack={pack}
                           refetch={refetch}
                         />
                       ))}
@@ -75,4 +84,4 @@ const CompleteDeliveryPayment = () => {
     );
 };
 
-export default CompleteDeliveryPayment;
+export default OfflineBookingList;

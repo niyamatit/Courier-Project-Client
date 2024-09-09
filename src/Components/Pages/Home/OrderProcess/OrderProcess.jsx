@@ -33,7 +33,7 @@ const OrderProcess = () => {
                             <FaCirclePlay className="h-10 w-10 text-[#fec201]" />
                         </div>
                         <div>
-                            <h1 className="text-xl font-bold text-white font-rancho">We have 2 years experience in this passion</h1>
+                            <h1 className="text-xl font-bold text-white font-rancho">We have 22 years experience in this passion</h1>
                             <p className="text-white">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</p>
                         </div>
                     </div>

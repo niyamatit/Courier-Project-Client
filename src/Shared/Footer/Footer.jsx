@@ -85,11 +85,14 @@ const Footer = () => {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-white sm:text-center dark:text-gray-400">
             © 2024{" "}
-            <a href="" className="hover:underline">
-              Niyamat™
+            <a href="https://niyamatexpress.com/" className="hover:underline">
+              Niyamat Express™
             </a>
-            . All Rights Reserved by Niyamt Courier.
+            . All Rights Reserved by Niyamat Express.
+            <p className="text-start">Developed By <a href="https://niyamatit.com/">Niyamat IT</a>Part Of <a href="https://www.niyamatgroup.com/">Niyamat Unity</a></p>
           </span>
+          
+          
           <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
             <a
               href="#"
