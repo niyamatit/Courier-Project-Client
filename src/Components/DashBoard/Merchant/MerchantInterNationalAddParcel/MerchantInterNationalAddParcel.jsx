@@ -11,6 +11,7 @@ import "react-country-state-city/dist/react-country-state-city.css";
 import axiosSecure from "../../../../api/axiosSecure";
 import useAuth from './../../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
 
 const MerchantInterNationalAddParcel = () => {
   const [WeightPackage, setWeightPackage] = useState("");
@@ -198,7 +199,13 @@ const MerchantRequest = requests.find((req) => req.email === user?.email);
   const isPendingForInternationalBooking = MerchantRequest?.InternationalBookingStatus === "Pending";
   const isApproveForInternationalBooking = MerchantRequest?.InternationalBookingStatus === "Approve";
 
+  const location = useLocation();
+  const currentPath = location.pathname;
 
+  // Check if the current route matches your desired path
+  const isMerchantInterNationalAddParcelRoute = currentPath === "/dashboard/MerchantInterNationalAddPercel";
+
+  console.log("Current Path:",currentPath)
 
   return (
     <div>
@@ -692,14 +699,15 @@ const MerchantRequest = requests.find((req) => req.email === user?.email);
       <div 
       
       className="container mx-auto flex justify-center">
-      {
-       ( !isApproveForInternationalBooking || !isPendingForInternationalBooking) && <button
-      
-      onClick={handleClick}
-      className="btn hover:bg-blue-500 bg-blue-600 text-white">
-        Request For International Booking
-      </button>
-      }
+       {isMerchantInterNationalAddParcelRoute && 
+       (!isApproveForInternationalBooking || !isPendingForInternationalBooking) && (
+        <button
+          onClick={handleClick}
+          className="btn hover:bg-blue-500 bg-blue-600 text-white"
+        >
+          Request For International Booking
+        </button>
+      )}
     </div>
      }
 
