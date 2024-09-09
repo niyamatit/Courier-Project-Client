@@ -37,6 +37,13 @@ const BookingForm = () => {
         generateUniqueCnNumber();
     }, [setValue]);
 
+    // Auto-generate the current booking date on component mount
+    useEffect(() => {
+        const currentDate = new Date().toISOString().slice(0, 10); // Get current date in "YYYY-MM-DD" format
+        setValue("bookingDate", currentDate); // Set booking date in the form
+    }, [setValue]);
+    
+
     // Calculate service charge and sender receive based on COD charge
     useEffect(() => {
         if (codCharge > 0) {
@@ -88,7 +95,7 @@ const BookingForm = () => {
         <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
             <form onSubmit={handleSubmit(onSubmit)} className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
                 <h1 className="text-xl sm:text-xl md:text-xl font-bold mb-4 sm:mb-6 md:mb-6 text-blue-700">
-                    To-Pay P.S.L Lot Booking
+                    P.S.L Lot Booking
                 </h1>
                 <div className="grid lg:grid-cols-2 gap-2">
                     <div>
@@ -111,10 +118,10 @@ const BookingForm = () => {
                         <Section>
                             <InputField watchValues={watchValues} register={register} name={"reference"} errors={errors} label="Reference" placeholder="reference" required />
                             <div className="flex gap-2 mt-4">
-                                <input type="checkbox" defaultChecked className="checkbox mt-1" />
+                                <input type="checkbox" className="checkbox mt-1" />
                                 <h2 className="text-blue-800 font-semibold text-xl">H/D</h2>
-                                <input type="checkbox" defaultChecked className="checkbox mt-1" />
-                                <h2 className="text-blue-800 font-semibold text-xl">Express</h2>
+                                <input type="checkbox"  className="checkbox mt-1" />
+                                <h2 className="text-blue-800 font-semibold text-xl">Exchange</h2>
                             </div>
                         </Section>
                         <Section additionalClasses="mt-4">
@@ -146,13 +153,24 @@ const BookingForm = () => {
                                 />
                                 <textarea placeholder="" className="textarea textarea-bordered textarea-sm mt-6 bg-[#f9f5f1] text-black w-full max-w-xs"></textarea>
                             </div>
-                            <InputField watchValues={watchValues} register={register} name={"bookingDate"} registerOptions={{ required: true }} errors={errors} label="Booking Date" placeholder="Booking date" required />
+                            {/* Auto-generated booking date */}
+                            <InputField watchValues={watchValues} register={register} name={"bookingDate"} errors={errors} label="Booking Date" required readOnly />
                             <InputField watchValues={watchValues} register={register} name={"bookingBranch"} registerOptions={{ required: true }} errors={errors} label="Booking Branch" placeholder="CRD" required />
                             <div className="grid grid-cols-2 gap-1">
                                 <InputField watchValues={watchValues} register={register} name={"department"} registerOptions={{ required: true }} errors={errors} label="Department" placeholder="Department name" required />
                                 <InputField watchValues={watchValues} register={register} name={"inputUser"} registerOptions={{ required: true }} errors={errors} label="Input User" placeholder="Input user" required />
                                 <SelectField watchValues={watchValues} register={register} name={"serviceType"} registerOptions={{ required: true }} errors={errors} label="Service Type" options={["Service 1", "Service 2", "Service 3"]} />
-                                <InputField watchValues={watchValues} register={register} name={"paymentMethod"} registerOptions={{ required: true }} errors={errors} label="Payment Method" placeholder="" required />
+                                {/* Payment Method Dropdown */}
+                                <SelectField
+                                    watchValues={watchValues}
+                                    register={register}
+                                    name={"paymentMethod"}
+                                    registerOptions={{ required: true }}
+                                    errors={errors}
+                                    label="Payment Method"
+                                    options={["Cash", "To Pay", "Credit"]}
+                                    required
+                                />
                             </div>
                         </Section>
 
