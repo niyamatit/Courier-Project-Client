@@ -1,13 +1,17 @@
 import { FaTruckPickup } from "react-icons/fa";
 import HostStatsCard from "./HostStatsCard";
-import SalesLineChart from "../../Admin/SalesLineChart";
 import { useEffect, useState } from "react";
-import { getAdminStat } from "../../../../api/utils";
+// import { getAdminStat } from "../../../../api/utils";
 import ParcelPieChart from "../../Merchant/MerchatDashboard/ParcelPieChart";
+import ParcelChart from "../../Merchant/MerchatDashboard/ParcelChart";
+import axiosSecure from "../../../../api/axiosSecure";
+import useAuth from "../../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import DatePicker from "react-datepicker";
 
 const HostDashboard = () => {
-    const [statData, setStatData] = useState({});
-    const [hostData, setHostData] = useState([]);
+    // const [statData, setStatData] = useState({});
+    // const [hostData, setHostData] = useState([]);
     const [pickupRequestData, setPickupRequestData] = useState([]);
     const [pickupDonetData, setPickupDonetData] = useState([]);
     const [pickupReadyForDeliveryData, setPickupReadyForDeliveryData] = useState([]);
@@ -21,16 +25,20 @@ const HostDashboard = () => {
     const [totalPickupDonetData, setTotalPickupDonetData] = useState([]);
     const [todayNewParcelData, setTodayNewParcelData] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [filteredChartData, setFilteredChartData] = useState(null);
+    const [filteredPieData, setFilteredPieData] = useState(null);
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
+
+    // useEffect(() => {
+    //     getAdminStat().then(data => setStatData(data));
+    // }, []);
 
     useEffect(() => {
-        getAdminStat().then(data => setStatData(data));
-    }, []);
-
-    useEffect(() => {
-        fetch('http://localhost:5000/package')
+        fetch('https://courier-server.vercel.app/package')
             .then(res => res.json())
             .then(data => {
-                setHostData(data);
+                // setHostData(data);
 
                 // Extract today's date
                 const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
@@ -80,123 +88,197 @@ const HostDashboard = () => {
                     .filter(item => item.booking && item.booking.split('T')[0] === today)
                     .reduce((acc, item) => acc + (parseInt(item.amount, 10) || 0), 0);
                 setTotalAmount(totalAmount);
-           
 
 
+
+            });
+    }, []);
+
+    const { user } = useAuth();
+    const { data: parcelData = [] } = useQuery({
+        queryKey: ["parcelData", user?.email],
+        queryFn: async () => {
+            const res = await axiosSecure.get("/package");
+            return res.data;
+        },
+        enabled: !!user?.email,
     });
-}, []);
 
 
-const data = {
-    parcelBooking: 20,
-    delivered: 30,
-    partiallyDelivered: 10,
-    processing: 15,
-    cancelled: 5,
-    deleted: 2,
-};
+    useEffect(() => {
+        if (parcelData.length > 0) {
+            const filteredData = parcelData.filter((item) => {
+                const itemDate = item?.booking ? new Date(item.booking).toISOString().split('T')[0] : null;
+                const isAfterStartDate = fromDate ? itemDate >= fromDate : true;
+                const isBeforeEndDate = toDate ? itemDate <= toDate : true;
+                return isAfterStartDate && isBeforeEndDate;
+            });
 
-return (
-    <div>
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
-            <HostStatsCard
-                title="Today Pickup Request"
-                icon={<FaTruckPickup />}
-                value={pickupRequestData?.length}
-                color="bg-blue-100"
-            />
-            <HostStatsCard
-                title="Today Pickup Done"
-                icon={<FaTruckPickup />}
-                value={pickupDonetData?.length}
-                color="bg-green-100"
-            />
-            <HostStatsCard
-                title="Total Pickup Done"
-                icon={<FaTruckPickup />}
-                value={totalPickupDonetData?.length}
-                color="bg-red-100"
-            />
-            <HostStatsCard
-                title="Total Hub Transfer Complete"
-                icon={<FaTruckPickup />}
-                value="20"
-                color="bg-red-100"
-            />
-            <HostStatsCard
-                title="Today New Parcel"
-                icon={<FaTruckPickup />}
-                value={todayNewParcelData?.length}
-                color="bg-green-100"
-            />
-            <HostStatsCard
-                title="Previous Pending Parcel"
-                icon={<FaTruckPickup />}
-                value="20"
-                color="bg-orange-100"
-            />
-            <HostStatsCard
-                title="Today Parcel For Delivery"
-                icon={<FaTruckPickup />}
-                value={pickupReadyForDeliveryData?.length}
-                color="bg-yellow-100"
-            />
-            <HostStatsCard
-                title="Total Parcel For Delivery"
-                icon={<FaTruckPickup />}
-                value={totalPickupReadyForDeliveryData?.length}
-                color="bg-pink-100"
-            />
-            <HostStatsCard
-                title="Today Delivery Complete"
-                icon={<FaTruckPickup />}
-                value={deliveryCompleteData?.length}
-                color="bg-cyan-100"
-            />
-            <HostStatsCard
-                title="Today Delivery Pending"
-                icon={<FaTruckPickup />}
-                value={pendingDeliveryData?.length}
-                color="bg-sky-100"
-            />
-            <HostStatsCard
-                title="Today Hub Transfer"
-                icon={<FaTruckPickup />}
-                value={todayHubTransferData?.length}
-                color="bg-indigo-100"
-            />
-            <HostStatsCard
-                title="Todays Cancel Parcel"
-                icon={<FaTruckPickup />}
-                value={cancledDeliveryData?.length}
-                color="bg-violet-100"
-            />
-            <HostStatsCard
-                title="Total Delivery Complete"
-                icon={<FaTruckPickup />}
-                value={totalDeliveryCompleteData?.length}
-                color="bg-purple-100"
-            />
-            <HostStatsCard
-                title="Total Return Parcel"
-                icon={<FaTruckPickup />}
-                value={totalCancledDeliveryData?.length}
-                color="bg-rose-100"
-            />
-            <HostStatsCard
-                title="Todays Collection Amount"
-                icon={<FaTruckPickup />}
-                value={totalAmount}
-                color="bg-blue-100"
-            />
+            const totalWeight = filteredData.reduce((sum, item) => sum + Number(item?.qty || 0), 0);
+            const deliveredWeight = filteredData.filter(item => item.update === "delivered").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
+            const cancelledWeight = filteredData.filter(item => item.update === "canceled").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
+            const processingWeight = filteredData.filter(item => item.update === "Processing").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
+
+            const pendingDeliveries = filteredData.filter(item => item.update !== "delivered").length;
+            const returnedWeight = filteredData.filter(item => item.update === "canceled").reduce((sum, item) => sum + Number(item.qty || 0), 0);
+
+            const chartData = {
+                labels: filteredData.map(item => item?.booking ? new Date(item.booking).toISOString().split('T')[0] : null),
+                pickup: filteredData.map(item => Number(item?.qty || 0)),
+                delivered: filteredData.reduce((sum, item) => sum + Number(item?.qty || 0), 0),
+            };
+
+            setFilteredChartData(chartData);
+
+            const pieData = {
+                parcelBooking: totalWeight,
+                delivered: deliveredWeight,
+                partiallyDelivered: filteredData.filter(item => item.update === "Partial").reduce((sum, item) => sum + item.qty, 0),
+                processing: processingWeight,
+                cancelled: cancelledWeight,
+                deleted: 0,
+                pendingDeliveries,
+                returned: returnedWeight
+            };
+
+            setFilteredPieData(pieData);
+        }
+    }, [parcelData, fromDate, toDate]);
+
+
+
+    return (
+        <div>
+
+            <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
+                <div className="flex gap-6 mb-4">
+                    <div>
+                        <label className="font-semibold text-gray-700">From: </label>
+                        <DatePicker
+                            selected={fromDate}
+                            onChange={(date) => setFromDate(date)}
+                            className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+                    <div>
+                        <label className="font-semibold text-gray-700">To: </label>
+                        <DatePicker
+                            selected={toDate}
+                            onChange={(date) => setToDate(date)}
+                            className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex-1 hover:border-blue-400 border-[2px] bg-white border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
+                        <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
+                    </div>
+                    <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
+                        <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
+                    </div>
+                </div>
+            </div>
+
+
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
+                <HostStatsCard
+                    title="Today Pickup Request"
+                    icon={<FaTruckPickup />}
+                    value={pickupRequestData?.length}
+                    color="bg-blue-100"
+                />
+                <HostStatsCard
+                    title="Today Pickup Done"
+                    icon={<FaTruckPickup />}
+                    value={pickupDonetData?.length}
+                    color="bg-green-100"
+                />
+                <HostStatsCard
+                    title="Total Pickup Done"
+                    icon={<FaTruckPickup />}
+                    value={totalPickupDonetData?.length}
+                    color="bg-red-100"
+                />
+                <HostStatsCard
+                    title="Total Hub Transfer Complete"
+                    icon={<FaTruckPickup />}
+                    value="20"
+                    color="bg-red-100"
+                />
+                <HostStatsCard
+                    title="Today New Parcel"
+                    icon={<FaTruckPickup />}
+                    value={todayNewParcelData?.length}
+                    color="bg-green-100"
+                />
+                <HostStatsCard
+                    title="Previous Pending Parcel"
+                    icon={<FaTruckPickup />}
+                    value="20"
+                    color="bg-orange-100"
+                />
+                <HostStatsCard
+                    title="Today Parcel For Delivery"
+                    icon={<FaTruckPickup />}
+                    value={pickupReadyForDeliveryData?.length}
+                    color="bg-yellow-100"
+                />
+                <HostStatsCard
+                    title="Total Parcel For Delivery"
+                    icon={<FaTruckPickup />}
+                    value={totalPickupReadyForDeliveryData?.length}
+                    color="bg-pink-100"
+                />
+                <HostStatsCard
+                    title="Today Delivery Complete"
+                    icon={<FaTruckPickup />}
+                    value={deliveryCompleteData?.length}
+                    color="bg-cyan-100"
+                />
+                <HostStatsCard
+                    title="Today Delivery Pending"
+                    icon={<FaTruckPickup />}
+                    value={pendingDeliveryData?.length}
+                    color="bg-sky-100"
+                />
+                <HostStatsCard
+                    title="Today Hub Transfer"
+                    icon={<FaTruckPickup />}
+                    value={todayHubTransferData?.length}
+                    color="bg-indigo-100"
+                />
+                <HostStatsCard
+                    title="Todays Cancel Parcel"
+                    icon={<FaTruckPickup />}
+                    value={cancledDeliveryData?.length}
+                    color="bg-violet-100"
+                />
+                <HostStatsCard
+                    title="Total Delivery Complete"
+                    icon={<FaTruckPickup />}
+                    value={totalDeliveryCompleteData?.length}
+                    color="bg-purple-100"
+                />
+                <HostStatsCard
+                    title="Total Return Parcel"
+                    icon={<FaTruckPickup />}
+                    value={totalCancledDeliveryData?.length}
+                    color="bg-rose-100"
+                />
+                <HostStatsCard
+                    title="Todays Collection Amount"
+                    icon={<FaTruckPickup />}
+                    value={totalAmount}
+                    color="bg-blue-100"
+                />
+            </div>
+
+
         </div>
-
-        <div className="grid lg:grid-cols-2">
-            <SalesLineChart data={statData?.chartData} />
-            <ParcelPieChart data={data} />
-        </div>
-    </div>
-);
+    );
 };
 
 export default HostDashboard;

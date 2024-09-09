@@ -17,7 +17,7 @@ const DeliveryparcelList = () => {
 
   useEffect(() => {
     if (initialParcels) {
-      setParcels(initialParcels);
+      setParcels(initialParcels.map((p, idx) => ({ ...p, idx: idx + 1 })));
     }
   }, [initialParcels]);
 
@@ -25,11 +25,11 @@ const DeliveryparcelList = () => {
     try {
       // Update the local state
       setParcels((prevParcels) =>
-        prevParcels.map((p) =>
-          p._id === parcel._id ? { ...p, deliveryStatus: value } : p
+        prevParcels.map((p, idx) =>
+          p._id === parcel._id ? { ...p, deliveryStatus: value, idx: idx + 1 } : { ...p, idx: idx + 1 }
         )
       );
-      await axios.put(`http://localhost:5000/parcel/${parcel._id}`, {
+      await axios.put(`https://courier-server.vercel.app/parcel/${parcel._id}`, {
         deliveryStatus: value,
       });
     } catch (error) {
@@ -62,6 +62,10 @@ const DeliveryparcelList = () => {
             loading={isLoading}
             emptyMessage="No parcels found."
           >
+            <Column
+              field="idx"
+              header="SL"
+            />
             <Column
               field="Date"
               header="Date"

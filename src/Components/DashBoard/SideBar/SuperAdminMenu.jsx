@@ -6,7 +6,7 @@ import useAuth from "../../../hooks/useAuth";
 
 const SuperAdminMenu = () => {
 
-    const{user} = useAuth()
+    const { user } = useAuth()
 
     return (
         <div>
@@ -22,6 +22,7 @@ const SuperAdminMenu = () => {
                 label='See All Booking'
                 address='see-all-bookings'
             />
+
         </div>
     );
 };

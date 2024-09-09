@@ -10,33 +10,35 @@ const PickupparcelList = () => {
   const [parcels, setParcels] = useState([]);
 
   const [statuses] = useState([
-    { label: "Ongoing", value: "Ongoing" },
-    { label: "Delivered", value: "Delivered" },
+    { label: "Pickuped", value: "Ongoing" },
+    { label: "Hold", value: "Hold" },
     { label: "Cancel", value: "Cancel" },
   ]);
 
   useEffect(() => {
     if (initialParcels) {
-      setParcels(initialParcels);
+      setParcels(initialParcels.map((p, idx) => ({ ...p, idx: idx + 1 })));
     }
   }, [initialParcels]);
 
   const handleStatusChange = async (value, parcel) => {
+    console.log("ornob", value);
     try {
       // Update the local state
       setParcels((prevParcels) =>
-        prevParcels.map((p) =>
-          p._id === parcel._id ? { ...p, deliveryStatus: value } : p
+        prevParcels.map((p, idx) =>
+          p._id === parcel._id ? { ...p, deliveryStatus: value, idx: idx + 1 } : { ...p, idx: idx + 1 }
         )
       );
 
-      await axios.put(`http://localhost:5000/parcel/${parcel._id}`, {
+      await axios.put(`https://courier-server.vercel.app/parcel/${parcel._id}`, {
         deliveryStatus: value,
       });
     } catch (error) {
       console.error("Error updating parcel status:", error);
     }
   };
+
 
   return (
     <div className=" mx-auto  sm:px-8 ">
@@ -53,6 +55,11 @@ const PickupparcelList = () => {
             loading={isLoading}
             emptyMessage="No parcels found."
           >
+
+            <Column
+              field="idx"
+              header="SL"
+            />
             <Column
               field="Date"
               header="Date"

@@ -3,7 +3,9 @@ import { Column } from "primereact/column";
 import { useParcels } from "../../../hooks/useParcels";
 
 const DeliveryComplete = () => {
-  const { data: parcels, isLoading } = useParcels();
+  const { data, isLoading } = useParcels();
+
+  const parcels = data.map((d, idx) => ({ ...d, idx: idx + 1 }))
 
   return (
     <div className="container mx-auto px-4 sm:px-8  overflow-auto md:max-w-[85%]">
@@ -19,6 +21,11 @@ const DeliveryComplete = () => {
             loading={isLoading}
             emptyMessage="No parcels found."
           >
+
+            <Column
+              field="idx"
+              header="SL"
+            />
             <Column
               field="Date"
               header="Date"
