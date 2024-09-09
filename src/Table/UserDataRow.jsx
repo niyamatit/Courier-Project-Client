@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { updateRole } from '../api/auth'
 import UpdateUserModal from '../Modal/UpdateUserModal'
+import axiosSecure from '../api/axiosSecure'
+import Swal from 'sweetalert2'
 
 
 const UserDataRow = ({ user, refetch }) => {
@@ -20,6 +22,20 @@ const UserDataRow = ({ user, refetch }) => {
       setIsOpen(false)
     }
   }
+  const handleAcceptFieldRequest = (user) => {
+  axiosSecure.patch(`/users/admin/field/${user._id}`).then((res) => {
+      if (res.data.modifiedCount > 0) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${user?.email} is Ready to Add International Parcel`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  };
   return (
     <tr>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -61,6 +77,19 @@ const UserDataRow = ({ user, refetch }) => {
           modalHandler={modalHandler}
         />
       </td>
+      <td className='px-10 py-5 border-b border-gray-200 bg-white text-sm'>
+                  {
+                    user?.InternationalBookingStatus === 'Pending' ? 
+                    <button
+                    onClick={() => handleAcceptFieldRequest(user)}
+                    className="btn btn-xs bg-green-600 text-xs text-white "
+                  >
+                    Approve
+                  </button>
+                  :
+                  <p className="">No Request</p>
+                  }
+                  </td>
     </tr>
   )
 }
