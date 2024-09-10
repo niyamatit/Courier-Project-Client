@@ -80,6 +80,11 @@ const HostMenu = () => {
             label='Offline Booking'
             address='booking-form'
           /></li>
+          <li><MenuItem
+            icon={FaList}
+            label='Offline Data List'
+            address='offline-booking-list'
+          /></li>
         </ul>
       </div>
 

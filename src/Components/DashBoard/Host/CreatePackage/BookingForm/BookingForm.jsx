@@ -18,7 +18,7 @@ const BookingForm = () => {
     const [bookingInfo, setBookingInfo] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
 
-
+    
 
     const closeModal = () => {
         setIsOpen(false);
@@ -72,10 +72,14 @@ const BookingForm = () => {
     };
 
     const onSubmit = async (data) => {
-        console.log(data);
+        const updatedData = {
+            ...data,
+            update: 'processing', // Add the update field here
+        };
+
         const ParcelProductDetails = await axiosSecure.post(
             "/offline",
-            data
+            updatedData
         );
         console.log(ParcelProductDetails.data);
         if (ParcelProductDetails.data.insertedId) {
