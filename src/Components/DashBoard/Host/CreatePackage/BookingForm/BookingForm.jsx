@@ -23,18 +23,7 @@ const BookingForm = () => {
   const [senderReceive, setSenderReceive] = useState(0);
   const [bookingInfo, setBookingInfo] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [senderContactNo, setSenderContactNo] = useState('');
-  const [senderInfo, setSenderInfo] = useState({
-    name: '',
-    address: '',
-   
-  });
-   const [receiverContactNo, setReceiverContactNo] = useState('');
-  const [receiverInfo, setReceiverInfo] = useState({
-    ReceiverName: '',
-    ReceiverAddress: '',
-   
-  });
+  
 
   const closeModal = () => {
     setIsOpen(false);
