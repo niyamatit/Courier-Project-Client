@@ -29,10 +29,10 @@ const BookingForm = () => {
     address: '',
    
   });
-  const [receiverContactNo, setReceiverContactNo] = useState('');
+   const [receiverContactNo, setReceiverContactNo] = useState('');
   const [receiverInfo, setReceiverInfo] = useState({
-    name: '',
-    address: '',
+    ReceiverName: '',
+    ReceiverAddress: '',
    
   });
 
@@ -123,6 +123,27 @@ const BookingForm = () => {
 
     fetchCustomerDetails();
   }, [senderContactNo]);
+  useEffect(() => {
+    const fetchReceiverDetails = async () => {
+      if (receiverContactNo) {
+        try {
+          const response = await axiosSecure.get(`/offline/receiver/${receiverContactNo}`);
+          if (response.data) {
+            setReceiverInfo({
+              ReceiverName: response.data.receiverName,
+              ReceiverAddress: response.data.receiveraddress,
+              
+            });
+          }
+        } catch (error) {
+         
+          setReceiverInfo({ ReceiverName: '', ReceiverAddress: '' });
+        }
+      }
+    };
+
+    fetchReceiverDetails();
+  }, [receiverContactNo]);
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -248,27 +269,27 @@ const BookingForm = () => {
                 errors={errors}
                 label="Contact No."
                 placeholder="receiver contact no."
-                required
+                onChange={(e) => setReceiverContactNo(e.target.value)}
               />
               <InputField
                 watchValues={watchValues}
                 register={register}
                 name={"receiverName"}
-                registerOptions={{ required: true }}
+                registerOptions={{required:  receiverInfo.ReceiverName? false: true}}
                 errors={errors}
                 label="Name"
                 placeholder="receiver name"
-                required
+                defaultValue={receiverInfo.ReceiverName}
               />
               <InputField
                 watchValues={watchValues}
                 register={register}
                 name={"receiveraddress"}
-                registerOptions={{ required: true }}
+                registerOptions={{required:  receiverInfo.ReceiverAddress? false: true}}
                 errors={errors}
                 label="Address"
                 placeholder="receiver address"
-                required
+                defaultValue={receiverInfo.ReceiverAddress}
               />
             </Section>
           </div>
