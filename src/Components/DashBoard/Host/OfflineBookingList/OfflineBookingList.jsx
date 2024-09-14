@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import TableRow from "./TableRow";
-import { getBookings } from "../../../../api/bookings";
+import { getOfflineBookings } from "../../../../api/bookings";
 
 
 
@@ -8,27 +8,27 @@ const OfflineBookingList = () => {
 
     const { data: packages = [], refetch } = useQuery({
         queryKey: ['package'],
-        queryFn: async () => await getBookings(),
+        queryFn: async () => await getOfflineBookings(),
       })
 
-    //   console.log(packages)
+      console.log(packages) 
 
     return (
         <>
-        <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Online Booking Schedule</h1>
+        <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Offline Booking List</h1>
         <div className='container mx-auto px-4 sm:px-8'>
          
           <div className='py-8'>
             <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
-              <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
-                <table className='min-w-full leading-normal'>
+              <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'> 
+                <table className='min-w-full leading-normal'> 
                   <thead>
                     <tr className="text-lg font-rancho">
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                       Your Name
+                       Sender Name
                       </th>
                       <th
                         scope='col'
@@ -40,20 +40,20 @@ const OfflineBookingList = () => {
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Delivery Date
+                        Booking Date
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        PickUp Date
+                        Receiver Mobile 
                       </th>
   
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Receiver Contact No
+                        Cn Number
                       </th>
                       <th
                         scope='col'

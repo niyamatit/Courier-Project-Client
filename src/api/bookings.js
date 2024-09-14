@@ -21,3 +21,10 @@ export const getBookings = async email => {
   console.log(email)
   return data
 }
+
+// get all offline booking for a guest by email
+export const getOfflineBookings = async email => {
+  const { data } = await axiosSecure(`/offline`)
+  console.log(email)
+  return data
+}
