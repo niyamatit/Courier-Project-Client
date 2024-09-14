@@ -102,48 +102,7 @@ const BookingForm = () => {
     setIsOpen(true);
   };
 
-  useEffect(() => {
-    const fetchCustomerDetails = async () => {
-      if (senderContactNo) {
-        try {
-          const response = await axiosSecure.get(`/offline/${senderContactNo}`);
-          if (response.data) {
-            setSenderInfo({
-              name: response.data.senderName,
-              address: response.data.address,
-              
-            });
-          }
-        } catch (error) {
-         
-          setSenderInfo({ name: '', address: '' });
-        }
-      }
-    };
-
-    fetchCustomerDetails();
-  }, [senderContactNo]);
-  useEffect(() => {
-    const fetchReceiverDetails = async () => {
-      if (receiverContactNo) {
-        try {
-          const response = await axiosSecure.get(`/offline/receiver/${receiverContactNo}`);
-          if (response.data) {
-            setReceiverInfo({
-              ReceiverName: response.data.receiverName,
-              ReceiverAddress: response.data.receiveraddress,
-              
-            });
-          }
-        } catch (error) {
-         
-          setReceiverInfo({ ReceiverName: '', ReceiverAddress: '' });
-        }
-      }
-    };
-
-    fetchReceiverDetails();
-  }, [receiverContactNo]);
+  
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
