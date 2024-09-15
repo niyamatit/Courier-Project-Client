@@ -23,7 +23,7 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
                         <p className='text-left'>Chittagong Road, Narayanganj 1430</p>
                     </div>
                     <div className='justify-end text-sm'>
-                        <p>https://niyamatit.com/</p>
+                        <p>https://www.niyamatexpress.com/</p>
                         <p>email:info@niyamatit.com</p>
                     </div>
                 </div>

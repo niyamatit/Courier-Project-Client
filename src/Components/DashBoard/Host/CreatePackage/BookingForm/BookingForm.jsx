@@ -23,23 +23,16 @@ const BookingForm = () => {
   const [senderReceive, setSenderReceive] = useState(0);
   const [bookingInfo, setBookingInfo] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [senderContactNo, setSenderContactNo] = useState('');
+  const [senderContactNo, setSenderContactNo] = useState("");
   const [senderInfo, setSenderInfo] = useState({
-    name: '',
-    address: '',
-   
+    name: "",
+    address: "",
   });
-   const [receiverContactNo, setReceiverContactNo] = useState('');
+  const [receiverContactNo, setReceiverContactNo] = useState("");
   const [receiverInfo, setReceiverInfo] = useState({
-    ReceiverName: '',
-    ReceiverAddress: '',
-   
+    ReceiverName: "",
+    ReceiverAddress: "",
   });
-
-
-
-
-
 
   const closeModal = () => {
     setIsOpen(false);
@@ -87,7 +80,7 @@ const BookingForm = () => {
 
   const handleCodChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    setCodCharge(isNaN(value) ? 0 : value); // Update COD charge
+    setCodCharge(isNaN(value) ? 0 : value); 
   };
 
   const onSubmit = async (data) => {
@@ -116,12 +109,10 @@ const BookingForm = () => {
             setSenderInfo({
               name: response.data.senderName,
               address: response.data.address,
-              
             });
           }
         } catch (error) {
-         
-          setSenderInfo({ name: '', address: '' });
+          setSenderInfo({ name: "", address: "" });
         }
       }
     };
@@ -132,17 +123,17 @@ const BookingForm = () => {
     const fetchReceiverDetails = async () => {
       if (receiverContactNo) {
         try {
-          const response = await axiosSecure.get(`/offline/receiver/${receiverContactNo}`);
+          const response = await axiosSecure.get(
+            `/offline/receiver/${receiverContactNo}`
+          );
           if (response.data) {
             setReceiverInfo({
               ReceiverName: response.data.receiverName,
               ReceiverAddress: response.data.receiveraddress,
-              
             });
           }
         } catch (error) {
-         
-          setReceiverInfo({ ReceiverName: '', ReceiverAddress: '' });
+          setReceiverInfo({ ReceiverName: "", ReceiverAddress: "" });
         }
       }
     };
@@ -212,22 +203,23 @@ const BookingForm = () => {
                 watchValues={watchValues}
                 register={register}
                 name={"senderName"}
-                registerOptions={{ required:  senderInfo.name? false: true }}
+                registerOptions={{ required: senderInfo.name ? false : true }}
                 errors={errors}
                 label="Name"
                 placeholder="sender name"
                 defaultValue={senderInfo.name}
-                
               />
               <InputField
                 watchValues={watchValues}
                 register={register}
-                name={"address"}
-                registerOptions={{required:  senderInfo.address? false: true}}
+                name="address"
+                registerOptions={{ required: !senderInfo.address }} 
+                
                 errors={errors}
                 label="Address"
-                placeholder="sender address"
-                defaultValue={senderInfo.address}
+                placeholder="Sender Address"
+                defaultValue={senderInfo.address || ""}
+                required={!!senderInfo.address} 
               />
             </Section>
 
@@ -280,7 +272,9 @@ const BookingForm = () => {
                 watchValues={watchValues}
                 register={register}
                 name={"receiverName"}
-                registerOptions={{required:  receiverInfo.ReceiverName? false: true}}
+                registerOptions={{
+                  required: receiverInfo.ReceiverName ? false : true,
+                }}
                 errors={errors}
                 label="Name"
                 placeholder="receiver name"
@@ -290,7 +284,9 @@ const BookingForm = () => {
                 watchValues={watchValues}
                 register={register}
                 name={"receiveraddress"}
-                registerOptions={{required:  receiverInfo.ReceiverAddress? false: true}}
+                registerOptions={{
+                  required: receiverInfo.ReceiverAddress ? false : true,
+                }}
                 errors={errors}
                 label="Address"
                 placeholder="receiver address"
