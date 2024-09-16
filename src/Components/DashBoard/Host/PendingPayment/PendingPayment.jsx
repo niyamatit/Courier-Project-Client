@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllPackage } from "../../../../api/auth";
 import DeliveryRaw from "../CompleteDeliveryPayment/DeliveryRaw";
+import useAuth from "../../../../hooks/useAuth";
 
 
 
@@ -8,10 +9,13 @@ import DeliveryRaw from "../CompleteDeliveryPayment/DeliveryRaw";
 
 const PendingPayment = () => {
 
-    const { data: packages = [], refetch } = useQuery({
-        queryKey: ['packages'],
-        queryFn: async () => await getAllPackage(),
-      });
+  const{user} = useAuth()
+
+  const { data: packages = [], refetch } = useQuery({
+  queryKey: ['packages', user?.email], // Query key includes user email
+  queryFn: () => getAllPackage(user?.email), // Function to fetch packages
+  enabled: !!user?.email, // Only run when email is available
+});
       
       // Filter the packages to only include those with the role of 'rider'
       const payments = packages.filter(payment => payment.update === 'Processing');
