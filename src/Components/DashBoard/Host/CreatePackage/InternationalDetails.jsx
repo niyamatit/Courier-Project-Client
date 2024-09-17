@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 // Reusable component for package details
-import Barcode from 'react-barcode';
+// import Barcode from 'react-barcode';
 import './CourierSlip.css';
 import { PiScissorsLight } from 'react-icons/pi';
-// import QRCode from 'react-qr-code';
+import QRCode from 'react-qr-code';
 import logoImg from '../../../../assets/nexp-update.png'
-export const PackageDetails = ({ bookingInfo }) => (
+export const InternationalDetails = ({ bookingInfo }) => (
 
 
     <>
@@ -22,7 +22,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                         <p>Chittagong Road, Narayanganj 1430</p>
                     </div>
                     <div className='justify-end text-sm'>
-                        <p>https://niyamatexpress.com/</p>
+                        <p>https://niyamatit.com/</p>
                         <p>email:info@niyamatit.com</p>
                         <p>Hotline: 01852583209</p>
                     </div>
@@ -32,9 +32,9 @@ export const PackageDetails = ({ bookingInfo }) => (
             <div className="booking-details ">
                 <div className='flex justify-around'>
                     <div>
-                        <Barcode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
+                        {/* <Barcode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} /> */}
                         {/* <p>{bookingInfo?.packageTrackingNumber}</p> */}
-                        {/* <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} /> */}
+                        <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
 
                     </div>
                     <div>

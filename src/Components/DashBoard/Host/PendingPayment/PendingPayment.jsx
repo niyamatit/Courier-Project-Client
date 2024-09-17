@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllPackage } from "../../../../api/auth";
-import TableRow from "./TableRow";
+import DeliveryRaw from "../CompleteDeliveryPayment/DeliveryRaw";
 import useAuth from "../../../../hooks/useAuth";
 
 
-const DeliverySchedule = () => {
+
+
+
+const PendingPayment = () => {
 
   const{user} = useAuth()
 
@@ -13,12 +16,13 @@ const DeliverySchedule = () => {
   queryFn: () => getAllPackage(user?.email), // Function to fetch packages
   enabled: !!user?.email, // Only run when email is available
 });
+      
+      // Filter the packages to only include those with the role of 'rider'
+      const payments = packages.filter(payment => payment.update === 'Processing');
 
-    //   console.log(packages)
 
     return (
         <>
-        <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Delivery Schedule</h1>
         <div className='container mx-auto px-4 sm:px-8'>
          
           <div className='py-8'>
@@ -26,53 +30,42 @@ const DeliverySchedule = () => {
               <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
                 <table className='min-w-full leading-normal'>
                   <thead>
-                    <tr className="text-lg font-rancho">
+                    <tr>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                       Sender Name
+                        Sender Name
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                       Receiver Name
+                        Receiver Name
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                       Booking Date
+                        Status
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Product Details
+                        Amount
                       </th>
   
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                        Receiver Contact No
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                        Action
-                      </th>
+                     
                     </tr>
                   </thead>
                   <tbody>
-                      {/* User data table row */}
-                      {packages &&
-                      packages.map(pack => (
-                        <TableRow
-                          key={pack._id}
-                          pack={pack}
+                      {/* payment data table row */}
+                      {payments &&
+                      payments.map(payment => (
+                        <DeliveryRaw
+                          key={payment._id}
+                          payment={payment}
                           refetch={refetch}
                         />
                       ))}
@@ -87,4 +80,4 @@ const DeliverySchedule = () => {
     );
 };
 
-export default DeliverySchedule;
+export default PendingPayment;

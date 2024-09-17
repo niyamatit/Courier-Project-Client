@@ -4,27 +4,28 @@ import Barcode from 'react-barcode';
 import './CourierSlip.css';
 import { PiScissorsLight } from 'react-icons/pi';
 // import QRCode from 'react-qr-code';
-import logoImg from '../../../../assets/nexp-update.png'
-export const PackageDetails = ({ bookingInfo }) => (
-
+import logoImg from '../../../../../assets/nexp-update.png'
+export const OfflineBookingDetails = ({ bookingInfo }) => (
+    
 
     <>
 
         <div className="invoice-container">
-            <p className='text-sm'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
+        <p>Hotline: 01852583209</p>
+            <p className='text-xs'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
             <header className="header">
                 <div className="logo">
                     <img className='h-[30px] w-[50px]' src={logoImg} alt="Niyamat Express" />
                 </div>
                 <div className="company-details flex gap-5">
-                    <div>
-                        <h3>Niyamat Express</h3>
-                        <p>Chittagong Road, Narayanganj 1430</p>
+                    <div >
+                        <h3 className='font-bold'>Niyamat Express</h3>
+                        <p className='text-left'>Chittagong Road, Narayanganj 1430</p>
                     </div>
                     <div className='justify-end text-sm'>
+
                         <p>https://niyamatexpress.com/</p>
                         <p>email:info@niyamatit.com</p>
-                        <p>Hotline: 01852583209</p>
                     </div>
                 </div>
             </header>
@@ -32,19 +33,19 @@ export const PackageDetails = ({ bookingInfo }) => (
             <div className="booking-details ">
                 <div className='flex justify-around'>
                     <div>
-                        <Barcode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
+                        <Barcode className="h-[50px]" value={bookingInfo?.CnNumber} />
                         {/* <p>{bookingInfo?.packageTrackingNumber}</p> */}
                         {/* <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} /> */}
 
                     </div>
                     <div>
-                        <strong>Booking: </strong>{bookingInfo?.origin}
+                        <strong>Booking: </strong>{bookingInfo?.bookingBranch}
                     </div>
                     <div>
-                        <strong>Booking Date: </strong>{bookingInfo?.booking}
+                        <strong>Booking Date: </strong>{bookingInfo?.bookingDate}
                     </div>
                     <div>
-                        <p className='font-bold'>Destination: {bookingInfo?.selectedArea}</p>
+                        <p className='font-bold'>Destination: {bookingInfo?.branch}</p>
                     </div>
                 </div>
 
@@ -55,13 +56,13 @@ export const PackageDetails = ({ bookingInfo }) => (
 
                 <div className="sender-details">
                     <h3 className='text-bold'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
-                    <p><strong>Contact:{bookingInfo?.senderMobile} </strong></p>
-                    {/* <p><strong>Address: </strong>{bookingInfo?.origin}</p> */}
+                    <p><strong>Contact:{bookingInfo?.senderContactNo} </strong></p>
+                    <p><strong>Address: </strong>{bookingInfo?.address}</p>
                 </div>
                 <div className="receiver-details">
-                    <h3 className='text-bold'><strong>Receiver:{bookingInfo?.recipientName}</strong></h3>
-                    <p><strong>Contact: {bookingInfo?.recipientMobile}</strong></p>
-                    <p><strong>Address: {bookingInfo?.selectedArea}</strong></p>
+                    <h3 className='text-bold'><strong>Receiver:{bookingInfo?.receiverName}</strong></h3>
+                    <p><strong>Contact: {bookingInfo?.receiverContactNo}</strong></p>
+                    <p><strong>Address: {bookingInfo?.receiveraddress}</strong></p>
                 </div>
             </div>
 
@@ -73,27 +74,27 @@ export const PackageDetails = ({ bookingInfo }) => (
                 </div>
                 <div className="table-row">
                     <div className="table-cell">{bookingInfo?.qty}</div>
-                    <div className="table-cell">{bookingInfo?.productDetails}</div>
-                    <div className="table-cell">{bookingInfo?.amount}</div>
+                    <div className="table-cell">{bookingInfo?.product}</div>
+                    <div className="table-cell">{bookingInfo?.totalCharge}</div>
                 </div>
             </div>
 
             <div className="footer flex justify-around">
-                <div>
+                {/* <div>
                     <strong>In word: </strong>{bookingInfo?.wordAmount}
-                </div>
+                </div> */}
                 <div>
                     {/* <strong>Booking Officer: </strong>SEL00063 */}
                 </div>
 
-                <div className='mt-5'>
-                    condition+charge: {bookingInfo?.cod}
+                <div className=''>
+                    condition charge: {bookingInfo?.serviceCharge}
                 </div>
                 <div>
                     {
-                        bookingInfo?.paymentOption === 'Cash'
-                            ? <strong>Cash - {bookingInfo?.deliveryOption}</strong>
-                            : <strong>Payment - {bookingInfo?.paymentOption}</strong>
+                        bookingInfo?.paymentMethod === 'Cash'
+                            ? <strong>Payment - {bookingInfo?.paymentMethod }</strong>
+                            : <strong>Payment - {bookingInfo?.paymentMethod }</strong>
                     }
                 </div>
             </div>

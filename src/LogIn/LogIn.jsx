@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import toast from 'react-hot-toast'
@@ -11,7 +11,7 @@ const Login = () => {
 
   const { signIn, signInWithGoogle,  loading } = useAuth()
 
-  const navigate = useNavigate()
+       const navigate = useNavigate()
   const location = useLocation()
     const from = location?.state?.from?.pathname;
   const handleLogIn = async e => {

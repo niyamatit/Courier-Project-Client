@@ -34,10 +34,17 @@ export const getRole = async (email) => {
 }
 
 // Get all package
-export const getAllPackage = async () => {
-    const { data } = await axiosSecure(`/package`)
-    return data
-}
+// export const getAllPackage = async () => {
+//     const { data } = await axiosSecure(`/package`)
+//     return data
+// }
+
+export const getAllPackage = async (email) => {
+    const { data } = await axiosSecure.get(`/package/${email}`); // Correct syntax for GET request
+    console.log("Fetching packages for email:", email);
+    return data;
+};
+
 
 // Save user data in database
 export const updateRole = async ({ email, role }) => {
