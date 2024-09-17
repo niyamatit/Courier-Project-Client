@@ -53,6 +53,7 @@ import RiderAllParcelList from "../Components/DashBoard/Host/RiderAllParcelList/
 import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm";
 import Payment from "../Components/DashBoard/Rider/Payment";
 import Rideradd from "../Components/DashBoard/Admin/RiderAdd/Rideradd";
+import BranchStaff from "../Components/DashBoard/Admin/BranchStaff/BranchStaff";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -537,6 +538,10 @@ export const router = createBrowserRouter([
       {
         path: "rider-add",
         element: <Rideradd></Rideradd>,
+      },
+      {
+        path: "branch-staff",
+        element: <BranchStaff></BranchStaff>
       },
 
     ],

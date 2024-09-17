@@ -11,12 +11,18 @@ const AdminMenu = () => {
         address='/dashboard/statistics'
       />
 
-      <MenuItem icon={FaUserCog} label='Manage Users'
+      <MenuItem icon={FaUserCog}
+        label='Manage Users'
         address='manage-users' />
       <MenuItem
         icon={FaUserAlt}
         label='Rider Add'
         address='rider-add'
+      />
+      <MenuItem
+        icon={FaUserAlt}
+        label='Brach Staff'
+        address='branch-staff'
       />
     </>
   )
