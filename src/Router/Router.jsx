@@ -54,6 +54,8 @@ import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/
 import PendingPayment from "../Components/DashBoard/Host/PendingPayment/PendingPayment";
 import Payment from "../Components/DashBoard/Rider/Payment";
 import Rideradd from "../Components/DashBoard/Admin/RiderAdd/Rideradd";
+import BranchStaff from "../Components/DashBoard/Admin/BranchStaff/BranchStaff";
+import OfflineBookingList from "../Components/DashBoard/Host/OfflineBookingList/OfflineBookingList";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -215,6 +217,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <OnlineSchedule />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "offline-booking-list",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <OfflineBookingList />
             </HostRoute>
           </PrivateRoute>
         ),
@@ -548,6 +560,10 @@ export const router = createBrowserRouter([
       {
         path: "rider-add",
         element: <Rideradd></Rideradd>,
+      },
+      {
+        path: "branch-staff",
+        element: <BranchStaff></BranchStaff>
       },
 
     ],
