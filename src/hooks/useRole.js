@@ -10,7 +10,7 @@ const useRole = () => {
     queryKey: ['role'],
   })
 
-  return [role, isLoading]
+   return [role, isLoading]
 }
 
 export default useRole
