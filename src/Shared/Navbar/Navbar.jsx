@@ -6,7 +6,7 @@ import useAuth from "../../hooks/useAuth";
 
 
 const Navbar = () => {
-const{user} = useAuth()
+    const { user } = useAuth()
     const navLinks = <>
         <li><NavLink to="/">Home</NavLink></li>
         <li><NavLink to="/about">About</NavLink></li>

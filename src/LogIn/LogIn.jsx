@@ -11,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from?.pathname || '/'; 
-
+  
   // Handle form login
   const handleLogIn = async e => {
     e.preventDefault();
@@ -32,7 +32,7 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500
         });
-        localStorage.setItem("UserEmail:",email)
+        localStorage.setItem("email",email)
         
         navigate(from, { replace: true });
       } else {

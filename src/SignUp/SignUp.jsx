@@ -40,7 +40,7 @@ const handleSignUp = async e => {
         title: 'Sign Up Successful',
         text: 'You have been successfully registered!',
       });
-      localStorage.setItem("UserEmail:",email)
+      localStorage.setItem("email:",email)
       navigate('/');
     } else {
       
