@@ -32,7 +32,7 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500
         });
-
+        localStorage.setItem("UserEmail:",email)
         
         navigate(from, { replace: true });
       } else {
