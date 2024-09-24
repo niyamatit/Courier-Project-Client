@@ -16,8 +16,10 @@ const useUsersData = () => {
         }
         
     });
-    const verifiedUser = users.find(user=>user?.email === UserEmail)
+     const verifiedUser = users.find(user=>user?.email === UserEmail)
     console.log("All user ",verifiedUser)
+    console.log("All user ",users)
+
     return [verifiedUser]
     
 };

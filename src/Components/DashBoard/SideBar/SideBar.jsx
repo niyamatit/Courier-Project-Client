@@ -1,5 +1,4 @@
 import { useState } from 'react'
-// Icons
 import { GrLogout } from 'react-icons/gr'
 import { FcSettings } from 'react-icons/fc'
 import { AiOutlineBars } from 'react-icons/ai'
@@ -11,7 +10,6 @@ import HostMenu from './HostMenu'
 import useRole from '../../../hooks/useRole'
 import { Link } from 'react-router-dom'
 import MerchantMenu from './MerchantMenu'
-// import logo from "../../../../src/assets/logo.png"
 import RiderMenu from './RiderMenu'
 import logoImg from '../../../assets/nexp-update.png'
 import SuperAdminMenu from './SuperAdminMenu'
@@ -26,7 +24,7 @@ const Sidebar = () => {
 
   const [isActive, setActive] = useState(false)
 
-  // Sidebar Responsive Handler
+  
   const handleToggle = () => {
     setActive(!isActive)
   }
