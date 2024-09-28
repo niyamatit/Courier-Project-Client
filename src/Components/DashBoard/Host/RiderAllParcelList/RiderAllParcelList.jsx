@@ -8,14 +8,14 @@ import useAuth from "../../../../hooks/useAuth";
 
 const RiderAllParcelList = () => {
 
-    const{user} = useAuth()
+    const { user } = useAuth()
 
     const { data: packages = [], refetch } = useQuery({
-    queryKey: ['packages', user?.email], // Query key includes user email
-    queryFn: () => getAllPackage(user?.email), // Function to fetch packages
-    enabled: !!user?.email, // Only run when email is available
-});
-
+        queryKey: ['packages', user?.email], // Query key includes user email
+        queryFn: () => getAllPackage(user?.email), // Function to fetch packages
+        enabled: !!user?.email, // Only run when email is available
+    });
+  console.log("Pakage:",packages)
     const RiderAllParcelList = packages.filter(user => user?.update === 'Rider pickup');
 
     return (
