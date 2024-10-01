@@ -98,9 +98,9 @@ export const router = createBrowserRouter([
       {
         path: "/apply",
         element: (
-          <PrivateRoute>
+          
             <Apply />
-          </PrivateRoute>
+          
         ),
       },
     ],
