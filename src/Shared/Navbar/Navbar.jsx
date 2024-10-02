@@ -10,12 +10,14 @@ const{user} = useAuth()
     const navLinks = <>
         <li><NavLink to="/">Home</NavLink></li>
         <li><NavLink to="/about">About</NavLink></li>
-        {user?.role == 'guest' && <li><NavLink to="/online-booking">Online Booking</NavLink></li>}
+       
         <li><NavLink to="/contact">Contact</NavLink></li>
         <li><NavLink to="/tracking">Tracking</NavLink></li>
-        <li><NavLink to="/online-tracking">Online Booked Tracking</NavLink></li>
+        <li><NavLink to="/online-booking">Online Booking</NavLink></li>
+        {/* <li><NavLink to="/online-tracking">Online Booked Tracking</NavLink></li> */}
         <li><NavLink to="/apply">Apply</NavLink></li>
     </>
+    
 
     return (
 
