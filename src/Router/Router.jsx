@@ -57,6 +57,7 @@ import Rideradd from "../Components/DashBoard/Admin/RiderAdd/Rideradd";
 import BranchStaff from "../Components/DashBoard/Admin/BranchStaff/BranchStaff";
 import OfflineBookingList from "../Components/DashBoard/Host/OfflineBookingList/OfflineBookingList";
 import OnlineBookingHome from "../Components/Pages/OnlineBookingHome/OnlineBookingHome";
+import AddBaranchStaff from "../Components/DashBoard/Host/AddBaranchStaff/AddBaranchStaff";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -147,6 +148,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <BookingForm />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "branch-staff",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+             <AddBaranchStaff/>
             </HostRoute>
           </PrivateRoute>
         ),
