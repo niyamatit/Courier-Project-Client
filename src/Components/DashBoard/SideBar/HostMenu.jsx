@@ -88,6 +88,21 @@ const HostMenu = () => {
           /></li>
         </ul>
       </div>
+      <div className="dropdown">
+        <div tabIndex={0} role="button" className="w-[200px] items-center flex gap-3  text-center m-1"><BsHouseAddFill className="ml-3" /> Recharge</div>
+        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          <li><MenuItem
+            icon={BsHouseAddFill}
+            label='Recharge Apply'
+            address='recharge-apply'
+          /></li>
+          <li><MenuItem
+            icon={FaWpforms}
+            label='Recharge complete'
+            address='recharge-complete'
+          /></li>
+        </ul>
+      </div>
 
 
 

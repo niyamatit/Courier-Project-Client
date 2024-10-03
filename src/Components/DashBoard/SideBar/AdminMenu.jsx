@@ -21,8 +21,13 @@ const AdminMenu = () => {
       />
       <MenuItem
         icon={FaUserAlt}
-        label='Brach Staff'
+        label='Branch Staff'
         address='branch-staff'
+      />
+      <MenuItem
+        icon={FaUserAlt}
+        label='Branch Add'
+        address='branch-add'
       />
     </>
   )
