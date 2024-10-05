@@ -4,12 +4,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import avatarImg from '../../assets/avatarImage.jpg'
 import useUsersData from '../../hooks/useUsersData/useUsersData'
 import Swal from 'sweetalert2';
+import useAuth from '../../hooks/useAuth'
 
 const MenuDropdown = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [verifiedUser]  = useUsersData();
   const navigate = useNavigate(); 
-
+  const {user} =useAuth();
+ 
   const handleLogOut = () => {
     
     Swal.fire({

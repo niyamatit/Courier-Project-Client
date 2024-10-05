@@ -1,7 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-
 import { TbFidgetSpinner } from 'react-icons/tb';
-
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import axiosSecure from '../api/axiosSecure';
@@ -68,7 +66,7 @@ const Login = () => {
             <div>
               <label htmlFor='email' className='block mb-2 text-sm'>Email address</label>
               <input
-                type='email'
+                type='text'
                 name='email'
                 id='email'
                 required
