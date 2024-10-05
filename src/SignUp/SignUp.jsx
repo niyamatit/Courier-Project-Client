@@ -105,7 +105,7 @@ const handleSignUp = async e => {
                 Email address
               </label>
               <input
-                type="email"
+                type="text"
                 name="email"
                 id="email"
                 required
