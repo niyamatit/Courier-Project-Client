@@ -18,18 +18,20 @@ const handleSignUp = async e => {
   const email = form.email.value;
   const password = form.password.value;
   const image = form.image.files[0];
+  const role = 'guest'
 
   try {
     setLoading(true);
 
    
     const imageData = await imageUpload(image);
-
+    
   
     const response = await axiosSecure.post('/users/auth/register', {
       name,
       email,
       password,
+      role,
       imageUrl: imageData?.data?.display_url,
     });
 
