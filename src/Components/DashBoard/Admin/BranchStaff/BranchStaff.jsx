@@ -40,7 +40,7 @@ const BranchStaff = () => {
                         {/* bs Image */}
                         <div className="field mt-2">
                             <label htmlFor="bsImage" className="block mb-2">
-                                bs Image
+                                Branch Staff Image
                             </label>
                             <FileUpload
                                 name="bsImage"
@@ -56,7 +56,7 @@ const BranchStaff = () => {
                         {/* bs Name */}
                         <div className="field mt-2">
                             <label htmlFor="bsName" className="block mb-2">
-                                bs Name
+                                Branch Staff Name
                             </label>
                             <InputText
                                 id="bsName"
@@ -71,7 +71,7 @@ const BranchStaff = () => {
                         {/* bs Number */}
                         <div className="field mt-2">
                             <label htmlFor="bsNumber" className="block mb-2">
-                                bs Number
+                                Branch Staff Number
                             </label>
                             <InputNumber
                                 id="bsNumber"
@@ -86,7 +86,7 @@ const BranchStaff = () => {
                         {/* bs NID Number */}
                         <div className="field mt-2">
                             <label htmlFor="bsNid" className="block mb-2">
-                                bs NID Number
+                                Branch Staff NID Number
                             </label>
                             <InputText
                                 id="bsNid"
@@ -101,7 +101,7 @@ const BranchStaff = () => {
                         {/* bs Salary */}
                         <div className="field mt-2">
                             <label htmlFor="bsSalary" className="block mb-2">
-                                bs Salary
+                                Branch Staff Salary
                             </label>
                             <InputNumber
                                 id="bsSalary"
@@ -135,7 +135,7 @@ const BranchStaff = () => {
                         {/* bs Experience */}
                         <div className="field mt-2">
                             <label htmlFor="bsExperience" className="block mb-2">
-                                bs Experience
+                                Branch Staff Experience
                             </label>
                             <InputTextarea
                                 id="bsExperience"
@@ -170,7 +170,7 @@ const BranchStaff = () => {
                         {/* bs Password */}
                         <div className="field mt-2">
                             <label htmlFor="bsPassword" className="block mb-2">
-                                bs Password
+                                Branch Staff Password
                             </label>
                             <InputText
                                 id="bsPassword"
