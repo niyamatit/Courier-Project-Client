@@ -30,7 +30,7 @@ const ReturnParcel = () => {
           p._id === parcel._id ? { ...p, deliveryStatus: value, idx: idx + 1 } : { ...p, idx: idx + 1 }
         )
       );
-      await axios.put(`https://courier-server.vercel.app/parcel/${parcel._id}`, {
+      await axios.put(`https://courier-server-lake.vercel.app/parcel/${parcel._id}`, {
         deliveryStatus: value,
       });
     } catch (error) {

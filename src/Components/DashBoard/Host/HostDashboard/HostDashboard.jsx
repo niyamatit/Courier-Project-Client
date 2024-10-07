@@ -35,7 +35,7 @@ const HostDashboard = () => {
     // }, []);
 
     useEffect(() => {
-        fetch('https://courier-server.vercel.app/package')
+        fetch('https://courier-server-lake.vercel.app/package')
             .then(res => res.json())
             .then(data => {
                 // setHostData(data);

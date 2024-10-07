@@ -56,6 +56,9 @@ import Payment from "../Components/DashBoard/Rider/Payment";
 import Rideradd from "../Components/DashBoard/Admin/RiderAdd/Rideradd";
 import BranchStaff from "../Components/DashBoard/Admin/BranchStaff/BranchStaff";
 import OfflineBookingList from "../Components/DashBoard/Host/OfflineBookingList/OfflineBookingList";
+import BranchAdd from "../Components/DashBoard/Admin/BranchAdd/BranchAdd";
+import RechargeApply from "../Components/DashBoard/Host/Recharge/RechargeApply/RechargeApply";
+import RechargeComplete from "../Components/DashBoard/Host/Recharge/RechargeComplete/RechargeComplete";
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -564,6 +567,18 @@ export const router = createBrowserRouter([
       {
         path: "branch-staff",
         element: <BranchStaff></BranchStaff>
+      },
+      {
+        path: "branch-add",
+        element: <BranchAdd></BranchAdd>
+      },
+      {
+        path: "recharge-apply",
+        element: <RechargeApply></RechargeApply>
+      },
+      {
+        path: "recharge-complete",
+        element: <RechargeComplete></RechargeComplete>
       },
 
     ],
