@@ -155,16 +155,16 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "branch-staff",
-        element: (
-          <PrivateRoute>
-            <HostRoute>
-             <AddBaranchStaff/>
-            </HostRoute>
-          </PrivateRoute>
-        ),
-      },
+      // {
+      //   path: "Add-branch-staff",
+      //   element: (
+      //     <PrivateRoute>
+      //       <HostRoute>
+      //        <AddBaranchStaff/>
+      //       </HostRoute>
+      //     </PrivateRoute>
+      //   ),
+      // },
 
       {
         path: "demo-pack",
@@ -578,7 +578,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "branch-staff",
-        element: <BranchStaff></BranchStaff>
+        element: <AddBaranchStaff></AddBaranchStaff>
       },
       {
         path: "branch-add",
