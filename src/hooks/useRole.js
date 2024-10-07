@@ -2,11 +2,15 @@
 import { getRole } from '../api/auth'
 import useAuth from './useAuth'
 import { useQuery } from '@tanstack/react-query'
+import useUsersData from './useUsersData/useUsersData'
 const useRole = () => {
-  const { user, loading } = useAuth()
+
+  const[verifiedUser] = useUsersData()
+
+  const {  loading } = useAuth()
   const { data: role, isLoading } = useQuery({
-    enabled: !loading && !!user?.email,
-    queryFn: async () => await getRole(user?.email),
+    enabled: !loading && !!verifiedUser?.email,
+    queryFn: async () => await getRole(verifiedUser?.email),
     queryKey: ['role'],
   })
 
