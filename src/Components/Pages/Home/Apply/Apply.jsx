@@ -4,13 +4,13 @@ import "tailwindcss/tailwind.css";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import { imageUpload } from "../../../../api/utils";
-import useAuth from "../../../../hooks/useAuth";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const Apply = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [apply,setApply] = useState("")
   const [filteredAreas, setFilteredAreas] = useState([]);
-  const {user} = useAuth();
+  const[verifiedUser] = useUsersData()
   
 
   const {
@@ -624,7 +624,7 @@ const Areas =[
     const ApplyInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
       Customer_Name:formData?.YourName || "",
-      Customer_Email:user?.email || "",
+      Customer_Email:verifiedUser?.email || "",
       Customer_Father_Name:formData?.FatherName || "",
       Customer_Mother_Name:formData?.MotherName || "",
       Customer_Current_Address:formData?.YourCurrentAddress || "",
@@ -968,7 +968,7 @@ const Areas =[
                 <label className="block text-gray-700 font-medium mb-1">
                   Email*
                 </label>
-                <input placeholder={user?.email} readOnly
+                <input placeholder={verifiedUser?.email} readOnly
                   type="text"
                   {...register('email')}
                   className={`input input-bordered w-full p-2 rounded-lg border ${

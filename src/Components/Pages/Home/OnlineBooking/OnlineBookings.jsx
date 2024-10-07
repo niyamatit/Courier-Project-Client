@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
 import BookingModal from "../../../../Modal/BookingModal";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const OnlineBookings = () => {
     const [packageTrackingNumber, setPackageTrackingNumber] = useState({});
@@ -8,7 +8,7 @@ const OnlineBookings = () => {
     const [price, setPrice] = useState(0);
     const [bookingInfo, setBookingInfo] = useState(null);
     let [isOpen, setIsOpen] = useState(false)
-    const { user } = useAuth();
+    const[verifiedUser] = useUsersData()
 
     const closeModal = () => {
         setIsOpen(false);
@@ -64,7 +64,7 @@ const OnlineBookings = () => {
             delivery,
             update,
             price,
-            user
+            verifiedUser
         };
 
         setBookingInfo(bookingData);

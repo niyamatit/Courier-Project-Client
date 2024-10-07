@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { addPackage } from "../../../../api/package";
 import toast from "react-hot-toast";
 import PrintModal from "./PrintModal";
-import useAuth from "../../../../hooks/useAuth";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 
 
@@ -46,7 +46,7 @@ const CreatePackage = () => {
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
 
-    const{user} = useAuth()
+    const[verifiedUser] = useUsersData()
 
     const closeModal = () => {
         setIsOpen(false);
@@ -180,7 +180,7 @@ const CreatePackage = () => {
             deliveryOption,
             paymentOption,
             condition,
-            email: user?.email
+            email: verifiedUser?.email
         };
 
         setBookingInfo(packageData);

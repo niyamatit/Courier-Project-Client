@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Link } from "react-router-dom";
-import useAuth from "../../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 import ClipLoader from "react-spinners/ClipLoader";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const MerchantShopList = () => {
-  const { user } = useAuth();
+  const[verifiedUser] = useUsersData()
   const [editMode, setEditMode] = useState(false);
   const [editData, setEditData] = useState(null);
 
   const { data: shopData = [], refetch, isLoading } = useQuery({
-    queryKey: ["shopData", user?.email],
+    queryKey: ["shopData", verifiedUser?.email],
     queryFn: async () => {
       const res = await axiosSecure.get("/store");
       return res.data;
     },
-    enabled: !!user?.email,
+    enabled: !!verifiedUser?.email,
   });
 
   const handleEditStore = async () => {

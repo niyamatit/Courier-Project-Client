@@ -7,9 +7,9 @@ import DatePicker from "react-datepicker";
 import DeliveryCard from "./DeliveryCard";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaClock, FaSearch, FaCheckCircle, FaTimesCircle, FaMoneyBillWave, FaMoneyCheckAlt, FaBoxOpen, FaUndo } from "react-icons/fa";
-import useAuth from "../../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const MerchantDashboard = () => {
   const [fromDate, setFromDate] = useState(null);
@@ -26,14 +26,14 @@ const MerchantDashboard = () => {
     returnParcelCOD: 0,
   });
 
-  const { user } = useAuth();
+  const[verifiedUser] = useUsersData()
   const { data: parcelData = [] } = useQuery({
-    queryKey: ["parcelData", user?.email],
+    queryKey: ["parcelData", verifiedUser?.email],
     queryFn: async () => {
       const res = await axiosSecure.get("/parcel");
       return res.data;
     },
-    enabled: !!user?.email,
+    enabled: !!verifiedUser?.email,
   });
 
   useEffect(() => {
