@@ -2,6 +2,7 @@ import { FaUserAlt, FaUserCog } from 'react-icons/fa'
 import MenuItem from './MenuItem'
 import { BsGraphUp } from 'react-icons/bs'
 import { MdPersonAdd } from 'react-icons/md'
+import { MdStore } from 'react-icons/md';
 const AdminMenu = () => {
   return (
     <>
@@ -30,8 +31,9 @@ const AdminMenu = () => {
         address='Add-branch-staff'
       /> */}
       <MenuItem
-        icon={FaUserAlt}
-        label='Branch Add'
+        icon={MdStore}
+        
+        label='Add Branch'
         address='branch-add'
       />
     </>
