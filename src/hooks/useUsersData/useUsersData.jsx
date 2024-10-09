@@ -6,9 +6,9 @@ import axiosSecure from "../../api/axiosSecure";
 const useUsersData = () => {
     
     const UserEmail = (localStorage.getItem('email'))
-    console.log("LOcal Email:",UserEmail)
+    // console.log("LOcal Email:",UserEmail)
     
-    const {  data: users = [], } = useQuery({
+    const {  data: users = [], isLoading} = useQuery({
         queryKey: ['users'],
         queryFn: async() => {
             const res = await axiosSecure.get("/users");
@@ -18,11 +18,11 @@ const useUsersData = () => {
         
     });
      const verifiedUser = users.find(user=>user?.email === UserEmail)
-    console.log("All Verified user ",verifiedUser)
-    console.log("All Users",users)
+    // console.log("All Verified user ",verifiedUser)
+    // console.log("All Users",users)
     
 
-    return [verifiedUser]
+    return [verifiedUser,isLoading]
     
 };
 
