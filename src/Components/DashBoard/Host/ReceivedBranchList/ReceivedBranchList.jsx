@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllPackage } from "../../../../api/auth";
 import TableRow from "../DeliveryBranchList/TableRow";
-import useAuth from "../../../../hooks/useAuth";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 
 
 const ReceivedBranchList = () => {
 
-  const{user} = useAuth()
+  const[verifiedUser] = useUsersData()
 
   const { data: packages = [], refetch } = useQuery({
-  queryKey: ['packages', user?.email], // Query key includes user email
-  queryFn: () => getAllPackage(user?.email), // Function to fetch packages
-  enabled: !!user?.email, // Only run when email is available
+  queryKey: ['packages', verifiedUser?.email], // Query key includes user email
+  queryFn: () => getAllPackage(verifiedUser?.email), // Function to fetch packages
+  enabled: !!verifiedUser?.email, // Only run when email is available
 });
 
     //   console.log(packages)

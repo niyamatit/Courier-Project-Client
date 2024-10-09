@@ -33,14 +33,10 @@ export const getRole = async (email) => {
     return data.role
 }
 
-// Get all package
-// export const getAllPackage = async () => {
-//     const { data } = await axiosSecure(`/package`)
-//     return data
-// }
+
 
 export const getAllPackage = async (email) => {
-    const { data } = await axiosSecure.get(`/package/${email}`); // Correct syntax for GET request
+    const { data } = await axiosSecure.get(`/package/${email}`); 
     console.log("Fetching packages for email:", email);
     return data;
 };

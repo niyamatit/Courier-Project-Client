@@ -1,13 +1,14 @@
-import useAuth from "../../hooks/useAuth"
+
 import useRole from "../../hooks/useRole"
+import useUsersData from "../../hooks/useUsersData/useUsersData"
 
 
 
 const Profile = () => {
-  const { user } = useAuth()
+  const[verifiedUser] = useUsersData()
   const [role] = useRole()
   console.log("Role:",role)
-  console.log(user)
+
   return (
     <div className='flex justify-center items-center h-screen'>
       
@@ -21,7 +22,7 @@ const Profile = () => {
           <a href='#' className='relative block'>
             <img
               alt='profile'
-              src={user?.photoURL}
+              src={verifiedUser?.photoURL}
               className='mx-auto object-cover rounded-full h-24 w-24  border-2 border-white '
             />
           </a>
@@ -33,13 +34,13 @@ const Profile = () => {
             
 
             {
-              role === "merchant" ? <div> <p>Merchant Id: {user.uid}</p>
+              role === "merchant" ? <div> <p>Merchant Id: {verifiedUser?.uid}</p>
               
               
               
               
               
-              </div> : <>User Id: {user.uid}</>
+              </div> : <>User Id: {verifiedUser?.uid}</>
             }
           </p>
           <div className='w-full p-2 mt-4 rounded-lg'>
@@ -47,12 +48,12 @@ const Profile = () => {
               <p className='flex flex-col'>
                 Name
                 <span className='font-bold text-black '>
-                  {user.displayName}
+                  {verifiedUser?.displayName}
                 </span>
               </p>
               <p className='flex flex-col'>
                 Email
-                <span className='font-bold text-black '>{user.email}</span>
+                <span className='font-bold text-black '>{verifiedUser?.email}</span>
               </p>
 
               <div>

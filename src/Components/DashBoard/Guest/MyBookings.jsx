@@ -2,15 +2,17 @@ import { useQuery } from '@tanstack/react-query'
 import { getBookings } from '../../../api/bookings'
 import useAuth from '../../../hooks/useAuth'
 import TableRow from '../../../Table/TableRow'
+import useUsersData from '../../../hooks/useUsersData/useUsersData'
 
 const MyBookings = () => {
-    const { user, loading } = useAuth()
+    const {  loading } = useAuth()
+    const[verifiedUser] = useUsersData()
     
     const {
       data: bookings = [],
       isLoading,
     } = useQuery({
-      queryKey: ['bookings', user?.email],
+      queryKey: ['bookings', verifiedUser?.email],
       enabled: !loading,
       queryFn: async () => await getBookings(),
     })
@@ -18,7 +20,7 @@ const MyBookings = () => {
     if (isLoading) return <p>Loading...</p>
 
     // Filter bookings based on the logged-in user's email
-    const userBookings = bookings.filter(booking => booking.user.email === user.email);
+    const userBookings = bookings.filter(booking => booking.user.email === verifiedUser.email);
 
     return (
         <>

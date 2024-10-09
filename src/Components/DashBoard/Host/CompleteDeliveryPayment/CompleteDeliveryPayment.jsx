@@ -1,18 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllPackage } from "../../../../api/auth";
 import DeliveryRaw from "./DeliveryRaw";
-import useAuth from "../../../../hooks/useAuth";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 
 
 
 const CompleteDeliveryPayment = () => {
-  const{user} = useAuth()
+  const[verifiedUser] = useUsersData()
+
+  console.log(verifiedUser)
 
   const { data: packages = [], refetch } = useQuery({
-  queryKey: ['packages', user?.email], // Query key includes user email
-  queryFn: () => getAllPackage(user?.email), // Function to fetch packages
-  enabled: !!user?.email, // Only run when email is available
+  queryKey: ['packages', verifiedUser?.email], // Query key includes user email
+  queryFn: () => getAllPackage(verifiedUser?.email), // Function to fetch packages
+  enabled: !!verifiedUser?.email, // Only run when email is available
 });
       
       // Filter the packages to only include those with the role of 'rider'

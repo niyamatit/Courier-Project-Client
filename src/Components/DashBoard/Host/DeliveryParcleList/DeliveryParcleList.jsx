@@ -1,19 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllPackage } from "../../../../api/auth";
 import TableRow from "../Pickup Parcel/TableRow";
-import useAuth from "../../../../hooks/useAuth";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 
 
 
 const DeliveryParcelList = () => {
 
-    const{user} = useAuth()
+    const[verifiedUser] = useUsersData()
 
     const { data: packages = [], refetch } = useQuery({
-    queryKey: ['packages', user?.email], // Query key includes user email
-    queryFn: () => getAllPackage(user?.email), // Function to fetch packages
-    enabled: !!user?.email, // Only run when email is available
+    queryKey: ['packages', verifiedUser?.email], // Query key includes user email
+    queryFn: () => getAllPackage(verifiedUser?.email), // Function to fetch packages
+    enabled: !!verifiedUser?.email, // Only run when email is available
 });
 
     const DeliveryParcelList = packages.filter(user => user?.update === 'delivered');

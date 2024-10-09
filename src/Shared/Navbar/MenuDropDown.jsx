@@ -1,30 +1,53 @@
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import avatarImg from '../../assets/avatarImage.jpg'
-import useAuth from '../../hooks/useAuth'
-// import toast from 'react-hot-toast'
+import useUsersData from '../../hooks/useUsersData/useUsersData'
+import Swal from 'sweetalert2';
 
 
 const MenuDropdown = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { user, logOut } = useAuth()
+  const [verifiedUser]  = useUsersData();
+  const navigate = useNavigate(); 
 
-//   const [role] = useRole()
+console.log(verifiedUser)
 
+ 
   const handleLogOut = () => {
-    logOut()
+    
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log me out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+       
+        localStorage.removeItem('email');
+        
+       
+        navigate('/login');
+
+        
+        Swal.fire(
+          'Logged Out!',
+          'You have been successfully logged out.',
+          'success'
+        );
+
+        
+        setIsOpen(false);
+      }
+    });
   }
-
-
 
   return (
     <div className='z-20'>
       <div className='flex flex-row  items-center gap-3'>
-        {/* Become A Host btn */}
-        <div className='hidden md:block'>
-          
-        </div>
         {/* Dropdown btn */}
         <div
           onClick={() => setIsOpen(!isOpen)}
@@ -36,14 +59,13 @@ const MenuDropdown = () => {
             <img
               className='rounded-full'
               referrerPolicy='no-referrer'
-              src={user && user.photoURL ? user.photoURL : avatarImg}
+              src={verifiedUser && verifiedUser?.imageUrl ? verifiedUser.imageUrl : avatarImg}
               alt='profile'
               height='30'
               width='30'
             />
           </div>
         </div>
-
       </div>
       {isOpen && (
         <div className='absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 mt-3 top-12 text-sm'>
@@ -55,38 +77,41 @@ const MenuDropdown = () => {
               Home
             </Link>
 
-            {user ? <>
-              <Link
-                to='/dashboard'
-                className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-              >
-                Dashboard
-              </Link>
-              <div onClick={handleLogOut}
-                className='px-4 py-3 hover:bg-neutral-100 cursor-pointer transition font-semibold'
-              >
-                Logout
-              </div>
-            </> : <>
-              <Link
-                to='/login'
-                className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-              >
-                Login
-              </Link>
-              <Link
-                to='/signup'
-                className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-              >
-                Sign Up
-              </Link>
-            </>}
+            {verifiedUser ? (
+              <>
+                <Link
+                  to='/dashboard'
+                  className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                >
+                  Dashboard
+                </Link>
+                <div onClick={handleLogOut}
+                  className='px-4 py-3 hover:bg-neutral-100 cursor-pointer transition font-semibold'
+                >
+                  Logout
+                </div>
+              </>
+            ) : (
+              <>
+                <Link
+                  to='/login'
+                  className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                >
+                  Login
+                </Link>
+                <Link
+                  to='/signup'
+                  className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
-
     </div>
   )
 }
 
-export default MenuDropdown
+export default MenuDropdown;

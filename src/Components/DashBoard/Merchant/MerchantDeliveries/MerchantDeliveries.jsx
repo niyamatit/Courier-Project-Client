@@ -1,14 +1,14 @@
 import { MdPrint } from "react-icons/md";
 import { AiFillFileExcel } from "react-icons/ai";
-import useAuth from "../../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 import ReactToPrint from 'react-to-print';
 import ClipLoader from "react-spinners/ClipLoader"; // Import the loader component
 import { useRef, useState } from "react";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const MerchantDeliveries = () => {
-  const { user } = useAuth();
+  const[verifiedUser] = useUsersData()
   const componentRef = useRef();
   const [searchQuery, setSearchQuery] = useState({
     customer: '',
@@ -16,7 +16,7 @@ const MerchantDeliveries = () => {
   });
 
   const { data: deliveries = [], isLoading } = useQuery({
-    queryKey: ["deliveries", user?.email, searchQuery],
+    queryKey: ["deliveries", verifiedUser?.email, searchQuery],
     queryFn: async () => {
       const params = new URLSearchParams();
       if (searchQuery.customer) {
@@ -28,7 +28,7 @@ const MerchantDeliveries = () => {
       const res = await axiosSecure.get(`/parcel?${params.toString()}`);
       return res.data;
     },
-    enabled: !!user?.email,
+    enabled: !!verifiedUser?.email,
   });
 
   const printRow = (id) => {

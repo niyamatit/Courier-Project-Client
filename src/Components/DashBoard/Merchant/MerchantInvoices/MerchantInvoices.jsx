@@ -1,19 +1,19 @@
-import React from 'react';
+
 import { useQuery } from "@tanstack/react-query";
 import ClipLoader from "react-spinners/ClipLoader";  
-import useAuth from "../../../../hooks/useAuth";
 import axiosSecure from "../../../../api/axiosSecure";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const MerchantInvoices = () => {
-  const { user } = useAuth();
+  const[verifiedUser] = useUsersData()
 
   const { data: InvoiceData = [], isLoading } = useQuery({
-    queryKey: ["InvoiceData", user?.email],
+    queryKey: ["InvoiceData", verifiedUser?.email],
     queryFn: async () => {
       const res = await axiosSecure.get("/parcel");
       return res.data;
     },
-    enabled: !!user?.email,
+    enabled: !!verifiedUser?.email,
   });
 
   return (

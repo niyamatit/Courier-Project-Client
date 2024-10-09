@@ -9,9 +9,9 @@ import {
 } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 import axiosSecure from "../../../../api/axiosSecure";
-import useAuth from './../../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const MerchantInterNationalAddParcel = () => {
   const [WeightPackage, setWeightPackage] = useState("");
@@ -139,15 +139,15 @@ const weightCharge = (WeightPackage * 2500) || 0;
 const totalCharge = weightCharge + codCharge + deliveryCharge;
 const codPercentage =totalCharge*0.05
 const finalCharge = totalCharge + codPercentage
-const {user} = useAuth();
+const[verifiedUser] = useUsersData()
 // Approve 
 
 const { data: requests = [],  } = useQuery({
-  queryKey: ["requests", user?.email],
+  queryKey: ["requests", verifiedUser?.email],
 
   queryFn: async () => {
     const res = await axiosSecure.get(
-      `/users/request/field/${user?.email}`
+      `/users/request/field/${verifiedUser?.email}`
     );
     console.log(res.data);
     return res.data;
@@ -160,7 +160,7 @@ const handleClick = async () => {
   try {
     const requestData = { InternationalBookingStatus: "Pending" };
     const MerchantRequest = await axiosSecure.patch(
-      `/users/request/field/${user?.email}`,
+      `/users/request/field/${verifiedUser?.email}`,
       requestData
     );
     console.log("UserDetails:", MerchantRequest.data);
@@ -194,7 +194,7 @@ const handleClick = async () => {
     });
   }
 };
-const MerchantRequest = requests.find((req) => req.email === user?.email);
+const MerchantRequest = requests.find((req) => req.email === verifiedUser?.email);
 
   const isPendingForInternationalBooking = MerchantRequest?.InternationalBookingStatus === "Pending";
   const isApproveForInternationalBooking = MerchantRequest?.InternationalBookingStatus === "Approve";
