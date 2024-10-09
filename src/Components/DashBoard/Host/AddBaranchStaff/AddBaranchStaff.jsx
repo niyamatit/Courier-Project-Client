@@ -1,136 +1,3 @@
-
-// import { Button } from "primereact/button";
-// import { Dropdown } from "primereact/dropdown";
-// import { InputNumber } from "primereact/inputnumber";
-// import { InputText } from "primereact/inputtext";
-// import { useForm } from "react-hook-form";
-
-
-// const BranchAdd = () => {
-//     const {
-//         register,
-//         handleSubmit,
-//         formState: { errors },
-//     } = useForm();
-
-//     const onSubmit = (data) => {
-//         console.log(data);
-//     };
-
-
-//     // Sample Dropdown options for user ID
-//     const branchType = [
-//         { label: "Union", value: "Union" },
-//         { label: "Sub-district", value: "Sub-district" },
-//         { label: "District", value: "District" },
-//         { label: "Divisional", value: "Divisional" },
-//     ];
-//     return (
-//         <div className=" bg-gradient-to-r from-gray-200 to-gray-200">
-//             <h2 className="font-bold text-xl text-blue-900 p-6">Branch Add</h2>
-//             <form onSubmit={handleSubmit(onSubmit)} className="p-6 text-gray-600">
-//                 <div className="border border-gray-300 p-8 bg-[#f0f3f7]">
-//                     <div>
-
-//                         {/* branch Name */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="Branch Name:" className="block mb-2">
-//                                 Branch Name
-//                             </label>
-//                             <InputText
-//                                 id="branchName"
-//                                 {...register("branchName", { required: "Branch Name is required" })}
-//                                 className="w-full p-inputtext"
-//                             />
-//                             {errors.branchName && (
-//                                 <span className="text-red-500">{errors.branchName.message}</span>
-//                             )}
-//                         </div>
-
-//                         {/* branch Number */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="branchNumber" className="block mb-2">
-//                                 Branch Number
-//                             </label>
-//                             <InputNumber
-//                                 id="branchNumber"
-//                                 {...register("branchNumber", { required: "branch Number is required" })}
-//                                 className="w-full p-inputtext"
-//                             />
-//                             {errors.branchNumber && (
-//                                 <span className="text-red-500">{errors.branchNumber.message}</span>
-//                             )}
-//                         </div>
-
-
-//                         {/* address */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="Branch Address:" className="block mb-2">
-//                                 Branch Address
-//                             </label>
-//                             <InputText
-//                                 id="branchAddress"
-//                                 {...register("branchAddress", { required: "Branch Address is required" })}
-//                                 className="w-full p-inputtext"
-//                             />
-//                             {errors.branchName && (
-//                                 <span className="text-red-500">{errors.branchName.message}</span>
-//                             )}
-//                         </div>
-//                         {/* branch commission */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="Branch Name:" className="block mb-2">
-//                                 Branch commission
-//                             </label>
-//                             <InputText
-//                                 id="branchName"
-//                                 {...register("branchName", { required: "Branch commission is required" })}
-//                                 className="w-full p-inputtext"
-//                             />
-//                             {errors.branchName && (
-//                                 <span className="text-red-500">{errors.branchName.message}</span>
-//                             )}
-//                         </div>
-
-//                     </div>
-
-//                     <div>
-//                         {/* userID Dropdown */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="branchType" className="block mb-2">
-//                                 Branch Type
-//                             </label>
-//                             <Dropdown
-//                                 id="branchType"
-//                                 options={branchType}
-//                                 {...register("branchType", { required: "User ID is required" })}
-//                                 className="w-full p-dropdown"
-//                                 placeholder="Select a User ID"
-//                             />
-//                             {errors.branchType && (
-//                                 <span className="text-red-500">{errors.branchType.message}</span>
-//                             )}
-//                         </div>
-
-
-//                     </div>
-//                 </div>
-
-//                 {/* Submit Button */}
-//                 <div className="flex mt-4 w-full justify-center">
-//                     <Button
-//                         label="Submit"
-//                         type="submit"
-//                         className="p-button-success border pl-6 pr-6 font-semibold text-white bg-[#2196F3] p-4 rounded-lg"
-//                     />
-//                 </div>
-//             </form>
-//         </div>
-//     );
-// };
-
-// export default BranchAdd;
-
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
@@ -139,7 +6,7 @@ import Swal from "sweetalert2";
 import { imageUpload } from "../../../../api/utils";
 import useAuth from "../../../../hooks/useAuth";
 
-const BranchAdd = () => {
+const AddBaranchStaff = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   
   const [filteredAreas, setFilteredAreas] = useState([]);
@@ -751,36 +618,39 @@ const Areas =[
       const districtName = getDistrictName(data.district);
       const formData = { ...data, district: districtName };
       
-      // const yourImage = await imageUpload(data.yourImage[0]);
-      // const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
-      // const nidBackImage = await imageUpload(data.nidBackImage[0]);
+      const yourImage = await imageUpload(data.yourImage[0]);
+      const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
+      const nidBackImage = await imageUpload(data.nidBackImage[0]);
   
-      const BranchInformation = {
-        Branch_Number: formData?.contactNumber || "",
-        Branch_Name:formData?.YourName || "",
-        Branch_Commission:parseFloat(formData?.branch_lav) || "",
-        
-        Branch_Address:formData?.YourCurrentAddress || "",
-        
-        
-        Branch_District_Name: formData?.district || "",
-        Branch_Area: formData?.area || "",
-        Branch_type: formData?.branch_type || "",
-        
-        Branch_User_ID: formData?.Staff_User_ID || "",
-        
-        Branch_Password: formData?.Staff_Password || "",
-        role:"host",
+      const ApplyStaffInformation = {
+        Staff_Contact_Number: formData?.contactNumber || "",
+        Staff_Name:formData?.YourName || "",
+        Branch_Email:user?.email || "",
+        Staff_Father_Name:formData?.FatherName || "",
+        Staff_Mother_Name:formData?.MotherName || "",
+        Staff_Current_Address:formData?.YourCurrentAddress || "",
+        Staff_Permanant_Address:formData?.YourParmanentAddress || "",
+        Staff_Date_Of_Birth:formData?.date_of_birth || "",
+        Staff_Married_Status:formData?.married_status || "",
+        Staff_District_Name: formData?.district || "",
+        Staff_Area: formData?.area || "",
+        Staff_post: formData?.staff_post || "",
+        Staff_User_ID: formData?.Staff_User_ID || "",
+        Staff_Experience: formData?.Staff_Exp || "",
+        Staff_Password: formData?.Staff_Password || "",
+        Staff_Image: yourImage?.data?.display_url || "",
+        NID_Front_Image: nidFrontImage?.data?.display_url || "",
+        NID_Back_Image: nidBackImage?.data?.display_url || "",
         Date: new Date().toISOString().split('T')[0]
       };
   
-      const BranchInfo = await axiosSecure.post("/branch", BranchInformation);
+      const ApplyStaffInfo = await axiosSecure.post("/staff", ApplyStaffInformation);
       
-      if (BranchInfo.data.insertedId) {
+      if (ApplyStaffInfo.data.insertedId) {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Branch Added Successfully",
+          title: "Staff Added Successfully",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -790,7 +660,7 @@ const Areas =[
         Swal.fire({
           position: "top-end",
           icon: "error",
-          title: "Already Added the Branch",
+          title: "Already Added the Staff",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -805,20 +675,20 @@ const Areas =[
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
   <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
     <h1 className="text-2xl sm:text-3xl md:text-3xl font-bold mb-4 sm:mb-6 md:mb-6 text-center text-blue-700">
-      Add Branch
+      Add Staff
     </h1>
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 md:space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 lg:gap-6">
         <div className="col-span-2 space-y-4 sm:space-y-6 md:space-y-6">
           <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
             <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
-            Branch Information
+            Staff Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
               
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Branch Name*
+                  Staff Name*
                 </label>
                 <input
                   type="text"
@@ -833,7 +703,7 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Branch Number*
+                  Staff Contact Number*
                 </label>
                 <input
                   type="text"
@@ -847,7 +717,7 @@ const Areas =[
                 )}
               </div>
               {/* Father and Mother Name */}
-              {/* <div className="col-span-2 md:col-span-2 lg:col-span-1">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                 Staff Father Name*
                 </label>
@@ -911,23 +781,22 @@ const Areas =[
                 {errors.married_status && (
                   <span className="text-red-500">This field is required</span>
                 )}
-              </div> */}
+              </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                Branch Type*
+                Staff Post*
                 </label>
                  <select
-                  {...register('branch_type', { required: true })}
+                  {...register('staff_post', { required: true })}
                   className={`select select-bordered w-full p-2 rounded-lg border ${
-                    errors.branch_type ? 'border-red-500' : 'border-gray-300'
+                    errors.staff_post ? 'border-red-500' : 'border-gray-300'
                   }`}
                   
                 >
-                  <option value="">Select Type</option>
-                  <option value="Union">Union</option>
-                  <option value="Sub-district">Sub-district</option>
-                  <option value="District">District</option>
-                  <option value="Divisional">Divisional</option>
+                  <option value="">Select a Post</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Asst. Manager">Asst. Manager</option>
+                  <option value="labour">labour</option>
                   
                 </select>
                 {errors.staff_post && (
@@ -958,7 +827,7 @@ const Areas =[
               {/* Current Address */}
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                Branch  Address*
+                Staff Current  Address*
                 </label>
                 <input
                   type="text"
@@ -971,7 +840,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              {/* <div className="col-span-2 md:col-span-2 lg:col-span-1">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                 Staff Parmanent  Address*
                 </label>
@@ -985,7 +854,7 @@ const Areas =[
                 {errors.YourParmanentAddress && (
                   <span className="text-red-500">This field is required</span>
                 )}
-              </div> */}
+              </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Districts*
@@ -1008,7 +877,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+              <div className="col-span-2 md:col-span-2 lg:col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
                   Area*
                 </label>
@@ -1031,7 +900,7 @@ const Areas =[
               </div>
             </div>
              {/* Your Image */}
-             {/* <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
+             <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
                   <label className="block text-gray-700 font-medium mb-1">
                   Staff Image*
                   </label>
@@ -1045,8 +914,8 @@ const Areas =[
                   {errors.yourImage && (
                     <span className="text-red-500">This field is required</span>
                   )}
-                </div> */}
-            {/* <div className="col-span-2">
+                </div>
+            <div className="col-span-2">
                   <label className="block text-gray-700 font-medium mb-1">
                   Staff NID Front Image*
                   </label>
@@ -1060,9 +929,9 @@ const Areas =[
                   {errors.nidFrontImage && (
                     <span className="text-red-500">This field is required</span>
                   )}
-                </div> */}
+                </div>
                 {/* NID Back Image */}
-                {/* <div className="col-span-2 my-2">
+                <div className="col-span-2 my-2">
                   <label className="block text-gray-700 font-medium mb-1">
                   Staff NID Back Image*
                   </label>
@@ -1076,26 +945,26 @@ const Areas =[
                   {errors.nidBackImage && (
                     <span className="text-red-500">This field is required</span>
                   )}
-                </div> */}
+                </div>
 
                 <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Branch commission*
+                  Branch Staff Experience*
                 </label>
                 <input
                   type="text"
-                  {...register('branch_lav', { required: true })}
+                  {...register('Staff_Exp', { required: true })}
                   className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.branch_lav ? 'border-red-500' : 'border-gray-300'
+                    errors.Staff_Exp ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
-                {errors.branch_lav && (
+                {errors.Staff_Exp && (
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
                 <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Branch  User ID*
+                  Branch Staff User ID*
                 </label>
                 <input
                   type="text"
@@ -1110,7 +979,7 @@ const Areas =[
               </div>
                 <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Branch  Password*
+                  Branch Staff Password*
                 </label>
                 <input
                   type="text"
@@ -1149,4 +1018,4 @@ const Areas =[
   );
 };
 
-export default BranchAdd;
+export default AddBaranchStaff;

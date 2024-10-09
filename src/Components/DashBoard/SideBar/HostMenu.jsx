@@ -6,7 +6,7 @@ import { FaBiking, FaWpforms } from "react-icons/fa";
 import { FaMoneyBill } from "react-icons/fa";
 import { FaList } from "react-icons/fa6";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
-
+import { MdPersonAdd } from 'react-icons/md'
 
 
 const HostMenu = () => {
@@ -162,6 +162,11 @@ const HostMenu = () => {
         icon={FaMoneyBill}
         label='Pending Payment'
         address='pending-payment'
+      />
+      <MenuItem
+        icon={MdPersonAdd}
+        label='Add Staff'
+        address='branch-staff'
       />
       <MenuItem
         icon={FaBiking}
