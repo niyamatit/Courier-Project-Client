@@ -39,7 +39,7 @@ export const PackageDetails = ({ bookingInfo }) => (
 
                     </div>
                     <div>
-                        <strong>Booking: </strong>{bookingInfo?.origin}
+                         <strong>Booking: </strong>{bookingInfo?.origin}
                     </div>
                     <div>
                         <strong>Booking Date: </strong>{bookingInfo?.booking}
