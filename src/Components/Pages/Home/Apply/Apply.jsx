@@ -1010,7 +1010,7 @@ const Areas =[
                   <option value="Sub Agent">Sub Agent</option>
                   <option value="Merchant">Merchant</option>
                   <option value="Rider">Rider</option>
-                  <option value="Company Login">Company Login</option>
+                  <option value="Company Login">Company</option>
                   
                 </select>
                 {errors.apply && (

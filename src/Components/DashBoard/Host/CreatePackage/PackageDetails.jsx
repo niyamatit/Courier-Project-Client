@@ -33,7 +33,7 @@ export const PackageDetails = ({ bookingInfo }) => (
             <div className="booking-details ">
                 <div className='flex justify-around'>
                     <div>
-                        {/* <Barcode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} /> */}
+                        <Barcode className="ml-7 h-[50px]" value={bookingInfo?.packageTrackingNumber} />
                         <p>{bookingInfo?.packageTrackingNumber}</p>
                         <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
 
