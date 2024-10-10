@@ -17,7 +17,7 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    setLoading(true);
+     setLoading(true);
 
     try {
       // Send login request to the backend
