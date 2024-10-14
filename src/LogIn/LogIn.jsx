@@ -114,6 +114,12 @@ const Login = () => {
           <Link to='/merchantLogin' className='text-blue-600 hover:text-blue-300'>Merchant Login</Link>
           <p className='mt-1 text-blue-600'><GoArrowRight/></p>
         </p>
+        <p className='flex gap-1 px-6 text-sm justify-center text-gray-400 
+        '>
+          
+          <Link to='/merchantSignup' className='text-blue-600 hover:text-blue-300'>Merchant Signup</Link>
+          <p className='mt-1 text-blue-600'><GoArrowRight/></p>
+        </p>
       </div>
     </div>
   );
