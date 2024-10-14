@@ -125,7 +125,7 @@ const MerchantSignup = () => {
                 'Continue'
               )}
                </button>
-          </div>
+            </div>
         </form>
         <p className="px-6 text-sm text-center text-gray-400 mt-4">
           Already have an account?{' '}
