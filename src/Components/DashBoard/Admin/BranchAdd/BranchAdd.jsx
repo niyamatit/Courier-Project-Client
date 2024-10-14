@@ -587,7 +587,7 @@ const Areas =[
   {"id":"493","district_id":"39","name":"Madhyanagar","bn_name":"মধ্যনগর","url":"null"},
   {"id":"494","district_id":"50","name":"Dasar","bn_name":"ডাসার","url":"null"}
   ]
-  useEffect(() => {
+   useEffect(() => {
     if (selectedDistrict) {
       setFilteredAreas(Areas.filter(area => area.district_id === selectedDistrict));
     } else {
