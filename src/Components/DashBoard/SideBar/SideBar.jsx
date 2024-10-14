@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { GrLogout } from 'react-icons/gr'
 import { FcSettings } from 'react-icons/fc'
 import { AiOutlineBars } from 'react-icons/ai'
-import useAuth from '../../../hooks/useAuth'
+
 import MenuItem from './MenuItem'
 import AdminMenu from './AdminMenu'
 import GuestMenu from './GuestMenu'
