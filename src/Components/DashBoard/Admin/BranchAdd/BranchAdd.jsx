@@ -1,136 +1,4 @@
 
-// import { Button } from "primereact/button";
-// import { Dropdown } from "primereact/dropdown";
-// import { InputNumber } from "primereact/inputnumber";
-// import { InputText } from "primereact/inputtext";
-// import { useForm } from "react-hook-form";
-
-
-// const BranchAdd = () => {
-//     const {
-//         register,
-//         handleSubmit,
-//         formState: { errors },
-//     } = useForm();
-
-//     const onSubmit = (data) => {
-//         console.log(data);
-//     };
-
-
-//     // Sample Dropdown options for user ID
-//     const branchType = [
-//         { label: "Union", value: "Union" },
-//         { label: "Sub-district", value: "Sub-district" },
-//         { label: "District", value: "District" },
-//         { label: "Divisional", value: "Divisional" },
-//     ];
-//     return (
-//         <div className=" bg-gradient-to-r from-gray-200 to-gray-200">
-//             <h2 className="font-bold text-xl text-blue-900 p-6">Branch Add</h2>
-//             <form onSubmit={handleSubmit(onSubmit)} className="p-6 text-gray-600">
-//                 <div className="border border-gray-300 p-8 bg-[#f0f3f7]">
-//                     <div>
-
-//                         {/* branch Name */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="Branch Name:" className="block mb-2">
-//                                 Branch Name
-//                             </label>
-//                             <InputText
-//                                 id="branchName"
-//                                 {...register("branchName", { required: "Branch Name is required" })}
-//                                 className="w-full p-inputtext"
-//                             />
-//                             {errors.branchName && (
-//                                 <span className="text-red-500">{errors.branchName.message}</span>
-//                             )}
-//                         </div>
-
-//                         {/* branch Number */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="branchNumber" className="block mb-2">
-//                                 Branch Number
-//                             </label>
-//                             <InputNumber
-//                                 id="branchNumber"
-//                                 {...register("branchNumber", { required: "branch Number is required" })}
-//                                 className="w-full p-inputtext"
-//                             />
-//                             {errors.branchNumber && (
-//                                 <span className="text-red-500">{errors.branchNumber.message}</span>
-//                             )}
-//                         </div>
-
-
-//                         {/* address */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="Branch Address:" className="block mb-2">
-//                                 Branch Address
-//                             </label>
-//                             <InputText
-//                                 id="branchAddress"
-//                                 {...register("branchAddress", { required: "Branch Address is required" })}
-//                                 className="w-full p-inputtext"
-//                             />
-//                             {errors.branchName && (
-//                                 <span className="text-red-500">{errors.branchName.message}</span>
-//                             )}
-//                         </div>
-//                         {/* branch commission */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="Branch Name:" className="block mb-2">
-//                                 Branch commission
-//                             </label>
-//                             <InputText
-//                                 id="branchName"
-//                                 {...register("branchName", { required: "Branch commission is required" })}
-//                                 className="w-full p-inputtext"
-//                             />
-//                             {errors.branchName && (
-//                                 <span className="text-red-500">{errors.branchName.message}</span>
-//                             )}
-//                         </div>
-
-//                     </div>
-
-//                     <div>
-//                         {/* userID Dropdown */}
-//                         <div className="field mt-2">
-//                             <label htmlFor="branchType" className="block mb-2">
-//                                 Branch Type
-//                             </label>
-//                             <Dropdown
-//                                 id="branchType"
-//                                 options={branchType}
-//                                 {...register("branchType", { required: "User ID is required" })}
-//                                 className="w-full p-dropdown"
-//                                 placeholder="Select a User ID"
-//                             />
-//                             {errors.branchType && (
-//                                 <span className="text-red-500">{errors.branchType.message}</span>
-//                             )}
-//                         </div>
-
-
-//                     </div>
-//                 </div>
-
-//                 {/* Submit Button */}
-//                 <div className="flex mt-4 w-full justify-center">
-//                     <Button
-//                         label="Submit"
-//                         type="submit"
-//                         className="p-button-success border pl-6 pr-6 font-semibold text-white bg-[#2196F3] p-4 rounded-lg"
-//                     />
-//                 </div>
-//             </form>
-//         </div>
-//     );
-// };
-
-// export default BranchAdd;
-
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
@@ -141,9 +9,9 @@ import useAuth from "../../../../hooks/useAuth";
 
 const BranchAdd = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  
+  const [loading, setLoading] = useState(false);
   const [filteredAreas, setFilteredAreas] = useState([]);
-  const {user} = useAuth();
+  
   
 
   const {
@@ -751,32 +619,27 @@ const Areas =[
       const districtName = getDistrictName(data.district);
       const formData = { ...data, district: districtName };
       
-      // const yourImage = await imageUpload(data.yourImage[0]);
-      // const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
-      // const nidBackImage = await imageUpload(data.nidBackImage[0]);
+     
   
       const BranchInformation = {
         Branch_Number: formData?.contactNumber || "",
-        Branch_Name:formData?.YourName || "",
-        Branch_Commission:parseFloat(formData?.branch_lav) || "",
-        
-        Branch_Address:formData?.YourCurrentAddress || "",
-        
-        
+        Branch_Name: formData?.YourName || "",
+        Branch_Commission: parseFloat(formData?.branch_lav) || 0,
+        Branch_Address: formData?.YourCurrentAddress || "",
         Branch_District_Name: formData?.district || "",
         Branch_Area: formData?.area || "",
         Branch_type: formData?.branch_type || "",
-        
         Branch_User_ID: formData?.Staff_User_ID || "",
-        
         Branch_Password: formData?.Staff_Password || "",
-        role:"host",
-        Date: new Date().toISOString().split('T')[0]
+        Date: new Date().toISOString().split('T')[0],
+        
       };
   
+      
       const BranchInfo = await axiosSecure.post("/branch", BranchInformation);
       
       if (BranchInfo.data.insertedId) {
+        
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -784,21 +647,42 @@ const Areas =[
           showConfirmButton: false,
           timer: 1500,
         });
+  
+        
+        const BranchLogin = {
+          name: formData?.YourName || "",
+          email: formData?.Staff_User_ID || "",
+          password: formData?.Staff_Password || "",
+          role: "host",
+          imageUrl:  ""
+        };
+  
+        const response = await axiosSecure.post('/users/auth/register', BranchLogin);
+        
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
         Swal.fire({
           position: "top-end",
           icon: "error",
-          title: "Already Added the Branch",
+          title: "Branch or User ID Already Exists",
           showConfirmButton: false,
           timer: 1500,
         });
+     
       } else {
         console.error("Unexpected Error:", error);
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Something went wrong!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     }
   };
+  
   
   
   return (
@@ -1113,7 +997,7 @@ const Areas =[
                   Branch  Password*
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   {...register('Staff_Password', { required: true })}
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.Staff_Password ? 'border-red-500' : 'border-gray-300'

@@ -61,6 +61,9 @@ import AddBaranchStaff from "../Components/DashBoard/Host/AddBaranchStaff/AddBar
 import BranchAdd from "../Components/DashBoard/Admin/BranchAdd/BranchAdd";
 import RechargeApply from "../Components/DashBoard/Host/Recharge/RechargeApply/RechargeApply";
 import RechargeComplete from "../Components/DashBoard/Host/Recharge/RechargeComplete/RechargeComplete";
+import MerchantLogin from "../LogIn/MerchantLogin/MerchantLogin";
+import MerchantSignup from "../SignUp/MerchantSignup/MerchantSignup";
+
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -115,8 +118,16 @@ export const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
+    path: "/merchantSignup",
+    element: <MerchantSignup/>,
+  },
+  {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/merchantLogin",
+    element: <MerchantLogin/>,
   },
 
   {
