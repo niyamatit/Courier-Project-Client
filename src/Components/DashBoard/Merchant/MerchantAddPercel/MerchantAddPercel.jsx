@@ -620,7 +620,7 @@ const Areas =[
     }
   };
   useEffect(()=>{
-    if(selectedDistrict === '47'){
+     if(selectedDistrict === '47'){
       setDeliveryCharge(60)
     }else if(selectedDistrict){
       setDeliveryCharge(120)
