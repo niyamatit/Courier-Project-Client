@@ -9,6 +9,7 @@ const MerchantAddParcel = () => {
   const [WeightPackage,setWeightPackage] = useState("");
   const [filteredAreas, setFilteredAreas] = useState([]);
   const [ServiceType,setServiceType] = useState("");
+  const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [ItemType,setItemType] = useState('');
   const [store, setStore] = useState("");
   const [contactNumber, setContactNumber] = useState('');
@@ -618,6 +619,13 @@ const Areas =[
       ];
     }
   };
+  useEffect(()=>{
+    if(selectedDistrict === '47'){
+      setDeliveryCharge(60)
+    }else if(selectedDistrict){
+      setDeliveryCharge(120)
+    }
+  },[selectedDistrict])
 
   const onSubmit = async (data) => {
     const districtName = getDistrictName(data.district);
@@ -640,8 +648,8 @@ const Areas =[
       Product_Remark: formData?.remark || "",
       Cod_Perchent: 1 || 0,
       Weight_Charge: weightCharge || 0,
-      Cod_Charge: 50 || 0,
-      Delivary_Charge: 100 || 0,
+      Cod_Charge: 0 || 0,
+      Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
       Date: new Date().toISOString().split('T')[0] || ""
       
@@ -684,11 +692,12 @@ const Areas =[
 
     fetchCustomerDetails();
   }, [contactNumber]);
-  const codCharge = 50; 
   
-const deliveryCharge = 100;
+  const codCharge = 0; 
+  
+const CustomerdeliveryCharge = deliveryCharge;
 const weightCharge = (WeightPackage * 25) || 0; 
-const totalCharge = weightCharge + codCharge + deliveryCharge;
+const totalCharge = weightCharge + codCharge + CustomerdeliveryCharge;
 const codPercentage =totalCharge*0.01
 const finalCharge = totalCharge + codPercentage
   return (
@@ -997,13 +1006,13 @@ const finalCharge = totalCharge + codPercentage
               <span className="text-gray-700">Weight Charge</span>
               <span className="text-gray-500">{(WeightPackage*25) || 0} Tk</span>
             </div>
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between">
               <span className="text-gray-700">Cod Charge</span>
               <span className="text-gray-500">50.00 Tk</span>
-            </div>
+            </div> */}
             <div className="flex justify-between">
               <span className="text-gray-700">Delivery Charge</span>
-              <span className="text-gray-500">100.00 Tk</span>
+              <span className="text-gray-500">{deliveryCharge}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-700">Total Charge</span>
