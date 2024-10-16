@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import "tailwindcss/tailwind.css";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import { imageUpload } from "../../../../api/utils";
 import useAuth from "../../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const AddBaranchStaff = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  
+  const [selectedUser, setSelectedUser] = useState(null);
   const [filteredAreas, setFilteredAreas] = useState([]);
   const {user} = useAuth();
   
@@ -16,7 +17,7 @@ const AddBaranchStaff = () => {
   const {
     register,
     handleSubmit,
-    
+    control,
     formState: { errors },
   } = useForm();
 
@@ -613,6 +614,17 @@ const Areas =[
     }
   };
 
+  const {  data: users = [], isLoading} = useQuery({
+    queryKey: ['users'],
+    queryFn: async() => {
+        const res = await axiosSecure.get("/users");
+        return res.data;
+       
+    }
+    
+});
+
+
   const onSubmit = async (data) => {
     try {
       const districtName = getDistrictName(data.district);
@@ -635,6 +647,7 @@ const Areas =[
         Staff_District_Name: formData?.district || "",
         Staff_Area: formData?.area || "",
         Staff_post: formData?.staff_post || "",
+        Staff_Branch_Name: formData?.select_branch_name || "",
         Staff_User_ID: formData?.Staff_User_ID || "",
         Staff_Experience: formData?.Staff_Exp || "",
         Staff_Password: formData?.Staff_Password || "",
@@ -668,6 +681,12 @@ const Areas =[
         console.error("Unexpected Error:", error);
       }
     }
+    
+  };
+  const handleBranchChange = (e) => {
+    const selectedBranchName = e.target.value;
+    const user = users.find(user => user?.name === selectedBranchName); 
+    setSelectedUser(user); 
   };
   
   
@@ -803,27 +822,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              {/* <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                Staff User ID*
-                </label>
-                 <select
-                  {...register('staff_User_ID', { required: true })}
-                  className={`select select-bordered w-full p-2 rounded-lg border ${
-                    errors.staff_User_ID ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  
-                >
-                  <option value="">Select a User ID</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Asst. Manager">Asst. Manager</option>
-                  
-                  
-                </select>
-                {errors.staff_User_ID && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div> */}
+              
               {/* Current Address */}
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
@@ -877,7 +876,7 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-2">
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Area*
                 </label>
@@ -886,6 +885,7 @@ const Areas =[
                   className={`select select-bordered w-full p-2 rounded-lg border ${
                     errors.area ? 'border-red-500' : 'border-gray-300'
                   }`}
+                 
                 >
                   <option value="">Select Area</option>
                   {filteredAreas.map((area) => (
@@ -895,6 +895,31 @@ const Areas =[
                   ))}
                 </select>
                 {errors.area && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block text-gray-700 font-medium mb-1">
+                Select Branch Name*
+                </label>
+                 <select
+                  {...register('select_branch_name', { required: true })}
+                  className={`select select-bordered w-full p-2 rounded-lg border ${
+                    errors.select_branch_name ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  onChange={handleBranchChange}
+                >
+                  <option value="123">Select Branch</option>
+                  {
+                    users.filter(user=>user?.role === 'host').map(user=>(
+                      <option key={user._id} value={user?.name}>
+              {user?.name || "No Name Found"}
+            </option>
+                    ))
+                  }
+                  
+                </select>
+                {errors.select_branch_name && (
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
@@ -962,36 +987,33 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-                <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Branch Staff User ID*
-                </label>
-                <input
-                  type="text"
-                  {...register('Staff_User_ID', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.Staff_User_ID && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-                <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Branch Staff Password*
-                </label>
-                <input
-                  type="text"
-                  {...register('Staff_Password', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.Staff_Password && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+              <label className="block text-gray-700 font-medium mb-1">Branch Staff User ID*</label>
+              <input
+                type="text"
+                {...register('Staff_User_ID', { required: true })}
+                className={`input input-bordered w-full p-2 rounded-lg border ${
+                  errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
+                }`}
+                value={selectedUser?.email || 'No User ID Found'}
+                readOnly
+              />
+              {errors.Staff_User_ID && <span className="text-red-500">This field is required</span>}
+            </div>
+
+            <div className="col-span-2 md:col-span-2 lg:col-span-1">
+              <label className="block text-gray-700 font-medium mb-1">Branch Staff Password*</label>
+              <input
+                type="text"
+                {...register('Staff_Password', { required: true })}
+                className={`input input-bordered w-full p-2 rounded-lg border ${
+                  errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
+                }`}
+                value={selectedUser?.password || 'No Password Found'}
+                readOnly
+              />
+              {errors.Staff_Password && <span className="text-red-500">This field is required</span>}
+            </div>
           </div>
 
           {/* Parcel Area */}
