@@ -41,14 +41,14 @@ const BookingForm = () => {
   };
 
   
-  const [cnCounter, setCnCounter] = useState(0);
+  const [cnCounter, setCnCounter] = useState(1);
   
   useEffect(() => {
     const generateUniqueCnNumber = () => {
       
       setCnCounter((prevCounter) => prevCounter + 1);
-      
-      const uniqueNumber = `NEPNU-OFF-000${Date.now()}${cnCounter.toString()}`;
+      const timestamp = Date.now().toString().slice(0, 8);
+      const uniqueNumber = `NEPNU-OFF-000${timestamp}${cnCounter.toString()}`;
       
       setCnNumber(uniqueNumber);
       setValue("CnNumber", uniqueNumber);
@@ -147,7 +147,7 @@ const BookingForm = () => {
     fetchReceiverDetails();
   }, [receiverContactNo]);
 
-  const {  data: users = [], isLoading} = useQuery({
+  const {  data: users = []} = useQuery({
     queryKey: ['users'],
     queryFn: async() => {
         const res = await axiosSecure.get("/users");
@@ -342,7 +342,8 @@ const [verifiedUser] = useUsersData();
             {/* Booking Information Section */}
             <Section title="Booking Information">
              
-                <InputField
+               <div className="grid grid-cols-2 gap-2">
+               <InputField
                   watchValues={watchValues}
                   register={register}
                   name={"CnNumber"}
@@ -356,8 +357,9 @@ const [verifiedUser] = useUsersData();
                 />
                 <textarea
                   placeholder=""
-                  className="textarea textarea-bordered textarea-sm mt-6 bg-[#f9f5f1] text-black w-full max-w-lg"
+                  className="textarea textarea-bordered textarea-sm mt-6 bg-[#f9f5f1] text-black w-full max-w-xs"
                 ></textarea>
+               </div>
               
               {/* Auto-generated booking date */}
               <InputField
