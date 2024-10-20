@@ -1,16 +1,16 @@
 import { FaUser } from "react-icons/fa";
 import MenuItem from "./MenuItem";
 import { BsCart } from "react-icons/bs";
-import useAuth from "../../../hooks/useAuth";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
 
 
 const SuperAdminMenu = () => {
 
-    const { user } = useAuth()
+    const[verifiedUser] = useUsersData()
 
     return (
         <div>
-            <p className="text-xl font-semibold text-secondary text-center">{user?.displayName}</p>
+            <p className="text-xl font-semibold text-secondary text-center">{verifiedUser?.displayName}</p>
             <MenuItem
                 icon={FaUser}
                 label='Manage Admin'

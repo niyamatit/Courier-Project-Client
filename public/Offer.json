@@ -1,32 +1,32 @@
 [
     {
-      "title": "Sea Forwarding",
-      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments.",
+      "title": "STORAGE",
+      "description": "We provide secure and efficient storage solutions to safeguard your goods until they're ready for delivery.",
       "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/cargo-ship.png"
     },
     {
-      "title": "Air Freight Forwarding",
-      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments.",
+      "title": "LOGISTICS",
+      "description": "Our comprehensive logistics services ensure the smooth and efficient transportation of your goods from start to finish.",
       "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/plane.png"
     },
     {
-      "title": "Land Transportation",
-      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments.",
+      "title": "CARGO",
+      "description": "We specialize in cargo services, handling all types of goods with care and ensuring timely delivery",
       "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/delivery.png"
     },
     {
-      "title": "Warehouse & Distribution",
-      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments..",
+      "title": "TRUCKING",
+      "description": "Our trucking services provide reliable and efficient transportation solutions for your freight needs.",
       "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/forklift.png"
     },
     {
-      "title": "Railway Logistics",
-      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments..",
+      "title": "PACKAGING",
+      "description": "We offer professional packaging services to ensure your items are securely packed and protected during transit.",
       "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/train.png"
     },
     {
-      "title": "Cross Border",
-      "description": "We are professional in ocean freight with more than 12 years of experience and have shipped more than 100k shipments..",
+      "title": "WAREHOUSING",
+      "description": "Our warehousing solutions provide ample space and security for storing your goods until they are ready for distribution.",
       "image_link": "https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/worldwide.png"
     }
   ]

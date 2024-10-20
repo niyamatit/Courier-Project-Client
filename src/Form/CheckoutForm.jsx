@@ -8,13 +8,13 @@ import { ImSpinner9 } from 'react-icons/im'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
-import useAuth from '../hooks/useAuth'
 import { createPaymentIntent, saveBookingInfo } from '../api/bookings'
+import useUsersData from '../hooks/useUsersData/useUsersData'
 
 const CheckoutForm = ({ bookingInfo, closeModal }) => {
   const stripe = useStripe()
   const elements = useElements()
-  const { user } = useAuth()
+  const[verifiedUser] = useUsersData()
   const [cardError, setCardError] = useState('')
   const [clientSecret, setClientSecret] = useState('')
   const [processing, setProcessing] = useState(false)
@@ -63,8 +63,8 @@ const CheckoutForm = ({ bookingInfo, closeModal }) => {
         payment_method: {
           card: card,
           billing_details: {
-            email: user?.email,
-            name: user?.displayName,
+            email: verifiedUser?.email,
+            name: verifiedUser?.displayName,
           },
         },
       })

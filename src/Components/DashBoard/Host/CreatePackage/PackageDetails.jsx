@@ -5,6 +5,7 @@ import './CourierSlip.css';
 import { PiScissorsLight } from 'react-icons/pi';
 // import QRCode from 'react-qr-code';
 import logoImg from '../../../../assets/nexp-update.png'
+import QRCode from 'react-qr-code';
 export const PackageDetails = ({ bookingInfo }) => (
 
 
@@ -32,13 +33,13 @@ export const PackageDetails = ({ bookingInfo }) => (
             <div className="booking-details ">
                 <div className='flex justify-around'>
                     <div>
-                        <Barcode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
-                        {/* <p>{bookingInfo?.packageTrackingNumber}</p> */}
-                        {/* <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} /> */}
+                        <Barcode className="ml-7 h-[50px]" value={bookingInfo?.packageTrackingNumber} />
+                        <p>{bookingInfo?.packageTrackingNumber}</p>
+                        <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
 
                     </div>
                     <div>
-                        <strong>Booking: </strong>{bookingInfo?.origin}
+                         <strong>Booking: </strong>{bookingInfo?.origin}
                     </div>
                     <div>
                         <strong>Booking Date: </strong>{bookingInfo?.booking}

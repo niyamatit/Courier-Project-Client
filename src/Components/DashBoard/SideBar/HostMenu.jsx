@@ -5,18 +5,18 @@ import { MdOutlineManageHistory } from "react-icons/md";
 import { FaBiking, FaWpforms } from "react-icons/fa";
 import { FaMoneyBill } from "react-icons/fa";
 import { FaList } from "react-icons/fa6";
-import useAuth from "../../../hooks/useAuth";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
 
 
 
 const HostMenu = () => {
 
-  const { user } = useAuth()
+  const[verifiedUser] = useUsersData()
 
 
   return (
     <>
-      <p className="text-2xl text-center font-semibold text-secondary">{user?.displayName}</p>
+      <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.displayName}</p>
 
       <MenuItem
         icon={IoHome}
@@ -163,6 +163,11 @@ const HostMenu = () => {
         label='Pending Payment'
         address='pending-payment'
       />
+      {/* <MenuItem
+        icon={MdPersonAdd}
+        label='Add Staff'
+        address='branch-staff'
+      /> */}
       <MenuItem
         icon={FaBiking}
         label='Rider List'

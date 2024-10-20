@@ -1,8 +1,11 @@
 import { useRef, useEffect, useState } from "react";
-import { addPackage } from "../../../../api/package";
+
 import toast from "react-hot-toast";
-import PrintModal from "./PrintModal";
-import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+
+
+import { addPackage } from "../../../api/package";
+import useAuth from "../../../hooks/useAuth";
+import PrintModal from "../../DashBoard/Host/CreatePackage/PrintModal";
 
 
 
@@ -26,7 +29,7 @@ const numberToWords = (num) => {
     return num === 0 ? 'zero' : inWords(num);
 };
 
-const CreatePackage = () => {
+const OnlineBookingHome = () => {
     const [packageTrackingNumber, setPackageTrackingNumber] = useState([]);
     const [bookingInfo, setBookingInfo] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +49,7 @@ const CreatePackage = () => {
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
 
-    const[verifiedUser] = useUsersData()
+    const{user} = useAuth()
 
     const closeModal = () => {
         setIsOpen(false);
@@ -119,13 +122,13 @@ const CreatePackage = () => {
 
 
     useEffect(() => {
-        fetch('../../../../../public/districts.json')
+        fetch('districts.json')
             .then(res => res.json())
             .then(data => setAllDistricts(data))
     }, [])
 
     useEffect(() => {
-        fetch('../../../../../public/areas.json')
+        fetch('areas.json')
             .then(res => res.json())
             .then(data => setAllAreas(data))
     }, [])
@@ -180,7 +183,7 @@ const CreatePackage = () => {
             deliveryOption,
             paymentOption,
             condition,
-            email: verifiedUser?.email
+            email: user?.email
         };
 
         setBookingInfo(packageData);
@@ -203,14 +206,17 @@ const CreatePackage = () => {
 
 
     return (
-        <div>
-            <div className="flex justify-center">
-                <img className="h-[50%]" src="https://t4.ftcdn.net/jpg/07/39/32/99/360_F_739329921_05Swu26SxilYCQOPqlWQ8WcPiw4gcm9S.jpg" alt="" />
+        <div className="my-10">
+            <div>
+                <h1 className="text-4xl font-bold font-rancho text-secondary text-center mb-5">Online Booking</h1>
             </div>
-           <div>
+            {/* <div className="flex justify-center">
+                <img className="h-[50%]" src="https://t4.ftcdn.net/jpg/07/39/32/99/360_F_739329921_05Swu26SxilYCQOPqlWQ8WcPiw4gcm9S.jpg" alt="" />
+            </div> */}
+           {/* <div>
            <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Create Package</h1>
            <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1>
-           </div>
+           </div> */}
             <hr />
 
             <form onSubmit={handleSubmit} ref={formRef}>
@@ -245,7 +251,7 @@ const CreatePackage = () => {
                     </div>
                 </div>
                 {/* Product Details and quantity */}
-                <div className='md:flex gap-5 md:px-24'>
+                <div className='md:flex gap-5 mt-3 md:px-24'>
                     <div className="form-control md:w-1/2">
                         <label className="block text-gray-700 font-medium mb-1">
                             Districts*
@@ -349,4 +355,4 @@ const CreatePackage = () => {
     );
 };
 
-export default CreatePackage;
+export default OnlineBookingHome;

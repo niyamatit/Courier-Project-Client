@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import ParcelPieChart from "../../Merchant/MerchatDashboard/ParcelPieChart";
 import ParcelChart from "../../Merchant/MerchatDashboard/ParcelChart";
 import axiosSecure from "../../../../api/axiosSecure";
-import useAuth from "../../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const HostDashboard = () => {
     // const [statData, setStatData] = useState({});
@@ -94,14 +94,15 @@ const HostDashboard = () => {
             });
     }, []);
 
-    const { user } = useAuth();
+
+    const [verifiedUser ] = useUsersData();
     const { data: parcelData = [] } = useQuery({
-        queryKey: ["parcelData", user?.email],
+        queryKey: ["parcelData", verifiedUser?.email],
         queryFn: async () => {
             const res = await axiosSecure.get("/package");
             return res.data;
         },
-        enabled: !!user?.email,
+        enabled: !!verifiedUser?.email,
     });
 
 

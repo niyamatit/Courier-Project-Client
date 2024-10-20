@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
 import Swal from "sweetalert2";
-import useAuth from "../../../../hooks/useAuth";
 import axiosSecure from "../../../../api/axiosSecure";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 
 const CreateStore = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [filteredAreas, setFilteredAreas] = useState([]);
-  const {user} = useAuth();
+  const[verifiedUser] = useUsersData()
   const {
     register,
     handleSubmit,
@@ -618,8 +618,8 @@ const Areas =[
       const StoreInformation = {
         Store_Contact_Number: formData?.contactNumber || "",
         Store_Name: formData?.StoreName || "",
-        Customer_Email: user?.email || "",
-        Customer_Name: user?.displayName || "",
+        Customer_Email: verifiedUser?.email || "",
+        Customer_Name: verifiedUser?.displayName || "",
         Store_Address: formData?.YourCurrentAddress || "",
         Customer_District_Name: formData?.district || "",
         Customer_Area: formData?.area || "",
@@ -723,7 +723,7 @@ const Areas =[
                  Email*
                 </label>
                 <input
-                  type="text" placeholder={user?.email} readOnly
+                  type="text" placeholder={verifiedUser?.email} readOnly
                   {...register('email')}
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.email ? 'border-red-500' : 'border-gray-300'

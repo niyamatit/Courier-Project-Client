@@ -6,6 +6,8 @@ import Section from "./Section";
 import axiosSecure from "../../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import OfflinePrintModal from "./OfflinePrintModal";
+import { useQuery } from "@tanstack/react-query";
+import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 
 const BookingForm = () => {
   const {
@@ -38,13 +40,17 @@ const BookingForm = () => {
     setIsOpen(false);
   };
 
-  // Generate a unique CN number on component mount
+  
+  const [cnCounter, setCnCounter] = useState(1);
+  
   useEffect(() => {
     const generateUniqueCnNumber = () => {
-      const uniqueNumber = `CN-${Date.now()}`;
+      
+      setCnCounter((prevCounter) => prevCounter + 1);
+      const timestamp = Date.now().toString().slice(0, 8);
+      const uniqueNumber = `NEPNU-OFF-000${timestamp}${cnCounter.toString()}`;
+      
       setCnNumber(uniqueNumber);
-
-      // Set CN number value in the form
       setValue("CnNumber", uniqueNumber);
     };
 
@@ -141,6 +147,18 @@ const BookingForm = () => {
     fetchReceiverDetails();
   }, [receiverContactNo]);
 
+  const {  data: users = []} = useQuery({
+    queryKey: ['users'],
+    queryFn: async() => {
+        const res = await axiosSecure.get("/users");
+        return res.data;
+       
+    }
+    
+});
+
+const [verifiedUser] = useUsersData();
+
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
       <form
@@ -158,17 +176,17 @@ const BookingForm = () => {
                   watchValues={watchValues}
                   register={register}
                   name={"customerCode"}
-                  registerOptions={{ required: true }}
+                  registerOptions={{ required: false }}
                   errors={errors}
                   label="Customer Code"
                   placeholder="customer code"
-                  required
+                  
                 />
                 <SelectField
                   watchValues={watchValues}
                   register={register}
                   name={"counter"}
-                  registerOptions={{ required: true }}
+                  registerOptions={{ required: false }}
                   errors={errors}
                   label="Select Counter"
                   options={["Counter 1", "Counter 2", "Counter 3"]}
@@ -178,11 +196,11 @@ const BookingForm = () => {
                 watchValues={watchValues}
                 register={register}
                 name={"customerName"}
-                registerOptions={{ required: true }}
+                registerOptions={{ required: false }}
                 errors={errors}
                 label="Customer Name"
                 placeholder="customer name"
-                required
+                
               />
             </Section>
 
@@ -244,7 +262,7 @@ const BookingForm = () => {
               </div>
             </Section>
             <Section additionalClasses="mt-4">
-              <InputField
+              {/* <InputField
                 watchValues={watchValues}
                 register={register}
                 name={"branch"}
@@ -253,7 +271,32 @@ const BookingForm = () => {
                 label="Dest. Branch"
                 placeholder=""
                 required
-              />
+              /> */}
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="label-text ml-1 text-gray-500 font-semibold">
+                Select Dest. Branch*
+                </label>
+                 <select
+                  {...register('branch', { required: true })}
+                  className={`select select-bordered mt-2  bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${
+                    errors.branch ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  required
+                >
+                  <option value="123">Select Dest. Branch</option>
+                  {
+                    users.filter(user=>user?.role === 'host').map(user=>(
+                      <option key={user._id} value={user?.name}>
+              {user?.name || "No Name Found"}
+            </option>
+                    ))
+                  }
+                  
+                </select>
+                {errors.select_branch_name && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
             </Section>
 
             {/* Receiver Information Section */}
@@ -298,8 +341,9 @@ const BookingForm = () => {
           <div>
             {/* Booking Information Section */}
             <Section title="Booking Information">
-              <div className="grid grid-cols-2 gap-1">
-                <InputField
+             
+               <div className="grid grid-cols-2 gap-2">
+               <InputField
                   watchValues={watchValues}
                   register={register}
                   name={"CnNumber"}
@@ -308,13 +352,15 @@ const BookingForm = () => {
                   label="CN Number"
                   placeholder="CN no."
                   required
-                  defaultValue={cnNumber} // Set the generated CN number as default value
+                  defaultValue={cnNumber} 
+                  className="w-full"
                 />
                 <textarea
                   placeholder=""
                   className="textarea textarea-bordered textarea-sm mt-6 bg-[#f9f5f1] text-black w-full max-w-xs"
                 ></textarea>
-              </div>
+               </div>
+              
               {/* Auto-generated booking date */}
               <InputField
                 watchValues={watchValues}
@@ -334,6 +380,8 @@ const BookingForm = () => {
                 label="Booking Branch"
                 placeholder="CRD"
                 required
+                value={verifiedUser?.name || "No Branch Name Found"}
+                readOnly
               />
               <div className="grid grid-cols-2 gap-1">
                 <InputField

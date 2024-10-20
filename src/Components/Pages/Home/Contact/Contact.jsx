@@ -43,7 +43,7 @@ const Contact = () => {
           <div className="max-w-md">
             <h1 className="mb-5 text-5xl text-primary font-bold">Contact With Us</h1>
             <p className="mb-5 text-white">
-            We have been pioneering the industry in Bangladesh for 2 years, and delivering value
+            We have been pioneering the industry in Bangladesh for 22 years, and delivering value
             products within given timeframe, every single time..
             </p>
           </div>
