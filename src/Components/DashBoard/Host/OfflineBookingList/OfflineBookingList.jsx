@@ -61,6 +61,9 @@ const OfflineBookingList = () => {
                       >
                         Action
                       </th>
+
+                      
+
                     </tr>
                   </thead>
                   <tbody>

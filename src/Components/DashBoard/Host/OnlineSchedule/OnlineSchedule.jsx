@@ -13,6 +13,8 @@ const OnlineSchedule = () => {
 
     //   console.log(packages)
 
+   
+
     return (
         <>
         <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Online Booking Schedule</h1>
@@ -60,6 +62,12 @@ const OnlineSchedule = () => {
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
                         Action
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                      >
+                        Print
                       </th>
                     </tr>
                   </thead>

@@ -8,7 +8,6 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const RiderAllParcelList = () => {
 
-<<<<<<< HEAD
     const[verifiedUser] = useUsersData()
 
     const { data: packages = [], refetch } = useQuery({
@@ -17,16 +16,6 @@ const RiderAllParcelList = () => {
     enabled: !!verifiedUser?.email, // Only run when email is available
 });
 
-=======
-    const { user } = useAuth()
-
-    const { data: packages = [], refetch } = useQuery({
-        queryKey: ['packages', user?.email], // Query key includes user email
-        queryFn: () => getAllPackage(user?.email), // Function to fetch packages
-        enabled: !!user?.email, // Only run when email is available
-    });
-  console.log("Pakage:",packages)
->>>>>>> 7122c720fc074f334fe856ffc1cfe923e41db50a
     const RiderAllParcelList = packages.filter(user => user?.update === 'Rider pickup');
 
     return (
