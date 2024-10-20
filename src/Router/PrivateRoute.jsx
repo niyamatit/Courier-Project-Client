@@ -1,17 +1,18 @@
 /* eslint-disable react/prop-types */
 import { Navigate, useLocation } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+
 import useUsersData from "../hooks/useUsersData/useUsersData";
+import Loader from "../hooks/Loader/Loader";
 
 
 
 const PrivateRoute = ({children}) => {
 
-    const {loading} = useAuth();
-    const [verifiedUser]  = useUsersData();
+    
+    const [verifiedUser,isLoading]  = useUsersData();
     const location = useLocation()
 
-    if(loading) return <h1>.....</h1>
+    if(isLoading) return <Loader/>
 
     if(verifiedUser) return children;
 

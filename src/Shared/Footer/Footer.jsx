@@ -4,7 +4,7 @@ const Footer = () => {
   
 
   return (
-    <footer className="bg-secondary text-white">
+    <footer className="bg-blue-400 text-white">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
@@ -22,7 +22,7 @@ const Footer = () => {
               <h2 className="mb-6 text-sm font-semibold  uppercase dark:text-white">
                 Our Services
               </h2>
-              <ul className="text-white dark:text-gray-400 font-medium">
+              <ul className="text-white dark:text-gray-300 font-medium">
                <li>Air Freight</li>
                <li>Ocean Freight</li>
                <li>Railway Freight</li>
@@ -34,7 +34,7 @@ const Footer = () => {
               <h2 className="mb-6 text-sm font-semibold  uppercase dark:text-white">
                 Follow us
               </h2>
-              <ul className="text-white dark:text-gray-400 font-medium space-y-4">
+              <ul className="text-white dark:text-gray-300 font-medium space-y-4">
                 <li className="">
                   <a href="" className="hover:underline ">
                     Facebook
@@ -66,7 +66,7 @@ const Footer = () => {
               <h2 className="mb-6 text-sm font-semibold  uppercase dark:text-white">
                 Legal
               </h2>
-              <ul className="text-white dark:text-gray-400 font-medium">
+              <ul className="text-white dark:text-gray-300 font-medium">
                 <li className="mb-4">
                   <a href="#" className="hover:underline">
                     Privacy Policy
@@ -83,20 +83,20 @@ const Footer = () => {
         </div>
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-white sm:text-center dark:text-gray-400">
+          <span className="text-sm text-white sm:text-center dark:text-gray-300">
             © 2024{" "}
             <a href="https://niyamatexpress.com/" className="hover:underline">
               Niyamat Express™
             </a>
             . All Rights Reserved by Niyamat Express.
-            <p className="text-start">Developed By <a href="https://niyamatit.com/">Niyamat IT</a>Part Of <a href="https://www.niyamatgroup.com/">Niyamat Unity</a></p>
+            <p className="text-start">Developed By <a href="https://niyamatit.com/">Niyamat IT</a> <a className="font-bold">Part Of</a> <a className="font-bold" href="https://www.niyamatgroup.com/">Niyamat Unity</a></p>
           </span>
           
           
           <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
             <a
               href="#"
-              className="text-white hover:text-gray-900 dark:hover:text-white"
+              className="text-white hover:text-gray-200 dark:hover:text-white"
             >
               <svg
                 className="w-4 h-4"

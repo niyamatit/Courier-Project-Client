@@ -16,9 +16,11 @@ const Navbar = () => {
         {VerifiedUser?.role == 'guest' && <li><NavLink to="/online-booking">Online Booking</NavLink></li>}
         <li><NavLink to="/contact">Contact</NavLink></li>
         <li><NavLink to="/tracking">Tracking</NavLink></li>
-        <li><NavLink to="/online-tracking">Online Booked Tracking</NavLink></li>
+        <li><NavLink to="/online-booking">Online Booking</NavLink></li>
+        {/* <li><NavLink to="/online-tracking">Online Booked Tracking</NavLink></li> */}
         <li><NavLink to="/apply">Apply</NavLink></li>
     </>
+    
 
     return (
 

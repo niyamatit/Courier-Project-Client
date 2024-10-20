@@ -9,7 +9,7 @@ import Profile from "../Components/Common/Profile";
 import CreatePackage from "../Components/DashBoard/Host/CreatePackage/CreatePackage";
 import DeliverySchedule from "../Components/DashBoard/Host/DeliverySchedule/DeliverySchedule";
 import ManageUsers from "../Components/DashBoard/Admin/ManageUsers";
-import OnlineBookings from "../Components/Pages/Home/OnlineBooking/OnlineBookings";
+
 import MyBookings from "../Components/DashBoard/Guest/MyBookings";
 import OnlineSchedule from "../Components/DashBoard/Host/OnlineSchedule/OnlineSchedule";
 import PrivateRoute from "./PrivateRoute";
@@ -56,9 +56,14 @@ import Payment from "../Components/DashBoard/Rider/Payment";
 import Rideradd from "../Components/DashBoard/Admin/RiderAdd/Rideradd";
 import BranchStaff from "../Components/DashBoard/Admin/BranchStaff/BranchStaff";
 import OfflineBookingList from "../Components/DashBoard/Host/OfflineBookingList/OfflineBookingList";
+import OnlineBookingHome from "../Components/Pages/OnlineBookingHome/OnlineBookingHome";
+import AddBaranchStaff from "../Components/DashBoard/Host/AddBaranchStaff/AddBaranchStaff";
 import BranchAdd from "../Components/DashBoard/Admin/BranchAdd/BranchAdd";
 import RechargeApply from "../Components/DashBoard/Host/Recharge/RechargeApply/RechargeApply";
 import RechargeComplete from "../Components/DashBoard/Host/Recharge/RechargeComplete/RechargeComplete";
+import MerchantLogin from "../LogIn/MerchantLogin/MerchantLogin";
+import MerchantSignup from "../SignUp/MerchantSignup/MerchantSignup";
+
 
 
 // import ProductTracking from "../Components/Pages/Home/PackageTracking/ProductTracking";
@@ -93,17 +98,17 @@ export const router = createBrowserRouter([
       {
         path: "/online-booking",
         element: (
-          <PrivateRoute>
-            <OnlineBookings />
-          </PrivateRoute>
+          
+           <OnlineBookingHome/>
+          
         ),
       },
       {
         path: "/apply",
         element: (
-          <PrivateRoute>
+          
             <Apply />
-          </PrivateRoute>
+          
         ),
       },
     ],
@@ -113,8 +118,16 @@ export const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
+    path: "/merchantSignup",
+    element: <MerchantSignup/>,
+  },
+  {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/merchantLogin",
+    element: <MerchantLogin/>,
   },
 
   {
@@ -153,6 +166,16 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      // {
+      //   path: "Add-branch-staff",
+      //   element: (
+      //     <PrivateRoute>
+      //       <HostRoute>
+      //        <AddBaranchStaff/>
+      //       </HostRoute>
+      //     </PrivateRoute>
+      //   ),
+      // },
 
       {
         path: "demo-pack",
@@ -566,7 +589,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "branch-staff",
-        element: <BranchStaff></BranchStaff>
+        element: <AddBaranchStaff></AddBaranchStaff>
       },
       {
         path: "branch-add",

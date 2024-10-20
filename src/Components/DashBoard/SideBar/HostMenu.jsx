@@ -163,6 +163,11 @@ const HostMenu = () => {
         label='Pending Payment'
         address='pending-payment'
       />
+      {/* <MenuItem
+        icon={MdPersonAdd}
+        label='Add Staff'
+        address='branch-staff'
+      /> */}
       <MenuItem
         icon={FaBiking}
         label='Rider List'

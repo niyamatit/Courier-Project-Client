@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import "tailwindcss/tailwind.css";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import { imageUpload } from "../../../../api/utils";
-import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import useAuth from "../../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
-const Apply = () => {
+const AddBaranchStaff = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [apply,setApply] = useState("")
+  const [selectedUser, setSelectedUser] = useState(null);
   const [filteredAreas, setFilteredAreas] = useState([]);
-  const[verifiedUser] = useUsersData()
+  const {user} = useAuth();
   
 
   const {
     register,
     handleSubmit,
-    
+    control,
     formState: { errors },
   } = useForm();
 
@@ -613,87 +614,100 @@ const Areas =[
     }
   };
 
-  const onSubmit = async (data) => {
-    const districtName = getDistrictName(data.district);
-    const formData = { ...data, district: districtName };
-    const yourImage = await imageUpload(data.yourImage[0]);
-    const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
-    const nidBackImage = await imageUpload(data.nidBackImage[0]);
-    const TradeLicense  = await imageUpload(data.TradeLicense[0])
+  const {  data: users = [], isLoading} = useQuery({
+    queryKey: ['users'],
+    queryFn: async() => {
+        const res = await axiosSecure.get("/users");
+        return res.data;
+       
+    }
     
-    const ApplyInformation = {
-      Customer_Contact_Number: formData?.contactNumber || "",
-      Customer_Name:formData?.YourName || "",
-      Customer_Email:verifiedUser?.email || "",
-      Customer_Father_Name:formData?.FatherName || "",
-      Customer_Mother_Name:formData?.MotherName || "",
-      Customer_Current_Address:formData?.YourCurrentAddress || "",
-      Customer_Permanant_Address:formData?.YourParmanentAddress || "",
-      Customer_Date_Of_Birth:formData?.date_of_birth || "",
-      Customer_Married_Status:formData?.married_status || "",
-      Customer_District_Name: formData?.district || "",
-      Customer_Area: formData?.area || "",
-      Customer_Apply_For: formData?.apply || "",
-      Company_Name: formData?.CompanyName || "",
-      TIN_BIN: formData?.TinBin || "",
-      Reference: formData?.Reference || "",
-      Business_Address: formData?.BusinessAddress || "",
-      Customer_Image: yourImage?.data?.display_url || "",
-      NID_Front_Image: nidFrontImage?.data?.display_url || "",
-      NID_Back_Image: nidBackImage?.data?.display_url || "",
-      TradeLicense_Image: TradeLicense?.data?.display_url || "",
-      Role: "Pending",
-      
-      
-      Date: new Date().toISOString().split('T')[0] || "2024-08-15"
-      
- }
-   console.log("Parcel Information:",ApplyInformation)
+});
 
-   const ApplyCustomerInfo = await axiosSecure.post("/apply", ApplyInformation);
-   console.log(ApplyCustomerInfo.data); 
-   
-   if (ApplyCustomerInfo.data.insertedId) {
-     Swal.fire({
-       position: "top-end",
-       icon: "success",
-       title: "Parcel Added Successfully",
-       showConfirmButton: false,
-       timer: 1500,
-     });
-   } else {
-     console.log("Debugging Else Block:", ApplyCustomerInfo.data);
-     Swal.fire({
-       position: "top-end",
-       icon: "error",
-       title: "Already Applied",
-       showConfirmButton: false,
-       timer: 1500,
-     });
-   }
-   console.log(formData);
-   
 
+  const onSubmit = async (data) => {
+    try {
+      const districtName = getDistrictName(data.district);
+      const formData = { ...data, district: districtName };
+      
+      const yourImage = await imageUpload(data.yourImage[0]);
+      const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
+      const nidBackImage = await imageUpload(data.nidBackImage[0]);
+  
+      const ApplyStaffInformation = {
+        Staff_Contact_Number: formData?.contactNumber || "",
+        Staff_Name:formData?.YourName || "",
+        Branch_Email:user?.email || "",
+        Staff_Father_Name:formData?.FatherName || "",
+        Staff_Mother_Name:formData?.MotherName || "",
+        Staff_Current_Address:formData?.YourCurrentAddress || "",
+        Staff_Permanant_Address:formData?.YourParmanentAddress || "",
+        Staff_Date_Of_Birth:formData?.date_of_birth || "",
+        Staff_Married_Status:formData?.married_status || "",
+        Staff_District_Name: formData?.district || "",
+        Staff_Area: formData?.area || "",
+        Staff_post: formData?.staff_post || "",
+        Staff_Branch_Name: formData?.select_branch_name || "",
+        Staff_User_ID: formData?.Staff_User_ID || "",
+        Staff_Experience: formData?.Staff_Exp || "",
+        Staff_Password: formData?.Staff_Password || "",
+        Staff_Image: yourImage?.data?.display_url || "",
+        NID_Front_Image: nidFrontImage?.data?.display_url || "",
+        NID_Back_Image: nidBackImage?.data?.display_url || "",
+        Date: new Date().toISOString().split('T')[0]
+      };
+  
+      const ApplyStaffInfo = await axiosSecure.post("/staff", ApplyStaffInformation);
+      
+      if (ApplyStaffInfo.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Staff Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Already Added the Staff",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        console.error("Unexpected Error:", error);
+      }
+    }
+    
   };
+  const handleBranchChange = (e) => {
+    const selectedBranchName = e.target.value;
+    const user = users.find(user => user?.name === selectedBranchName); 
+    setSelectedUser(user); 
+  };
+  
   
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
   <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
     <h1 className="text-2xl sm:text-3xl md:text-3xl font-bold mb-4 sm:mb-6 md:mb-6 text-center text-blue-700">
-      Apply System
+      Add Staff
     </h1>
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 md:space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 lg:gap-6">
         <div className="col-span-2 space-y-4 sm:space-y-6 md:space-y-6">
           <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
             <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
-              Your Personal Information
+            Staff Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
               
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Name*
+                  Staff Name*
                 </label>
                 <input
                   type="text"
@@ -708,7 +722,7 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Contact Number*
+                  Staff Contact Number*
                 </label>
                 <input
                   type="text"
@@ -724,7 +738,7 @@ const Areas =[
               {/* Father and Mother Name */}
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Father Name*
+                Staff Father Name*
                 </label>
                 <input
                   type="text"
@@ -739,7 +753,7 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Mother Name*
+                  Staff Mother Name*
                 </label>
                 <input
                   type="text"
@@ -754,7 +768,7 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Date of Birth*
+                Staff Date of Birth*
                 </label>
                 <input
                   type="date"
@@ -769,7 +783,7 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Married Status*
+                Staff Married Status*
                 </label>
                  <select
                   {...register('married_status', { required: true })}
@@ -787,10 +801,32 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block text-gray-700 font-medium mb-1">
+                Staff Post*
+                </label>
+                 <select
+                  {...register('staff_post', { required: true })}
+                  className={`select select-bordered w-full p-2 rounded-lg border ${
+                    errors.staff_post ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  
+                >
+                  <option value="">Select a Post</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Asst. Manager">Asst. Manager</option>
+                  <option value="labour">labour</option>
+                  
+                </select>
+                {errors.staff_post && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+              
               {/* Current Address */}
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Current  Address*
+                Staff Current  Address*
                 </label>
                 <input
                   type="text"
@@ -805,7 +841,7 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Parmanent  Address*
+                Staff Parmanent  Address*
                 </label>
                 <input
                   type="text"
@@ -849,6 +885,7 @@ const Areas =[
                   className={`select select-bordered w-full p-2 rounded-lg border ${
                     errors.area ? 'border-red-500' : 'border-gray-300'
                   }`}
+                 
                 >
                   <option value="">Select Area</option>
                   {filteredAreas.map((area) => (
@@ -861,11 +898,36 @@ const Areas =[
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block text-gray-700 font-medium mb-1">
+                Select Branch Name*
+                </label>
+                 <select
+                  {...register('select_branch_name', { required: true })}
+                  className={`select select-bordered w-full p-2 rounded-lg border ${
+                    errors.select_branch_name ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  onChange={handleBranchChange}
+                >
+                  <option value="123">Select Branch</option>
+                  {
+                    users.filter(user=>user?.role === 'host').map(user=>(
+                      <option key={user._id} value={user?.name}>
+              {user?.name || "No Name Found"}
+            </option>
+                    ))
+                  }
+                  
+                </select>
+                {errors.select_branch_name && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
             </div>
              {/* Your Image */}
-             <div className="col-span-2 md:col-span-2 lg:col-span-1">
+             <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
                   <label className="block text-gray-700 font-medium mb-1">
-                    Your Image*
+                  Staff Image*
                   </label>
                   <input
                     type="file"
@@ -880,7 +942,7 @@ const Areas =[
                 </div>
             <div className="col-span-2">
                   <label className="block text-gray-700 font-medium mb-1">
-                    NID Front Image*
+                  Staff NID Front Image*
                   </label>
                   <input
                     type="file"
@@ -894,9 +956,9 @@ const Areas =[
                   )}
                 </div>
                 {/* NID Back Image */}
-                <div className="col-span-2">
+                <div className="col-span-2 my-2">
                   <label className="block text-gray-700 font-medium mb-1">
-                    NID Back Image*
+                  Staff NID Back Image*
                   </label>
                   <input required
                     type="file"
@@ -909,125 +971,53 @@ const Areas =[
                     <span className="text-red-500">This field is required</span>
                   )}
                 </div>
+
+                <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block text-gray-700 font-medium mb-1">
+                  Branch Staff Experience*
+                </label>
+                <input
+                  type="text"
+                  {...register('Staff_Exp', { required: true })}
+                  className={`input input-bordered w-full p-2 rounded-lg border ${
+                    errors.Staff_Exp ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.Staff_Exp && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+              <label className="block text-gray-700 font-medium mb-1">Branch Staff User ID*</label>
+              <input
+                type="text"
+                {...register('Staff_User_ID', { required: true })}
+                className={`input input-bordered w-full p-2 rounded-lg border ${
+                  errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
+                }`}
+                value={selectedUser?.email || 'No User ID Found'}
+                readOnly
+              />
+              {errors.Staff_User_ID && <span className="text-red-500">This field is required</span>}
+            </div>
+
+            <div className="col-span-2 md:col-span-2 lg:col-span-1">
+              <label className="block text-gray-700 font-medium mb-1">Branch Staff Password*</label>
+              <input
+                type="text"
+                {...register('Staff_Password', { required: true })}
+                className={`input input-bordered w-full p-2 rounded-lg border ${
+                  errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
+                }`}
+                value={selectedUser?.password || 'No Password Found'}
+                readOnly
+              />
+              {errors.Staff_Password && <span className="text-red-500">This field is required</span>}
+            </div>
           </div>
 
           {/* Parcel Area */}
-          <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
-              Business Information
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                Your Company Name*
-                </label>
-               
-                <input
-                  type="text"
-                  {...register('CompanyName', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.CompanyName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.CompanyName && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Your Business Address*
-                </label>
-                <input
-                  type="text"
-                  {...register('BusinessAddress', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.BusinessAddress ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.BusinessAddress && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              
-              <div className="col-span-2">
-                <label className="block text-gray-700 font-medium mb-1">
-                  TIN/BIN (Optional)
-                </label>
-                <input
-                  type="text"
-                  {...register('TinBin')}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.TinBin ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.TinBin && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Email*
-                </label>
-                <input placeholder={verifiedUser?.email} readOnly
-                  type="text"
-                  {...register('email')}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.TinBin ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.email && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-                  Trade License Image*
-                  </label>
-                  <input
-                    type="file"
-                    {...register("TradeLicense", { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${
-                      errors.TradeLicense ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.TradeLicense && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
-                <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Apply For*
-                </label>
-                 <select
-                  {...register('apply', { required: true })}
-                  className={`select select-bordered w-full p-2 rounded-lg border ${
-                    errors.apply ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  onChange={(e) => setApply(e.target.value)}
-                >
-                  <option value="">Apply For*</option>
-                  <option value="Agent">Agent</option>
-                  <option value="Sub Agent">Sub Agent</option>
-                  <option value="Merchant">Merchant</option>
-                  <option value="Rider">Rider</option>
-                  <option value="Company Login">Company</option>
-                  
-                </select>
-                {errors.apply && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Reference(Optional)
-                </label>
-                <textarea
-                  {...register('Reference')}
-                  className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
-                />
-              </div>
-            </div>
-          </div>
+          
         </div>
 
         
@@ -1038,7 +1028,7 @@ const Areas =[
           type="submit"
           className="btn w-full hover:bg-blue-600 bg-blue-500 text-white py-2 px-4 rounded-lg"
         >
-         Apply For {apply}
+         Submit
         </button>
       
     </form>
@@ -1050,4 +1040,4 @@ const Areas =[
   );
 };
 
-export default Apply;
+export default AddBaranchStaff;
