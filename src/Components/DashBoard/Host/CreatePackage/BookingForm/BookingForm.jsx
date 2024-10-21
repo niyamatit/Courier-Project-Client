@@ -25,6 +25,8 @@ const BookingForm = () => {
   const [senderReceive, setSenderReceive] = useState(0);
   const [bookingInfo, setBookingInfo] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [rate,setRate]=useState('');
+  const [quantity,setQuantity]=useState('');
   const [senderContactNo, setSenderContactNo] = useState("");
   const [senderInfo, setSenderInfo] = useState({
     name: "",
@@ -40,33 +42,40 @@ const BookingForm = () => {
     setIsOpen(false);
   };
 
+  const TotalCharge = parseFloat(rate*quantity);
   
-  const [cnCounter, setCnCounter] = useState(1);
+  
+  
+ 
+  
+
   
   useEffect(() => {
-    const generateUniqueCnNumber = () => {
-      
-      setCnCounter((prevCounter) => prevCounter + 1);
-      const timestamp = Date.now().toString().slice(0, 8);
-      const uniqueNumber = `NEPNU-OFF-000${timestamp}${cnCounter.toString()}`;
-      
-      setCnNumber(uniqueNumber);
-      setValue("CnNumber", uniqueNumber);
+    const currentDate = new Date().toISOString().slice(0, 10);  
+    setValue("bookingDate", currentDate); 
+  }, [setValue]);
+
+  useEffect(() => {
+    const fetchCnNumber = async () => {
+      try {
+        const response = await axiosSecure.get('/number');  // GET request to fetch the current CN number
+        
+        if (response.data && response.data.length > 0 && response.data[0].CnNumber) {
+          // Access the first item in the array and set the CnNumber
+          setCnNumber(response.data[0].CnNumber);
+        } else {
+          console.error("CN Number not found in the response:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching CN number:", error);
+      }
     };
-
-    generateUniqueCnNumber();
-  }, [setValue]);
-
-  // Auto-generate the current booking date on component mount
-  useEffect(() => {
-    const currentDate = new Date().toISOString().slice(0, 10); // Get current date in "YYYY-MM-DD" format
-    setValue("bookingDate", currentDate); // Set booking date in the form
-  }, [setValue]);
-
-  // Calculate service charge and sender receive based on COD charge
+    
+    fetchCnNumber();  // Call the function to fetch the CN number on mount
+  }, []);
   useEffect(() => {
     if (codCharge > 0) {
-      let calculatedServiceCharge = 20; // Initial service charge for the first 1000
+      let calculatedServiceCharge = 20; 
       if (codCharge > 1000) {
         const additionalCharge = Math.ceil((codCharge - 1000) / 1000) * 10; // 10 per additional 1000
         calculatedServiceCharge += additionalCharge;
@@ -90,62 +99,119 @@ const BookingForm = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
-    const ParcelProductDetails = await axiosSecure.post("/offline", data);
-    console.log(ParcelProductDetails.data);
-    if (ParcelProductDetails.data.insertedId) {
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Parcel Added Successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+    try {
+      data.CnNumber = cnNumber; // Include the current CN number in the form data
+  
+      // Submit the parcel data
+      const ParcelProductDetails = await axiosSecure.post("/offline", data);
+      if (ParcelProductDetails.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Parcel Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+  
+        // Increment the CN number using PUT request
+        const response = await axiosSecure.put('/number');
+        setCnNumber(response.data.nextNumber); // Set the next CN number for the next booking
+        console.log("Cn Number",response.data.nextNumber)
+      }
+    } catch (error) {
+      console.error("Error adding parcel:", error);
     }
     setBookingInfo(data);
+    
     setIsOpen(true);
   };
+  
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
       if (senderContactNo) {
         try {
           const response = await axiosSecure.get(`/offline/${senderContactNo}`);
-          if (response.data) {
+          
+          
+          
+  
+          if (response.data && response.data.length > 0) {
+            
+            const sortedData = response.data.sort((a, b) => {
+              return parseInt(b.CnNumber.slice(-4)) - parseInt(a.CnNumber.slice(-4));
+            });
+  
+            const latestData = sortedData[sortedData.length - 1];
+            console.log("Letest Data",latestData)
+            setSenderInfo({
+              name: latestData.senderName,
+              address: latestData.address,
+            });
+          } else if (response.data) {
+            
             setSenderInfo({
               name: response.data.senderName,
               address: response.data.address,
             });
+          } else {
+           
+            setSenderInfo({ name: "", address: "" });
           }
         } catch (error) {
+          console.error("Error fetching sender details:", error);
           setSenderInfo({ name: "", address: "" });
         }
       }
     };
-
+  
     fetchCustomerDetails();
   }, [senderContactNo]);
+  
   useEffect(() => {
     const fetchReceiverDetails = async () => {
       if (receiverContactNo) {
         try {
-          const response = await axiosSecure.get(
-            `/offline/receiver/${receiverContactNo}`
-          );
-          if (response.data) {
+          const response = await axiosSecure.get(`/offline/receiver/${receiverContactNo}`);
+          
+          // Log the response to check its structure
+          
+  
+          if (response.data && response.data.length > 0) {
+            
+            const sortedData = response.data.sort((a, b) => {
+              return parseInt(a.CnNumber.slice(-4)) - parseInt(b.CnNumber.slice(-4));
+            });
+            console.log("sorted data",(sortedData || 0))
+  
+            const latestData = sortedData[sortedData.length - 1];
+            console.log("letest data:",latestData)
+            setReceiverInfo({
+              ReceiverName: latestData.receiverName,
+              ReceiverAddress: latestData.receiveraddress,
+            });
+          } else if (response.data) {
+            
             setReceiverInfo({
               ReceiverName: response.data.receiverName,
               ReceiverAddress: response.data.receiveraddress,
             });
+          } else {
+            
+            setReceiverInfo({ ReceiverName: "", ReceiverAddress: "" });
           }
         } catch (error) {
+          console.error("Error fetching receiver details:", error);
           setReceiverInfo({ ReceiverName: "", ReceiverAddress: "" });
         }
       }
     };
-
+  
     fetchReceiverDetails();
   }, [receiverContactNo]);
+  
+  
+  
 
   const {  data: users = []} = useQuery({
     queryKey: ['users'],
@@ -158,6 +224,7 @@ const BookingForm = () => {
 });
 
 const [verifiedUser] = useUsersData();
+
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -250,7 +317,7 @@ const [verifiedUser] = useUsersData();
                 errors={errors}
                 label="Reference"
                 placeholder="reference"
-                required
+                
               />
               <div className="flex gap-2 mt-4">
                 <input type="checkbox" className="checkbox mt-1" />
@@ -352,8 +419,9 @@ const [verifiedUser] = useUsersData();
                   label="CN Number"
                   placeholder="CN no."
                   required
-                  defaultValue={cnNumber} 
+                  value={cnNumber || 'Loading.....'} 
                   className="w-full"
+                  readOnly
                 />
                 <textarea
                   placeholder=""
@@ -384,7 +452,7 @@ const [verifiedUser] = useUsersData();
                 readOnly
               />
               <div className="grid grid-cols-2 gap-1">
-                <InputField
+                {/* <InputField
                   watchValues={watchValues}
                   register={register}
                   name={"department"}
@@ -393,8 +461,17 @@ const [verifiedUser] = useUsersData();
                   label="Department"
                   placeholder="Department name"
                   required
+                /> */}
+                <SelectField
+                  watchValues={watchValues}
+                  register={register}
+                  name={"department"}
+                  registerOptions={{ required: false }}
+                  errors={errors}
+                  label="Select Department"
+                  options={["Document", "Parcel", "Food item","Mobile/Laptop","Electrical","Home/Office Accessories"]}
                 />
-                <InputField
+                {/* <InputField
                   watchValues={watchValues}
                   register={register}
                   name={"inputUser"}
@@ -403,6 +480,15 @@ const [verifiedUser] = useUsersData();
                   label="Input User"
                   placeholder="Input user"
                   required
+                /> */}
+                 <SelectField
+                  watchValues={watchValues}
+                  register={register}
+                  name={"inputUser"}
+                  registerOptions={{ required: true }}
+                  errors={errors}
+                  label="Input User"
+                  options={["New Customer", "Customer", "Merchant","Corporate"]}
                 />
                 <SelectField
                   watchValues={watchValues}
@@ -411,7 +497,7 @@ const [verifiedUser] = useUsersData();
                   registerOptions={{ required: true }}
                   errors={errors}
                   label="Service Type"
-                  options={["Service 1", "Service 2", "Service 3"]}
+                  options={["Regular delivery", "Express delivery"]}
                 />
                 {/* Payment Method Dropdown */}
                 <SelectField
@@ -461,6 +547,7 @@ const [verifiedUser] = useUsersData();
                   label="Qty"
                   placeholder="quantity"
                   required
+                  onChange={(e) => setQuantity(e.target.value)}
                 />
                 <InputField
                   watchValues={watchValues}
@@ -481,6 +568,7 @@ const [verifiedUser] = useUsersData();
                   label="Rate"
                   placeholder="rate"
                   required
+                  onChange={(e) => setRate(e.target.value)}
                 />
                 <InputField
                   watchValues={watchValues}
@@ -491,26 +579,27 @@ const [verifiedUser] = useUsersData();
                   label="Total Charge"
                   placeholder="total charge"
                   required
+                  value={TotalCharge}
                 />
                 <InputField
                   watchValues={watchValues}
                   register={register}
                   name={"h/dCharge"}
-                  registerOptions={{ required: true }}
+                  registerOptions={{ required: false }}
                   errors={errors}
                   label="H/D Charge"
                   placeholder=""
-                  required
+                  
                 />
                 <InputField
                   watchValues={watchValues}
                   register={register}
                   name={"othCharge"}
-                  registerOptions={{ required: true }}
+                  registerOptions={{ required: false }}
                   errors={errors}
                   label="Oth. Charge"
                   placeholder=""
-                  required
+                  
                 />
               </div>
             </Section>
@@ -561,6 +650,7 @@ const [verifiedUser] = useUsersData();
         {/* Submit Button */}
         <div className="flex gap-5 mt-2 justify-center">
           <button className="btn bg-[#E8F0FE]">Submit</button>
+         
         </div>
       </form>
       <OfflinePrintModal
