@@ -1,17 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import TableRow from "./TableRow";
 import { getBookings } from "../../../../api/bookings";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 
 
 const OnlineSchedule = () => {
 
-    const { data: packages = [], refetch } = useQuery({
-        queryKey: ['package'],
-        queryFn: async () => await getBookings(),
-      })
+    // const { data: packages = [], refetch } = useQuery({
+    //     queryKey: ['package'],
+    //     queryFn: async () => await getBookings(),
+    //   })
 
-    //   console.log(packages)
+
+      const[verifiedUser] = useUsersData()
+
+      const { data: packages = [], refetch } = useQuery({
+      queryKey: ['packages', verifiedUser?.email], // Query key includes user email
+      queryFn: () => getBookings(verifiedUser?.email), // Function to fetch packages
+      enabled: !!verifiedUser?.email, // Only run when email is available
+  });
 
    
 
@@ -63,12 +71,7 @@ const OnlineSchedule = () => {
                       >
                         Action
                       </th>
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                        Print
-                      </th>
+                      
                     </tr>
                   </thead>
                   <tbody>

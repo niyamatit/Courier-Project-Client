@@ -1,17 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import TableRow from "./TableRow";
 import { getOfflineBookings } from "../../../../api/bookings";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 
 
 const OfflineBookingList = () => {
 
-    const { data: packages = [], refetch } = useQuery({
-        queryKey: ['package'],
-        queryFn: async () => await getOfflineBookings(),
-      })
+    // const { data: packages = [], refetch } = useQuery({
+    //     queryKey: ['package'],
+    //     queryFn: async () => await getOfflineBookings(),
+    //   })
 
-      console.log(packages) 
+const[verifiedUser] = useUsersData() 
+
+      const { data: packages = [], refetch } = useQuery({
+        queryKey: ['packages', verifiedUser?.email], // Query key includes user email
+        queryFn: () => getOfflineBookings(verifiedUser?.email), // Function to fetch packages
+        enabled: !!verifiedUser?.email, // Only run when email is available
+    });
 
     return (
         <>
