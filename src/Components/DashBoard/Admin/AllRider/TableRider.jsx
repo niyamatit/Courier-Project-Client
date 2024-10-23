@@ -1,12 +1,6 @@
-/* eslint-disable react/prop-types */
 
 
-
-const TableRow = ({ pack }) => {
-
-
-
-
+const TableRider = ({ rider }) => {
     return (
         <tr className="font-rancho">
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -14,7 +8,7 @@ const TableRow = ({ pack }) => {
                     <div className='flex-shrink-0'>
                         <div className='block relative'>
                             <p className='text-gray-900 whitespace-no-wrap'>
-                                {pack?.senderName}
+                                {rider?.riderName}
                             </p>
                         </div>
                     </div>
@@ -22,26 +16,31 @@ const TableRow = ({ pack }) => {
                 </div>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>{pack?.recipientName}</p>
+                <p className='text-gray-900 whitespace-no-wrap'>{rider?.recipientName}</p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.booking}
+                    {rider?.riderNumber}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.productDetails}
+                    {rider?.riderNid}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.recipientMobile}
+                    {rider?.riderAddress}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.update}
+                    {rider?.riderBranch}
+                </p>
+            </td>
+            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                <p className='text-gray-900 whitespace-no-wrap'>
+                    {rider?.update}
                 </p>
             </td>
 
@@ -56,7 +55,7 @@ const TableRow = ({ pack }) => {
 
 
         </tr>
-    )
-}
+    );
+};
 
-export default TableRow
+export default TableRider;
