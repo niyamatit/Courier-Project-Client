@@ -1,36 +1,80 @@
 
 import { useForm } from "react-hook-form";
-import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Dropdown } from "primereact/dropdown";
-import { FileUpload } from "primereact/fileupload";
 import { Button } from "primereact/button";
+import Swal from "sweetalert2";
+import axiosSecure from "../../../../api/axiosSecure";
+import { imageUpload } from "../../../../api/utils";
+import useAuth from "../../../../hooks/useAuth";
 
 const Rideradd = () => {
+    const { user } = useAuth();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    // const onSubmit = (data) => {
+    //     console.log(data);
+    // };
+
+
+
+    const onSubmit = async (data) => {
+        try {
+
+            const riderImage = await imageUpload(data.riderImage[0]);
+            const grantedNidImage = await imageUpload(data.grantedNidImage[0]);
+            const grantedImage = await imageUpload(data.grantedImage[0]);
+
+            const ApplyRiderInformation = {
+                Rider_Name: data?.riderName || "",
+                Branch_Email: user?.email || "",
+                Rider_Number: data?.riderNumber || "",
+                Rider_Nid: data?.riderNid || "",
+                Rider_Address: data?.riderAddress || "",
+                Rider_Branch: data?.riderBranch || "",
+                Rider_Area: data?.riderArea || "",
+                Rider_Commission: data?.riderCommission || "",
+                Rider_Gender: data?.riderGender || "",
+                Rider_Marital: data?.riderMarital || "",
+                Rider_Granted: data?.riderGranted || "",
+                Rider_grantedRelations: data?.grantedRelations || "",
+                Rider_grantedNumber: data?.grantedNumber || "",
+                Rider_grantedAddress: data?.grantedAddress || "",
+                Rider_grantedOccupation: data?.grantedOccupation || "",
+                Rider_Image: riderImage?.data?.display_url || "",
+                Rider_grantedNidImage: grantedNidImage?.data?.display_url || "",
+                Rider_grantedImage: grantedImage?.data?.display_url || "",
+                Date: new Date().toISOString().split('T')[0],
+            };
+
+            const ApplyRiderInfo = await axiosSecure.post("/rider", ApplyRiderInformation);
+
+            if (ApplyRiderInfo.data.insertedId) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Staff Added Successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "Already Added the Staff",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            } else {
+                console.error("Unexpected Error:", error);
+            }
+        }
+
     };
-
-    // Sample Dropdown options for gender and marital status
-    const genderOptions = [
-        { label: "Male", value: "male" },
-        { label: "Female", value: "female" },
-        { label: "Other", value: "other" },
-    ];
-
-    const maritalStatusOptions = [
-        { label: "Single", value: "single" },
-        { label: "Married", value: "married" },
-        { label: "Divorced", value: "divorced" },
-        { label: "Widowed", value: "widowed" },
-    ];
 
     return (
         <div className=" bg-gradient-to-r from-gray-200 to-gray-200">
@@ -40,142 +84,145 @@ const Rideradd = () => {
                     <div>
                         {/* Rider Image */}
                         <div className="field mt-3">
-                            <label htmlFor="riderImage" className="block mb-1">
-                                Rider Image
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Image*
                             </label>
-                            <FileUpload
-                                name="riderImage"
-                                customUpload
-                                {...register("riderImage", { required: "Rider Image is required" })}
-                                mode="basic"
+                            <input
+                                type="file"
+                                {...register("riderImage", { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderImage ? "border-red-500" : "border-gray-300"
+                                    }`}
                             />
                             {errors.riderImage && (
-                                <span className="text-red-500">{errors.riderImage.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider Name */}
-                        <div className="field mt-3">
-                            <label htmlFor="riderName" className="block mb-1">
-                                Rider Name
+                        <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Name*
                             </label>
-                            <InputText
-                                id="riderName"
-                                {...register("riderName", { required: "Rider Name is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('riderName', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderName ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.riderName && (
-                                <span className="text-red-500">{errors.riderName.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider Number */}
-                        <div className="field mt-3">
-                            <label htmlFor="riderNumber" className="block mb-1">
-                                Rider Number
+                        <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Number*
                             </label>
-                            <InputNumber
-                                id="riderNumber"
-                                {...register("riderNumber", { required: "Rider Number is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('riderNumber', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderNumber ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.riderNumber && (
-                                <span className="text-red-500">{errors.riderNumber.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider NID Number */}
                         <div className="field mt-3">
-                            <label htmlFor="riderNid" className="block mb-1">
-                                Rider NID Number
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider NID Number*
                             </label>
-                            <InputText
-                                id="riderNid"
-                                {...register("riderNid", { required: "Rider NID Number is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('riderNid', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderNid ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.riderNid && (
-                                <span className="text-red-500">{errors.riderNid.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider Address */}
                         <div className="field mt-3">
-                            <label htmlFor="riderAddress" className="block mb-1">
-                                Rider Address
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Address*
                             </label>
-                            <InputTextarea
-                                id="riderAddress"
-                                {...register("riderAddress", { required: "Rider Address is required" })}
-                                className="w-full p-inputtext"
-                                rows={2}
+                            <input
+                                type="text"
+                                {...register('riderAddress', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderAddress ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.riderAddress && (
-                                <span className="text-red-500">{errors.riderAddress.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider Branch/Hub */}
                         <div className="field mt-3">
-                            <label htmlFor="riderBranch" className="block mb-1">
-                                Rider Branch/Hub
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Branch/Hub*
                             </label>
-                            <InputText
-                                id="riderBranch"
-                                {...register("riderBranch", { required: "Rider Branch is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('riderBranch', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderBranch ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.riderBranch && (
-                                <span className="text-red-500">{errors.riderBranch.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider Area */}
                         <div className="field mt-3">
-                            <label htmlFor="riderArea" className="block mb-1">
-                                Rider Area
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Area*
                             </label>
-                            <InputText
-                                id="riderArea"
-                                {...register("riderArea", { required: "Rider Area is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('riderArea', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderArea ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.riderArea && (
-                                <span className="text-red-500">{errors.riderArea.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider Salary */}
                         <div className="field mt-3">
-                            <label htmlFor="riderSalary" className="block mb-1">
-                                Rider Salary
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Salary*
                             </label>
-                            <InputNumber
-                                id="riderSalary"
-                                {...register("riderSalary", { required: "Rider Salary is required" })}
-                                className="w-full p-inputtext"
-                                mode="currency"
-                                currency="USD"
+                            <input
+                                type="text"
+                                {...register('riderSalary', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderSalary ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.riderSalary && (
-                                <span className="text-red-500">{errors.riderSalary.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider Commission per Success Parcel */}
                         <div className="field mt-3">
-                            <label htmlFor="riderCommission" className="block mb-1">
+                            <label className="block text-gray-700 font-medium mb-1">
                                 Rider Commission per Success Parcel
                             </label>
-                            <InputNumber
-                                id="riderCommission"
-                                {...register("riderCommission", {
-                                    required: "Rider Commission is required",
-                                })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('riderCommission', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderCommission ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.riderCommission && (
-                                <span className="text-red-500">{errors.riderCommission.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
                     </div>
@@ -183,141 +230,155 @@ const Rideradd = () => {
                     <div>
                         {/* Rider Gender */}
                         <div className="field mt-3">
-                            <label htmlFor="riderGender" className="block mb-1">
-                                Rider Gender
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Gender*
                             </label>
-                            <Dropdown
-                                id="riderGender"
-                                options={genderOptions}
-                                {...register("riderGender", { required: "Rider Gender is required" })}
-                                className="w-full p-dropdown"
-                            />
+                            <select
+                                {...register('riderGender', { required: true })}
+                                className={`select select-bordered w-full p-2 rounded-lg border ${errors.riderGender ? 'border-red-500' : 'border-gray-300'
+                                    }`}
+
+                            >
+                                <option value="">Select Type</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="others">others</option>
+
+                            </select>
                             {errors.riderGender && (
-                                <span className="text-red-500">{errors.riderGender.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider Marital Status */}
                         <div className="field mt-3">
-                            <label htmlFor="riderMaritalStatus" className="block mb-1">
-                                Rider Marital Status
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider marital status*
                             </label>
-                            <Dropdown
-                                id="riderMaritalStatus"
-                                options={maritalStatusOptions}
-                                {...register("riderMaritalStatus", {
-                                    required: "Rider Marital Status is required",
-                                })}
-                                className="w-full p-dropdown"
-                            />
-                            {errors.riderMaritalStatus && (
-                                <span className="text-red-500">{errors.riderMaritalStatus.message}</span>
+                            <select
+                                {...register('riderMarital', { required: true })}
+                                className={`select select-bordered w-full p-2 rounded-lg border ${errors.riderMarital ? 'border-red-500' : 'border-gray-300'
+                                    }`}
+
+                            >
+                                <option value="">Select Type</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">widowed</option>
+
+                            </select>
+                            {errors.riderMarital && (
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Remaining Fields (Repeat similar approach for granted details) */}
                         {/* Rider Granted Name */}
                         <div className="field mt-3">
-                            <label htmlFor="grantedName" className="block mb-1">
-                                Rider Granted Name
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Granted Name*
                             </label>
-                            <InputText
-                                id="grantedName"
-                                {...register("grantedName", { required: "Rider Granted Name is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('riderGranted', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderGranted ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
-                            {errors.grantedName && (
-                                <span className="text-red-500">{errors.grantedName.message}</span>
+                            {errors.riderGranted && (
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
                         {/* Rider Granted Relations */}
                         <div className="field mt-3">
-                            <label htmlFor="grantedRelations" className="block mb-1">
-                                Rider Granted Relations
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Granted Relations*
                             </label>
-                            <InputText
-                                id="grantedRelations"
-                                {...register("grantedRelations", { required: "Rider Granted Name is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('grantedRelations', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.grantedRelations ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.grantedRelations && (
-                                <span className="text-red-500">{errors.grantedRelations.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
                         {/* Rider granted NID Image */}
                         <div className="field mt-3">
-                            <label htmlFor="grantedNID" className="block mb-1">
-                                Rider granted NID
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Granted Image*
                             </label>
-                            <FileUpload
-                                name="grantedNID"
-                                customUpload
-                                {...register("grantedNID", { required: "Rider granted NID Image is required" })}
-                                mode="basic"
+                            <input
+                                type="file"
+                                {...register("grantedNidImage", { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.grantedNidImage ? "border-red-500" : "border-gray-300"
+                                    }`}
                             />
-                            {errors.grantedNID && (
-                                <span className="text-red-500">{errors.grantedNID.message}</span>
+                            {errors.grantedNidImage && (
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider granted Number */}
-                        <div className="field mt-3">
-                            <label htmlFor="grantedNumber" className="block mb-1">
-                                Rider granted Number
+                        <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider granted Number*
                             </label>
-                            <InputNumber
-                                id="grantedNumber"
-                                {...register("grantedNumber", { required: "granted Number is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('grantedNumber', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.grantedNumber ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.grantedNumber && (
-                                <span className="text-red-500">{errors.grantedNumber.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
                         {/* Rider granted Address */}
                         <div className="field mt-3">
-                            <label htmlFor="grantedAddress" className="block mb-1">
-                                Rider granted Address
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider granted Address*
                             </label>
-                            <InputTextarea
-                                id="grantedAddress"
-                                {...register("grantedAddress", { required: "granted Address is required" })}
-                                className="w-full p-inputtext"
-                                rows={2}
+                            <input
+                                type="text"
+                                {...register('grantedAddress', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.grantedAddress ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.grantedAddress && (
-                                <span className="text-red-500">{errors.grantedAddress.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
                         {/* Rider granted occupation */}
                         <div className="field mt-3">
-                            <label htmlFor="grantedOccupation" className="block mb-1">
-                                Rider granted Occupation
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Granted occupation*
                             </label>
-                            <InputTextarea
-                                id="grantedOccupation"
-                                {...register("grantedOccupation", { required: "granted Occupation is required" })}
-                                className="w-full p-inputtext"
-                                rows={2}
+                            <input
+                                type="text"
+                                {...register('grantedOccupation', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.grantedOccupation ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.grantedOccupation && (
-                                <span className="text-red-500">{errors.grantedOccupation.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
                         {/* Rider grantedImage */}
                         <div className="field mt-3">
-                            <label htmlFor="grantedImage" className="block mb-1">
-                                Rider granted Image
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Granted Image*
                             </label>
-                            <FileUpload
-                                name="grantedImage"
-                                customUpload
-                                {...register("grantedImage", { required: "Rider granted Image Image is required" })}
-                                mode="basic"
+                            <input
+                                type="file"
+                                {...register("grantedImage", { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.grantedImage ? "border-red-500" : "border-gray-300"
+                                    }`}
                             />
                             {errors.grantedImage && (
-                                <span className="text-red-500">{errors.grantedImage.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
