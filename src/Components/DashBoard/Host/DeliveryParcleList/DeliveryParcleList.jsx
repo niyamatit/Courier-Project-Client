@@ -8,13 +8,13 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const DeliveryParcelList = () => {
 
-    const[verifiedUser] = useUsersData()
+    const [verifiedUser] = useUsersData()
 
     const { data: packages = [], refetch } = useQuery({
-    queryKey: ['packages', verifiedUser?.email], // Query key includes user email
-    queryFn: () => getAllPackage(verifiedUser?.email), // Function to fetch packages
-    enabled: !!verifiedUser?.email, // Only run when email is available
-});
+        queryKey: ['packages', verifiedUser?.email], // Query key includes user email
+        queryFn: () => getAllPackage(verifiedUser?.email), // Function to fetch packages
+        enabled: !!verifiedUser?.email, // Only run when email is available
+    });
 
     const DeliveryParcelList = packages.filter(user => user?.update === 'delivered');
 
@@ -88,5 +88,6 @@ const DeliveryParcelList = () => {
         </>
     );
 };
+export default DeliveryParcelList;
 
-export default DeliveryParcelList; 
+
