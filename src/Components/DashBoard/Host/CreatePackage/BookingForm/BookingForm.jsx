@@ -27,7 +27,9 @@ const BookingForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [rate,setRate]=useState('');
   const [quantity,setQuantity]=useState('');
+  const [totalCharge, setTotalCharge] = useState(0);
   const [senderContactNo, setSenderContactNo] = useState("");
+  const [isManuallyEditing, setIsManuallyEditing] = useState(false); 
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -42,7 +44,14 @@ const BookingForm = () => {
     setIsOpen(false);
   };
 
-  const TotalCharge = parseFloat(rate*quantity);
+  
+
+
+useEffect(() => {
+  if (!isManuallyEditing) {
+    setTotalCharge(parseFloat(rate * quantity));
+  }
+}, [rate, quantity, isManuallyEditing]);
   
   
   
@@ -547,7 +556,10 @@ const [verifiedUser] = useUsersData();
                   label="Qty"
                   placeholder="quantity"
                   required
-                  onChange={(e) => setQuantity(e.target.value)}
+                  onChange={(e) => {
+                    setQuantity(e.target.value);
+                    setIsManuallyEditing(false); 
+                  }}
                 />
                 <InputField
                   watchValues={watchValues}
@@ -568,7 +580,11 @@ const [verifiedUser] = useUsersData();
                   label="Rate"
                   placeholder="rate"
                   required
-                  onChange={(e) => setRate(e.target.value)}
+                  onChange={(e) => {
+                    setRate(e.target.value);
+                    setIsManuallyEditing(false); 
+                  }}
+                  
                 />
                 <InputField
                   watchValues={watchValues}
@@ -579,7 +595,11 @@ const [verifiedUser] = useUsersData();
                   label="Total Charge"
                   placeholder="total charge"
                   required
-                  value={TotalCharge}
+                  value={totalCharge}
+                  onChange={(e) => {
+                    setTotalCharge(e.target.value); 
+                    setIsManuallyEditing(true);     
+                  }}
                 />
                 <InputField
                   watchValues={watchValues}
