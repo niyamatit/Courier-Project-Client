@@ -11,12 +11,25 @@ const MerchantSignup = () => {
 
   const handleSignUp = async e => {
     e.preventDefault();
+    const date = new Date();
+
+
+const datePart = `${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}${date.getFullYear().toString().slice(-2)}`;
+
+
+const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '0')}`;
+
+
+
+
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
     const image = form.image.files[0];
     const role = 'merchant';
+    const merchantID = datePart + timePart;
+    console.log("Merchant ID",merchantID)
 
     try {
       setLoading(true);
@@ -31,6 +44,7 @@ const MerchantSignup = () => {
         password,
         role,
         imageUrl: imageData?.data?.display_url,
+        merchantID
       });
 
       if (response.status === 201) {
