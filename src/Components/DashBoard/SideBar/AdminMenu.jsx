@@ -1,7 +1,7 @@
 import { FaUserAlt, FaUserCog } from 'react-icons/fa'
 import MenuItem from './MenuItem'
 import { BsGraphUp } from 'react-icons/bs'
-import { MdPersonAdd } from 'react-icons/md'
+import { MdMoney, MdPersonAdd } from 'react-icons/md'
 import { MdStore } from 'react-icons/md';
 const AdminMenu = () => {
   return (
@@ -21,6 +21,11 @@ const AdminMenu = () => {
         address='rider-add'
       />
       <MenuItem
+        icon={FaUserAlt}
+        label='All Rider Info'
+        address='all-rider'
+      />
+      <MenuItem
         icon={MdPersonAdd}
         label='Add Branch Staff'
         address='branch-staff'
@@ -32,9 +37,21 @@ const AdminMenu = () => {
       /> */}
       <MenuItem
         icon={MdStore}
-        
+
         label='Add Branch'
         address='branch-add'
+      />
+      <MenuItem
+        icon={MdMoney}
+
+        label='Recharge Apply'
+        address='recharge-apply'
+      />
+      <MenuItem
+        icon={MdMoney}
+
+        label='Recharge Complete'
+        address='recharge-complete'
       />
     </>
   )
