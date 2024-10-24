@@ -22,7 +22,7 @@ const Profile = () => {
           <a href='#' className='relative block'>
             <img
               alt='profile'
-              src={verifiedUser?.photoURL}
+              src={verifiedUser?.imageUrl}
               className='mx-auto object-cover rounded-full h-24 w-24  border-2 border-white '
             />
           </a>
@@ -30,7 +30,7 @@ const Profile = () => {
           <p className='p-2 px-4 text-xs text-white bg-pink-500 rounded-full'>
             {role && role.toUpperCase()}
           </p>
-          <p className='mt-2 text-xl font-medium text-gray-800 '>
+          {/* <p className='mt-2 text-xl font-medium text-gray-800 '>
             
 
             {
@@ -42,13 +42,13 @@ const Profile = () => {
               
               </div> : <>User Id: {verifiedUser?.uid}</>
             }
-          </p>
+          </p> */}
           <div className='w-full p-2 mt-4 rounded-lg'>
             <div className='flex flex-wrap items-center justify-between text-sm text-gray-600 '>
               <p className='flex flex-col'>
                 Name
                 <span className='font-bold text-black '>
-                  {verifiedUser?.displayName}
+                  {verifiedUser?.name}
                 </span>
               </p>
               <p className='flex flex-col'>

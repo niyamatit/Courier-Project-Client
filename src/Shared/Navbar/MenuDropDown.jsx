@@ -62,7 +62,7 @@ console.log(verifiedUser)
               src={verifiedUser && verifiedUser?.imageUrl ? verifiedUser.imageUrl : avatarImg}
               alt='profile'
               height='10'
-              width='30'
+              width='25'
             />
           </div>
         </div>
