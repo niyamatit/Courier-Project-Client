@@ -44,8 +44,8 @@ const AdminMenu = () => {
       <MenuItem
         icon={MdMoney}
 
-        label='Recharge Apply'
-        address='recharge-apply'
+        label='Recharge Processing'
+        address='recharge-processign'
       />
       <MenuItem
         icon={MdMoney}
