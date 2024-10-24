@@ -1,86 +1,77 @@
-import { useQuery } from "@tanstack/react-query";
+import axiosSecure from "../../../../api/axiosSecure";
 import TableRow from "./TableRow";
-import { getOfflineBookings } from "../../../../api/bookings";
-import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import { useQuery } from "@tanstack/react-query";
 
+const ApplyPending = () => {
 
-
-const OfflineBookingList = () => {
-
-    // const { data: packages = [], refetch } = useQuery({
-    //     queryKey: ['package'],
-    //     queryFn: async () => await getOfflineBookings(),
-    //   })
-
-const[verifiedUser] = useUsersData() 
-
-      const { data: packages = [], refetch } = useQuery({
-        queryKey: ['packages', verifiedUser?.email], // Query key includes user email
-        queryFn: () => getOfflineBookings(verifiedUser?.email), // Function to fetch packages
-        enabled: !!verifiedUser?.email, // Only run when email is available
+    const {  data: pendings = [], isLoading} = useQuery({
+        queryKey: ['pendings'],
+        queryFn: async() => {
+            const res = await axiosSecure.get("/apply");
+            return res.data;
+           
+        }
+        
     });
 
     return (
         <>
-        <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Offline Booking List</h1>
+        <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Online Booking Schedule</h1>
         <div className='container mx-auto px-4 sm:px-8'>
          
           <div className='py-8'>
             <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
-              <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'> 
-                <table className='min-w-full leading-normal'> 
+              <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
+                <table className='min-w-full leading-normal'>
                   <thead>
                     <tr className="text-lg font-rancho">
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                       Sender Name
+                       Customer Name
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                       Receiver Name
+                       Customer Current Address
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Booking Date
+                        Customer Apply For
                       </th>
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Receiver Mobile 
+                        Customer Company Name
                       </th>
   
+                      {/* <th
+                        scope='col'
+                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                      >
+                        Receiver Contact No
+                      </th> */}
                       <th
                         scope='col'
                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                       >
-                        Cn Number
+                        Customer Contact Number
                       </th>
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                        Action
-                      </th>
-
                       
-
                     </tr>
                   </thead>
                   <tbody>
                       {/* User data table row */}
-                      {packages &&
-                      packages.map(pack => (
+                      {pendings &&
+                      pendings.map(pack => (
                         <TableRow
                           key={pack._id}
                           pack={pack}
-                          refetch={refetch}
                         />
                       ))}
   
@@ -94,4 +85,4 @@ const[verifiedUser] = useUsersData()
     );
 };
 
-export default OfflineBookingList;
+export default ApplyPending;
