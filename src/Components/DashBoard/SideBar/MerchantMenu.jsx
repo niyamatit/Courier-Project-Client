@@ -14,6 +14,7 @@ const MerchantMenu = () => {
       <div className="mb-10">
         <p className="ml-5 -mt-5 font-semibold text-lg">{verifiedUser?.displayName}</p>
         <p className="text-sm  ml-[30px] font-semibold">({verifiedUser?.email})</p>
+      </div>
       <MenuItem
         icon={IoHomeOutline}
         label='Dashboard'
