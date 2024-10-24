@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import "tailwindcss/tailwind.css";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const MerchantAddParcel = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -19,7 +20,7 @@ const MerchantAddParcel = () => {
    
   });
   const [collected, setCollected] = useState("");
-
+  const [verifiedUser] = useUsersData(); 
   const {
     register,
     handleSubmit,
@@ -847,6 +848,8 @@ const finalCharge = totalCharge + codPercentage
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.orderId ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  defaultValue={verifiedUser?.merchantID}
+                  readOnly
                 />
                 {errors.orderId && (
                   <span className="text-red-500">This field is required</span>
