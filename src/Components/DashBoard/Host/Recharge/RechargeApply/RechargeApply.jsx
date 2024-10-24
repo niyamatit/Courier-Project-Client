@@ -27,6 +27,8 @@ const RechargeApply = () => {
             Account_Amount: data?.accountAmount || "",
             Recharge_Note: data?.rechargenote || "",
             Date: new Date().toISOString().split('T')[0],
+            Status: "processing",
+            update: "recharge"
         };
 
         const ApplyRechargeInfo = await axiosSecure.post("/recharge", ApplyRechargeInformation);
