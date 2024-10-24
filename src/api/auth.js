@@ -41,13 +41,13 @@ export const getAllPackage = async (email) => {
     return data;
 };
 
-export const getAllRider = async (riderNumber) => {
-    const { data } = await axiosSecure.get(`/rider/${riderNumber}`);
-    console.log("Fetching riders for riderNumber:", riderNumber);
+export const getAllRider = async (email) => {
+    const { data } = await axiosSecure.get(`/rider/${email}`);
+    console.log("Fetching riders for email:", email);
     return data;
 };
-export const getAllRecharge = async (email) => {
-    const { data } = await axiosSecure.get(`/recharge/${email}`);
+export const getAllRecharge = async (email, status = "processing") => {
+    const { data } = await axiosSecure.get(`/recharge/${email}?status=${status}`);
     console.log("Fetching riders for email:", email);
     return data;
 };
