@@ -102,14 +102,14 @@ const handleSignUp = async e => {
             </div>
             <div>
               <label htmlFor="email" className="block mb-2 text-sm">
-                Email address
+                Email address or Phone Number
               </label>
               <input
                 type="text"
                 name="email"
                 id="email"
                 required
-                placeholder="Enter Your Email Here"
+                placeholder="Enter Your Email or Phone Number Here"
                 className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
               />
             </div>
