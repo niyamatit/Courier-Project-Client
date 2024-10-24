@@ -64,6 +64,7 @@ import RechargeComplete from "../Components/DashBoard/Host/Recharge/RechargeComp
 import MerchantLogin from "../LogIn/MerchantLogin/MerchantLogin";
 import MerchantSignup from "../SignUp/MerchantSignup/MerchantSignup";
 import AllRider from "../Components/DashBoard/Admin/AllRider/AllRider";
+import ApplyPending from "../Components/DashBoard/Admin/ApplyPending/ApplyPending";
 
 
 
@@ -167,16 +168,16 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      // {
-      //   path: "Add-branch-staff",
-      //   element: (
-      //     <PrivateRoute>
-      //       <HostRoute>
-      //        <AddBaranchStaff/>
-      //       </HostRoute>
-      //     </PrivateRoute>
-      //   ),
-      // },
+      {
+        path: "apply-pending",
+        element: (
+          <PrivateRoute>
+            
+             <ApplyPending/>
+            
+          </PrivateRoute>
+        ),
+      },
 
       {
         path: "demo-pack",
