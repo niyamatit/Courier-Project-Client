@@ -63,6 +63,7 @@ import RechargeApply from "../Components/DashBoard/Host/Recharge/RechargeApply/R
 import RechargeComplete from "../Components/DashBoard/Host/Recharge/RechargeComplete/RechargeComplete";
 import MerchantLogin from "../LogIn/MerchantLogin/MerchantLogin";
 import MerchantSignup from "../SignUp/MerchantSignup/MerchantSignup";
+import AllRider from "../Components/DashBoard/Admin/AllRider/AllRider";
 
 
 
@@ -98,17 +99,17 @@ export const router = createBrowserRouter([
       {
         path: "/online-booking",
         element: (
-          
-           <OnlineBookingHome/>
-          
+
+          <OnlineBookingHome />
+
         ),
       },
       {
         path: "/apply",
         element: (
-          
-            <Apply />
-          
+
+          <Apply />
+
         ),
       },
     ],
@@ -119,7 +120,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/merchantSignup",
-    element: <MerchantSignup/>,
+    element: <MerchantSignup />,
   },
   {
     path: "/login",
@@ -127,7 +128,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/merchantLogin",
-    element: <MerchantLogin/>,
+    element: <MerchantLogin />,
   },
 
   {
@@ -586,6 +587,10 @@ export const router = createBrowserRouter([
       {
         path: "rider-add",
         element: <Rideradd></Rideradd>,
+      },
+      {
+        path: "all-rider",
+        element: <AllRider></AllRider>,
       },
       {
         path: "branch-staff",

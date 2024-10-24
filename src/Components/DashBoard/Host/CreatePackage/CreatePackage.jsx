@@ -119,13 +119,13 @@ const CreatePackage = () => {
 
 
     useEffect(() => {
-        fetch('../../../../../public/districts.json')
+        fetch('/districts.json')
             .then(res => res.json())
             .then(data => setAllDistricts(data))
     }, [])
 
     useEffect(() => {
-        fetch('../../../../../public/areas.json')
+        fetch('/areas.json')
             .then(res => res.json())
             .then(data => setAllAreas(data))
     }, [])

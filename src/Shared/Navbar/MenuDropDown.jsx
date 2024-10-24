@@ -61,7 +61,7 @@ console.log(verifiedUser)
               referrerPolicy='no-referrer'
               src={verifiedUser && verifiedUser?.imageUrl ? verifiedUser.imageUrl : avatarImg}
               alt='profile'
-              height='30'
+              height='10'
               width='30'
             />
           </div>

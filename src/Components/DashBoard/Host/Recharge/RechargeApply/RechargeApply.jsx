@@ -1,19 +1,62 @@
-
 import { Button } from "primereact/button";
-import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import axiosSecure from "../../../../../api/axiosSecure";
+import useAuth from "../../../../../hooks/useAuth";
 
 
 const RechargeApply = () => {
+    const { user } = useAuth();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    // const onSubmit = (data) => {
+    //     console.log(data);
+    // };
+
+    const onSubmit = async (data) => {
+
+        const ApplyRechargeInformation = {
+            Account_Name: data?.accountName || "",
+            Branch_Email: user?.email || "",
+            Account_Number: data?.accountNumber || "",
+            Account_Amount: data?.accountAmount || "",
+            Recharge_Note: data?.rechargenote || "",
+            Date: new Date().toISOString().split('T')[0],
+        };
+
+        const ApplyRechargeInfo = await axiosSecure.post("/recharge", ApplyRechargeInformation);
+
+        if (ApplyRechargeInfo.data.insertedId) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Account Added Successfully",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        }
+        // try {
+        //    
+        // } catch (error)
+        //  {
+        //     if (error) {
+        //         Swal.fire({
+        //             position: "top-end",
+        //             icon: "error",
+        //             title: "Already Added the Account",
+        //             showConfirmButton: false,
+        //             timer: 1500,
+        //         });
+        //     } else {
+        //         console.error("Unexpected Error:", error);
+        //     }
+        // }
+
     };
 
     return (
@@ -39,17 +82,18 @@ const RechargeApply = () => {
                         </div>
 
                         {/* account Number */}
-                        <div className="field mt-2">
-                            <label htmlFor="accountNumber" className="block mb-2">
-                                Account Number
+                        <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                            <label className="block font-medium mb-1">
+                                Account Number*
                             </label>
-                            <InputNumber
-                                id="accountNumber"
-                                {...register("accountNumber", { required: "account Number is required" })}
-                                className="w-full p-inputtext"
+                            <input
+                                type="text"
+                                {...register('accountNumber', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.accountNumber ? 'border-red-500' : 'border-gray-300'
+                                    }`}
                             />
                             {errors.accountNumber && (
-                                <span className="text-red-500">{errors.accountNumber.message}</span>
+                                <span className="text-red-500">This field is required</span>
                             )}
                         </div>
 
@@ -60,8 +104,8 @@ const RechargeApply = () => {
                                 Account amount
                             </label>
                             <InputText
-                                id="branchAddress"
-                                {...register("branchAddress", { required: "account amount is required" })}
+                                id="accountAmount"
+                                {...register("accountAmount", { required: "account amount is required" })}
                                 className="w-full p-inputtext"
                             />
                             {errors.accountamount && (

@@ -36,8 +36,19 @@ export const getRole = async (email) => {
 
 
 export const getAllPackage = async (email) => {
-    const { data } = await axiosSecure.get(`/package/${email}`); 
+    const { data } = await axiosSecure.get(`/package/${email}`);
     console.log("Fetching packages for email:", email);
+    return data;
+};
+
+export const getAllRider = async (riderNumber) => {
+    const { data } = await axiosSecure.get(`/rider/${riderNumber}`);
+    console.log("Fetching riders for riderNumber:", riderNumber);
+    return data;
+};
+export const getAllRecharge = async (email) => {
+    const { data } = await axiosSecure.get(`/recharge/${email}`);
+    console.log("Fetching riders for email:", email);
     return data;
 };
 
