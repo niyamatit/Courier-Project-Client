@@ -140,7 +140,7 @@ useEffect(() => {
     const fetchCustomerDetails = async () => {
       if (senderContactNo) {
         try {
-          const response = await axiosSecure.get(`/offline/${senderContactNo}`);
+          const response = await axiosSecure.get(`/offline/mahi/hossain/${senderContactNo}`);
           
           
           
