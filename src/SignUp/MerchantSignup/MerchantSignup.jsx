@@ -106,12 +106,12 @@ const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '
               />
             </div>
             <div>
-              <label htmlFor="email" className="block mb-2 text-sm">Email address</label>
+              <label htmlFor="email" className="block mb-2 text-sm">Email Address or Phone Number</label>
               <input
-                type="email"
+                type="text"
                 name="email"
                 id="email"
-                placeholder="Enter Your Email Here"
+                placeholder="Enter Your Email or Phone Number"
                 className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
                 required
               />

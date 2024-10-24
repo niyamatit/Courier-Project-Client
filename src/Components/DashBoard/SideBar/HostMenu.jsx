@@ -16,7 +16,7 @@ const HostMenu = () => {
 
   return (
     <>
-      <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.displayName}</p>
+      <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.name}</p>
 
       <MenuItem
         icon={IoHome}

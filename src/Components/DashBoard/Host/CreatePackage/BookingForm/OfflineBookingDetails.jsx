@@ -33,7 +33,7 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
             <div className="booking-details ">
                 <div className='flex justify-around'>
                     <div>
-                        <Barcode className="h-[50px]" value={bookingInfo?.CnNumber} />
+                        <Barcode className="h-[50px] w-60" value={bookingInfo?.CnNumber} />
                         {/* <p>{bookingInfo?.packageTrackingNumber}</p> */}
                         {/* <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} /> */}
 

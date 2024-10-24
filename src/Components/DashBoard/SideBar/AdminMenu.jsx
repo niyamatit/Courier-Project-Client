@@ -3,9 +3,14 @@ import MenuItem from './MenuItem'
 import { BsGraphUp } from 'react-icons/bs'
 import { MdMoney, MdPending, MdPersonAdd } from 'react-icons/md'
 import { MdStore } from 'react-icons/md';
+import useUsersData from '../../../hooks/useUsersData/useUsersData';
 const AdminMenu = () => {
+  const [verifiedUser] = useUsersData();
   return (
     <>
+    <div>
+    <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.name}</p>
+    </div>
       <MenuItem
         icon={BsGraphUp}
         label='Statistics'
@@ -44,8 +49,8 @@ const AdminMenu = () => {
       <MenuItem
         icon={MdMoney}
 
-        label='Recharge Apply'
-        address='recharge-apply'
+        label='Recharge Processing'
+        address='recharge-processign'
       />
       <MenuItem
         icon={MdMoney}
