@@ -28,18 +28,19 @@ const OrderProcess = () => {
             <div className="md:flex mb-16 p-10 gap-10">
                 <div className="relative">
                     <img src="https://transp-nextjs.vercel.app/assets/imgs/page/homepage1/how-it-work.png" alt="" />
-                    <div className=" flex  gap-5 justify-center  lg:w-[460px] lg:h-[210px] bg-secondary absolute -mt-28 md:-mt-28 lg:ml-20 md:ml-0 md:p-10">
-                        <div>
-                            <FaCirclePlay className="h-10 w-10 text-[#fec201]" />
-                        </div>
-                        <div>
-                            <h1 className="text-xl font-bold text-white font-rancho">We have 22 years experience in this passion</h1>
-                            <p className="text-white">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</p>
-                        </div>
-                    </div>
+                    <div className="flex flex-col md:flex-row gap-3 md:gap-5 justify-center items-center  lg:w-[460px] lg:h-[210px] bg-secondary absolute -mt-20 md:-mt-28 lg:ml-20 md:ml-0 p-5 md:p-10">
+    <div className="flex-shrink-0">
+        <FaCirclePlay className="h-8 w-8 md:h-10 md:w-10 text-[#fec201]" />
+    </div>
+    <div>
+        <h1 className="text-lg md:text-xl font-bold text-white font-rancho">We have 22 years experience in this passion</h1>
+        <p className="text-sm md:text-base text-white">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</p>
+    </div>
+</div>
+
                 </div>
                 <div>
-                    <div className="flex flex-col items-center mt-10 md:mt-0 justify-center">
+                    <div className="flex flex-col items-center mt-52 md:mt-0 justify-center">
                         {process.map((step, index) => (
                             <div key={index} className="flex items-center py-3">
                                 <div className="flex flex-col items-center">
