@@ -3,13 +3,20 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { OfflineBookingDetails } from "./OfflineBookingDetails";
+import StickerDetails from "../StickerDetails";
 
 const OfflinePrintModal = ({ closeModal, isOpen, bookingInfo }) => {
-  const formRef = useRef();
+  const packageRef = useRef(); // For PackageDetails
+  const stickerRef = useRef(); // For StickerDetails
 
-  const handlePrint = useReactToPrint({
-    content: () => formRef.current,
-    documentTitle: "Package Details",
+  const handlePrintPackage = useReactToPrint({
+      content: () => packageRef.current,
+      documentTitle: 'Package Details',
+  });
+
+  const handlePrintSticker = useReactToPrint({
+      content: () => stickerRef.current,
+      documentTitle: 'Sticker Details',
   });
 
   return (
@@ -45,20 +52,33 @@ const OfflinePrintModal = ({ closeModal, isOpen, bookingInfo }) => {
                 >
                   Print Details
                 </Dialog.Title>
-                <div ref={formRef} className="mt-2 text-center">
+                <div ref={packageRef} className="mt-2 text-center">
                   <OfflineBookingDetails bookingInfo={bookingInfo} />
                   <OfflineBookingDetails bookingInfo={bookingInfo} />
                   <OfflineBookingDetails bookingInfo={bookingInfo} />
                 </div>
 
-                <div className="flex justify-center mt-4">
-                  <button
-                    onClick={handlePrint}
-                    className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary"
-                  >
-                    Print Package Details
-                  </button>
+                <div ref={stickerRef} className="mt-2 text-center">
+                  <StickerDetails bookingInfo={bookingInfo}/>
                 </div>
+
+                <div className="flex justify-center mt-4">
+                                    {/* Button to print PackageDetails */}
+                                    <button
+                                        onClick={handlePrintPackage}
+                                        className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary mx-2"
+                                    >
+                                        Print Package Details
+                                    </button>
+
+                                    {/* Button to print StickerDetails */}
+                                    <button
+                                        onClick={handlePrintSticker}
+                                        className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary mx-2"
+                                    >
+                                        Print Sticker
+                                    </button>
+                                </div>
 
                 <hr className="mt-8" />
               </Dialog.Panel>

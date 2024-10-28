@@ -86,3 +86,8 @@ export const getAllUsers = async () => {
     const { data } = await axiosSecure(`/users`)
     return data
 }
+// Get all apply
+export const getPendingApply = async () => {
+    const { data } = await axiosSecure(`/apply`)
+    return data
+}

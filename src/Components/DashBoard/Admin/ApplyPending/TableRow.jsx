@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 
 import { useState } from "react"
-import toast from "react-hot-toast"
-import { updateActionOnline } from "../../../../api/auth"
-import UpdateModalOnline from "../../../../Modal/UpdateModalOnline"
+// import toast from "react-hot-toast"
+
+
 // import axiosSecure from "../../../../api/axiosSecure"
 
 
@@ -12,37 +12,21 @@ const TableRow = ({ pack, refetch }) => {
 
   const [isOpen, setIsOpen] = useState(false)
 
-
-  // const handlePrint = async (id) => {
-  //   try {
-  //     console.log('Fetching data for package ID:', id);
-      
-  //     // Make the API request using the ID
-  //     const response = await axiosSecure.get(`/package/${id}`);
-      
-  //     // Log the data returned by the API
-  //     console.log('Data for package:', response.data);
-  //   } catch (error) {
-  //     // Handle any error during the request
-  //     console.error('Error fetching package data:', error);
-  //   }
-  // };
   
+//   const modalHandler = async (selected) => {
+//     try {
 
-  const modalHandler = async (selected) => {
-    try {
-
-      const data = await updateActionOnline({ update: selected, id: pack?._id })
-      console.log("Data returned from updateAction:", data);
-      refetch()
-      toast.success('Action updated!')
-    } catch (err) {
-      console.log(err)
-      toast.error(err.message)
-    } finally {
-      setIsOpen(false)
-    }
-  }
+//       const data = await updateActionOnline({ update: selected, id: pack?._id })
+//       console.log("Data returned from updateAction:", data);
+//       refetch()
+//       toast.success('Action updated!')
+//     } catch (err) {
+//       console.log(err)
+//       toast.error(err.message)
+//     } finally {
+//       setIsOpen(false)
+//     }
+//   }
 
 
   return (
@@ -52,7 +36,7 @@ const TableRow = ({ pack, refetch }) => {
           <div className='flex-shrink-0'>
             <div className='block relative'>
               <p className='text-gray-900 whitespace-no-wrap'>
-                {pack?.yourName}
+                {pack?.Customer_Name}
               </p>
             </div>
           </div>
@@ -60,28 +44,29 @@ const TableRow = ({ pack, refetch }) => {
         </div>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>{pack?.recipientName}</p>
+        <p className='text-gray-900 whitespace-no-wrap'>{pack?.Customer_Current_Address}</p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
         <p className='text-gray-900 whitespace-no-wrap'>
-          {pack?.delivery}
+          {pack?.Customer_Apply_For}
         </p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
         <p className='text-gray-900 whitespace-no-wrap'>
-          {pack?.pickup}
+          {pack?.Company_Name}
         </p>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+        <p className='text-gray-900 whitespace-no-wrap'>
+          {pack?.Customer_Contact_Number}
+        </p>
+      </td>
+      {/* <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
         <p className='text-gray-900 whitespace-no-wrap'>
           {pack?.recipientMobile}
         </p>
-      </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900 whitespace-no-wrap'>
-          {pack?.update}
-        </p>
-      </td>
+      </td> */}
+      
 
 
 
@@ -94,15 +79,15 @@ const TableRow = ({ pack, refetch }) => {
             aria-hidden='true'
             className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
           ></span>
-          <span className='relative'>Update Action</span>
+          <span className='relative'>View Details</span>
         </span>
         {/* Modal */}
-        <UpdateModalOnline
+        {/* <UpdateModalOnline
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           modalHandler={modalHandler}
           pack={pack}
-        />
+        /> */}
       </td>
 
       {/* <td  className='px-5 py-5  border-b border-gray-200 bg-white text-sm'>
