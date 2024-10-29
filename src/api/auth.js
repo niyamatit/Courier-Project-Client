@@ -65,8 +65,8 @@ export const updateRole = async ({ email, role }) => {
 }
 
 // update action save data in database
-export const updateAction = async ({ update, id }) => {
-    const currentAction = { update }
+export const updateAction = async ({ update, id,note }) => {
+    const currentAction = { update,note }
     console.log(update)
     const { data } = await axiosSecure.patch(`/package/${id}`, currentAction)
     return data
