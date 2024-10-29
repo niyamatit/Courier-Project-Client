@@ -26,10 +26,10 @@ const TableRow = ({ pack,refetch }) => {
       }
     };
 
-    const modalHandler = async (selected) => {
+    const modalHandler = async (selected,note) => {
       try {
        
-        const data = await updateAction({ update: selected, id:pack?._id })
+        const data = await updateAction({ update: selected,id:pack?._id,note })
         console.log("Data returned from updateAction:", data);
         refetch()
         toast.success('Action updated!')

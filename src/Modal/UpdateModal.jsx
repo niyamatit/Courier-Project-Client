@@ -3,12 +3,22 @@ import { Fragment, useState } from 'react'
 import { Dialog, Listbox, Transition } from '@headlessui/react'
 import { BsCheckLg } from 'react-icons/bs'
 import { AiOutlineDown } from 'react-icons/ai'
-const actions = ['processing','pickup request','Rider pickup','in-transit','on the way to delivery hub','on the way to delivery','Rider Assign','Ready For Delivery', 'delivered','canceled']
 
-const UpdateModal = ({ setIsOpen, isOpen, modalHandler,pack }) => {
+const actions = [
+  'processing', 'pickup request', 'Rider pickup', 'in-transit', 
+  'on the way to delivery hub', 'on the way to delivery', 
+  'Rider Assign', 'Ready For Delivery', 'delivered', 'canceled'
+]
+
+const UpdateModal = ({ setIsOpen, isOpen, modalHandler, pack }) => {
   const [selected, setSelected] = useState(pack?.update)
-  console.log(selected)
-  
+  const [note, setNote] = useState("")  // State for the notes input
+
+  const handleUpdate = () => {
+    // Pass both selected action and note to modalHandler
+    modalHandler(selected, note)
+  }
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
@@ -39,62 +49,45 @@ const UpdateModal = ({ setIsOpen, isOpen, modalHandler,pack }) => {
               leaveFrom='opacity-100 scale-100'
               leaveTo='opacity-0 scale-95'
             >
-              <Dialog.Panel className='w-full h-[350px] max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+              <Dialog.Panel className='w-full h-[400px] max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
                 <Dialog.Title
                   as='h3'
                   className='text-lg font-medium text-center leading-6 text-gray-900'
                 >
                   Action Update
                 </Dialog.Title>
+
                 <div className='mt-6 w-full'>
                   <Listbox value={selected} onChange={setSelected}>
                     <div className='relative mt-6'>
                       <Listbox.Button className='relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
                         <span className='block truncate'>{selected}</span>
                         <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
-                          <AiOutlineDown
-                            className='h-5 w-5 text-gray-400'
-                            aria-hidden='true'
-                          />
+                          <AiOutlineDown className='h-5 w-5 text-gray-400' aria-hidden='true' />
                         </span>
                       </Listbox.Button>
-                      <Transition
-                        as={Fragment}
-                        leave='transition ease-in duration-100'
-                        leaveFrom='opacity-100'
-                        leaveTo='opacity-0'
-                      >
+                      <Transition as={Fragment} leave='transition ease-in duration-100' leaveFrom='opacity-100' leaveTo='opacity-0'>
                         <Listbox.Options className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm'>
                           {actions.map((action, actionIdx) => (
                             <Listbox.Option
                               key={actionIdx}
                               className={({ active }) =>
                                 `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                  active
-                                    ? 'bg-amber-100 text-amber-900'
-                                    : 'text-gray-900'
+                                  active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                                 }`
                               }
                               value={action}
                             >
-                              {
-                              ({ selected }) => (
+                              {({ selected }) => (
                                 <>
-                                  <span
-                                    className={`block truncate ${
-                                      selected ? 'font-medium' : 'font-normal'
-                                    }`}
-                                  >
+                                  <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
                                     {action}
                                   </span>
-                                  {selected ? (
+                                  {selected && (
                                     <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600'>
-                                      <BsCheckLg
-                                        className='h-5 w-5'
-                                        aria-hidden='true'
-                                      />
+                                      <BsCheckLg className='h-5 w-5' aria-hidden='true' />
                                     </span>
-                                  ) : null}
+                                  )}
                                 </>
                               )}
                             </Listbox.Option>
@@ -104,13 +97,26 @@ const UpdateModal = ({ setIsOpen, isOpen, modalHandler,pack }) => {
                     </div>
                   </Listbox>
                 </div>
-                <hr className='mt-20 ' />
 
-                <div className='flex mt-10 justify-center gap-5'>
+                {/* Notes input field */}
+                <div className='mt-4'>
+                  <label className='block text-sm font-medium text-gray-700'>Add Notes</label>
+                  <textarea
+                    className='mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    rows='3'
+                    placeholder='Write any notes here...'
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                  />
+                </div>
+
+                <hr className='mt-6' />
+
+                <div className='flex mt-6 justify-center gap-5'>
                   <button
                     type='button'
                     className='inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
-                    onClick={() => modalHandler(selected)}
+                    onClick={handleUpdate}
                   >
                     Update
                   </button>

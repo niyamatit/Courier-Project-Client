@@ -16,7 +16,7 @@ const PendingParcelList = () => {
     enabled: !!verifiedUser?.email, // Only run when email is available
 });
 
-    const PendingParcelList = packages.filter(user => user?.update === 'Processing');
+    const PendingParcelList1 = packages.filter(user => user?.update === 'Processing');
 
     return (
         <>
@@ -64,14 +64,20 @@ const PendingParcelList = () => {
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
+                                            Note
+                                        </th>
+                                        <th
+                                            scope='col'
+                                            className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                                        >
                                             Update
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {/* User data table row */}
-                                    {PendingParcelList &&
-                                        PendingParcelList.map(pack => (
+                                    {PendingParcelList1 &&
+                                        PendingParcelList1.map(pack => (
                                             <TableRow
                                                 key={pack._id}
                                                 pack={pack}
