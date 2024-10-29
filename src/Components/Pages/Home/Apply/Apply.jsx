@@ -624,7 +624,7 @@ const Areas =[
     const ApplyInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
       Customer_Name:formData?.YourName || "",
-      Customer_Email:verifiedUser?.email || "",
+      Customer_Email:formData?.email || "",
       Customer_Father_Name:formData?.FatherName || "",
       Customer_Mother_Name:formData?.MotherName || "",
       Customer_Current_Address:formData?.YourCurrentAddress || "",
@@ -701,6 +701,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.YourName ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  placeholder="Write Your Name"
                 />
                 {errors.YourName && (
                   <span className="text-red-500">This field is required</span>
@@ -716,6 +717,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.contactNumber ? 'border-red-500' : 'border-gray-300'
                   }`}
+                   placeholder="Write Your Contact Number"
                 />
                 {errors.contactNumber && (
                   <span className="text-red-500">This field is required</span>
@@ -732,6 +734,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.FatherName ? 'border-red-500' : 'border-gray-300'
                   }`}
+                   placeholder="Write Your Father Name"
                 />
                 {errors.FatherName && (
                   <span className="text-red-500">This field is required</span>
@@ -747,6 +750,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.MotherName ? 'border-red-500' : 'border-gray-300'
                   }`}
+                   placeholder="Write Your Mother Name"
                 />
                 {errors.MotherName && (
                   <span className="text-red-500">This field is required</span>
@@ -798,6 +802,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.YourCurrentAddress ? 'border-red-500' : 'border-gray-300'
                   }`}
+                   placeholder="Write Your Current Address"
                 />
                 {errors.YourCurrentAddress && (
                   <span className="text-red-500">This field is required</span>
@@ -813,6 +818,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.YourParmanentAddress ? 'border-red-500' : 'border-gray-300'
                   }`}
+                   placeholder="Write Your Parmanent Address"
                 />
                 {errors.YourParmanentAddress && (
                   <span className="text-red-500">This field is required</span>
@@ -928,6 +934,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.CompanyName ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  placeholder="Write Your Company Name"
                 />
                 {errors.CompanyName && (
                   <span className="text-red-500">This field is required</span>
@@ -943,6 +950,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.BusinessAddress ? 'border-red-500' : 'border-gray-300'
                   }`}
+                   placeholder="Write Your Business Address"
                 />
                 {errors.BusinessAddress && (
                   <span className="text-red-500">This field is required</span>
@@ -959,6 +967,7 @@ const Areas =[
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.TinBin ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  placeholder="Write Your TIN/BIN"
                 />
                 {errors.TinBin && (
                   <span className="text-red-500">This field is required</span>
@@ -966,14 +975,15 @@ const Areas =[
               </div>
               <div className="col-span-2">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Email*
+                  Email(Optional)
                 </label>
-                <input placeholder={verifiedUser?.email} readOnly
+                <input  
                   type="text"
                   {...register('email')}
                   className={`input input-bordered w-full p-2 rounded-lg border ${
                     errors.TinBin ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  placeholder="Write Your Email"
                 />
                 {errors.email && (
                   <span className="text-red-500">This field is required</span>
@@ -1010,7 +1020,7 @@ const Areas =[
                   <option value="Sub Agent">Sub Agent</option>
                   <option value="Merchant">Merchant</option>
                   <option value="Rider">Rider</option>
-                  <option value="Company Login">Company</option>
+                  <option value="Conserned Company">Conserned Company</option>
                   
                 </select>
                 {errors.apply && (
@@ -1024,6 +1034,7 @@ const Areas =[
                 <textarea
                   {...register('Reference')}
                   className="textarea textarea-bordered w-full p-2 rounded-lg border-gray-300"
+                  placeholder="Reference"
                 />
               </div>
             </div>

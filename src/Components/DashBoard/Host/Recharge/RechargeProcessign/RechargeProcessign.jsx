@@ -1,25 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
-import TableRecharge from "./TableRecharge";
 import { getAllRecharge } from "../../../../../api/auth";
+import TableRecharge from "../RechargeComplete/TableRecharge";
 
+const RechargeProcessign = () => {
 
-const RechargeComplete = () => {
 
     const [verifiedUser] = useUsersData()
 
     const { data: recharge = [], refetch } = useQuery({
         queryKey: ['recharge', verifiedUser?.email], // Query key includes user email
-        queryFn: () => getAllRecharge(verifiedUser?.email, "accept"), // Function to fetch recharge
+        queryFn: () => getAllRecharge(verifiedUser?.email, "processing"), // Function to fetch recharge
         enabled: !!verifiedUser?.email, // Only run when email is available
     });
 
-
-    const CompleteRechargeList = recharge.filter(user => user?.update === 'recharge');
-
+    console.log(recharge)
+    const rechargeProcessing = recharge.filter(user => user?.update === 'recharge');
     return (
-        <>
-            <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Complete recharge Information</h1>
+        <div>
             <div className='container mx-auto px-4 sm:px-8'>
 
                 <div className='py-8'>
@@ -56,30 +54,28 @@ const RechargeComplete = () => {
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Update
+                                            Action
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {/* User data table row */}
-                                    {CompleteRechargeList &&
-                                        CompleteRechargeList.map(recharge => (
+                                    {rechargeProcessing &&
+                                        rechargeProcessing.map(recharge => (
                                             <TableRecharge
                                                 key={recharge._id}
                                                 recharge={recharge}
                                                 refetch={refetch}
                                             />
                                         ))}
-
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
-export default RechargeComplete;
+export default RechargeProcessign;
