@@ -109,10 +109,42 @@ useEffect(() => {
 
   const onSubmit = async (data) => {
     try {
-      data.CnNumber = cnNumber; // Include the current CN number in the form data
+      data.CnNumber = cnNumber; 
+      const Bookinginfo = {
+        senderName:data.senderName || senderInfo.name,
+        address:data.address || senderInfo.address,
+        receiverName: data.receiverName || receiverInfo.ReceiverName,
+        receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
+        branch: data.branch,
+        customerCode:data.customerCode,
+        counter:data.counter,
+        customerName:data.customerName,
+        senderContactNo:data.senderContactNo,
+        reference:data.reference,
+        receiverContactNo:data.receiverContactNo,
+        CnNumber:data.CnNumber,
+        bookingDate:data.bookingDate,
+        bookingBranch:data.bookingBranch,
+        department:data.department,
+        inputUser:data.inputUser,
+        serviceType:data.serviceType,
+        paymentMethod:data.paymentMethod,
+        product:data.product,
+        lot:data.lot,
+        qty:data.qty,
+        unit:data.unit,
+        rate:data.rate,
+        totalCharge:data.totalCharge || totalCharge,
+        hdCharge:data.hdCharge,
+        othCharge:data.othCharge,
+        receiverPay:data.receiverPay,
+        serviceCharge:data.serviceCharge,
+        senderReceive:data.senderReceive
+
+      }
   
       // Submit the parcel data
-      const ParcelProductDetails = await axiosSecure.post("/offline", data);
+      const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
       if (ParcelProductDetails.data.insertedId) {
         Swal.fire({
           position: "top-end",
@@ -127,10 +159,11 @@ useEffect(() => {
         setCnNumber(response.data.nextNumber); // Set the next CN number for the next booking
         console.log("Cn Number",response.data.nextNumber)
       }
+      setBookingInfo(Bookinginfo);
     } catch (error) {
       console.error("Error adding parcel:", error);
     }
-    setBookingInfo(data);
+    
     
     setIsOpen(true);
   };
@@ -140,7 +173,7 @@ useEffect(() => {
     const fetchCustomerDetails = async () => {
       if (senderContactNo) {
         try {
-          const response = await axiosSecure.get(`/offline/${senderContactNo}`);
+          const response = await axiosSecure.get(`/offline/mahi/hossain/${senderContactNo}`);
           
           
           
@@ -589,7 +622,7 @@ const [verifiedUser] = useUsersData();
                 <InputField
                   watchValues={watchValues}
                   register={register}
-                  name={"totalCharge"}
+                  name={"TotalCharge"}
                   registerOptions={{ required: true }}
                   errors={errors}
                   label="Total Charge"
@@ -604,7 +637,7 @@ const [verifiedUser] = useUsersData();
                 <InputField
                   watchValues={watchValues}
                   register={register}
-                  name={"h/dCharge"}
+                  name={"hdCharge"}
                   registerOptions={{ required: false }}
                   errors={errors}
                   label="H/D Charge"

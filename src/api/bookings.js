@@ -16,15 +16,27 @@ export const saveBookingInfo = async paymentInfo => {
 
 
 // get all bookings for a guest by email
-export const getBookings = async email => {
-  const { data } = await axiosSecure(`/bookings`)
-  console.log(email)
-  return data
-}
+// export const getBookings = async email => {
+//   const { data } = await axiosSecure(`/bookings`)
+//   console.log(email)
+//   return data
+// }
+
+export const getBookings = async (email) => {
+  const { data } = await axiosSecure.get(`/bookings/${email}`); 
+  console.log("Fetching packages for email:", email);
+  return data;
+};
 
 // get all offline booking for a guest by email
-export const getOfflineBookings = async email => {
-  const { data } = await axiosSecure(`/offline`)
-  console.log(email)
-  return data
-}
+// export const getOfflineBookings = async email => {
+//   const { data } = await axiosSecure(`/offline`)
+//   console.log(email)
+//   return data
+// }
+
+export const getOfflineBookings = async (email) => {
+  const { data } = await axiosSecure.get(`/offline/${email}`); 
+  console.log("Fetching packages for email:", email);
+  return data;
+};

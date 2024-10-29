@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
-import TableRecharge from "./TableRecharge";
 import { getAllRecharge } from "../../../../../api/auth";
+import TableComplete from "./TableComplete";
 
 
 const RechargeComplete = () => {
@@ -52,19 +52,14 @@ const RechargeComplete = () => {
                                         >
                                             Recharge Note
                                         </th>
-                                        <th
-                                            scope='col'
-                                            className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                                        >
-                                            Update
-                                        </th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {/* User data table row */}
                                     {CompleteRechargeList &&
                                         CompleteRechargeList.map(recharge => (
-                                            <TableRecharge
+                                            <TableComplete
                                                 key={recharge._id}
                                                 recharge={recharge}
                                                 refetch={refetch}

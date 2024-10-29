@@ -8,25 +8,30 @@ import { FaFileInvoice } from 'react-icons/fa';
 import { MdStore } from 'react-icons/md';
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 const MerchantMenu = () => {
-  const [verifiedUser] = useUsersData()
-  return (
-    <>
-      <div className="mb-10">
+  const[verifiedUser] = useUsersData()
+    return (
+        <>
+        <div className="mb-10">
         <p className="ml-5 -mt-5 font-semibold text-lg">{verifiedUser?.displayName}</p>
         <p className="text-sm  ml-[30px] font-semibold">({verifiedUser?.email})</p>
+<<<<<<< HEAD
       </div>
+=======
+        <p className="text-sm  ml-[30px] font-semibold">Merchant ID- {verifiedUser?.merchantID}</p>
+        </div>
+>>>>>>> d9aca1a9f99a27d047d98be1d0faba0643550c8a
       <MenuItem
-        icon={IoHomeOutline}
+        icon={ IoHomeOutline }
         label='Dashboard'
         address='/dashboard/MerchantDashboard'
       />
       <MenuItem
-        icon={MdAddBox}
+        icon={ MdAddBox }
         label='Add Parcel(National)'
         address='/dashboard/MerchantAddPercel'
       />
       <MenuItem
-        icon={FaTruck}
+        icon={ FaTruck }
         label='Deliveries'
         address='/dashboard/MerchantDeliveries'
       />
@@ -79,7 +84,7 @@ const MerchantMenu = () => {
         address='/'
       /> */}
     </>
-  );
+    );
 };
 
 export default MerchantMenu;

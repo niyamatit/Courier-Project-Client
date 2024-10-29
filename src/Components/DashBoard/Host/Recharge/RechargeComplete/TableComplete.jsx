@@ -1,12 +1,15 @@
-/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 
+const TableComplete = ({ recharge }) => {
+    const [status, setStatus] = useState('');
+    useEffect(() => {
+        console.log(recharge?.Status)
+        if (!status) {
+            setStatus(recharge?.Status || "processing")
+        }
+    }, [recharge])
 
-
-const TableRow = ({ pack }) => {
-
-
-
-
+    console.log(recharge)
     return (
         <tr className="font-rancho">
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -14,49 +17,40 @@ const TableRow = ({ pack }) => {
                     <div className='flex-shrink-0'>
                         <div className='block relative'>
                             <p className='text-gray-900 whitespace-no-wrap'>
-                                {pack?.senderName}
+                                {recharge?.Account_Name}
                             </p>
                         </div>
                     </div>
 
                 </div>
             </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>{pack?.recipientName}</p>
-            </td>
+
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.booking}
+                    {recharge?.Account_Number}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.productDetails}
+                    {recharge?.Account_Amount}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.recipientMobile}
-                </p>
-            </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.note}
+                    {recharge?.Recharge_Note}
                 </p>
             </td>
 
-
-
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
 
-            {pack?.update}
+
 
             </td>
 
 
 
         </tr>
-    )
-}
+    );
+};
 
-export default TableRow
+export default TableComplete;

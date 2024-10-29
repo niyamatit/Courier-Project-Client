@@ -4,16 +4,32 @@ import { useState } from "react"
 import UpdateModal from "../../../../Modal/UpdateModal"
 import toast from "react-hot-toast"
 import { updateAction } from "../../../../api/auth"
+import axiosSecure from "../../../../api/axiosSecure"
 
 
 const TableRow = ({ pack,refetch }) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
-    const modalHandler = async (selected) => {
+    const handlePrint = async (id) => {
+      try {
+        console.log('Fetching data for package ID:', id);
+        
+        // Make the API request using the ID
+        const response = await axiosSecure.get(`/package/${id}`);
+        
+        // Log the data returned by the API
+        console.log('Data for package:', response.data);
+      } catch (error) {
+        // Handle any error during the request
+        console.error('Error fetching package data:', error);
+      }
+    };
+
+    const modalHandler = async (selected,note) => {
       try {
        
-        const data = await updateAction({ update: selected, id:pack?._id })
+        const data = await updateAction({ update: selected,id:pack?._id,note })
         console.log("Data returned from updateAction:", data);
         refetch()
         toast.success('Action updated!')
@@ -86,7 +102,11 @@ const TableRow = ({ pack,refetch }) => {
         />
       </td>
 
-
+      <td  className='px-5 py-5  border-b border-gray-200 bg-white text-sm'>
+        <button  onClick={() => handlePrint(pack?._id)} className='text-gray-900  whitespace-no-wrap'>
+          Print
+        </button>
+      </td>
 
         </tr>
     )

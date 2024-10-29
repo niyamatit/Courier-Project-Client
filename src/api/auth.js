@@ -65,8 +65,8 @@ export const updateRole = async ({ email, role }) => {
 }
 
 // update action save data in database
-export const updateAction = async ({ update, id }) => {
-    const currentAction = { update }
+export const updateAction = async ({ update, id,note }) => {
+    const currentAction = { update,note }
     console.log(update)
     const { data } = await axiosSecure.patch(`/package/${id}`, currentAction)
     return data
@@ -84,5 +84,10 @@ export const updateActionOnline = async ({ update, id }) => {
 // Get all users
 export const getAllUsers = async () => {
     const { data } = await axiosSecure(`/users`)
+    return data
+}
+// Get all apply
+export const getPendingApply = async () => {
+    const { data } = await axiosSecure(`/apply`)
     return data
 }

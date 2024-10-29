@@ -3,14 +3,20 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { PackageDetails } from './PackageDetails';
-
+import StickerDetails from './StickerDetails';
 
 const PrintModal = ({ closeModal, isOpen, bookingInfo }) => {
-    const formRef = useRef();
+    const packageRef = useRef(); // For PackageDetails
+    const stickerRef = useRef(); // For StickerDetails
 
-    const handlePrint = useReactToPrint({
-        content: () => formRef.current,
+    const handlePrintPackage = useReactToPrint({
+        content: () => packageRef.current,
         documentTitle: 'Package Details',
+    });
+
+    const handlePrintSticker = useReactToPrint({
+        content: () => stickerRef.current,
+        documentTitle: 'Sticker Details',
     });
 
     return (
@@ -46,18 +52,36 @@ const PrintModal = ({ closeModal, isOpen, bookingInfo }) => {
                                 >
                                     Print Details
                                 </Dialog.Title>
-                                <div ref={formRef} className="mt-2 text-center">
+
+                                {/* PackageDetails to be printed */}
+                                <div ref={packageRef} className="mt-2 text-center">
                                     <PackageDetails bookingInfo={bookingInfo} />
                                     <PackageDetails bookingInfo={bookingInfo} />
                                     <PackageDetails bookingInfo={bookingInfo} />
                                 </div>
 
+                                {/* StickerDetails to be printed */}
+                                <div ref={stickerRef} className="mt-2 text-center">
+                                    <StickerDetails bookingInfo={bookingInfo} />
+                                    <StickerDetails bookingInfo={bookingInfo} />
+                                    {/* <StickerDetails bookingInfo={bookingInfo} /> */}
+                                </div>
+
                                 <div className="flex justify-center mt-4">
+                                    {/* Button to print PackageDetails */}
                                     <button
-                                        onClick={handlePrint}
-                                        className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary"
+                                        onClick={handlePrintPackage}
+                                        className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary mx-2"
                                     >
                                         Print Package Details
+                                    </button>
+
+                                    {/* Button to print StickerDetails */}
+                                    <button
+                                        onClick={handlePrintSticker}
+                                        className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary mx-2"
+                                    >
+                                        Print Sticker
                                     </button>
                                 </div>
 
