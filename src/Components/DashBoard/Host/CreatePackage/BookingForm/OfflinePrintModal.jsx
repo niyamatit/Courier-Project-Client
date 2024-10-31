@@ -3,7 +3,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { OfflineBookingDetails } from "./OfflineBookingDetails";
-import StickerDetails from "../StickerDetails";
+import OfflineSticker from "../OfflineSticker";
+// import StickerDetails from "../StickerDetails";
 
 const OfflinePrintModal = ({ closeModal, isOpen, bookingInfo }) => {
   const packageRef = useRef(); // For PackageDetails
@@ -59,7 +60,10 @@ const OfflinePrintModal = ({ closeModal, isOpen, bookingInfo }) => {
                 </div>
 
                 <div ref={stickerRef} className="mt-2 text-center">
-                  <StickerDetails bookingInfo={bookingInfo}/>
+                {Array.from({ length: bookingInfo?.lot || 1 }).map((_, index) => (
+  <OfflineSticker key={index} bookingInfo={bookingInfo} />
+))}
+
                 </div>
 
                 <div className="flex justify-center mt-4">
