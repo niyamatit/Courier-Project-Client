@@ -622,9 +622,9 @@ const MerchantAddParcel = () => {
   };
   useEffect(() => {
     if (selectedDistrict === '47') {
-      setDeliveryCharge(60)
+      setDeliveryCharge(parseInt(verifiedUser?.deliveryCharge) || 85)
     } else if (selectedDistrict) {
-      setDeliveryCharge(120)
+      setDeliveryCharge(parseInt(verifiedUser?.deliveryCharge) || 85)
     }
   }, [selectedDistrict])
 
@@ -647,7 +647,7 @@ const MerchantAddParcel = () => {
       Product_Value: parseFloat(formData?.productValue) || "",
       Product_Details: formData?.productDetails || "",
       Product_Remark: formData?.remark || "",
-      Merchant_Booking_CN_Number: formData?.Merchant_CN_Number || "",
+      Merchant_Parcel_Booking_CN_Number: formData?.Merchant_CN_Number || "",
       Merchant_email: verifiedUser?.email || "",
       Cod_Perchent: 1 || 0,
       Weight_Charge: weightCharge || 0,

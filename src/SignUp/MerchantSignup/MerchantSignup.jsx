@@ -12,9 +12,12 @@ const MerchantSignup = () => {
   const handleSignUp = async e => {
     e.preventDefault();
     const date = new Date();
+const datePart = `${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+const randomPart = Math.floor(Math.random() * 10).toString(); 
+const uniqueId = `${datePart}${randomPart}`;
 
+console.log(uniqueId); 
 
-const datePart = `${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}${date.getFullYear().toString().slice(-2)}`;
 
 
 const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '0')}`;
@@ -28,7 +31,7 @@ const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '
     const password = form.password.value;
     const image = form.image.files[0];
     const role = 'merchant';
-    const merchantID = datePart + timePart;
+    const merchantID = timePart + uniqueId ;
     console.log("Merchant ID",merchantID)
 
     try {
