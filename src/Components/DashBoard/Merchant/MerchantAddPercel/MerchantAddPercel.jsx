@@ -8,6 +8,7 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 const MerchantAddParcel = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [WeightPackage, setWeightPackage] = useState("");
+  const [weightCharge, setweightCharge] = useState("");
   const [filteredAreas, setFilteredAreas] = useState([]);
   const [ServiceType, setServiceType] = useState("");
   const [deliveryCharge, setDeliveryCharge] = useState(0);
@@ -621,10 +622,18 @@ const MerchantAddParcel = () => {
     }
   };
   useEffect(() => {
-    if (selectedDistrict === '47') {
-      setDeliveryCharge(parseInt(verifiedUser?.deliveryCharge) || 85)
+    if (selectedDistrict === verifiedUser?.Merchant_District_ID || selectedDistrict === "47") {
+      setDeliveryCharge(parseInt(verifiedUser?.inDistrictCharge) || 85)
     } else if (selectedDistrict) {
-      setDeliveryCharge(parseInt(verifiedUser?.deliveryCharge) || 85)
+      setDeliveryCharge(parseInt(verifiedUser?.overallBangladeshCharge) || 120)
+    }
+  }, [selectedDistrict])
+  // For Wight Charge 
+  useEffect(() => {
+    if (selectedDistrict === verifiedUser?.Merchant_District_ID || selectedDistrict === "47") {
+      setweightCharge(parseInt(verifiedUser?.inDistrictWeightCharge) || 15)
+    } else if (selectedDistrict) {
+      setweightCharge(parseInt(verifiedUser?.overallBangladeshWeightCharge) || 25)
     }
   }, [selectedDistrict])
 
@@ -636,7 +645,7 @@ const MerchantAddParcel = () => {
       Customer_Contact_Number: formData?.contactNumber || "",
       Customer_Name: formData?.customerName || customerInfo.name || "",
       Customer_Address: formData?.customerAddress || customerInfo.address || "",
-      Customer_District_Name: formData?.district || "",
+      Customer_District_Name: formData?.selectedDistrict || "",
       Customer_Area: formData?.area || "",
       Store_Name: formData?.store || "",
       Merchant_ID: formData?.orderId || "",
@@ -650,7 +659,7 @@ const MerchantAddParcel = () => {
       Merchant_Parcel_Booking_CN_Number: formData?.Merchant_CN_Number || "",
       Merchant_email: verifiedUser?.email || "",
       Cod_Perchent: 1 || 0,
-      Weight_Charge: weightCharge || 0,
+      Weight_Charge: ParcelweightCharge || 0,
       Cod_Charge: 0 || 0,
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
@@ -699,8 +708,8 @@ const MerchantAddParcel = () => {
   const codCharge = 0;
 
   const CustomerdeliveryCharge = deliveryCharge;
-  const weightCharge = (WeightPackage * 25) || 0;
-  const totalCharge = weightCharge + codCharge + CustomerdeliveryCharge;
+  const ParcelweightCharge = (weightCharge*WeightPackage) || 0;
+  const totalCharge = ParcelweightCharge + codCharge + CustomerdeliveryCharge;
   const codPercentage = totalCharge * 0.01
   const finalCharge = totalCharge + codPercentage;
   const date = new Date();
@@ -1025,7 +1034,7 @@ const MerchantAddParcel = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Weight Charge</span>
-                  <span className="text-gray-500">{(WeightPackage * 25) || 0} Tk</span>
+                  <span className="text-gray-500">{(WeightPackage * weightCharge) || 0} Tk</span>
                 </div>
                 {/* <div className="flex justify-between">
               <span className="text-gray-700">Cod Charge</span>
