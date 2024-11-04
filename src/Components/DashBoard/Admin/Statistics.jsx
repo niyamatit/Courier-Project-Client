@@ -14,7 +14,7 @@ const AdminStatistics = () => {
     getAdminStat()
     .then(data => setStatData(data))
   }, [])
-  console.log(statData)
+  // console.log(statData)
   return (
     <div>
       <div className='mt-12'>

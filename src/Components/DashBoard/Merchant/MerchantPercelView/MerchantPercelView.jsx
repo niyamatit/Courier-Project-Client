@@ -17,7 +17,7 @@ const MerchantPercelView = () => {
         queryFn: async () => await getParcel(),
     })
 
-    console.log("all pack", merchantBookings)
+    // console.log("all pack", merchantBookings)
 
 
     if (isLoading) return <p>Loading...</p>

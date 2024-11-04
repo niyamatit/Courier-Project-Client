@@ -59,7 +59,7 @@ export const getAllRider = async (email, status = "processing") => {
 
 export const getAllRecharge = async (email, status = "processing") => {
     const { data } = await axiosSecure.get(`/recharge/${email}?status=${status}`);
-    console.log("Fetching riders for email:", email);
+    // console.log("Fetching riders for email:", email);
     return data;
 };
 

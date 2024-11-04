@@ -21,7 +21,7 @@ const Sidebar = () => {
 
 
   const [role] = useRole();
-  console.log(role);
+  // console.log(role);
   const navigate = useNavigate();
   const [isActive, setActive] = useState(false)
 

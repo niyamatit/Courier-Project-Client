@@ -19,7 +19,7 @@ const BookingInfo = () => {
         queryFn: async () => await getPackage(),
     })
 
-    console.log("all pack", bookings)
+    // console.log("all pack", bookings)
 
 
     if (isLoading) return <p>Loading...</p>

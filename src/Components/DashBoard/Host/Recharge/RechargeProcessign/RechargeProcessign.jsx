@@ -13,7 +13,7 @@ const RechargeProcessign = () => {
         enabled: !!verifiedUser?.email, // Only run when email is available
     });
 
-    console.log(recharge)
+    // console.log(recharge)
     const rechargeProcessing = recharge.filter(user => user?.update === 'recharge');
     return (
         <div>
