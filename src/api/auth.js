@@ -33,7 +33,15 @@ export const getRole = async (email) => {
     return data.role
 }
 
+export const getParcel = async () => {
+    const { data } = await axiosSecure.get('/parcel');
+    return data;
+};
 
+export const getPackage = async () => {
+    const { data } = await axiosSecure.get(`/package`);
+    return data;
+};
 
 export const getAllPackage = async (email) => {
     const { data } = await axiosSecure.get(`/package/${email}`);
@@ -41,11 +49,14 @@ export const getAllPackage = async (email) => {
     return data;
 };
 
-export const getAllRider = async (email) => {
-    const { data } = await axiosSecure.get(`/rider/${email}`);
+
+export const getAllRider = async (email, status = "processing") => {
+    const { data } = await axiosSecure.get(`/rider/${email}?status=${status}`);
     console.log("Fetching riders for email:", email);
     return data;
 };
+
+
 export const getAllRecharge = async (email, status = "processing") => {
     const { data } = await axiosSecure.get(`/recharge/${email}?status=${status}`);
     console.log("Fetching riders for email:", email);
@@ -65,8 +76,8 @@ export const updateRole = async ({ email, role }) => {
 }
 
 // update action save data in database
-export const updateAction = async ({ update, id,note }) => {
-    const currentAction = { update,note }
+export const updateAction = async ({ update, id, note }) => {
+    const currentAction = { update, note }
     console.log(update)
     const { data } = await axiosSecure.patch(`/package/${id}`, currentAction)
     return data

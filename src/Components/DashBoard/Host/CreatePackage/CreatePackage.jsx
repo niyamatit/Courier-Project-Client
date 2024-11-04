@@ -46,7 +46,7 @@ const CreatePackage = () => {
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
 
-    const[verifiedUser] = useUsersData()
+    const [verifiedUser] = useUsersData()
 
     const closeModal = () => {
         setIsOpen(false);
@@ -58,7 +58,7 @@ const CreatePackage = () => {
 
 
 
-     // Balance and Booking Button Logic
+    // Balance and Booking Button Logic
     useEffect(() => {
         if (paymentOption === 'Cash' && balance < parseInt(amount)) {
             setIsBookingDisabled(true);
@@ -138,7 +138,7 @@ const CreatePackage = () => {
         }
     }, [selectedDistrict]);
 
-   
+
 
 
 
@@ -199,18 +199,15 @@ const CreatePackage = () => {
 
     const formRef = useRef();
 
-
-
-
     return (
         <div>
             <div className="flex justify-center">
                 <img className="h-[50%]" src="https://t4.ftcdn.net/jpg/07/39/32/99/360_F_739329921_05Swu26SxilYCQOPqlWQ8WcPiw4gcm9S.jpg" alt="" />
             </div>
-           <div>
-           <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Create Package</h1>
-           <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1>
-           </div>
+            <div>
+                <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Create Package</h1>
+                <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1>
+            </div>
             <hr />
 
             <form onSubmit={handleSubmit} ref={formRef}>
@@ -336,14 +333,14 @@ const CreatePackage = () => {
                 </div>
 
                 <div className="form-control md:px-24 w-full">
-                    <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled}/>
+                    <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />
                     {isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
                 </div>
             </form>
 
             <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
 
-            
+
 
         </div>
     );

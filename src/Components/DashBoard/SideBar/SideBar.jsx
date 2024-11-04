@@ -18,19 +18,19 @@ import Swal from 'sweetalert2'
 
 const Sidebar = () => {
 
-  
+
 
   const [role] = useRole();
   console.log(role);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [isActive, setActive] = useState(false)
 
-  
+
   const handleToggle = () => {
     setActive(!isActive)
   }
   const handleLogOut = () => {
-    
+
     Swal.fire({
       title: 'Are you sure?',
       text: "You will be logged out!",
@@ -41,21 +41,21 @@ const Sidebar = () => {
       confirmButtonText: 'Yes, log me out!'
     }).then((result) => {
       if (result.isConfirmed) {
-       
+
         localStorage.removeItem('email');
-        
-       
+
+
         navigate('/login');
 
-        
+
         Swal.fire(
           'Logged Out!',
           'You have been successfully logged out.',
           'success'
         );
 
-        
-        
+
+
       }
     });
   }
@@ -67,11 +67,11 @@ const Sidebar = () => {
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
             <Link className='h-[100px] w-[100px]' to="/"><img src={logoImg} alt="Logo" /></Link>
-            
+
           </div>
-          
+
         </div>
-        
+
         <button
           onClick={handleToggle}
           className='mobile-menu-button p-4 focus:outline-none focus:bg-gray-200'

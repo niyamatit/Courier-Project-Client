@@ -1,21 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import useUsersData from "../../../../hooks/useUsersData/useUsersData";
-import { getAllRider } from "../../../../api/auth";
-import TableRider from "./TableRider";
+import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
+import { getAllRecharge } from "../../../../../api/auth";
+import TableHistory from "./TableHistory";
+
+const RechargeHistory = () => {
 
 
-const AllRider = () => {
     const [verifiedUser] = useUsersData()
 
-    const { data: riders = [], refetch } = useQuery({
-        queryKey: ['riders', verifiedUser?.email], // Query key includes user email
-        queryFn: () => getAllRider(verifiedUser?.email), // Function to fetch riders
+    const { data: recharge = [], refetch } = useQuery({
+        queryKey: ['recharge', verifiedUser?.email], // Query key includes user email
+        queryFn: () => getAllRecharge(verifiedUser?.email), // Function to fetch recharge
         enabled: !!verifiedUser?.email, // Only run when email is available
     });
 
-
-    const RiderInfo = riders.filter(user => user?.update === 'rider');
-
+    console.log(recharge)
+    const rechargeProcessing = recharge.filter(user => user?.update === 'recharge');
     return (
         <div>
             <div className='container mx-auto px-4 sm:px-8'>
@@ -26,57 +26,42 @@ const AllRider = () => {
                             <table className='min-w-full leading-normal'>
                                 <thead>
                                     <tr className="text-lg font-rancho">
-
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Rider Name
+                                            Account Name
                                         </th>
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Rider Number
+                                            Account Number
                                         </th>
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Rider Nid Number
+                                            Account Amount
                                         </th>
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Rider Address
-                                        </th>
-
-                                        <th
-                                            scope='col'
-                                            className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                                        >
-                                            Rider Branch
-                                        </th>
-                                        <th
-                                            scope='col'
-                                            className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                                        >
-                                            Update
+                                            Recharge Note
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {/* User data table row */}
-                                    {RiderInfo &&
-                                        RiderInfo.map(rider => (
-                                            <TableRider
-                                                key={rider._id}
-                                                rider={rider}
+                                    {rechargeProcessing &&
+                                        rechargeProcessing.map(recharge => (
+                                            <TableHistory
+                                                key={recharge._id}
+                                                recharge={recharge}
                                                 refetch={refetch}
                                             />
                                         ))}
-
                                 </tbody>
                             </table>
                         </div>
@@ -87,4 +72,4 @@ const AllRider = () => {
     );
 };
 
-export default AllRider;
+export default RechargeHistory;

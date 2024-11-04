@@ -47,6 +47,7 @@ const Rideradd = () => {
                 Rider_grantedNidImage: grantedNidImage?.data?.display_url || "",
                 Rider_grantedImage: grantedImage?.data?.display_url || "",
                 Date: new Date().toISOString().split('T')[0],
+                update: "rider"
             };
 
             const ApplyRiderInfo = await axiosSecure.post("/rider", ApplyRiderInformation);

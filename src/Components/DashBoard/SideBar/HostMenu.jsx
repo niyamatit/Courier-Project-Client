@@ -11,7 +11,7 @@ import useUsersData from "../../../hooks/useUsersData/useUsersData";
 
 const HostMenu = () => {
 
-  const[verifiedUser] = useUsersData()
+  const [verifiedUser] = useUsersData()
 
 
   return (
@@ -99,6 +99,11 @@ const HostMenu = () => {
             icon={FaWpforms}
             label='Recharge complete'
             address='recharge-complete'
+          /></li>
+          <li><MenuItem
+            icon={FaWpforms}
+            label='Recharge History'
+            address='recharge-history'
           /></li>
         </ul>
       </div>

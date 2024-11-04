@@ -1,18 +1,10 @@
-import { useEffect, useState } from "react";
 
-const TableComplete = ({ recharge }) => {
-    const [status, setStatus] = useState('');
-    useEffect(() => {
-        console.log(recharge?.Status)
-        if (!status) {
-            setStatus(recharge?.Status || "processign")
-        }
-    }, [recharge])
 
+const TableHistory = ({ recharge }) => {
 
     return (
         <>
-            <tr className="font-rancho w-full">
+            <tr className="font-rancho">
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <div className='flex items-center'>
                         <div className='flex-shrink-0'>
@@ -41,16 +33,6 @@ const TableComplete = ({ recharge }) => {
                         {recharge?.Recharge_Note}
                     </p>
                 </td>
-                <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>
-                        {recharge?.Amount}
-                    </p>
-                </td>
-                <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>
-                        {recharge?.Note}
-                    </p>
-                </td>
 
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 </td>
@@ -60,4 +42,4 @@ const TableComplete = ({ recharge }) => {
     );
 };
 
-export default TableComplete;
+export default TableHistory;

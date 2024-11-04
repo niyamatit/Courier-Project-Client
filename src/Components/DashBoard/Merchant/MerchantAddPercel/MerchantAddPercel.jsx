@@ -682,7 +682,6 @@ const MerchantAddParcel = () => {
             setCustomerInfo({
               name: response.data.Customer_Name,
               address: response.data.Customer_Address,
-
             });
           }
         } catch (error) {
@@ -960,8 +959,8 @@ const MerchantAddParcel = () => {
                       {...register('Merchant_CN_Number', { required: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.Merchant_CN_Number ? 'border-red-500' : 'border-gray-300'
                         }`}
-                        value={MerchantCnNumber}
-                        readOnly
+                      value={MerchantCnNumber}
+                      readOnly
                     />
                     {errors.Merchant_CN_Number && (
                       <span className="text-red-500">This field is required</span>

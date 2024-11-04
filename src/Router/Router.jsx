@@ -9,7 +9,6 @@ import Profile from "../Components/Common/Profile";
 import CreatePackage from "../Components/DashBoard/Host/CreatePackage/CreatePackage";
 import DeliverySchedule from "../Components/DashBoard/Host/DeliverySchedule/DeliverySchedule";
 import ManageUsers from "../Components/DashBoard/Admin/ManageUsers";
-
 import MyBookings from "../Components/DashBoard/Guest/MyBookings";
 import OnlineSchedule from "../Components/DashBoard/Host/OnlineSchedule/OnlineSchedule";
 import PrivateRoute from "./PrivateRoute";
@@ -54,7 +53,6 @@ import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/
 import PendingPayment from "../Components/DashBoard/Host/PendingPayment/PendingPayment";
 import Payment from "../Components/DashBoard/Rider/Payment";
 import Rideradd from "../Components/DashBoard/Admin/RiderAdd/Rideradd";
-import BranchStaff from "../Components/DashBoard/Admin/BranchStaff/BranchStaff";
 import OfflineBookingList from "../Components/DashBoard/Host/OfflineBookingList/OfflineBookingList";
 import OnlineBookingHome from "../Components/Pages/OnlineBookingHome/OnlineBookingHome";
 import AddBaranchStaff from "../Components/DashBoard/Host/AddBaranchStaff/AddBaranchStaff";
@@ -68,6 +66,9 @@ import AllRider from "../Components/DashBoard/Admin/AllRider/AllRider";
 import ApplyPending from "../Components/DashBoard/Admin/ApplyPending/ApplyPending";
 
 import RechargeProcessign from "../Components/DashBoard/Host/Recharge/RechargeProcessign/RechargeProcessign";
+import RechargeHistory from "../Components/DashBoard/Host/Recharge/RechargeHistory/RechargeHistory";
+import BookingInfo from "../Components/DashBoard/Host/CreatePackage/BranchBookinginfo/BookingInfo/BookingInfo";
+import MerchantPercelView from "../Components/DashBoard/Merchant/MerchantPercelView/MerchantPercelView";
 
 
 
@@ -176,9 +177,9 @@ export const router = createBrowserRouter([
         path: "apply-pending",
         element: (
           <PrivateRoute>
-            
-             <ApplyPending/>
-            
+
+            <ApplyPending />
+
           </PrivateRoute>
         ),
       },
@@ -616,6 +617,18 @@ export const router = createBrowserRouter([
       {
         path: "recharge-complete",
         element: <RechargeComplete></RechargeComplete>
+      },
+      {
+        path: "recharge-history",
+        element: <RechargeHistory></RechargeHistory>
+      },
+      {
+        path: "booking-info",
+        element: <BookingInfo></BookingInfo>
+      },
+      {
+        path: "merchantbooking-info",
+        element: <MerchantPercelView></MerchantPercelView>
       },
 
     ],

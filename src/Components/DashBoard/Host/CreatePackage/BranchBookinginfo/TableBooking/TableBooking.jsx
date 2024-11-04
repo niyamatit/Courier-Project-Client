@@ -1,13 +1,4 @@
-import { useEffect, useState } from "react";
-
-const TableRider = ({ rider }) => {
-    const [status, setStatus] = useState('');
-    useEffect(() => {
-        console.log(rider?.Status)
-        if (!status) {
-            setStatus(rider?.Status || "processing")
-        }
-    }, [rider])
+const TableBooking = ({ booking }) => {
     return (
         <tr className="font-rancho">
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -15,7 +6,7 @@ const TableRider = ({ rider }) => {
                     <div className='flex-shrink-0'>
                         <div className='block relative'>
                             <p className='text-gray-900 whitespace-no-wrap'>
-                                {rider?.Rider_Name}
+                                {booking?.senderName}
                             </p>
                         </div>
                     </div>
@@ -23,46 +14,28 @@ const TableRider = ({ rider }) => {
                 </div>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>{rider?.recipientName}</p>
+                <p className='text-gray-900 whitespace-no-wrap'>{booking?.recipientName}</p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Number}
+                    {booking?.senderMobile}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Nid}
+                    {booking?.recipientMobile}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Address}
+                    {booking?.productDetails}
                 </p>
-            </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Branch}
-                </p>
-            </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.update}
-                </p>
-            </td>
-
-
-
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-
-
-
             </td>
 
 
 
         </tr>
-    );
-};
+    )
+}
 
-export default TableRider;
+export default TableBooking
