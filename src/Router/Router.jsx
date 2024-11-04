@@ -53,6 +53,7 @@ import BookingForm from "../Components/DashBoard/Host/CreatePackage/BookingForm/
 import PendingPayment from "../Components/DashBoard/Host/PendingPayment/PendingPayment";
 import Payment from "../Components/DashBoard/Rider/Payment";
 import Rideradd from "../Components/DashBoard/Admin/RiderAdd/Rideradd";
+
 import OfflineBookingList from "../Components/DashBoard/Host/OfflineBookingList/OfflineBookingList";
 import OnlineBookingHome from "../Components/Pages/OnlineBookingHome/OnlineBookingHome";
 import AddBaranchStaff from "../Components/DashBoard/Host/AddBaranchStaff/AddBaranchStaff";
@@ -66,6 +67,7 @@ import AllRider from "../Components/DashBoard/Admin/AllRider/AllRider";
 import ApplyPending from "../Components/DashBoard/Admin/ApplyPending/ApplyPending";
 
 import RechargeProcessign from "../Components/DashBoard/Host/Recharge/RechargeProcessign/RechargeProcessign";
+import AllMerchantList from "../Components/DashBoard/Merchant/AllMerchnatList/AllMerchantList";
 import RechargeHistory from "../Components/DashBoard/Host/Recharge/RechargeHistory/RechargeHistory";
 import BookingInfo from "../Components/DashBoard/Host/CreatePackage/BranchBookinginfo/BookingInfo/BookingInfo";
 import MerchantPercelView from "../Components/DashBoard/Merchant/MerchantPercelView/MerchantPercelView";
@@ -290,6 +292,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <AdminStatistics />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "AllMerchnatList",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllMerchantList/>
             </AdminRoute>
           </PrivateRoute>
         ),
