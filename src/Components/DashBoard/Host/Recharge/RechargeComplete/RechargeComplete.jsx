@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
-import TableRecharge from "./TableRecharge";
 import { getAllRecharge } from "../../../../../api/auth";
+import TableComplete from "./TableComplete";
 
 
 const RechargeComplete = () => {
@@ -25,9 +25,9 @@ const RechargeComplete = () => {
                 <div className='py-8'>
                     <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
                         <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
-                            <table className='min-w-full leading-normal'>
+                            <table className=''>
                                 <thead>
-                                    <tr className="text-lg font-rancho">
+                                    <tr className="text-lg font-rancho !w-full">
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
@@ -44,7 +44,7 @@ const RechargeComplete = () => {
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Account Amount
+                                            Accepted Amount
                                         </th>
                                         <th
                                             scope='col'
@@ -56,15 +56,22 @@ const RechargeComplete = () => {
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Update
+                                            Push Amount
                                         </th>
+                                        <th
+                                            scope='col'
+                                            className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                                        >
+                                            Admin Note
+                                        </th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {/* User data table row */}
                                     {CompleteRechargeList &&
                                         CompleteRechargeList.map(recharge => (
-                                            <TableRecharge
+                                            <TableComplete
                                                 key={recharge._id}
                                                 recharge={recharge}
                                                 refetch={refetch}

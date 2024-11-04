@@ -1,16 +1,16 @@
 import { FaUserAlt, FaUserCog } from 'react-icons/fa'
 import MenuItem from './MenuItem'
 import { BsGraphUp } from 'react-icons/bs'
-import { MdMoney, MdPending, MdPersonAdd } from 'react-icons/md'
+import { MdBookOnline, MdMoney, MdPending, MdPersonAdd } from 'react-icons/md'
 import { MdStore } from 'react-icons/md';
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 const AdminMenu = () => {
   const [verifiedUser] = useUsersData();
   return (
     <>
-    <div>
-    <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.name}</p>
-    </div>
+      <div>
+        <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.name}</p>
+      </div>
       <MenuItem
         icon={BsGraphUp}
         label='Statistics'
@@ -64,6 +64,18 @@ const AdminMenu = () => {
 
         label='Recharge Complete'
         address='recharge-complete'
+      />
+      <MenuItem
+        icon={MdBookOnline}
+
+        label='Branch Booking view'
+        address='booking-info'
+      />
+      <MenuItem
+        icon={MdBookOnline}
+
+        label='Merchant Booking view'
+        address='merchantbooking-info'
       />
     </>
   )

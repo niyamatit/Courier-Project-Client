@@ -63,7 +63,7 @@ const PrintModal = ({ closeModal, isOpen, bookingInfo }) => {
                                 {/* StickerDetails to be printed */}
                                 <div ref={stickerRef} className="mt-2 text-center">
                                     <StickerDetails bookingInfo={bookingInfo} />
-                                    <StickerDetails bookingInfo={bookingInfo} />
+                                    {/* <StickerDetails bookingInfo={bookingInfo} /> */}
                                     {/* <StickerDetails bookingInfo={bookingInfo} /> */}
                                 </div>
 

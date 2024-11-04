@@ -69,7 +69,7 @@ useEffect(() => {
       try {
         const response = await axiosSecure.get('/number');  // GET request to fetch the current CN number
         
-        if (response.data && response.data.length > 0 && response.data[0].CnNumber) {
+        if (response.data && response.data?.length > 0 && response.data[0].CnNumber) {
           // Access the first item in the array and set the CnNumber
           setCnNumber(response.data[0].CnNumber);
         } else {
@@ -178,13 +178,13 @@ useEffect(() => {
           
           
   
-          if (response.data && response.data.length > 0) {
+          if (response.data && response.data?.length > 0) {
             
             const sortedData = response.data.sort((a, b) => {
               return parseInt(b.CnNumber.slice(-4)) - parseInt(a.CnNumber.slice(-4));
             });
   
-            const latestData = sortedData[sortedData.length - 1];
+            const latestData = sortedData[sortedData?.length - 1];
             console.log("Letest Data",latestData)
             setSenderInfo({
               name: latestData.senderName,
@@ -219,14 +219,14 @@ useEffect(() => {
           // Log the response to check its structure
           
   
-          if (response.data && response.data.length > 0) {
+          if (response.data && response.data?.length > 0) {
             
             const sortedData = response.data.sort((a, b) => {
               return parseInt(a.CnNumber.slice(-4)) - parseInt(b.CnNumber.slice(-4));
             });
             console.log("sorted data",(sortedData || 0))
   
-            const latestData = sortedData[sortedData.length - 1];
+            const latestData = sortedData[sortedData?.length - 1];
             console.log("letest data:",latestData)
             setReceiverInfo({
               ReceiverName: latestData.receiverName,
@@ -594,7 +594,7 @@ const [verifiedUser] = useUsersData();
                     setIsManuallyEditing(false); 
                   }}
                 />
-                <InputField
+                <SelectField
                   watchValues={watchValues}
                   register={register}
                   name={"unit"}
@@ -603,6 +603,7 @@ const [verifiedUser] = useUsersData();
                   label="Unit"
                   placeholder="unit"
                   required
+                  options={["Kg", "PCS", "Carton","BOSTA"]}
                 />
                 <InputField
                   watchValues={watchValues}

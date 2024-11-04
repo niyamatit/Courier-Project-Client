@@ -1,90 +1,83 @@
-import { useQuery } from "@tanstack/react-query";
-import useUsersData from "../../../../hooks/useUsersData/useUsersData";
-import { getAllRider } from "../../../../api/auth";
-import TableRider from "./TableRider";
+
+import { useQuery } from '@tanstack/react-query'
+import TableMerchant from './TableMerchant'
+import useAuth from '../../../../hooks/useAuth'
+import { getParcel } from '../../../../api/auth'
+
+const MerchantPercelView = () => {
+    const { loading } = useAuth()
+    // const [verifiedUser] = useUsersData()
+
+    const {
+        data: merchantBookings = [],
+        isLoading,
+    } = useQuery({
+        queryKey: ['merchantBookings'],
+        enabled: !loading,
+        queryFn: async () => await getParcel(),
+    })
+
+    console.log("all pack", merchantBookings)
 
 
-const AllRider = () => {
-    const [verifiedUser] = useUsersData()
+    if (isLoading) return <p>Loading...</p>
 
-    const { data: riders = [], refetch } = useQuery({
-        queryKey: ['riders', verifiedUser?.email], // Query key includes user email
-        queryFn: () => getAllRider(verifiedUser?.email), // Function to fetch riders
-        enabled: !!verifiedUser?.email, // Only run when email is available
-    });
-
-
-    const RiderInfo = riders.filter(user => user?.update === 'rider');
+    // Filter merchantBookings based on the logged-in user's email
+    // const usermerchantBookings = merchantBookings.filter(booking => booking?.email === verifiedUser?.email);
 
     return (
-        <div>
+        <>
             <div className='container mx-auto px-4 sm:px-8'>
-
                 <div className='py-8'>
                     <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
                         <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
                             <table className='min-w-full leading-normal'>
                                 <thead>
-                                    <tr className="text-lg font-rancho">
-
+                                    <tr>
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Rider Name
+                                            Customer Name
                                         </th>
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Rider Number
+                                            Customer Contact Number
                                         </th>
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Rider Nid Number
+                                            Customer Address
                                         </th>
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Rider Address
-                                        </th>
-
-                                        <th
-                                            scope='col'
-                                            className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                                        >
-                                            Rider Branch
+                                            Customer District Name
                                         </th>
                                         <th
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Update
+                                            Customer Area
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* User data table row */}
-                                    {RiderInfo &&
-                                        RiderInfo.map(rider => (
-                                            <TableRider
-                                                key={rider._id}
-                                                rider={rider}
-                                                refetch={refetch}
-                                            />
-                                        ))}
-
+                                    {merchantBookings.map(parcel => (
+                                        <TableMerchant key={parcel._id} parcel={parcel} />
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    );
-};
+        </>
+    )
+}
 
-export default AllRider;
+export default MerchantPercelView

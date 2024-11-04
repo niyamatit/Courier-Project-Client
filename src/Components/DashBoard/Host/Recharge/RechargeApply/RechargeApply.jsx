@@ -42,23 +42,6 @@ const RechargeApply = () => {
                 timer: 1500,
             });
         }
-        // try {
-        //    
-        // } catch (error)
-        //  {
-        //     if (error) {
-        //         Swal.fire({
-        //             position: "top-end",
-        //             icon: "error",
-        //             title: "Already Added the Account",
-        //             showConfirmButton: false,
-        //             timer: 1500,
-        //         });
-        //     } else {
-        //         console.error("Unexpected Error:", error);
-        //     }
-        // }
-
     };
 
     return (

@@ -4,32 +4,35 @@ import { useState } from "react"
 import UpdateModal from "../../../../Modal/UpdateModal"
 import toast from "react-hot-toast"
 import { updateAction } from "../../../../api/auth"
-import axiosSecure from "../../../../api/axiosSecure"
+// import axiosSecure from "../../../../api/axiosSecure"
 
 
 const TableRow = ({ pack,refetch }) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
-    const handlePrint = async (id) => {
+    
+    const handlePrint = async (_id) => {
+      console.log('Requested ID:', _id); // Log the ID being used
       try {
-        console.log('Fetching data for package ID:', id);
-        
-        // Make the API request using the ID
-        const response = await axiosSecure.get(`/package/${id}`);
-        
-        // Log the data returned by the API
-        console.log('Data for package:', response.data);
+        const response = await fetch(`http://localhost:5000/package/${_id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch package data');
+        }
+        const data = await response.json();
+        console.log('Package data:', data); // Log the retrieved data
       } catch (error) {
-        // Handle any error during the request
         console.error('Error fetching package data:', error);
       }
     };
+    
+    
+    
 
-    const modalHandler = async (selected) => {
+    const modalHandler = async (selected,note) => {
       try {
        
-        const data = await updateAction({ update: selected, id:pack?._id })
+        const data = await updateAction({ update: selected,id:pack?._id,note })
         console.log("Data returned from updateAction:", data);
         refetch()
         toast.success('Action updated!')

@@ -14,8 +14,8 @@ const PickupParcel = () => {
     queryFn: () => getAllPackage(verifiedUser?.email), // Function to fetch packages
     enabled: !!verifiedUser?.email, // Only run when email is available
 });
-
-    const PickupParcel = packages.filter(user => user?.update === 'Rider pickup');
+console.log(packages)
+    const PickupParcel1 = packages.filter(user => user?.update === 'Rider pickup');
 
     return (
         <>
@@ -63,14 +63,20 @@ const PickupParcel = () => {
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
+                                            Note
+                                        </th>
+                                        <th
+                                            scope='col'
+                                            className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                                        >
                                             Update
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {/* User data table row */}
-                                    {PickupParcel &&
-                                        PickupParcel.map(pack => (
+                                    {PickupParcel1 &&
+                                        PickupParcel1.map(pack => (
                                             <TableRow
                                                 key={pack._id}
                                                 pack={pack}

@@ -1,12 +1,4 @@
-/* eslint-disable react/prop-types */
-
-
-
-const TableRow = ({ pack }) => {
-
-
-
-
+const TableMerchant = ({ parcel }) => {
     return (
         <tr className="font-rancho">
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -14,7 +6,7 @@ const TableRow = ({ pack }) => {
                     <div className='flex-shrink-0'>
                         <div className='block relative'>
                             <p className='text-gray-900 whitespace-no-wrap'>
-                                {pack?.senderName}
+                                {parcel?.Customer_Name}
                             </p>
                         </div>
                     </div>
@@ -22,35 +14,22 @@ const TableRow = ({ pack }) => {
                 </div>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>{pack?.recipientName}</p>
+                <p className='text-gray-900 whitespace-no-wrap'>{parcel?.Customer_Contact_Number}</p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.booking}
+                    {parcel?.Customer_Address}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.productDetails}
+                    {parcel?.Customer_District_Name}
                 </p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.recipientMobile}
+                    {parcel?.Customer_Area}
                 </p>
-            </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {pack?.note}
-                </p>
-            </td>
-
-
-
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-
-            {pack?.update}
-
             </td>
 
 
@@ -59,4 +38,4 @@ const TableRow = ({ pack }) => {
     )
 }
 
-export default TableRow
+export default TableMerchant
