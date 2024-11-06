@@ -640,6 +640,7 @@ const MerchantAddParcel = () => {
   const onSubmit = async (data) => {
     const districtName = getDistrictName(data.district);
     const formData = { ...data, district: districtName };
+   
 
     const PercelInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
@@ -663,7 +664,7 @@ const MerchantAddParcel = () => {
       Cod_Charge: 0 || 0,
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
-      Date: new Date().toISOString().split('T')[0] || ""
+      Date: new Date() || ""
 
     }
     console.log("Parcel Information:", PercelInformation)
@@ -709,10 +710,10 @@ const MerchantAddParcel = () => {
   const CustomerdeliveryCharge = deliveryCharge;
   const ParcelweightCharge = (weightCharge*WeightPackage) || 0;
   const totalCharge = ParcelweightCharge + codCharge + CustomerdeliveryCharge;
-  const codPercentage = totalCharge * 0.01
+  const codPercentage = (collected * ((verifiedUser?.subDistrictCharge)/100)) || 1;
   const finalCharge = totalCharge + codPercentage;
   const date = new Date();
-
+  // console.log("Cod Charge",codPercentage)
 
   const datePart = `MER-${date.getDate().toString().padStart(2, '0')}${date.getFullYear().toString().slice(-2)}${(date.getMonth() + 1).toString().padStart(2, '0')}`;
 
@@ -1029,7 +1030,7 @@ const MerchantAddParcel = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Cod Percent</span>
-                  <span className="text-gray-500">1 %</span>
+                  <span className="text-gray-500">{verifiedUser?.subDistrictCharge || 2} %</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Weight Charge</span>

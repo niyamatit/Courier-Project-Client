@@ -64,8 +64,9 @@ const AllMerchantList = () => {
                             <th className="px-6 py-4 font-semibold">Name</th>
                             <th className="px-6 py-4 font-semibold">Email</th>
                             <th className="px-6 py-4 font-semibold">Location</th>
+                            <th className="px-6 py-4 font-semibold">Branch</th>
                             <th className="px-6 py-4 font-semibold">In-District Charge</th>
-                            {/* <th className="px-6 py-4 font-semibold">Sub-District Charge</th> */}
+                            <th className="px-6 py-4 font-semibold">Cod Charge(%)</th>
                             <th className="px-6 py-4 font-semibold">Overall Bangladesh Charge</th>
                             {/* <th className="px-6 py-4 font-semibold">Weight Charge</th> */}
                             <th className="px-6 py-4 font-semibold">In-District Weight Charge</th>
@@ -85,11 +86,12 @@ const AllMerchantList = () => {
                                     />
                                 </td>
                                 <td className="px-6 py-4">{merchant.merchantID || 'N/A'}</td>
-                                <td className="px-6 py-4">{merchant.name}</td>
+                                <td className="px-6 py-4">{merchant.name || 'No Name Found'}</td>
                                 <td className="px-6 py-4">{merchant.email}</td>
-                                <td className="px-6 py-4">{merchant.Merchant_District},{merchant.Merchant_Area}<br></br>
-                                ({merchant.Merchant_Full_Address})
+                                <td className="px-6 py-4">{merchant.Merchant_District || 'N/A'},{merchant.Merchant_Area || 'N/A'}<br></br>
+                                ({merchant.Merchant_Full_Address || 'N/A'}) 
                                 </td>
+                                <td className="px-6 py-4">{merchant.Merchant_Branch || 'N/A'}</td>
                                 <td className="px-6 py-4">
                                     <input
                                         type="number"
@@ -109,7 +111,7 @@ const AllMerchantList = () => {
                                         className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                                     />
                                 </td>
-                                {/* <td className="px-6 py-4">
+                                <td className="px-6 py-4">
                                     <input
                                         type="number"
                                         defaultValue={merchant.subDistrictCharge || 0}
@@ -127,7 +129,7 @@ const AllMerchantList = () => {
                                         }
                                         className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                                     />
-                                </td> */}
+                                </td>
                                 <td className="px-6 py-4">
                                     <input
                                         type="number"

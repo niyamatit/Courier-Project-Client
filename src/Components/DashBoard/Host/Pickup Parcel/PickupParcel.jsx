@@ -14,7 +14,7 @@ const PickupParcel = () => {
     queryFn: () => getAllPackage(verifiedUser?.email), // Function to fetch packages
     enabled: !!verifiedUser?.email, // Only run when email is available
 });
-console.log(packages)
+// console.log(packages)
     const PickupParcel1 = packages.filter(user => user?.update === 'Rider pickup');
 
     return (

@@ -13,7 +13,7 @@ const ReturnParcel = () => {
       setParcels(initialParcels.map((p, idx) => ({ ...p, idx: idx + 1 })));
     }
   }, [initialParcels]);
-  console.log("PARCELS", parcels);
+  // console.log("PARCELS", parcels);
 
   const [statuses] = useState([
     // { label: "Ongoing", value: "Ongoing" },

@@ -12,7 +12,7 @@ export const ParcelProvider = ({ children }) => {
       return res?.data;
     },
   });
-console.log(queryResponse)
+// console.log(queryResponse)
   return (
     <ParcelContext.Provider value={queryResponse}>
       {children}

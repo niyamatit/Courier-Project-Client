@@ -11,7 +11,7 @@ const MenuDropdown = () => {
   const [verifiedUser]  = useUsersData();
   const navigate = useNavigate(); 
 
-console.log(verifiedUser)
+// console.log(verifiedUser)
 
  
   const handleLogOut = () => {
