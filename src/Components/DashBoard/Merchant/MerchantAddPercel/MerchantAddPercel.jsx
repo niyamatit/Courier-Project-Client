@@ -1068,7 +1068,7 @@ const incrementCnNumber = (cnNumber) => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Weight Charge</span>
-                  <span className="text-gray-500">{ParcelweightCharge || 0} Tk</span>
+                   <span className="text-gray-500">{ParcelweightCharge || 0} Tk</span>
                 </div>
                 {/* <div className="flex justify-between">
               <span className="text-gray-700">Cod Charge</span>
