@@ -157,7 +157,7 @@ useEffect(() => {
         // Increment the CN number using PUT request
         const response = await axiosSecure.put('/number');
         setCnNumber(response.data.nextNumber); // Set the next CN number for the next booking
-        console.log("Cn Number",response.data.nextNumber)
+        // console.log("Cn Number",response.data.nextNumber)
       }
       setBookingInfo(Bookinginfo);
     } catch (error) {
