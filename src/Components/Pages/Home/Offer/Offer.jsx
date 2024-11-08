@@ -22,7 +22,7 @@ const Offer = () => {
             });
     }, []);
 
-    console.log(offerData)
+    // console.log(offerData)
 
     return (
         <div className=" mt-20 space-y-5  mb-20">

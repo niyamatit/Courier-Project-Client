@@ -45,14 +45,14 @@ export const getPackage = async () => {
 
 export const getAllPackage = async (email) => {
     const { data } = await axiosSecure.get(`/package/${email}`);
-    console.log("Fetching packages for email:", email);
+    // console.log("Fetching packages for email:", email);
     return data;
 };
 
 
 export const getAllRider = async (email, status = "processing") => {
     const { data } = await axiosSecure.get(`/rider/${email}?status=${status}`);
-    console.log("Fetching riders for email:", email);
+    // console.log("Fetching riders for email:", email);
     return data;
 };
 
@@ -78,7 +78,7 @@ export const updateRole = async ({ email, role }) => {
 // update action save data in database
 export const updateAction = async ({ update, id, note }) => {
     const currentAction = { update, note }
-    console.log(update)
+    // console.log(update)
     const { data } = await axiosSecure.patch(`/package/${id}`, currentAction)
     return data
 }
@@ -86,7 +86,7 @@ export const updateAction = async ({ update, id, note }) => {
 // update action save data in database
 export const updateActionOnline = async ({ update, id }) => {
     const currentAction = { update }
-    console.log(update)
+    // console.log(update)
     const { data } = await axiosSecure.patch(`/bookings/${id}`, currentAction)
     return data
 }

@@ -609,7 +609,7 @@ const MerchantAddParcel = () => {
   };
 
   const getServiceTypes = () => {
-    if (selectedDistrict === '47' || selectedDistrict === '43') {
+    if (selectedDistrict === verifiedUser?.Merchant_District_ID ) {
       return [
         { value: 'Regular Delivery', label: 'Regular Delivery' },
         { value: 'Express Delivery', label: 'Express Delivery' },
@@ -636,10 +636,35 @@ const MerchantAddParcel = () => {
       setweightCharge(parseInt(verifiedUser?.overallBangladeshWeightCharge) || 25)
     }
   }, [selectedDistrict])
+// Merchant Cn Number
+const [MerchantCnNumber, setMerchantCnNumber] = useState("");
 
+useEffect(() => {
+  // Fetch the last CN number on component load
+  const fetchLastCnNumber = async () => {
+    try {
+      const response = await axiosSecure.get("/merchant_cn_number");
+      const lastCnNumber = response.data.lastCnNumber || "MER-221621"; // Default if no record found
+      const nextCnNumber = incrementCnNumber(lastCnNumber);
+      setMerchantCnNumber(nextCnNumber);
+    } catch (error) {
+      console.error("Error fetching last CN number:", error);
+    }
+  };
+
+  fetchLastCnNumber();
+}, []);
+
+// Function to increment CN number
+const incrementCnNumber = (cnNumber) => {
+  const prefix = cnNumber.slice(0, -1); // "MER-22162"
+  const lastDigit = parseInt(cnNumber.slice(-1), 10); // Last digit
+  return `${prefix}${lastDigit}`;
+};
   const onSubmit = async (data) => {
     const districtName = getDistrictName(data.district);
-    const formData = { ...data, district: districtName };
+    const formData = { ...data, district: districtName,Merchant_CN_Number: MerchantCnNumber };
+   
 
     const PercelInformation = {
       Customer_Contact_Number: formData?.contactNumber || "",
@@ -656,14 +681,14 @@ const MerchantAddParcel = () => {
       Product_Value: parseFloat(formData?.productValue) || "",
       Product_Details: formData?.productDetails || "",
       Product_Remark: formData?.remark || "",
-      Merchant_Parcel_Booking_CN_Number: formData?.Merchant_CN_Number || "",
+      Merchant_Parcel_Booking_CN_Number: formData.Merchant_CN_Number || "",
       Merchant_email: verifiedUser?.email || "",
       Cod_Perchent: 1 || 0,
       Weight_Charge: ParcelweightCharge || 0,
       Cod_Charge: 0 || 0,
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
-      Date: new Date().toISOString().split('T')[0] || ""
+      Date: new Date() || ""
 
     }
     console.log("Parcel Information:", PercelInformation)
@@ -678,6 +703,10 @@ const MerchantAddParcel = () => {
         showConfirmButton: false,
         timer: 1500,
       });
+      // const nextCnNumber = incrementCnNumber(MerchantCnNumber);
+      // setMerchantCnNumber(nextCnNumber);
+      const response = await axiosSecure.put('/merchant_cn_number');
+        setMerchantCnNumber(response.data.nextNumber);
     }
 
 
@@ -707,18 +736,18 @@ const MerchantAddParcel = () => {
   const codCharge = 0;
 
   const CustomerdeliveryCharge = deliveryCharge;
-  const ParcelweightCharge = (weightCharge*WeightPackage) || 0;
+  const ParcelweightCharge = WeightPackage > 1 ? (weightCharge*WeightPackage) : 0;
   const totalCharge = ParcelweightCharge + codCharge + CustomerdeliveryCharge;
-  const codPercentage = totalCharge * 0.01
+  const codPercentage = (collected * ((verifiedUser?.subDistrictCharge)/100)) || 0;
   const finalCharge = totalCharge + codPercentage;
-  const date = new Date();
+  // const date = new Date();
+  // console.log("Cod Charge",codPercentage)
 
+  // const datePart = `MER-${date.getDate().toString().padStart(2, '0')}${date.getFullYear().toString().slice(-2)}${(date.getMonth() + 1).toString().padStart(2, '0')}`;
 
-  const datePart = `MER-${date.getDate().toString().padStart(2, '0')}${date.getFullYear().toString().slice(-2)}${(date.getMonth() + 1).toString().padStart(2, '0')}`;
-
-
-  const timePart = `${date.getHours()}`;
-  const MerchantCnNumber = datePart + timePart;
+  
+  // const timePart = `${date.getHours()}`;
+  // const MerchantCnNumber = datePart + timePart;
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
       <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
@@ -878,11 +907,17 @@ const MerchantAddParcel = () => {
                       onChange={(e) => setWeightPackage(e.target.value)}
                     >
                       <option value="">Select Weight Package</option>
-                      <option value="0.5">0.5kg</option>
+                      {/* <option value="0.5">0.5kg</option>
                       <option value="1">1 kg</option>
                       <option value="2">2 kg</option>
                       <option value="3">3 kg</option>
-                      <option value="4">4 kg</option>
+                      <option value="4">4 kg</option> */}
+                      {
+                        Array.from({length:100}, (_,i)=> (i+1)*0.5).map((weight)=>(
+                          <option key={weight} value={weight}>{weight} kg</option>
+                        ))
+                      }
+                       
                     </select>
                     {errors.weightPackage && (
                       <span className="text-red-500">This field is required</span>
@@ -966,7 +1001,7 @@ const MerchantAddParcel = () => {
                     </label>
                     <input
                       type="text"
-                      {...register('Merchant_CN_Number', { required: true })}
+                      {...register('Merchant_CN_Number', { required: false })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.Merchant_CN_Number ? 'border-red-500' : 'border-gray-300'
                         }`}
                       value={MerchantCnNumber}
@@ -1025,15 +1060,15 @@ const MerchantAddParcel = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Collection Amount</span>
-                  <span className="text-gray-500">{collected || 0}</span>
+                  <span className="text-gray-500">{collected || 0} Tk</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Cod Percent</span>
-                  <span className="text-gray-500">1 %</span>
+                  <span className="text-gray-500">{verifiedUser?.subDistrictCharge || 2} %</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Weight Charge</span>
-                  <span className="text-gray-500">{(WeightPackage * weightCharge) || 0} Tk</span>
+                   <span className="text-gray-500">{ParcelweightCharge || 0} Tk</span>
                 </div>
                 {/* <div className="flex justify-between">
               <span className="text-gray-700">Cod Charge</span>
@@ -1041,7 +1076,7 @@ const MerchantAddParcel = () => {
             </div> */}
                 <div className="flex justify-between">
                   <span className="text-gray-700">Delivery Charge</span>
-                  <span className="text-gray-500">{deliveryCharge}</span>
+                  <span className="text-gray-500">{deliveryCharge} Tk</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Total Charge</span>

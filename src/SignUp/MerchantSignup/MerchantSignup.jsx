@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import axiosSecure from '../../api/axiosSecure';
 import { imageUpload } from '../../api/utils';
 import { useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
 
 const MerchantSignup = () => {
   const [loading, setLoading] = React.useState(false);
@@ -617,7 +618,8 @@ const handleSignUp = async (data) => {
       Merchant_District:formData?.district || "",
       Merchant_District_ID:selectedDistrict || "",
       Merchant_Area:formData?.area || "",
-      Merchant_Full_Address: formData?.customerAddress || ""
+      Merchant_Full_Address: formData?.customerAddress || "",
+      Merchant_Branch: formData?.branch || ""
     });
 
     if (response.status === 201) {
@@ -646,6 +648,16 @@ const handleSignUp = async (data) => {
     setLoading(false);
   }
 };
+const {  data: users = []} = useQuery({
+    queryKey: ['users'],
+    queryFn: async() => {
+        const res = await axiosSecure.get("/users");
+        return res.data;
+       
+    }
+    
+});
+
 
 return (
   <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -724,6 +736,7 @@ return (
             </div>
           </div>
 
+          <div className='grid grid-cols-2 gap-4'>
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Email Address or Phone Number</label>
             <input
@@ -735,6 +748,31 @@ return (
             />
             {errors.email && <span className="text-red-500">{errors.email.message}</span>}
           </div>
+          <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                Select  Branch*
+                </label>
+                 <select
+                  {...register('branch', { required: true })}
+                 className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-gray-100"
+                  required
+                >
+                  <option value="123">Select Branch*</option>
+                  {
+                    users.filter(user=>user?.role === 'host').map(user=>(
+                      <option key={user._id} value={user?.name}>
+              {user?.name || "No Name Found"}
+            </option>
+                    ))
+                  }
+                  
+                </select>
+                {errors.select_branch_name && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+          </div>
+          
 
           <div>
             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">Password</label>

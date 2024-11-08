@@ -149,7 +149,7 @@ const { data: requests = [],  } = useQuery({
     const res = await axiosSecure.get(
       `/users/request/field/${verifiedUser?.email}`
     );
-    console.log(res.data);
+    // console.log(res.data);
     return res.data;
   },
 });
@@ -205,7 +205,7 @@ const MerchantRequest = requests.find((req) => req.email === verifiedUser?.email
   // Check if the current route matches your desired path
   const isMerchantInterNationalAddParcelRoute = currentPath === "/dashboard/MerchantInterNationalAddPercel";
 
-  console.log("Current Path:",currentPath)
+  // console.log("Current Path:",currentPath)
 
   return (
     <div>
