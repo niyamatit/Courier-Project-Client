@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../../../api/axiosSecure';
 import useUsersData from '../../../../hooks/useUsersData/useUsersData';
@@ -76,6 +76,7 @@ const MerchantParcelList = () => {
               <th className="p-3 border">Address</th>
               <th className="p-3 border">Name</th>
               <th className="p-3 border">Store</th>
+              <th className="p-3 border">Item</th>
               <th className="p-3 border">Weight</th>
               <th className="p-3 border">Actions</th>
             </tr>
@@ -90,6 +91,7 @@ const MerchantParcelList = () => {
                   <td className="p-3 border">{parcel?.Customer_District_Name || 'N/A'},{parcel?.Customer_Area}</td>
                   <td className="p-3 border">{parcel.Customer_Name}</td>
                   <td className="p-3 border">{parcel.Store_Name}</td>
+                  <td className="p-3 border">{parcel.Item_Type}</td>
                   <td className="p-3 border">{parcel.Parcel_Weight} kg</td>
                   <td className="p-3 border flex gap-2">
                     <button
@@ -98,12 +100,12 @@ const MerchantParcelList = () => {
                     >
                       View Details
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => handleEdit(parcel)}
                       className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors"
                     >
                       Edit
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))
@@ -118,35 +120,55 @@ const MerchantParcelList = () => {
 
       {/* Modal for Parcel Details */}
       {selectedParcel && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-lg font-semibold mb-4">Parcel Details</h2>
-            <p><strong>Customer Name:</strong> {selectedParcel.Customer_Name}</p>
-            <p><strong>Phone:</strong> {selectedParcel.Customer_Contact_Number}</p>
-            <p><strong>Address:</strong> {selectedParcel.Customer_Address}</p>
-            <p><strong>Area:</strong> {selectedParcel.Customer_Area}</p>
-            <p><strong>Store:</strong> {selectedParcel.Store_Name}</p>
-            <p><strong>Parcel Weight:</strong> {selectedParcel.Parcel_Weight} kg</p>
-            <p><strong>Total Collection Amount:</strong> ${selectedParcel.Total_Collection_Amount}</p>
-            <p><strong>Service Type:</strong> {selectedParcel.Service_Type}</p>
-            <p><strong>Item Type:</strong> {selectedParcel.Item_Type}</p>
-            <p><strong>Product Value:</strong> ${selectedParcel.Product_Value}</p>
-            <p><strong>Product Details:</strong> {selectedParcel.Product_Details}</p>
-            <p><strong>Product Remark:</strong> {selectedParcel.Product_Remark}</p>
-            <p><strong>COD Percentage:</strong> {selectedParcel.Cod_Perchent}%</p>
-            <p><strong>Weight Charge:</strong> ${selectedParcel.Weight_Charge}</p>
-            <p><strong>Delivery Charge:</strong> ${selectedParcel.Delivary_Charge}</p>
-            <p><strong>Total Charge:</strong> ${selectedParcel.Total_Charge}</p>
-            <p><strong>Date:</strong> {formatDate(selectedParcel.Date)}</p>
-            <button
-              onClick={() => setSelectedParcel(null)}
-              className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-            >
-              Close
-            </button>
-          </div>
+  <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+    <div className="bg-white rounded-lg shadow-lg max-w-lg w-full overflow-hidden">
+      {/* Modal Header */}
+      <div className="flex items-center justify-between bg-blue-600 p-4">
+        <h2 className="text-xl font-semibold text-white">Parcel Details</h2>
+        <button
+          onClick={() => setSelectedParcel(null)}
+          className="text-white text-2xl font-bold hover:text-gray-300"
+        >
+          &times;
+        </button>
+      </div>
+
+      {/* Modal Content */}
+      <div className="p-6 space-y-4">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-700">
+          <p><strong>Customer Name:</strong> {selectedParcel.Customer_Name}</p>
+          <p><strong>Phone:</strong> {selectedParcel.Customer_Contact_Number}</p>
+          <p><strong>Address:</strong> {selectedParcel.Customer_Address}</p>
+          <p><strong>District:</strong> {selectedParcel.Customer_District_Name || 'N/A'}</p>
+          <p><strong>Area:</strong> {selectedParcel.Customer_Area}</p>
+          <p><strong>Store:</strong> {selectedParcel.Store_Name}</p>
+          <p><strong>Parcel Weight:</strong> {selectedParcel.Parcel_Weight} kg</p>
+          <p><strong>Total Collection:</strong> ৳ {selectedParcel.Total_Collection_Amount}</p>
+          <p><strong>Service Type:</strong> {selectedParcel.Service_Type}</p>
+          <p><strong>Item Type:</strong> {selectedParcel.Item_Type}</p>
+          <p><strong>Product Value:</strong> ৳ {selectedParcel.Product_Value}</p>
+          <p><strong>Product Details:</strong> {selectedParcel.Product_Details}</p>
+          <p><strong>Product Remark:</strong> {selectedParcel.Product_Remark}</p>
+          <p><strong>COD Percentage:</strong> {selectedParcel.Cod_Perchent} %</p>
+          <p><strong>Weight Charge:</strong> ৳ {selectedParcel.Weight_Charge}</p>
+          <p><strong>Delivery Charge:</strong> ৳ {selectedParcel.Delivary_Charge}</p>
+          <p><strong>Total Charge:</strong> ৳ {selectedParcel.Total_Charge}</p>
+          <p><strong>Date:</strong> {formatDate(selectedParcel.Date)}</p>
         </div>
-      )}
+      </div>
+
+      {/* Modal Footer */}
+      <div className="flex justify-end bg-blue-200 p-4">
+        {/* <button
+          onClick={() => setSelectedParcel(null)}
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors"
+        >
+          
+        </button> */}
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Modal for Editing Parcel */}
       {isEdit && selectedParcel && (
