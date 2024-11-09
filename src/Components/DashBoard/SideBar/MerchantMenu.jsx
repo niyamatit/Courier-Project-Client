@@ -59,7 +59,7 @@ const MerchantMenu = () => {
       <MenuItem
         icon={RiBox3Line}
         label='My Parcel List'
-        address='/dashboard/MerchantShopList'
+        address='/dashboard/MerchantParcelList'
       />
 
       {/* <MenuItem

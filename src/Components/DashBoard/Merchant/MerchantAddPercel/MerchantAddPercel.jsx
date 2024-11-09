@@ -670,7 +670,7 @@ const incrementCnNumber = (cnNumber) => {
       Customer_Contact_Number: formData?.contactNumber || "",
       Customer_Name: formData?.customerName || customerInfo.name || "",
       Customer_Address: formData?.customerAddress || customerInfo.address || "",
-      Customer_District_Name: formData?.selectedDistrict || "",
+      Customer_District_Name: formData?.districtName || districtName || "",
       Customer_Area: formData?.area || "",
       Store_Name: formData?.store || "",
       Merchant_ID: formData?.orderId || "",
