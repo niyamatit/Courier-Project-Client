@@ -73,7 +73,7 @@ const MerchantParcelList = () => {
               <th className="p-3 border">Date</th>
               <th className="p-3 border">Merchant ID</th>
               <th className="p-3 border">Merchant Email</th>
-              <th className="p-3 border">Customer Address</th>
+              <th className="p-3 border">Merchant Branch</th>
               <th className="p-3 border">Customer Name</th>
               <th className="p-3 border">Store</th>
               <th className="p-3 border">Item</th>
@@ -88,7 +88,7 @@ const MerchantParcelList = () => {
                   <td className="p-3 border">{formatDateForTable(parcel.Date)}</td>
                   <td className="p-3 border">{parcel.Merchant_ID || 'N/A'}</td>
                   <td className="p-3 border">{parcel?.Merchant_email || 'N/A'}</td>
-                  <td className="p-3 border">{parcel?.Customer_District_Name || 'N/A'},{parcel?.Customer_Area}</td>
+                  <td className="p-3 border">{parcel?.Merchant_Branch_Name || 'N/A'}</td>
                   <td className="p-3 border">{parcel.Customer_Name}</td>
                   <td className="p-3 border">{parcel.Store_Name}</td>
                   <td className="p-3 border">{parcel.Item_Type}</td>
@@ -122,56 +122,52 @@ const MerchantParcelList = () => {
       </div>
 
       {/* Modal for Parcel Details */}
-      {selectedParcel && !isEdit &&  (
-  <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-    <div className="bg-white rounded-lg shadow-lg max-w-lg w-full overflow-hidden">
+      {selectedParcel && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="bg-white rounded-lg shadow-2xl w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl max-h-[80vh] overflow-auto">
       {/* Modal Header */}
-      <div className="flex items-center justify-between bg-blue-600 p-4">
-        <h2 className="text-xl font-semibold text-white">Parcel Details</h2>
-        <button
-          onClick={() => setSelectedParcel(null)}
-          className="text-white text-2xl font-bold hover:text-gray-300"
-        >
-          &times;
-        </button>
+      <div className="bg-blue-600 p-4 md:p-6 rounded-t-lg">
+        <h2 className="text-xl md:text-2xl font-bold text-white text-center">Parcel Details</h2>
       </div>
 
       {/* Modal Content */}
-      <div className="p-6 space-y-4">
-        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-700">
-          <p><strong>Customer Name:</strong> {selectedParcel.Customer_Name}</p>
-          <p><strong>Phone:</strong> {selectedParcel.Customer_Contact_Number}</p>
-          <p><strong>Address:</strong> {selectedParcel.Customer_Address}</p>
-          <p><strong>District:</strong> {selectedParcel.Customer_District_Name || 'N/A'}</p>
-          <p><strong>Area:</strong> {selectedParcel.Customer_Area}</p>
-          <p><strong>Store:</strong> {selectedParcel.Store_Name}</p>
-          <p><strong>Parcel Weight:</strong> {selectedParcel.Parcel_Weight} kg</p>
-          <p><strong>Total Collection:</strong> ৳ {selectedParcel.Total_Collection_Amount}</p>
-          <p><strong>Service Type:</strong> {selectedParcel.Service_Type}</p>
-          <p><strong>Item Type:</strong> {selectedParcel.Item_Type}</p>
-          <p><strong>Product Value:</strong> ৳ {selectedParcel.Product_Value}</p>
-          <p><strong>Product Details:</strong> {selectedParcel.Product_Details}</p>
-          <p><strong>Product Remark:</strong> {selectedParcel.Product_Remark}</p>
-          <p><strong>COD Percentage:</strong> {selectedParcel.Cod_Perchent} %</p>
-          <p><strong>Weight Charge:</strong> ৳ {selectedParcel.Weight_Charge}</p>
-          <p><strong>Delivery Charge:</strong> ৳ {selectedParcel.Delivary_Charge}</p>
-          <p><strong>Total Charge:</strong> ৳ {selectedParcel.Total_Charge}</p>
-          <p><strong>Date:</strong> {formatDate(selectedParcel.Date)}</p>
+      <div className="p-4 md:p-8 space-y-4 md:space-y-6 text-gray-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-8 gap-y-2 md:gap-y-4">
+          <p><span className="font-bold">Customer Name:</span> {selectedParcel.Customer_Name}</p>
+          <p><span className="font-bold">Phone:</span> {selectedParcel.Customer_Contact_Number}</p>
+          <p><span className="font-bold">Address:</span> {selectedParcel.Customer_Address}</p>
+          <p><span className="font-bold">Area:</span> {selectedParcel.Customer_Area}</p>
+          <p><span className="font-bold">District:</span> {selectedParcel.Customer_District_Name}</p>
+          <p><span className="font-bold">Store:</span> {selectedParcel.Store_Name}</p>
+          <p><span className="font-bold">Parcel Weight:</span> {selectedParcel.Parcel_Weight} kg</p>
+          <p><span className="font-bold">Total Collection:</span> ${selectedParcel.Total_Collection_Amount}</p>
+          <p><span className="font-bold">Service Type:</span> {selectedParcel.Service_Type}</p>
+          <p><span className="font-bold">Item Type:</span> {selectedParcel.Item_Type}</p>
+          <p><span className="font-bold">Product Value:</span> ৳{selectedParcel.Product_Value}</p>
+          <p><span className="font-bold">Product Details:</span> {selectedParcel.Product_Details}</p>
+          <p><span className="font-bold">Product Remark:</span> {selectedParcel.Product_Remark}</p>
+          <p><span className="font-bold">COD Percentage:</span> {selectedParcel.Cod_Perchent}%</p>
+          <p><span className="font-bold">Weight Charge:</span> ৳{selectedParcel.Weight_Charge}</p>
+          <p><span className="font-bold">Delivery Charge:</span> ৳{selectedParcel.Delivary_Charge}</p>
+          <p><span className="font-bold">Total Charge:</span> ৳{selectedParcel.Total_Charge}</p>
+          <p><span className="font-bold">Date:</span> {formatDate(selectedParcel.Date)}</p>
         </div>
       </div>
 
       {/* Modal Footer */}
-      <div className="flex justify-end bg-blue-200 p-4">
-        {/* <button
+      <div className="bg-blue-100 p-4 flex justify-end rounded-b-lg">
+        <button
           onClick={() => setSelectedParcel(null)}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors"
+          className="bg-blue-600 text-white px-4 md:px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors shadow-md"
         >
-          
-        </button> */}
+          Close
+        </button>
       </div>
     </div>
   </div>
 )}
+
+
 
       {/* Modal for Editing Parcel */}
       {isEdit && selectedParcel && (

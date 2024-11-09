@@ -36,10 +36,10 @@ const MerchantParcelList = () => {
 
   if (isLoading) return <p>Loading...</p>;
 
-  const handleEdit = (parcel) => {
-    setSelectedParcel(parcel);
-    setIsEdit(true);
-  };
+  // const handleEdit = (parcel) => {
+  //   setSelectedParcel(parcel);
+  //   setIsEdit(true);
+  // };
 
   const handleSave = (updatedData) => {
     mutation.mutate({
