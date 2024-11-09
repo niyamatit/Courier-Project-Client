@@ -688,6 +688,7 @@ const incrementCnNumber = (cnNumber) => {
       Cod_Charge: 0 || 0,
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
+      Merchant_Branch_Name: verifiedUser?.Merchant_Branch || "",
       Date: new Date() || ""
 
     }
