@@ -670,7 +670,7 @@ const incrementCnNumber = (cnNumber) => {
       Customer_Contact_Number: formData?.contactNumber || "",
       Customer_Name: formData?.customerName || customerInfo.name || "",
       Customer_Address: formData?.customerAddress || customerInfo.address || "",
-      Customer_District_Name: formData?.selectedDistrict || "",
+      Customer_District_Name: formData?.districtName || districtName || "",
       Customer_Area: formData?.area || "",
       Store_Name: formData?.store || "",
       Merchant_ID: formData?.orderId || "",
@@ -688,6 +688,7 @@ const incrementCnNumber = (cnNumber) => {
       Cod_Charge: 0 || 0,
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
+      Merchant_Branch_Name: verifiedUser?.Merchant_Branch || "",
       Date: new Date() || ""
 
     }

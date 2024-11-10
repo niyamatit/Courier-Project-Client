@@ -6,6 +6,9 @@ import { IoHomeOutline } from "react-icons/io5";
 import { FaTruck } from 'react-icons/fa';
 import { FaFileInvoice } from 'react-icons/fa';
 import { MdStore } from 'react-icons/md';
+
+import { RiBox3Line } from 'react-icons/ri';
+
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 const MerchantMenu = () => {
   const [verifiedUser] = useUsersData()
@@ -52,6 +55,11 @@ const MerchantMenu = () => {
         icon={MdStore}
         label='Shop List'
         address='/dashboard/MerchantShopList'
+      />
+      <MenuItem
+        icon={RiBox3Line}
+        label='My Parcel List'
+        address='/dashboard/MerchantParcelList'
       />
 
       {/* <MenuItem
