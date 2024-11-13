@@ -389,7 +389,7 @@ const [verifiedUser] = useUsersData();
                   {...register('branch', { required: true })}
                   className={`select select-bordered mt-2  bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${
                     errors.branch ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                    }`}
                   required
                 >
                   <option value="123">Select Dest. Branch</option>
