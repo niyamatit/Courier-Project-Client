@@ -7,7 +7,7 @@ import axiosSecure from '../api/axiosSecure';
 import Swal from 'sweetalert2'; // Import sweetalert2
 const SignUp = () => {
   const [loading, setLoading] = React.useState(false);
-  const navigate = useNavigate();
+   const navigate = useNavigate();
 
   
 
