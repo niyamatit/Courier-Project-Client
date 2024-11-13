@@ -5,7 +5,7 @@ import "tailwindcss/tailwind.css";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import { Areas, Districts } from "../../../../Data/Location";
-import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+
 import { useQuery } from "@tanstack/react-query";
 // import { imageUpload } from "../../../../api/utils";
 // import useAuth from "../../../../hooks/useAuth";
@@ -14,7 +14,7 @@ const BranchAdd = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   // const [loading, setLoading] = useState(false);
   const [filteredAreas, setFilteredAreas] = useState([]);
-  const [verifiedUser] = useUsersData();
+  
   const {  data: users = []} = useQuery({
     queryKey: ['users'],
     queryFn: async() => {

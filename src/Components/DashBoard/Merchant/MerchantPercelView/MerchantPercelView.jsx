@@ -9,10 +9,17 @@ const fetchParcels = async () => {
   };
   
 
-const updateParcel = async ({ id, updatedData }) => {
-  const response = await axiosSecure.patch(`/parcels/${id}`, updatedData);
-  return response.data;
-};
+  const updateParcel = async ({ id, updatedData }) => {
+    try {
+      const response = await axiosSecure.patch(`/parcels/${id}`, updatedData);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating parcel:', error);
+      // Handle the error gracefully, e.g., by showing an alert or returning a specific error message
+      throw new Error(error.response?.data?.message || 'Failed to update parcel');
+    }
+  };
+  
 
 const MerchantParcelList = () => {
   const [verifiedUser] = useUsersData();
@@ -42,17 +49,15 @@ const MerchantParcelList = () => {
   };
 
   const handleSave = (updatedData) => {
+    const { _id, ...dataToUpdate } = updatedData; 
     mutation.mutate({
-      id: selectedParcel._id,
-      updatedData: {
-        Customer_Name: selectedParcel.Customer_Name,
-        Parcel_Weight: selectedParcel.Parcel_Weight,
-        // Include other fields if needed
-      },
+      id: _id,
+      updatedData: dataToUpdate,
     });
     setIsEdit(false);
-    setSelectedParcel(null);
+    setSelectedParcel(null); 
   };
+  
 
   const formatDate = (dateString) => {
     const options = { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
@@ -97,18 +102,18 @@ const MerchantParcelList = () => {
                   <button
     onClick={() => {
       setSelectedParcel(parcel);
-      setIsEdit(false); // Ensures only View Details modal shows
+      setIsEdit(false); 
     }}
     className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
   >
     View Details
   </button>
-                    {/* <button
+                    <button
                       onClick={() => handleEdit(parcel)}
                       className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors"
                     >
                       Edit
-                    </button> */}
+                    </button>
                   </td>
                 </tr>
               ))
@@ -122,7 +127,7 @@ const MerchantParcelList = () => {
       </div>
 
       {/* Modal for Parcel Details */}
-      {selectedParcel && (
+      {selectedParcel && !isEdit && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
     <div className="bg-white rounded-lg shadow-2xl w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl max-h-[80vh] overflow-auto">
       {/* Modal Header */}
@@ -171,38 +176,117 @@ const MerchantParcelList = () => {
 
       {/* Modal for Editing Parcel */}
       {isEdit && selectedParcel && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-lg font-semibold mb-4">Edit Parcel</h2>
-            <input
-              type="text"
-              className="border p-2 mb-2 rounded w-full"
-              defaultValue={selectedParcel.Customer_Name}
-              onChange={(e) => setSelectedParcel({ ...selectedParcel, Customer_Name: e.target.value })}
-            />
-            <input
-              type="number"
-              className="border p-2 mb-2 rounded w-full"
-              defaultValue={selectedParcel.Parcel_Weight}
-              onChange={(e) => setSelectedParcel({ ...selectedParcel, Parcel_Weight: parseFloat(e.target.value) })}
-            />
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => handleSave(selectedParcel)}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-              >
-                Save Changes
-              </button>
-              <button
-                onClick={() => setIsEdit(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+    <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full overflow-y-auto max-h-screen">
+      <h2 className="text-2xl font-bold text-blue-600 mb-6">Edit Parcel</h2>
+
+      {/* Customer Contact Number */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-blue-700 mb-1">Customer Contact Number</label>
+        <input
+          type="text"
+          className="border border-blue-300 p-2 rounded w-full focus:outline-none focus:border-blue-500"
+          defaultValue={selectedParcel.Customer_Contact_Number}
+          onChange={(e) => setSelectedParcel({ ...selectedParcel, Customer_Contact_Number: e.target.value })}
+        />
+      </div>
+
+      {/* Customer Name */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-blue-700 mb-1">Customer Name</label>
+        <input
+          type="text"
+          className="border border-blue-300 p-2 rounded w-full focus:outline-none focus:border-blue-500"
+          defaultValue={selectedParcel.Customer_Name}
+          onChange={(e) => setSelectedParcel({ ...selectedParcel, Customer_Name: e.target.value })}
+        />
+      </div>
+
+      {/* Customer Address */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-blue-700 mb-1">Customer Address</label>
+        <input
+          type="text"
+          className="border border-blue-300 p-2 rounded w-full focus:outline-none focus:border-blue-500"
+          defaultValue={selectedParcel.Customer_Address}
+          onChange={(e) => setSelectedParcel({ ...selectedParcel, Customer_Address: e.target.value })}
+        />
+      </div>
+
+      {/* Customer District Name */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-blue-700 mb-1">Customer District Name</label>
+        <input
+          type="text"
+          className="border border-blue-300 p-2 rounded w-full focus:outline-none focus:border-blue-500"
+          defaultValue={selectedParcel.Customer_District_Name}
+          onChange={(e) => setSelectedParcel({ ...selectedParcel, Customer_District_Name: e.target.value })}
+        />
+      </div>
+
+      {/* Customer Area */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-blue-700 mb-1">Customer Area</label>
+        <input
+          type="text"
+          className="border border-blue-300 p-2 rounded w-full focus:outline-none focus:border-blue-500"
+          defaultValue={selectedParcel.Customer_Area}
+          onChange={(e) => setSelectedParcel({ ...selectedParcel, Customer_Area: e.target.value })}
+        />
+      </div>
+
+      {/* Store Name */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-blue-700 mb-1">Store Name</label>
+        <input
+          type="text"
+          className="border border-blue-300 p-2 rounded w-full focus:outline-none focus:border-blue-500"
+          defaultValue={selectedParcel.Store_Name}
+          onChange={(e) => setSelectedParcel({ ...selectedParcel, Store_Name: e.target.value })}
+        />
+      </div>
+
+      {/* Parcel Weight */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-blue-700 mb-1">Parcel Weight (kg)</label>
+        <input
+          type="number"
+          className="border border-blue-300 p-2 rounded w-full focus:outline-none focus:border-blue-500"
+          defaultValue={selectedParcel.Parcel_Weight}
+          onChange={(e) => setSelectedParcel({ ...selectedParcel, Parcel_Weight: parseFloat(e.target.value) })}
+        />
+      </div>
+
+      {/* Total Collection Amount */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-blue-700 mb-1">Total Collection Amount ($)</label>
+        <input
+          type="number"
+          className="border border-blue-300 p-2 rounded w-full focus:outline-none focus:border-blue-500"
+          defaultValue={selectedParcel.Total_Collection_Amount}
+          onChange={(e) => setSelectedParcel({ ...selectedParcel, Total_Collection_Amount: parseFloat(e.target.value) })}
+        />
+      </div>
+
+      {/* Save and Cancel Buttons */}
+      <div className="flex justify-end gap-4">
+        <button
+          onClick={() => handleSave(selectedParcel)}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+        >
+          Save Changes
+        </button>
+        <button
+          onClick={() => setIsEdit(false)}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
