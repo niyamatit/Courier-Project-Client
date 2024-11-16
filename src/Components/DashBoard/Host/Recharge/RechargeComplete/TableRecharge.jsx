@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import axiosSecure from "../../../../../api/axiosSecure";
-import useAuth from "../../../../../hooks/useAuth";
+import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
+
 
 const TableRecharge = ({ recharge, refetch }) => {
   const [status, setStatus] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [note, setNote] = useState('');
   const [amount, setAmount] = useState('');
-
+  const [verifiedUser] = useUsersData();  
   useEffect(() => {
     console.log(recharge?.Status);
     if (!status) {
@@ -25,22 +26,43 @@ const TableRecharge = ({ recharge, refetch }) => {
 
 
   const handleModalSubmit = async () => {
-
     try {
-      const response = await axiosSecure.put(`/recharge/${recharge._id}`, {
+      // Step 1: Update the recharge details using a PUT request
+      const updateResponse = await axiosSecure.put(`/recharge/${recharge._id}`, {
         Status: status,
         Note: note,
-        Amount: amount
+        Amount: amount,
+        Branch_Email: recharge?.Branch_Email,
+        Branch_Name: recharge?.Branch_Name,
+        Account_Name: recharge?.Account_Name,
+        Date: new Date(),
+        Accept_Account_Email: verifiedUser?.email,
+        Accept_Account_Name: verifiedUser?.name,
+        Account_Number: recharge?.Account_Number,
+        Branch_Request_Note: recharge?.Recharge_Note,
+        done: 'done',
       });
-      console.log(response);
-      if (response.data.acknowledged && response.data.modifiedCount > 0) {
-        refetch();
-        closeModal();
+  
+      console.log('Update Response:', updateResponse.data);
+  
+      // Step 2: If the status is "cancel", delete the data
+      if (status === "cancel" || status == "accept") {
+        const deleteResponse = await axiosSecure.delete(`/recharge/${recharge._id}`);
+        console.log('Delete Response:', deleteResponse.data);
+  
+        if (deleteResponse.status === 200) {
+          console.log('Recharge successfully deleted.');
+        }
       }
+  
+      // Refresh the data and close the modal
+      refetch();
+      closeModal();
     } catch (error) {
-      console.log(error.message);
+      console.error('Error in PUT/DELETE operations:', error.message);
     }
   };
+  
 
   return (
     <>
@@ -64,7 +86,7 @@ const TableRecharge = ({ recharge, refetch }) => {
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
           <p className='text-gray-900 whitespace-no-wrap'>
-            {recharge?.Account_Amount}
+            {recharge?.Branch_Request_Amount}
           </p>
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>

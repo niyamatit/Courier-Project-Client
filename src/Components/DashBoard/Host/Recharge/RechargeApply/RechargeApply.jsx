@@ -26,7 +26,7 @@ const RechargeApply = () => {
             Branch_Email: verifiedUser?.email || "",
             Branch_Name: verifiedUser?.name || "",
             Account_Number: data?.accountNumber || "",
-            Account_Amount: data?.accountAmount || "",
+            Branch_Request_Amount: data?.accountAmount || "",
             Recharge_Note: data?.rechargenote || "",
             Date: new Date().toISOString().split('T')[0],
             Status: "processing",
@@ -89,7 +89,7 @@ const RechargeApply = () => {
                         {/* amount */}
                         <div className="field mt-2">
                             <label htmlFor="account amount:" className="block mb-2">
-                                Account amount
+                                Request amount
                             </label>
                             <InputText
                                 id="accountAmount"
