@@ -25,11 +25,11 @@ const BookingForm = () => {
   const [senderReceive, setSenderReceive] = useState(0);
   const [bookingInfo, setBookingInfo] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [rate,setRate]=useState('');
-  const [quantity,setQuantity]=useState('');
+  const [rate, setRate] = useState('');
+  const [quantity, setQuantity] = useState('');
   const [totalCharge, setTotalCharge] = useState(0);
   const [senderContactNo, setSenderContactNo] = useState("");
-  const [isManuallyEditing, setIsManuallyEditing] = useState(false); 
+  const [isManuallyEditing, setIsManuallyEditing] = useState(false);
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -44,31 +44,31 @@ const BookingForm = () => {
     setIsOpen(false);
   };
 
-  
 
 
-useEffect(() => {
-  if (!isManuallyEditing) {
-    setTotalCharge(parseFloat(rate * quantity));
-  }
-}, [rate, quantity, isManuallyEditing]);
-  
-  
-  
- 
-  
 
-  
   useEffect(() => {
-    const currentDate = new Date().toISOString().slice(0, 10);  
-    setValue("bookingDate", currentDate); 
+    if (!isManuallyEditing) {
+      setTotalCharge(parseFloat(rate * quantity));
+    }
+  }, [rate, quantity, isManuallyEditing]);
+
+
+
+
+
+
+
+  useEffect(() => {
+    const currentDate = new Date().toISOString().slice(0, 10);
+    setValue("bookingDate", currentDate);
   }, [setValue]);
 
   useEffect(() => {
     const fetchCnNumber = async () => {
       try {
         const response = await axiosSecure.get('/number');  // GET request to fetch the current CN number
-        
+
         if (response.data && response.data?.length > 0 && response.data[0].CnNumber) {
           // Access the first item in the array and set the CnNumber
           setCnNumber(response.data[0].CnNumber);
@@ -79,12 +79,12 @@ useEffect(() => {
         console.error("Error fetching CN number:", error);
       }
     };
-    
+
     fetchCnNumber();  // Call the function to fetch the CN number on mount
   }, []);
   useEffect(() => {
     if (codCharge > 0) {
-      let calculatedServiceCharge = 20; 
+      let calculatedServiceCharge = 20;
       if (codCharge > 1000) {
         const additionalCharge = Math.ceil((codCharge - 1000) / 1000) * 10; // 10 per additional 1000
         calculatedServiceCharge += additionalCharge;
@@ -104,45 +104,45 @@ useEffect(() => {
 
   const handleCodChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    setCodCharge(isNaN(value) ? 0 : value); 
+    setCodCharge(isNaN(value) ? 0 : value);
   };
 
   const onSubmit = async (data) => {
     try {
-      data.CnNumber = cnNumber; 
+      data.CnNumber = cnNumber;
       const Bookinginfo = {
-        senderName:data.senderName || senderInfo.name,
-        address:data.address || senderInfo.address,
+        senderName: data.senderName || senderInfo.name,
+        address: data.address || senderInfo.address,
         receiverName: data.receiverName || receiverInfo.ReceiverName,
         receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
         branch: data.branch,
-        customerCode:data.customerCode,
-        counter:data.counter,
-        customerName:data.customerName,
-        senderContactNo:data.senderContactNo,
-        reference:data.reference,
-        receiverContactNo:data.receiverContactNo,
-        CnNumber:data.CnNumber,
-        bookingDate:data.bookingDate,
-        bookingBranch:data.bookingBranch,
-        department:data.department,
-        inputUser:data.inputUser,
-        serviceType:data.serviceType,
-        paymentMethod:data.paymentMethod,
-        product:data.product,
-        lot:data.lot,
-        qty:data.qty,
-        unit:data.unit,
-        rate:data.rate,
-        totalCharge:data.totalCharge || totalCharge,
-        hdCharge:data.hdCharge,
-        othCharge:data.othCharge,
-        receiverPay:data.receiverPay,
-        serviceCharge:data.serviceCharge,
-        senderReceive:data.senderReceive
+        customerCode: data.customerCode,
+        counter: data.counter,
+        customerName: data.customerName,
+        senderContactNo: data.senderContactNo,
+        reference: data.reference,
+        receiverContactNo: data.receiverContactNo,
+        CnNumber: data.CnNumber,
+        bookingDate: data.bookingDate,
+        bookingBranch: data.bookingBranch,
+        department: data.department,
+        inputUser: data.inputUser,
+        serviceType: data.serviceType,
+        paymentMethod: data.paymentMethod,
+        product: data.product,
+        lot: data.lot,
+        qty: data.qty,
+        unit: data.unit,
+        rate: data.rate,
+        totalCharge: data.totalCharge || totalCharge,
+        hdCharge: data.hdCharge,
+        othCharge: data.othCharge,
+        receiverPay: data.receiverPay,
+        serviceCharge: data.serviceCharge,
+        senderReceive: data.senderReceive
 
       }
-  
+
       // Submit the parcel data
       const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
       if (ParcelProductDetails.data.insertedId) {
@@ -153,7 +153,7 @@ useEffect(() => {
           showConfirmButton: false,
           timer: 1500,
         });
-  
+
         // Increment the CN number using PUT request
         const response = await axiosSecure.put('/number');
         setCnNumber(response.data.nextNumber); // Set the next CN number for the next booking
@@ -163,41 +163,41 @@ useEffect(() => {
     } catch (error) {
       console.error("Error adding parcel:", error);
     }
-    
-    
+
+
     setIsOpen(true);
   };
-  
+
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
       if (senderContactNo) {
         try {
           const response = await axiosSecure.get(`/offline/mahi/hossain/${senderContactNo}`);
-          
-          
-          
-  
+
+
+
+
           if (response.data && response.data?.length > 0) {
-            
+
             const sortedData = response.data.sort((a, b) => {
               return parseInt(b.CnNumber.slice(-4)) - parseInt(a.CnNumber.slice(-4));
             });
-  
+
             const latestData = sortedData[sortedData?.length - 1];
-            console.log("Letest Data",latestData)
+            console.log("Letest Data", latestData)
             setSenderInfo({
               name: latestData.senderName,
               address: latestData.address,
             });
           } else if (response.data) {
-            
+
             setSenderInfo({
               name: response.data.senderName,
               address: response.data.address,
             });
           } else {
-           
+
             setSenderInfo({ name: "", address: "" });
           }
         } catch (error) {
@@ -206,40 +206,40 @@ useEffect(() => {
         }
       }
     };
-  
+
     fetchCustomerDetails();
   }, [senderContactNo]);
-  
+
   useEffect(() => {
     const fetchReceiverDetails = async () => {
       if (receiverContactNo) {
         try {
           const response = await axiosSecure.get(`/offline/receiver/${receiverContactNo}`);
-          
+
           // Log the response to check its structure
-          
-  
+
+
           if (response.data && response.data?.length > 0) {
-            
+
             const sortedData = response.data.sort((a, b) => {
               return parseInt(a.CnNumber.slice(-4)) - parseInt(b.CnNumber.slice(-4));
             });
-            console.log("sorted data",(sortedData || 0))
-  
+            console.log("sorted data", (sortedData || 0))
+
             const latestData = sortedData[sortedData?.length - 1];
-            console.log("letest data:",latestData)
+            console.log("letest data:", latestData)
             setReceiverInfo({
               ReceiverName: latestData.receiverName,
               ReceiverAddress: latestData.receiveraddress,
             });
           } else if (response.data) {
-            
+
             setReceiverInfo({
               ReceiverName: response.data.receiverName,
               ReceiverAddress: response.data.receiveraddress,
             });
           } else {
-            
+
             setReceiverInfo({ ReceiverName: "", ReceiverAddress: "" });
           }
         } catch (error) {
@@ -248,24 +248,24 @@ useEffect(() => {
         }
       }
     };
-  
+
     fetchReceiverDetails();
   }, [receiverContactNo]);
-  
-  
-  
 
-  const {  data: users = []} = useQuery({
+
+
+
+  const { data: users = [] } = useQuery({
     queryKey: ['users'],
-    queryFn: async() => {
-        const res = await axiosSecure.get("/users");
-        return res.data;
-       
-    }
-    
-});
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
 
-const [verifiedUser] = useUsersData();
+    }
+
+  });
+
+  const [verifiedUser] = useUsersData();
 
 
   return (
@@ -289,7 +289,7 @@ const [verifiedUser] = useUsersData();
                   errors={errors}
                   label="Customer Code"
                   placeholder="customer code"
-                  
+
                 />
                 <SelectField
                   watchValues={watchValues}
@@ -309,7 +309,7 @@ const [verifiedUser] = useUsersData();
                 errors={errors}
                 label="Customer Name"
                 placeholder="customer name"
-                
+
               />
             </Section>
 
@@ -325,6 +325,7 @@ const [verifiedUser] = useUsersData();
                 placeholder="sender contact no."
                 required
                 onChange={(e) => setSenderContactNo(e.target.value)}
+                type={"number"}
               />
               <InputField
                 watchValues={watchValues}
@@ -340,13 +341,13 @@ const [verifiedUser] = useUsersData();
                 watchValues={watchValues}
                 register={register}
                 name="address"
-                registerOptions={{ required: !senderInfo.address }} 
-                
+                registerOptions={{ required: !senderInfo.address }}
+
                 errors={errors}
                 label="Address"
                 placeholder="Sender Address"
                 defaultValue={senderInfo.address || ""}
-                required={!!senderInfo.address} 
+                required={!!senderInfo.address}
               />
             </Section>
 
@@ -359,7 +360,7 @@ const [verifiedUser] = useUsersData();
                 errors={errors}
                 label="Reference"
                 placeholder="reference"
-                
+
               />
               <div className="flex gap-2 mt-4">
                 <input type="checkbox" className="checkbox mt-1" />
@@ -383,24 +384,23 @@ const [verifiedUser] = useUsersData();
               /> */}
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="label-text ml-1 text-gray-500 font-semibold">
-                Select Dest. Branch*
+                  Select Dest. Branch*
                 </label>
-                 <select
+                <select
                   {...register('branch', { required: true })}
-                  className={`select select-bordered mt-2  bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${
-                    errors.branch ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`select select-bordered mt-2  bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${errors.branch ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   required
                 >
                   <option value="123">Select Dest. Branch</option>
                   {
-                    users.filter(user=>user?.role === 'host').map(user=>(
+                    users.filter(user => user?.role === 'host').map(user => (
                       <option key={user._id} value={user?.name}>
-              {user?.name || "No Name Found"}
-            </option>
+                        {user?.name || "No Name Found"}
+                      </option>
                     ))
                   }
-                  
+
                 </select>
                 {errors.select_branch_name && (
                   <span className="text-red-500">This field is required</span>
@@ -450,9 +450,9 @@ const [verifiedUser] = useUsersData();
           <div>
             {/* Booking Information Section */}
             <Section title="Booking Information">
-             
-               <div className="grid grid-cols-2 gap-2">
-               <InputField
+
+              <div className="grid grid-cols-2 gap-2">
+                <InputField
                   watchValues={watchValues}
                   register={register}
                   name={"CnNumber"}
@@ -461,7 +461,7 @@ const [verifiedUser] = useUsersData();
                   label="CN Number"
                   placeholder="CN no."
                   required
-                  value={cnNumber || 'Loading.....'} 
+                  value={cnNumber || 'Loading.....'}
                   className="w-full"
                   readOnly
                 />
@@ -469,8 +469,8 @@ const [verifiedUser] = useUsersData();
                   placeholder=""
                   className="textarea textarea-bordered textarea-sm mt-6 bg-[#f9f5f1] text-black w-full max-w-xs"
                 ></textarea>
-               </div>
-              
+              </div>
+
               {/* Auto-generated booking date */}
               <InputField
                 watchValues={watchValues}
@@ -511,7 +511,7 @@ const [verifiedUser] = useUsersData();
                   registerOptions={{ required: false }}
                   errors={errors}
                   label="Select Department"
-                  options={["Document", "Parcel", "Food item","Mobile/Laptop","Electrical","Home/Office Accessories"]}
+                  options={["Document", "Parcel", "Food item", "Mobile/Laptop", "Electrical", "Home/Office Accessories"]}
                 />
                 {/* <InputField
                   watchValues={watchValues}
@@ -523,14 +523,14 @@ const [verifiedUser] = useUsersData();
                   placeholder="Input user"
                   required
                 /> */}
-                 <SelectField
+                <SelectField
                   watchValues={watchValues}
                   register={register}
                   name={"inputUser"}
                   registerOptions={{ required: true }}
                   errors={errors}
                   label="Input User"
-                  options={["New Customer", "Customer", "Merchant","Corporate"]}
+                  options={["New Customer", "Customer", "Merchant", "Corporate"]}
                 />
                 <SelectField
                   watchValues={watchValues}
@@ -591,7 +591,7 @@ const [verifiedUser] = useUsersData();
                   required
                   onChange={(e) => {
                     setQuantity(e.target.value);
-                    setIsManuallyEditing(false); 
+                    setIsManuallyEditing(false);
                   }}
                 />
                 <SelectField
@@ -603,7 +603,7 @@ const [verifiedUser] = useUsersData();
                   label="Unit"
                   placeholder="unit"
                   required
-                  options={["Kg", "PCS", "Carton","BOSTA"]}
+                  options={["Kg", "PCS", "Carton", "BOSTA"]}
                 />
                 <InputField
                   watchValues={watchValues}
@@ -616,9 +616,9 @@ const [verifiedUser] = useUsersData();
                   required
                   onChange={(e) => {
                     setRate(e.target.value);
-                    setIsManuallyEditing(false); 
+                    setIsManuallyEditing(false);
                   }}
-                  
+
                 />
                 <InputField
                   watchValues={watchValues}
@@ -631,8 +631,8 @@ const [verifiedUser] = useUsersData();
                   required
                   value={totalCharge}
                   onChange={(e) => {
-                    setTotalCharge(e.target.value); 
-                    setIsManuallyEditing(true);     
+                    setTotalCharge(e.target.value);
+                    setIsManuallyEditing(true);
                   }}
                 />
                 <InputField
@@ -643,7 +643,7 @@ const [verifiedUser] = useUsersData();
                   errors={errors}
                   label="H/D Charge"
                   placeholder=""
-                  
+
                 />
                 <InputField
                   watchValues={watchValues}
@@ -653,7 +653,7 @@ const [verifiedUser] = useUsersData();
                   errors={errors}
                   label="Oth. Charge"
                   placeholder=""
-                  
+
                 />
               </div>
             </Section>
@@ -704,7 +704,6 @@ const [verifiedUser] = useUsersData();
         {/* Submit Button */}
         <div className="flex gap-5 mt-2 justify-center">
           <button className="btn bg-[#E8F0FE]">Submit</button>
-         
         </div>
       </form>
       <OfflinePrintModal

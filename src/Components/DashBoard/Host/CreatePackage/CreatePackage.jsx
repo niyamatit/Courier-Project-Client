@@ -139,9 +139,6 @@ const CreatePackage = () => {
     }, [selectedDistrict]);
 
 
-
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;

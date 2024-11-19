@@ -5,14 +5,14 @@ import QRCode from 'react-qr-code';
 const OfflineSticker = ({ bookingInfo }) => {
     return (
         <div className="p-4 bg-white border-2 border-gray-300 w-[300px]">
-            <h1 className="text-lg font-bold text-gray-800">Niyamat Express</h1>
+            <h1 className="text-lg font-bold text-gray-800">Niyamat Expressgfgdgd</h1>
 
             {/* Barcode Section */}
             <div className="my-2">
                 <Barcode className="h-[50px] w-full" value={bookingInfo?.CnNumber
-} />
+                } />
                 <p className="text-sm text-gray-700">{bookingInfo?.CnNumber
-}</p>
+                }</p>
             </div>
 
             {/* Payment and Booking Info */}
@@ -21,13 +21,13 @@ const OfflineSticker = ({ bookingInfo }) => {
                     bookingInfo?.paymentOption === 'Cash'
                         ? <p><strong>Cash</strong> - {bookingInfo?.
                             paymentMethod
-                            }</p>
+                        }</p>
                         : <p><strong>Payment</strong> - {bookingInfo?.
                             paymentMethod
-                            }</p>
+                        }</p>
                 }
                 <p><strong>Booking Date:</strong> {bookingInfo?.bookingDate
-}</p>
+                }</p>
             </div>
 
             {/* Receiver Info */}
@@ -37,16 +37,15 @@ const OfflineSticker = ({ bookingInfo }) => {
             </div>
 
             {/* Route Info */}
-            <p className="my-2 text-sm text-gray-700">{bookingInfo?.bookingBranch
-}</p>
+            <p className="my-2 text-sm text-gray-700">{bookingInfo?.bookingBranch}</p>
 
             {/* Package Info */}
-            <p className="my-2 text-sm text-gray-700"><strong>4 CTN COIL</strong></p>
+            <p className="my-2 text-sm text-gray-700"><strong>4 CTN COILgdfgsg</strong></p>
 
             {/* QR Code Section */}
             <div className="flex justify-end my-2">
                 <QRCode className="h-[50px]" value={bookingInfo?.CnNumber
-} />
+                } />
             </div>
 
             {/* Print Time (Placeholder example) */}

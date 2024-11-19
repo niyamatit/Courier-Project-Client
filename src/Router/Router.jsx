@@ -72,6 +72,7 @@ import RechargeHistory from "../Components/DashBoard/Host/Recharge/RechargeHisto
 import BookingInfo from "../Components/DashBoard/Host/CreatePackage/BranchBookinginfo/BookingInfo/BookingInfo";
 import MerchantPercelView from "../Components/DashBoard/Merchant/MerchantPercelView/MerchantPercelView";
 import MerchantParcelList from "../Components/DashBoard/Merchant/MerchantParcelList/MerchantParcelList";
+import AllBranch from "../Components/DashBoard/Admin/AllBranch/AllBranch";
 
 
 
@@ -302,7 +303,17 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AdminRoute>
-              <AllMerchantList/>
+              <AllMerchantList />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "all-branch",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllBranch></AllBranch>
             </AdminRoute>
           </PrivateRoute>
         ),
@@ -333,7 +344,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "MerchantParcelList",
-        element: <MerchantParcelList/>,
+        element: <MerchantParcelList />,
       },
       {
         path: "CreateStore",
