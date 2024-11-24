@@ -26,7 +26,7 @@ const AdminMenu = () => {
         label='All Merchant List'
         address='AllMerchnatList' />
 
-        
+
       <MenuItem
         icon={FaUserAlt}
         label='Rider Add'
@@ -52,6 +52,12 @@ const AdminMenu = () => {
 
         label='Add Branch'
         address='branch-add'
+      />
+      <MenuItem
+        icon={MdStore}
+
+        label='All Branch List'
+        address='all-branch'
       />
       <MenuItem
         icon={MdMoney}

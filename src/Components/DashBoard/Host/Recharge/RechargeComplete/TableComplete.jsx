@@ -13,6 +13,12 @@ const TableComplete = ({ recharge }) => {
     return (
         <>
             <tr className="font-rancho w-full">
+
+                <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                    <p className='text-gray-900 whitespace-no-wrap'>
+                        {recharge?.Date}
+                    </p>
+                </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <div className='flex items-center'>
                         <div className='flex-shrink-0'>

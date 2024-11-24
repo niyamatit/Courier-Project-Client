@@ -11,13 +11,13 @@ const OfflinePrintModal = ({ closeModal, isOpen, bookingInfo }) => {
   const stickerRef = useRef(); // For StickerDetails
 
   const handlePrintPackage = useReactToPrint({
-      content: () => packageRef.current,
-      documentTitle: 'Package Details',
+    content: () => packageRef.current,
+    documentTitle: 'Package Details',
   });
 
   const handlePrintSticker = useReactToPrint({
-      content: () => stickerRef.current,
-      documentTitle: 'Sticker Details',
+    content: () => stickerRef.current,
+    documentTitle: 'Sticker Details',
   });
 
   return (
@@ -60,29 +60,29 @@ const OfflinePrintModal = ({ closeModal, isOpen, bookingInfo }) => {
                 </div>
 
                 <div ref={stickerRef} className="mt-2 text-center">
-                {Array.from({ length: bookingInfo?.lot || 1 }).map((_, index) => (
-  <OfflineSticker key={index} bookingInfo={bookingInfo} />
-))}
+                  {Array.from({ length: bookingInfo?.lot || 1 }).map((_, index) => (
+                    <OfflineSticker key={index} bookingInfo={bookingInfo} />
+                  ))}
 
                 </div>
 
                 <div className="flex justify-center mt-4">
-                                    {/* Button to print PackageDetails */}
-                                    <button
-                                        onClick={handlePrintPackage}
-                                        className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary mx-2"
-                                    >
-                                        Print Package Details
-                                    </button>
+                  {/* Button to print PackageDetails */}
+                  <button
+                    onClick={handlePrintPackage}
+                    className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary mx-2"
+                  >
+                    Print Package Details
+                  </button>
 
-                                    {/* Button to print StickerDetails */}
-                                    <button
-                                        onClick={handlePrintSticker}
-                                        className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary mx-2"
-                                    >
-                                        Print Sticker
-                                    </button>
-                                </div>
+                  {/* Button to print StickerDetails */}
+                  <button
+                    onClick={handlePrintSticker}
+                    className="btn border-2 border-primary text-xl text-white hover:bg-primary bg-secondary mx-2"
+                  >
+                    Print Sticker
+                  </button>
+                </div>
 
                 <hr className="mt-8" />
               </Dialog.Panel>
