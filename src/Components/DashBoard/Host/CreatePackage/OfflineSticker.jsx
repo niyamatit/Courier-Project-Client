@@ -40,11 +40,7 @@ const OfflineSticker = ({ bookingInfo }) => {
             <p className="my-2 text-sm text-gray-700">{bookingInfo?.bookingBranch}</p>
 
             {/* Package Info */}
-<<<<<<< HEAD
             <p className="my-2 text-sm text-gray-700"><strong>{bookingInfo?.product}</strong></p>
-=======
-            <p className="my-2 text-sm text-gray-700"><strong>4 CTN COILgdfgsg</strong></p>
->>>>>>> bee6a6774be9bdfb77353ad796a2074bb31a434a
 
             {/* QR Code Section */}
             <div className="flex justify-end my-2">
