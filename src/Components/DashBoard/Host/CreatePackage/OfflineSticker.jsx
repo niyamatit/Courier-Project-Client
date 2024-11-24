@@ -41,7 +41,7 @@ const OfflineSticker = ({ bookingInfo }) => {
 }</p>
 
             {/* Package Info */}
-            <p className="my-2 text-sm text-gray-700"><strong>4 CTN COIL</strong></p>
+            <p className="my-2 text-sm text-gray-700"><strong>{bookingInfo?.product}</strong></p>
 
             {/* QR Code Section */}
             <div className="flex justify-end my-2">

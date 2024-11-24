@@ -6,7 +6,7 @@ import Section from "./Section";
 import axiosSecure from "../../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import OfflinePrintModal from "./OfflinePrintModal";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient , useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 
 const BookingForm = () => {
@@ -43,7 +43,7 @@ const BookingForm = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
-
+  const queryClient = useQueryClient();
   
 
 
@@ -107,45 +107,77 @@ useEffect(() => {
     setCodCharge(isNaN(value) ? 0 : value); 
   };
 
-  const onSubmit = async (data) => {
-    try {
-      data.CnNumber = cnNumber; 
-      const Bookinginfo = {
-        senderName:data.senderName || senderInfo.name,
-        address:data.address || senderInfo.address,
-        receiverName: data.receiverName || receiverInfo.ReceiverName,
-        receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
-        branch: data.branch,
-        customerCode:data.customerCode,
-        counter:data.counter,
-        customerName:data.customerName,
-        senderContactNo:data.senderContactNo,
-        reference:data.reference,
-        receiverContactNo:data.receiverContactNo,
-        CnNumber:data.CnNumber,
-        bookingDate:data.bookingDate,
-        bookingBranch:data.bookingBranch,
-        department:data.department,
-        inputUser:data.inputUser,
-        serviceType:data.serviceType,
-        paymentMethod:data.paymentMethod,
-        product:data.product,
-        lot:data.lot,
-        qty:data.qty,
-        unit:data.unit,
-        rate:data.rate,
-        totalCharge:data.totalCharge || totalCharge,
-        hdCharge:data.hdCharge,
-        othCharge:data.othCharge,
-        receiverPay:data.receiverPay,
-        serviceCharge:data.serviceCharge,
-        senderReceive:data.senderReceive
+ 
 
-      }
-  
-      // Submit the parcel data
-      const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
-      if (ParcelProductDetails.data.insertedId) {
+const onSubmit = async (data) => {
+ 
+
+  try {
+    // Build the booking info payload
+    data.CnNumber = cnNumber;
+    const Bookinginfo = {
+      senderName: data.senderName || senderInfo.name,
+      address: data.address || senderInfo.address,
+      receiverName: data.receiverName || receiverInfo.ReceiverName,
+      receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
+      branch: data.branch,
+      email: verifiedUser?.email,
+      customerCode: data.customerCode,
+      counter: data.counter,
+      customerName: data.customerName,
+      senderContactNo: data.senderContactNo,
+      reference: data.reference,
+      receiverContactNo: data.receiverContactNo,
+      CnNumber: data.CnNumber,
+      bookingDate: data.bookingDate,
+      bookingBranch: data.bookingBranch,
+      department: data.department,
+      inputUser: data.inputUser,
+      serviceType: data.serviceType,
+      paymentMethod: data.paymentMethod,
+      product: data.product,
+      lot: data.lot,
+      qty: data.qty,
+      unit: data.unit,
+      rate: data.rate,
+      totalCharge: data.totalCharge || totalCharge,
+      hdCharge: data.hdCharge,
+      othCharge: data.othCharge,
+      receiverPay: data.receiverPay,
+      serviceCharge: data.serviceCharge,
+      senderReceive: data.senderReceive,
+    };
+
+    // Calculate the current and new balance
+    const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0); 
+    const codAmount = parseFloat(data.receiverPay || 0); 
+    const newBalance = currentBalance - codAmount;
+
+    
+    if (codAmount > currentBalance) {
+      Swal.fire({
+        icon: "error",
+        title: "Insufficient Balance",
+        text: "You have not enough balance to process this booking. Please recharge the balance.",
+      });
+      return; 
+    }
+
+   
+    const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
+
+    if (ParcelProductDetails.data.insertedId) {
+      
+      const updateBalanceResponse = await axiosSecure.put(
+        `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
+        { newBalance }
+      );
+
+      if (updateBalanceResponse.status === 200) {
+        // Invalidate the cache for Branch_Balance
+        queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
+
+        // Success message
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -153,20 +185,28 @@ useEffect(() => {
           showConfirmButton: false,
           timer: 1500,
         });
-  
-        // Increment the CN number using PUT request
-        const response = await axiosSecure.put('/number');
-        setCnNumber(response.data.nextNumber); // Set the next CN number for the next booking
-        // console.log("Cn Number",response.data.nextNumber)
+
+        // Increment the CN number
+        const response = await axiosSecure.put("/number");
+        setCnNumber(response.data.nextNumber);
+      } else {
+        throw new Error("Failed to update branch balance.");
       }
-      setBookingInfo(Bookinginfo);
-    } catch (error) {
-      console.error("Error adding parcel:", error);
     }
-    
-    
-    setIsOpen(true);
-  };
+  } catch (error) {
+    console.error("Error adding parcel:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Something went wrong while processing the booking.",
+    });
+  }
+
+  setIsOpen(true); // Open the modal after successful submission
+};
+
+  
+  
   
 
   useEffect(() => {
@@ -266,7 +306,15 @@ useEffect(() => {
 });
 
 const [verifiedUser] = useUsersData();
-
+// Amount 
+const {data: Branch_Balance = []} = useQuery({
+  queryKey :['Branch_Balance',verifiedUser?.email],
+  enabled: !!verifiedUser?.email,
+  queryFn: async()=>{
+    const res = await axiosSecure.get(`/recharge/taka/${verifiedUser?.email}`);
+    return res.data;
+  }
+})
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -325,6 +373,9 @@ const [verifiedUser] = useUsersData();
                 placeholder="sender contact no."
                 required
                 onChange={(e) => setSenderContactNo(e.target.value)}
+                type="number"
+                minLength={11}
+                
               />
               <InputField
                 watchValues={watchValues}
@@ -419,6 +470,7 @@ const [verifiedUser] = useUsersData();
                 label="Contact No."
                 placeholder="receiver contact no."
                 onChange={(e) => setReceiverContactNo(e.target.value)}
+                type="number"
               />
               <InputField
                 watchValues={watchValues}
@@ -577,6 +629,7 @@ const [verifiedUser] = useUsersData();
                   label="LOT"
                   placeholder="lot"
                   required
+                   type="number"
                 />
               </div>
               <div className="grid grid-cols-3 gap-1">
@@ -589,6 +642,7 @@ const [verifiedUser] = useUsersData();
                   label="Qty"
                   placeholder="quantity"
                   required
+                   type="number"
                   onChange={(e) => {
                     setQuantity(e.target.value);
                     setIsManuallyEditing(false); 
@@ -614,6 +668,7 @@ const [verifiedUser] = useUsersData();
                   label="Rate"
                   placeholder="rate"
                   required
+                   type="number"
                   onChange={(e) => {
                     setRate(e.target.value);
                     setIsManuallyEditing(false); 
@@ -629,6 +684,7 @@ const [verifiedUser] = useUsersData();
                   label="Total Charge"
                   placeholder="total charge"
                   required
+                   type="number"
                   value={totalCharge}
                   onChange={(e) => {
                     setTotalCharge(e.target.value); 
@@ -642,7 +698,8 @@ const [verifiedUser] = useUsersData();
                   registerOptions={{ required: false }}
                   errors={errors}
                   label="H/D Charge"
-                  placeholder=""
+                  placeholder="Home Delivery Charge"
+                   type="number"
                   
                 />
                 <InputField
@@ -652,7 +709,8 @@ const [verifiedUser] = useUsersData();
                   registerOptions={{ required: false }}
                   errors={errors}
                   label="Oth. Charge"
-                  placeholder=""
+                  placeholder="Other Charge"
+                   type="number"
                   
                 />
               </div>
@@ -667,7 +725,7 @@ const [verifiedUser] = useUsersData();
                   registerOptions={{ required: true }}
                   errors={errors}
                   label="COD (Receiver will pay)"
-                  placeholder=""
+                  placeholder="Condition Amount"
                   required
                   onChange={handleCodChange} // Handle COD input change
                 />

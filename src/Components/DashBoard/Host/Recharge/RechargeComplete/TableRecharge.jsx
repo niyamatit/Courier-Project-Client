@@ -35,6 +35,7 @@ const TableRecharge = ({ recharge, refetch }) => {
         Branch_Email: recharge?.Branch_Email,
         Branch_Name: recharge?.Branch_Name,
         Account_Name: recharge?.Account_Name,
+        Branch_Request_Amount:recharge?.Branch_Request_Amount,
         Date: new Date(),
         Accept_Account_Email: verifiedUser?.email,
         Accept_Account_Name: verifiedUser?.name,
