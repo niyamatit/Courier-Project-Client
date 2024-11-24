@@ -102,17 +102,27 @@ const CreatePackage = () => {
 
     useEffect(() => {
         if (condition) {
-            let calculatedCod;
-            if (parseInt(condition) <= 1000) {
-                calculatedCod = parseInt(condition) * 0.1 + parseInt(condition); // 10% of the condition
+            const conditionValue = parseInt(condition);
+            let calculatedCod = 0;
+    
+            if (conditionValue <= 1000) {
+                calculatedCod = conditionValue + 20; 
             } else {
-                calculatedCod = parseInt(condition) * 0.15 + parseInt(condition); // 15% of the condition
+                const first1000Cod = 20;
+                const remaining = conditionValue - 1000;
+    
+                
+                const Extra1000 = Math.ceil(remaining / 1000); 
+                const extraCod = Extra1000 * 10; 
+                calculatedCod = conditionValue + first1000Cod + extraCod;
             }
+    
             setCod(calculatedCod);
         } else {
             setCod(null);
         }
     }, [condition]);
+    
 
     const update = 'Processing';
 
@@ -261,17 +271,18 @@ const CreatePackage = () => {
 
             <form onSubmit={handleSubmit} ref={formRef}>
                 <div className='md:flex md:px-24'>
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Sender Name</span>
-                        </label>
-                        <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
-                    </div>
+                    
                     <div className="form-control md:ml-4 md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Sender Mobile</span>
                         </label>
                         <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
+                    </div>
+                    <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Sender Name</span>
+                        </label>
+                        <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
                     </div>
                 </div>
 
