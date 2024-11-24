@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useRiderHomeStats = () => {
   const fetchStats = async () => {
-    const response = await fetch("https://courier-server-lake.vercel.app/package");
+    const response = await fetch("https://courier-server-rho.vercel.app/package");
     const data = await response.json();
     return data;
   };

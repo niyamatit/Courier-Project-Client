@@ -24,8 +24,8 @@ export const PackageDetails = ({ bookingInfo }) => (
                     </div>
                     <div className='justify-end text-sm'>
                         <p>https://niyamatexpress.com/</p>
-                        <p>email:info@niyamatit.com</p>
-                        <p>Hotline: 01852583209</p>
+                        <p>email:support@niyamatexpress.com</p>
+                        <p>Hotline: 01969905735</p>
                     </div>
                 </div>
             </header>

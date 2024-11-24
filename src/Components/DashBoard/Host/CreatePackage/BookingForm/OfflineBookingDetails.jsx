@@ -11,7 +11,7 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
     <>
 
         <div className="invoice-container">
-        <p>Hotline: 01852583209</p>
+        <p>Hotline: 01969905735</p>
             <p className='text-xs'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
             <header className="header">
                 <div className="logo">
@@ -25,7 +25,7 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
                     <div className='justify-end text-sm'>
 
                         <p>https://niyamatexpress.com/</p>
-                        <p>email:info@niyamatit.com</p>
+                        <p>email:support@niyamatexpress.com</p>
                     </div>
                 </div>
             </header>
