@@ -45,7 +45,7 @@ const OfflineSticker = ({ bookingInfo }) => {
             {/* QR Code Section */}
             <div className="flex justify-end my-2">
                 <QRCode className="h-[50px]" value={bookingInfo?.CnNumber
-                } />
+                || 0} />
             </div>
 
             {/* Print Time (Placeholder example) */}
