@@ -1,97 +1,95 @@
 import { useQuery } from "@tanstack/react-query";
 import TableRow from "./TableRow";
-import { getOfflineBookings } from "../../../../api/bookings";
+import { getOfflineBooking } from "../../../../api/bookings";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 
 
 const OfflineBookingList = () => {
 
-    // const { data: packages = [], refetch } = useQuery({
-    //     queryKey: ['package'],
-    //     queryFn: async () => await getOfflineBookings(),
-    //   })
+  // const { data: packages = [], refetch } = useQuery({
+  //     queryKey: ['package'],
+  //     queryFn: async () => await getOfflineBookings(),
+  //   })
 
-const[verifiedUser] = useUsersData() 
 
-      const { data: packages = [], refetch } = useQuery({
-        queryKey: ['packages', verifiedUser?.email], // Query key includes user email
-        queryFn: () => getOfflineBookings(verifiedUser?.email), // Function to fetch packages
-        enabled: !!verifiedUser?.email, // Only run when email is available
-    });
+  const [verifiedUser] = useUsersData()
 
-    return (
-        <>
-        <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Offline Booking List</h1>
-        <div className='container mx-auto px-4 sm:px-8'>
-         
-          <div className='py-8'>
-            <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
-              <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'> 
-                <table className='min-w-full leading-normal'> 
-                  <thead>
-                    <tr className="text-lg font-rancho">
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                       Sender Name
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                       Receiver Name
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                        Booking Date
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                        Receiver Mobile 
-                      </th>
-  
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                        Cn Number
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                      >
-                        Action
-                      </th>
+  const { data: packages = [], refetch } = useQuery({
+    queryKey: ['packages', verifiedUser?.email], // Query key includes user email
+    queryFn: () => getOfflineBooking(verifiedUser?.email), // Function to fetch packages
+    enabled: !!verifiedUser?.email, // Only run when email is available
+  });
 
-                      
+  return (
+    <>
+      <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Offline Booking List</h1>
+      <div className='container mx-auto px-4 sm:px-8'>
 
-                    </tr>
-                  </thead>
-                  <tbody>
-                      {/* User data table row */}
-                      {packages &&
-                      packages.map(pack => (
-                        <TableRow
-                          key={pack._id}
-                          pack={pack}
-                          refetch={refetch}
-                        />
-                      ))}
-  
-                  </tbody>
-                </table>
-              </div>
+        <div className='py-8'>
+          <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
+            <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
+              <table className='min-w-full leading-normal'>
+                <thead>
+                  <tr className="text-lg font-rancho">
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      Sender Name
+                    </th>
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      Receiver Name
+                    </th>
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      Booking Date
+                    </th>
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      Receiver Mobile
+                    </th>
+
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      Cn Number
+                    </th>
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* User data table row */}
+                  {packages &&
+                    packages.map(pack => (
+                      <TableRow
+                        key={pack._id}
+                        pack={pack}
+                        refetch={refetch}
+                      />
+                    ))}
+
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-      </>
-    );
+      </div>
+    </>
+  );
 };
 
 export default OfflineBookingList;

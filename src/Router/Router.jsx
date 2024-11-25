@@ -73,6 +73,7 @@ import BookingInfo from "../Components/DashBoard/Host/CreatePackage/BranchBookin
 import MerchantPercelView from "../Components/DashBoard/Merchant/MerchantPercelView/MerchantPercelView";
 import MerchantParcelList from "../Components/DashBoard/Merchant/MerchantParcelList/MerchantParcelList";
 import AllBranch from "../Components/DashBoard/Admin/AllBranch/AllBranch";
+import OfflineBookingShow from "../Components/OfflineBookingShow/OfflineBookingShow";
 
 
 
@@ -653,6 +654,10 @@ export const router = createBrowserRouter([
       {
         path: "booking-info",
         element: <BookingInfo></BookingInfo>
+      },
+      {
+        path: "offline-booking",
+        element: <OfflineBookingShow></OfflineBookingShow>
       },
       {
         path: "merchantbooking-info",

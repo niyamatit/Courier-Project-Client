@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../../../../../../hooks/useAuth";
 import { getPackage, updateBooking } from "../../../../../../api/auth";
 import BookingModal from "../BookingModal";
@@ -10,6 +10,16 @@ const BookingInfo = () => {
     const { loading } = useAuth();
     const [selectedBooking, setSelectedBooking] = useState(null);
     const queryClient = useQueryClient();
+    const [initialBooking, setInitialBooking] = useState([]);
+
+
+
+    useEffect(() => {
+        if (initialBooking.length > 0) {
+            const indexedBookings = initialBooking.map((p, idx) => ({ ...p, idx: idx + 1 }));
+            setSelectedBooking(indexedBookings);
+        }
+    }, [initialBooking]);
 
     const {
         data: bookings = [],
@@ -18,6 +28,10 @@ const BookingInfo = () => {
         queryKey: ['bookings'],
         enabled: !loading,
         queryFn: async () => await getPackage(),
+        onSuccess: (data) => {
+            // Populate initialBooking when the data is fetched
+            setInitialBooking(data);
+        },
     });
 
     const mutation = useMutation({
@@ -47,7 +61,9 @@ const BookingInfo = () => {
                         <table className='min-w-full leading-normal'>
                             <thead>
                                 <tr>
-
+                                    <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
+                                        SL
+                                    </th>
                                     <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
                                         Sender Name
                                     </th>
@@ -73,8 +89,8 @@ const BookingInfo = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {bookings.map((booking) => (
-                                    <TableBooking key={booking._id} booking={booking} onView={handleView} />
+                                {bookings.map((booking, index) => (
+                                    <TableBooking key={booking._id} booking={{ ...booking, idx: index + 1 }} onView={handleView} />
                                 ))}
                             </tbody>
                         </table>

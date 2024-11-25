@@ -80,6 +80,12 @@ const AdminMenu = () => {
       <MenuItem
         icon={MdBookOnline}
 
+        label='Offline Booking view'
+        address='offline-booking'
+      />
+      <MenuItem
+        icon={MdBookOnline}
+
         label='Merchant Booking view'
         address='merchantbooking-info'
       />

@@ -124,6 +124,9 @@ const TableBranch = ({ branch, onView, refetch }) => {
     return (
         <tr className="font-rancho">
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 font-semibold whitespace-no-wrap">{branch?.idx}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <p className="text-gray-900 whitespace-no-wrap">{branch?.Date}</p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

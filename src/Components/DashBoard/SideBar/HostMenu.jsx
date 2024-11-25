@@ -85,6 +85,16 @@ const HostMenu = () => {
             label='Offline Data List'
             address='offline-booking-list'
           /></li>
+          <li><MenuItem
+            icon={FaList}
+            label='Online Data List'
+            address='booking-info'
+          /></li>
+          <li><MenuItem
+            icon={FaList}
+            label='International Booking List'
+            address='offline-booking-list'
+          /></li>
         </ul>
       </div>
       <div className="dropdown">

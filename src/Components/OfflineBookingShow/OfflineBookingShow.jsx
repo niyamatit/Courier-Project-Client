@@ -1,54 +1,56 @@
 
-import { useEffect, useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBranch, updateBranch } from "../../../../api/auth";
-import TableBranch from "./TableBranch";
-import BranchModal from "./BranchModal";
+import useAuth from "../../hooks/useAuth";
+import { useEffect, useState } from "react";
+import OfflineModal from "./OfflineModal";
+import TableOffline from "./TableOffline";
+import { getOffline, updateOffline } from "../../api/auth";
 
 
-const AllBranch = () => {
+const OfflineBookingShow = () => {
     const { loading } = useAuth();
-    const [selectedBranch, setSelectedBranch] = useState(null);
-    const [initialBranch, setInitialBranch] = useState([]);
+    const [selectedOffline, setSelectedOffline] = useState(null);
     const queryClient = useQueryClient();
+    const [initialOffline, setInitialOffline] = useState([]);
+
+
 
     useEffect(() => {
-        if (initialBranch.length > 0) {
-            const indexedBranchs = initialBranch.map((p, idx) => ({ ...p, idx: idx + 1 }));
-            setSelectedBranch(indexedBranchs);
+        if (initialOffline.length > 0) {
+            const indexedBookings = initialOffline.map((p, idx) => ({ ...p, idx: idx + 1 }));
+            setSelectedOffline(indexedBookings);
         }
-    }, [initialBranch]);
+    }, [initialOffline]);
 
     const {
-        data: branchs = [],
+        data: offlines = [],
         isLoading,
-        refetch,
     } = useQuery({
-        queryKey: ['branchs'],
+        queryKey: ['offlines'],
         enabled: !loading,
-        queryFn: async () => await getBranch(),
+        queryFn: async () => await getOffline(),
         onSuccess: (data) => {
             // Populate initialBooking when the data is fetched
-            setInitialBranch(data);
+            setInitialOffline(data);
         },
     });
+    console.log("offline", offlines)
 
     const mutation = useMutation({
-        mutationFn: updateBranch,
+        mutationFn: updateOffline,
         onSuccess: () => {
-            queryClient.invalidateQueries(['branchs']); // Refresh branchs after update
+            queryClient.invalidateQueries(['offliens']); // Refresh bookings after update
         },
         onError: (error) => {
-            console.error("Error updating branch:", error); // Handle error if needed
+            console.error("Error updating offline booking:", error); // Handle error if needed
         },
     });
 
-    const handleView = (branch) => setSelectedBranch(branch);
-    const handleCloseModal = () => setSelectedBranch(null);
+    const handleView = (offline) => setSelectedOffline(offline);
+    const handleCloseModal = () => setSelectedOffline(null);
 
-    const handleSave = (updatedBranch) => {
-        mutation.mutate(updatedBranch); // Update branch data
+    const handleSave = (updatedOffline) => {
+        mutation.mutate(updatedOffline); // Update booking data
     };
 
     if (isLoading) return <p>Loading...</p>;
@@ -60,55 +62,52 @@ const AllBranch = () => {
                     <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
                         <table className='min-w-full leading-normal'>
                             <thead>
-                                <tr>
+                                <tr className="text-lg font-rancho">
                                     <th
                                         scope='col'
                                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                     >
-                                        SL
+                                        Sender Name
                                     </th>
                                     <th
                                         scope='col'
                                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                     >
-                                        Date
+                                        Receiver Name
                                     </th>
                                     <th
                                         scope='col'
                                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                     >
-                                        Branch Name
+                                        Booking Date
+                                    </th>
+                                    <th
+                                        scope='col'
+                                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                                    >
+                                        Receiver Mobile
                                     </th>
 
                                     <th
                                         scope='col'
                                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                     >
-                                        Branch Number
+                                        Cn Number
                                     </th>
                                     <th
                                         scope='col'
                                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                     >
-                                        Branch Commission
-                                    </th>
-                                    <th
-                                        scope='col'
-                                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                                    >
-                                        Branch type
+                                        Action
                                     </th>
                                     <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
-                                        Actions
-                                    </th>
-                                    <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
-                                        Remove
+                                        Print
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {branchs.map((branch, index) => (
-                                    <TableBranch key={branch._id} branch={{ ...branch, idx: index + 1 }} refetch={refetch} onView={handleView} />
+                                {offlines.map((offline, index) => (
+                                    <TableOffline key={offline._id} offline={{ ...offline, idx: index + 1 }} onView={handleView} />
                                 ))}
                             </tbody>
                         </table>
@@ -116,16 +115,16 @@ const AllBranch = () => {
                 </div>
             </div>
 
-            {/* Render the modal if a branch is selected */}
-            {selectedBranch && (
-                <BranchModal
-                    branch={selectedBranch}
+            {/* Render the modal if a offline is selected */}
+            {selectedOffline && (
+                <OfflineModal
+                    offline={selectedOffline}
                     onClose={handleCloseModal}
-                    onSave={handleSave} // Pass handleSave to branchModal
+                    onSave={handleSave} // Pass handleSave to BookingModal
                 />
             )}
         </div>
     );
 };
 
-export default AllBranch;
+export default OfflineBookingShow;
