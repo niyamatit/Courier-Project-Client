@@ -6,17 +6,27 @@ import { FaBiking, FaWpforms } from "react-icons/fa";
 import { FaMoneyBill } from "react-icons/fa";
 import { FaList } from "react-icons/fa6";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
+import { useQuery } from "@tanstack/react-query";
+import axiosSecure from "../../../api/axiosSecure";
 
 
 
 const HostMenu = () => {
-
+ 
   const [verifiedUser] = useUsersData()
-
-
+  const {data: Branch_Balance = []} = useQuery({
+    queryKey :['Branch_Balance',verifiedUser?.email],
+    enabled: !!verifiedUser?.email,
+    queryFn: async()=>{
+      const res = await axiosSecure.get(`/recharge/taka/${verifiedUser?.email}`);
+      return res.data;
+    }
+  })
+  const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0);
   return (
     <>
       <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.name}</p>
+      <p className="text-2xl text-center font-semibold text-secondary">Balance:  {currentBalance}</p>
 
       <MenuItem
         icon={IoHome}

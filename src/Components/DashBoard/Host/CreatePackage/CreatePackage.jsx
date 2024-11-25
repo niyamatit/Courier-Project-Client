@@ -3,6 +3,9 @@ import { addPackage } from "../../../../api/package";
 import toast from "react-hot-toast";
 import PrintModal from "./PrintModal";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import axiosSecure from "../../../../api/axiosSecure";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 
 
@@ -47,7 +50,16 @@ const CreatePackage = () => {
     const [selectedArea, setSelectedArea] = useState("");
 
     const [verifiedUser] = useUsersData()
-
+    const queryClient = useQueryClient();
+    // Amount 
+    const {data: Branch_Balance = []} = useQuery({
+      queryKey :['Branch_Balance',verifiedUser?.email],
+      enabled: !!verifiedUser?.email,
+      queryFn: async()=>{
+        const res = await axiosSecure.get(`/recharge/taka/${verifiedUser?.email}`);
+        return res.data;
+      }
+    })
     const closeModal = () => {
         setIsOpen(false);
     };
@@ -90,17 +102,27 @@ const CreatePackage = () => {
 
     useEffect(() => {
         if (condition) {
-            let calculatedCod;
-            if (parseInt(condition) <= 1000) {
-                calculatedCod = parseInt(condition) * 0.1 + parseInt(condition); // 10% of the condition
+            const conditionValue = parseInt(condition);
+            let calculatedCod = 0;
+    
+            if (conditionValue <= 1000) {
+                calculatedCod = conditionValue + 20; 
             } else {
-                calculatedCod = parseInt(condition) * 0.15 + parseInt(condition); // 15% of the condition
+                const first1000Cod = 20;
+                const remaining = conditionValue - 1000;
+    
+                
+                const Extra1000 = Math.ceil(remaining / 1000); 
+                const extraCod = Extra1000 * 10; 
+                calculatedCod = conditionValue + first1000Cod + extraCod;
             }
+    
             setCod(calculatedCod);
         } else {
             setCod(null);
         }
     }, [condition]);
+    
 
     const update = 'Processing';
 
@@ -151,48 +173,85 @@ const CreatePackage = () => {
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
         const bookingTimestamp = new Date().toISOString();
-
-        // Update the balance based on the payment option
-        if (paymentOption === 'Cash') {
-            setBalance(prevBalance => prevBalance - parseInt(amount));
-        } else if (paymentOption === 'To Pay') {
-            setBalance(prevBalance => prevBalance + parseInt(amount));
-        }
-
-        const packageData = {
-            packageTrackingNumber: packageTrackingNumber.trackingNumber,
-            senderName,
-            senderMobile,
-            recipientName,
-            recipientMobile,
-            productDetails,
-            qty,
-            selectedDistrict,
-            selectedArea,
-            amount,
-            wordAmount,
-            booking: bookingTimestamp,
-            update,
-            cod,
-            deliveryOption,
-            paymentOption,
-            condition,
-            email: verifiedUser?.email
-        };
-
-        setBookingInfo(packageData);
-        setIsOpen(true);
+    
         try {
+            // Safely calculate the current balance
+            const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
+            const CodAmount = parseFloat(amount || 0);
+           
+            const newBalance = CurrentBalance - CodAmount;
+            
+    
+            // Check for insufficient balance
+            if (CodAmount > CurrentBalance) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Insufficient Balance",
+                    text: "You do not have enough balance to process this booking. Please recharge.",
+                });
+                return;
+            }
+    
+            const packageData = {
+                packageTrackingNumber: packageTrackingNumber.trackingNumber,
+                senderName,
+                senderMobile,
+                recipientName,
+                recipientMobile,
+                productDetails,
+                qty,
+                selectedDistrict,
+                selectedArea,
+                amount,
+                wordAmount,
+                booking: bookingTimestamp,
+                update,
+                cod,
+                deliveryOption,
+                paymentOption,
+                condition,
+                email: verifiedUser?.email,
+            };
+    
+            setBookingInfo(packageData);
+            setIsOpen(true);
+    
             const response = await addPackage(packageData);
-            console.table('Package created:', response);
+           
+            if (response?.insertedId) {
+                
+    
+                const updateBalanceResponse = await axiosSecure.put(
+                    `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
+                    { newBalance }
+                );
+               
+    
+                if (updateBalanceResponse.status === 200) {
+                    queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Parcel Added Successfully",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                } else {
+                    throw new Error("Failed to update branch balance.");
+                }
+            }
+    
             toast.success("Package Added!");
         } catch (error) {
-            toast.error(error.message);
+            console.error("Error:", error.message);
+            toast.error("An error occurred while creating the package.");
         }
-
+    
         form.reset();
-        setAmount(''); // Reset amount
+        setAmount('');
     };
+    
+    
 
     const formRef = useRef();
 
@@ -203,23 +262,24 @@ const CreatePackage = () => {
             </div>
             <div>
                 <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Create Package</h1>
-                <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1>
+                {/* <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1> */}
             </div>
             <hr />
 
             <form onSubmit={handleSubmit} ref={formRef}>
                 <div className='md:flex md:px-24'>
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Sender Name</span>
-                        </label>
-                        <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
-                    </div>
+                    
                     <div className="form-control md:ml-4 md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Sender Mobile</span>
                         </label>
                         <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
+                    </div>
+                    <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Sender Name</span>
+                        </label>
+                        <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
                     </div>
                 </div>
 

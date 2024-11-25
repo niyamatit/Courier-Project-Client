@@ -4,10 +4,11 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import axiosSecure from "../../../../../api/axiosSecure";
 import useAuth from "../../../../../hooks/useAuth";
+import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 
 
 const RechargeApply = () => {
-    const { user } = useAuth();
+    const [verifiedUser] = useUsersData();
     const {
         register,
         handleSubmit,
@@ -22,9 +23,10 @@ const RechargeApply = () => {
 
         const ApplyRechargeInformation = {
             Account_Name: data?.accountName || "",
-            Branch_Email: user?.email || "",
+            Branch_Email: verifiedUser?.email || "",
+            Branch_Name: verifiedUser?.name || "",
             Account_Number: data?.accountNumber || "",
-            Account_Amount: data?.accountAmount || "",
+            Branch_Request_Amount: data?.accountAmount || "",
             Recharge_Note: data?.rechargenote || "",
             Date: new Date().toISOString().split('T')[0],
             Status: "processing",
@@ -65,6 +67,7 @@ const RechargeApply = () => {
                                 <span className="text-red-500">{errors.accountName.message}</span>
                             )}
                         </div>
+                       
 
                         {/* account Number */}
                         <div className="col-span-2 md:col-span-2 lg:col-span-1">
@@ -86,7 +89,7 @@ const RechargeApply = () => {
                         {/* amount */}
                         <div className="field mt-2">
                             <label htmlFor="account amount:" className="block mb-2">
-                                Account amount
+                                Request amount
                             </label>
                             <InputText
                                 id="accountAmount"
