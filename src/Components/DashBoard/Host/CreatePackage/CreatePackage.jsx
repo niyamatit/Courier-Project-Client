@@ -269,7 +269,7 @@ const CreatePackage = () => {
             <form onSubmit={handleSubmit} ref={formRef}>
                 <div className='md:flex md:px-24'>
                     
-                    <div className="form-control md:ml-4 md:w-1/2">
+                    <div className="form-control md:mr-4 md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Sender Mobile</span>
                         </label>
@@ -282,6 +282,7 @@ const CreatePackage = () => {
                         <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
                     </div>
                 </div>
+                
 
                 {/* Sender email and receiver contact number */}
                 <div className='md:flex md:px-24'>
@@ -301,7 +302,7 @@ const CreatePackage = () => {
                 {/* Product Details and quantity */}
                 <div className='md:flex gap-5 md:px-24'>
                     <div className="form-control md:w-1/2">
-                        <label className="block text-gray-700 font-medium mb-1">
+                        <label className="block text-gray-700 font-medium mb-1 text-xl mt-1 ml-1">
                             Districts*
                         </label>
                         <select
@@ -317,7 +318,7 @@ const CreatePackage = () => {
                         </select>
                     </div>
                     <div className="form-control md:w-1/2">
-                        <label className="block text-gray-700 font-medium mb-1">
+                        <label className="block text-gray-700 font-medium mb-1 text-xl mt-1">
                             Area*
                         </label>
                         <select className={`select select-bordered w-full p-2 rounded-lg border`}
@@ -333,21 +334,22 @@ const CreatePackage = () => {
 
                     </div>
                 </div>
-
+                
                 <div className='md:flex gap-5 md:px-24'>
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Receiver Name</span>
-                        </label>
-                        <input type="text" placeholder="Enter Recipient name" className="input input-bordered" name='recipientName' required />
-                    </div>
-                    <div className="form-control md:w-1/2">
+                <div className="form-control md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
                         </label>
                         <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile' required />
 
                     </div>
+                    <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Receiver Name</span>
+                        </label>
+                        <input type="text" placeholder="Enter Recipient name" className="input input-bordered" name='recipientName' required />
+                    </div>
+                    
                 </div>
                 <div className='md:flex md:px-24'>
                     <div className="form-control md:w-1/2">

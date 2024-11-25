@@ -32,11 +32,13 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
 
             <div className="booking-details ">
                 <div className='flex justify-around'>
-                    <div>
-                        <Barcode className="h-[50px] w-60" value={bookingInfo?.CnNumber} />
-                        {/* <p>{bookingInfo?.packageTrackingNumber}</p> */}
-                        {/* <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} /> */}
-
+                <div>
+                        
+                        {bookingInfo?.CnNumber ? (
+                            <Barcode className="h-[50px] w-60" value={bookingInfo.CnNumber|| 0} />
+                        ) : (
+                            <p className="text-red-500">Tracking Number Not Available</p>
+                        )}
                     </div>
                     <div>
                         <strong>Booking: </strong>{bookingInfo?.bookingBranch}
