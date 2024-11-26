@@ -41,6 +41,7 @@ const CreatePackage = () => {
     const [condition, setCondition] = useState('')
     const [balance, setBalance] = useState(20000); // Initial branch balance
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
+    const [CnNumber,SetCnNumber] = useState("");
 
 
     const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -151,6 +152,10 @@ const CreatePackage = () => {
             .then(res => res.json())
             .then(data => setAllAreas(data))
     }, [])
+    const getDistrictName = (id) => {
+        const district = allDistricts.find(district => district.id === id);
+        return district ? district.name : "";
+      };
 
     useEffect(() => {
         if (selectedDistrict) {
@@ -160,20 +165,43 @@ const CreatePackage = () => {
         }
     }, [selectedDistrict]);
 
+    useEffect(()=>{
+
+        const fetchOnlineCnNumber = async ()=>{
+            try{
+                const res = await axiosSecure.get("/number");
+                if(res.data && res.data?.length > 0 && res.data[0].Online_CnNumber){
+                    SetCnNumber(res.data[0].Online_CnNumber)
+                }else{
+                    console.error("Error",res.data)
+                }
+                
+            }catch (error){
+              console.error("Error Fetching CN Number",error) 
+            }
+        }
+        fetchOnlineCnNumber();
+    },[])
+
 
     const handleSubmit = async (e) => {
+        
         e.preventDefault();
+        
         const form = e.target;
+        const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
         const recipientName = form.recipientName.value;
         const senderMobile = form.senderMobile.value;
+        const sender_Full_Adress = form.senderFullAdress.value;
+        const Receiver_Full_Adress = form.ReceiverFullAdress.value;
         const recipientMobile = form.recipientMobile.value;
         const productDetails = form.productDetails.value;
         const qty = form.qty.value;
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
         const bookingTimestamp = new Date().toISOString();
-    
+        
         try {
             // Safely calculate the current balance
             const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
@@ -200,16 +228,20 @@ const CreatePackage = () => {
                 recipientMobile,
                 productDetails,
                 qty,
-                selectedDistrict,
+                
                 selectedArea,
                 amount,
                 wordAmount,
                 booking: bookingTimestamp,
                 update,
-                cod,
+                conditionCharge:cod,
                 deliveryOption,
                 paymentOption,
                 condition,
+                Receiver_Full_Adress,
+                sender_Full_Adress,
+                CnNumber:CnNumber,
+                districtName:districtName,
                 email: verifiedUser?.email,
             };
     
@@ -239,6 +271,8 @@ const CreatePackage = () => {
                 } else {
                     throw new Error("Failed to update branch balance.");
                 }
+                const response = await axiosSecure.put("/Online/CnNmber");
+              SetCnNumber(response.data.nextNumber);
             }
     
             toast.success("Package Added!");
@@ -282,6 +316,12 @@ const CreatePackage = () => {
                         <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
                     </div>
                 </div>
+                <div className="form-control md:w-full md:px-24 mt-1">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Sender Full Address</span>
+                        </label>
+                        <input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
+                    </div>
                 
 
                 {/* Sender email and receiver contact number */}
@@ -308,6 +348,7 @@ const CreatePackage = () => {
                         <select
                             className={`select select-bordered w-full p-2 rounded-lg border`}
                             onChange={(e) => setSelectedDistrict(e.target.value)}
+                            name="district"
                         >
                             <option value="">Select District</option>
                             {allDistricts.map((district) => (
@@ -351,6 +392,12 @@ const CreatePackage = () => {
                     </div>
                     
                 </div>
+                <div className="form-control md:w-full md:px-24 mt-1">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Receiver Full Address</span>
+                        </label>
+                        <input type="text" placeholder="Enter Receiver Full Address" className="input input-bordered" name='ReceiverFullAdress' required />
+                    </div>
                 <div className='md:flex md:px-24'>
                     <div className="form-control md:w-1/2">
                         <label className="label">
@@ -387,9 +434,14 @@ const CreatePackage = () => {
                     </div>
                 </div>
 
-                <div className='md:px-24 mt-5 mb-5'>
-                    <p>Condition + charge : {cod}</p>
+               <div className="flex md:px-24 mt-5 mb-5 justify-between">
+               <div className=''>
+                    <p className="text-xl">Condition + charge : {cod || 0}</p>
                 </div>
+                <div>
+                    <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
+                </div>
+               </div>
 
                 <div className="form-control md:px-24 w-full">
                     <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />

@@ -69,7 +69,7 @@ const BookingForm = () => {
   useEffect(() => {
     const fetchCnNumber = async () => {
       try {
-        const response = await axiosSecure.get('/number');  // GET request to fetch the current CN number
+        const response = await axiosSecure.get('/number');  
 
         if (response.data && response.data?.length > 0 && response.data[0].CnNumber) {
           // Access the first item in the array and set the CnNumber
@@ -653,11 +653,11 @@ const {data: Branch_Balance = []} = useQuery({
                   watchValues={watchValues}
                   register={register}
                   name={"lot"}
-                  registerOptions={{ required: true }}
+                  registerOptions={{ required: false }}
                   errors={errors}
                   label="LOT"
                   placeholder="lot"
-                  required
+                  
                   readOnly
                   value={quantity
                     
