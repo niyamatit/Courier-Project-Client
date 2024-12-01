@@ -39,7 +39,7 @@ const StickerDetails = ({ bookingInfo }) => {
             </div>
 
             {/* Route Info */}
-            <p className="my-2 text-sm text-gray-700">Chittagong Road to Mohammapur, Dhaka</p>
+           
 
             {/* Package Info */}
             <p className="my-2 text-sm text-gray-700"><strong>{bookingInfo?.productDetails}</strong></p>
