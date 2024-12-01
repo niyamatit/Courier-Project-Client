@@ -31,9 +31,9 @@ export const PackageDetails = ({ bookingInfo }) => (
             </header>
 
             <div className="booking-details ">
-                <div className=''>
+                <div className='flex'>
                     <div>
-                        <Barcode className="ml-7 h-[50px]" value={bookingInfo?.CnNumber} />
+                        <Barcode className="ml-7 h-[50px] w-[200px]" value={bookingInfo?.CnNumber} />
                         <p>{bookingInfo?.CnNumber}</p>
                         <QRCode className="h-[50px]" value={bookingInfo?.CnNumber} />
 
