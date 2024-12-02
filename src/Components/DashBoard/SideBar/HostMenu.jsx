@@ -8,16 +8,21 @@ import { FaList } from "react-icons/fa6";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
+import { useState } from "react";
 
 
 
 const HostMenu = () => {
- 
+  const [showBalance, setShowBalance] = useState(false); 
+  const handleToggleBalance = () => {
+    setShowBalance(true);
+    setTimeout(() => setShowBalance(false), 2000); 
+  };
   const [verifiedUser] = useUsersData()
-  const {data: Branch_Balance = []} = useQuery({
-    queryKey :['Branch_Balance',verifiedUser?.email],
+  const { data: Branch_Balance = [] } = useQuery({
+    queryKey: ['Branch_Balance', verifiedUser?.email],
     enabled: !!verifiedUser?.email,
-    queryFn: async()=>{
+    queryFn: async () => {
       const res = await axiosSecure.get(`/recharge/taka/${verifiedUser?.email}`);
       return res.data;
     }
@@ -26,7 +31,17 @@ const HostMenu = () => {
   return (
     <>
       <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.name}</p>
-      <p className="text-2xl text-center font-semibold text-secondary">Balance:  {currentBalance}</p>
+      <div className="balance-container" onClick={handleToggleBalance}>
+        <p className="text-2xl text-center font-semibold text-secondary">
+          Balance: 
+          <span
+            className={`balance-animation ${showBalance ? "slide-in" : ""}`}
+          >
+            ট
+          </span>
+            {showBalance && currentBalance}
+        </p>
+      </div>
 
       <MenuItem
         icon={IoHome}
@@ -103,7 +118,7 @@ const HostMenu = () => {
           <li><MenuItem
             icon={FaList}
             label='International Booking List'
-            address='offline-booking-list'
+            address='international-booking-list'
           /></li>
         </ul>
       </div>
