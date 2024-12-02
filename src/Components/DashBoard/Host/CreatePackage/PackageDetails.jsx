@@ -31,16 +31,16 @@ export const PackageDetails = ({ bookingInfo }) => (
             </header>
 
             <div className="booking-details ">
-                <div className='flex justify-around'>
+                <div className='flex'>
                     <div>
-                        <Barcode className="ml-7 h-[50px]" value={bookingInfo?.CnNumber} />
+                        <Barcode className="ml-7 h-[50px] w-[200px]" value={bookingInfo?.CnNumber} />
                         <p>{bookingInfo?.CnNumber}</p>
                         <QRCode className="h-[50px]" value={bookingInfo?.CnNumber} />
 
                     </div>
-                    <div>
+                    {/* <div>
                          <strong>Booking: </strong>{bookingInfo?.origin}
-                    </div>
+                    </div> */}
                     <div>
                     <strong>Booking Date: </strong>
 {new Intl.DateTimeFormat('en-US', {
