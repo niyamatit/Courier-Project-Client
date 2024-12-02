@@ -19,10 +19,10 @@ const HostMenu = () => {
     setTimeout(() => setShowBalance(false), 2000); 
   };
   const [verifiedUser] = useUsersData()
-  const {data: Branch_Balance = []} = useQuery({
-    queryKey :['Branch_Balance',verifiedUser?.email],
+  const { data: Branch_Balance = [] } = useQuery({
+    queryKey: ['Branch_Balance', verifiedUser?.email],
     enabled: !!verifiedUser?.email,
-    queryFn: async()=>{
+    queryFn: async () => {
       const res = await axiosSecure.get(`/recharge/taka/${verifiedUser?.email}`);
       return res.data;
     }
@@ -118,7 +118,7 @@ const HostMenu = () => {
           <li><MenuItem
             icon={FaList}
             label='International Booking List'
-            address='offline-booking-list'
+            address='international-booking-list'
           /></li>
         </ul>
       </div>
