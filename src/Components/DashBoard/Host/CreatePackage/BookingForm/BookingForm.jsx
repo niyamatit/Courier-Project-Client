@@ -84,50 +84,92 @@ const BookingForm = () => {
 
     fetchCnNumber();  // Call the function to fetch the CN number on mount
   }, []);
-
+  
   useEffect(() => {
     if (codCharge > 0) {
+      // Calculate service charge
       let calculatedServiceCharge = 20;
       if (codCharge > 1000) {
         const additionalCharge = Math.ceil((codCharge - 1000) / 1000) * 10;
         calculatedServiceCharge += additionalCharge;
       }
-
+  
+      const calculatedSenderReceive = codCharge - calculatedServiceCharge;
+  
       setServiceCharge(calculatedServiceCharge);
-      setSenderReceive(codCharge - calculatedServiceCharge);
+      setSenderReceive(calculatedSenderReceive);
+      setValue("serviceCharge", calculatedServiceCharge);
+      setValue("senderReceive", calculatedSenderReceive);
     } else {
       setServiceCharge(0);
       setSenderReceive(0);
+      setValue("serviceCharge", 0);
+      setValue("senderReceive", 0);
     }
-
-
-    setValue("serviceCharge", serviceCharge);
-    setValue("senderReceive", senderReceive);
-  }, [codCharge, setValue, serviceCharge, senderReceive]);
-
-  // Handler for COD input changes
-  const handleCodChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    setCodCharge(isNaN(value) ? 0 : value);
-  };
-
-  // Handler for Sender will receive changes
+  }, [codCharge, setValue]);
+  
   const handleSenderReceiveChange = (e) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value)) {
-      const calculatedServiceCharge = Math.max(20, Math.ceil(value / 1000) * 10);
-      const calculatedCodCharge = value + calculatedServiceCharge;
+      // Reverse calculation
+      let calculatedServiceCharge = 20;
+  
+      if (value > 980) { 
+        const additionalCharge = Math.ceil((value - 980) / 990) * 10; 
+        calculatedServiceCharge = (calculatedServiceCharge+additionalCharge);
+      }
+  
+      const calculatedCodCharge =( value + calculatedServiceCharge);
+     
       setCodCharge(calculatedCodCharge);
       setSenderReceive(value);
+      
       setServiceCharge(calculatedServiceCharge);
+  
       setValue("serviceCharge", calculatedServiceCharge);
       setValue("codCharge", calculatedCodCharge);
     } else {
       setSenderReceive(0);
       setCodCharge(0);
       setServiceCharge(0);
+      setValue("serviceCharge", 0);
+      setValue("codCharge", 0);
     }
   };
+  
+  const handleCodChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    setCodCharge(isNaN(value) ? 0 : value);
+  };
+  
+  // const handleSenderReceiveChange = (e) => {
+  //   const value = parseInt(e.target.value, 10);
+  //   if (!isNaN(value)) {
+  //     let calculatedServiceCharge = 20;
+  
+  //     // Calculate reverse service charge
+  //     if (value > 980) {
+  //       const additionalCharge = Math.ceil((value - 980) / 990) * 10;
+  //       calculatedServiceCharge = 20 + additionalCharge;
+  //     }
+  
+  //     const calculatedCodCharge = value + calculatedServiceCharge;
+  
+  //     setCodCharge(calculatedCodCharge);
+  //     setSenderReceive(value);
+  //     setServiceCharge(calculatedServiceCharge);
+  
+  //     setValue("serviceCharge", calculatedServiceCharge);
+  //     setValue("codCharge", calculatedCodCharge);
+  //   } else {
+  //     setSenderReceive(0);
+  //     setCodCharge(0);
+  //     setServiceCharge(0);
+  //     setValue("serviceCharge", 0);
+  //     setValue("codCharge", 0);
+  //   }
+  // };
+  
 
 
 
@@ -753,45 +795,45 @@ const BookingForm = () => {
             </Section>
             {/* COD Section */}
             <Section additionalClasses="mt-2">
-              <div className="grid grid-cols-2 gap-2">
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"receiverPay"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="COD (Receiver will pay)"
-                  placeholder="Condition Amount"
-                  required
-                  onChange={handleCodChange}
-                  value={codCharge}
-                />
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"serviceCharge"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="COD Service charge"
-                  placeholder=""
-                  required
-                  value={serviceCharge}
-                  readOnly
-                />
-              </div>
-              <InputField
-                watchValues={watchValues}
-                register={register}
-                name={"senderReceive"}
-                registerOptions={{ required: true }}
-                errors={errors}
-                label="Sender will receive"
-                placeholder=""
-                required
-                onChange={handleSenderReceiveChange}
-                value={senderReceive}
-              />
-            </Section>
+    <div className="grid grid-cols-2 gap-2">
+      <InputField
+        watchValues={watchValues}
+        register={register}
+        name={"receiverPay"}
+        registerOptions={{ required: true }}
+        errors={errors}
+        label="COD (Receiver will pay)"
+        placeholder="Condition Amount"
+        required
+        onChange={handleCodChange} 
+        value={codCharge} 
+      />
+      <InputField
+        watchValues={watchValues}
+        register={register}
+        name={"serviceCharge"}
+        registerOptions={{ required: true }}
+        errors={errors}
+        label="COD Service charge"
+        placeholder=""
+        required
+        value={serviceCharge}
+        readOnly
+      />
+    </div>
+    <InputField
+      watchValues={watchValues}
+      register={register}
+      name={"senderReceive"}
+      registerOptions={{ required: true }}
+      errors={errors}
+      label="Sender will receive"
+      placeholder=""
+      required
+      onChange={handleSenderReceiveChange} 
+      value={senderReceive} 
+    />
+  </Section>
 
             .
           </div>
