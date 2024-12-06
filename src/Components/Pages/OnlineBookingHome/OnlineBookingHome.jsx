@@ -222,7 +222,7 @@ const OnlineBookingHome = () => {
             // }
 
             const packageData = {
-                packageTrackingNumber: packageTrackingNumber.trackingNumber,
+                packageTrackingNumber: CnNumber,
                 senderName,
                 senderMobile,
                 recipientName,
@@ -252,7 +252,13 @@ const OnlineBookingHome = () => {
             const response = await addPackage(packageData);
 
             if (response?.insertedId) {
-
+    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Parcel Added Successfully",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
 
                 // const updateBalanceResponse = await axiosSecure.put(
                 //     `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
@@ -262,13 +268,7 @@ const OnlineBookingHome = () => {
 
                 // if (updateBalanceResponse.status === 200) {
                 //     queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
-                //     Swal.fire({
-                //         position: "top-end",
-                //         icon: "success",
-                //         title: "Parcel Added Successfully",
-                //         showConfirmButton: false,
-                //         timer: 1500,
-                //     });
+                
                 // } else {
                 //     throw new Error("Failed to update branch balance.");
                 // }

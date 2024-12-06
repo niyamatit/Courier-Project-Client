@@ -200,7 +200,7 @@ const CreatePackage = () => {
         const qty = form.qty.value;
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
-        const bookingTimestamp = new Date().toISOString().split('T')[0];
+        const bookingTimestamp = new Date();
         try {
             // Safely calculate the current balance
             const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
@@ -220,7 +220,7 @@ const CreatePackage = () => {
             }
 
             const packageData = {
-                packageTrackingNumber: packageTrackingNumber.trackingNumber,
+                packageTrackingNumber: CnNumber,
                 senderName,
                 senderMobile,
                 recipientName,
