@@ -1,10 +1,12 @@
-import { useRef, useEffect, useState } from "react";
-
-import toast from "react-hot-toast";
 
 
+import { useEffect, useRef, useState } from "react";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axiosSecure from "../../../api/axiosSecure";
+import Swal from "sweetalert2";
 import { addPackage } from "../../../api/package";
-import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 import PrintModal from "../../DashBoard/Host/CreatePackage/PrintModal";
 
 
@@ -41,6 +43,7 @@ const OnlineBookingHome = () => {
     const [condition, setCondition] = useState('')
     const [balance, setBalance] = useState(20000); // Initial branch balance
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
+    const [CnNumber, SetCnNumber] = useState("");
 
 
     const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -49,8 +52,17 @@ const OnlineBookingHome = () => {
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
 
-    const{user} = useAuth()
-
+    const [verifiedUser] = useUsersData()
+    const queryClient = useQueryClient();
+    // Amount 
+    const { data: Branch_Balance = [] } = useQuery({
+        queryKey: ['Branch_Balance', verifiedUser?.email],
+        enabled: !!verifiedUser?.email,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/recharge/taka/${verifiedUser?.email}`);
+            return res.data;
+        }
+    })
     const closeModal = () => {
         setIsOpen(false);
     };
@@ -61,7 +73,7 @@ const OnlineBookingHome = () => {
 
 
 
-     // Balance and Booking Button Logic
+    // Balance and Booking Button Logic
     useEffect(() => {
         if (paymentOption === 'Cash' && balance < parseInt(amount)) {
             setIsBookingDisabled(true);
@@ -93,17 +105,27 @@ const OnlineBookingHome = () => {
 
     useEffect(() => {
         if (condition) {
-            let calculatedCod;
-            if (parseInt(condition) <= 1000) {
-                calculatedCod = parseInt(condition) * 0.1 + parseInt(condition); // 10% of the condition
+            const conditionValue = parseInt(condition);
+            let calculatedCod = 0;
+
+            if (conditionValue <= 1000) {
+                calculatedCod = conditionValue + 20;
             } else {
-                calculatedCod = parseInt(condition) * 0.15 + parseInt(condition); // 15% of the condition
+                const first1000Cod = 20;
+                const remaining = conditionValue - 1000;
+
+
+                const Extra1000 = Math.ceil(remaining / 1000);
+                const extraCod = Extra1000 * 10;
+                calculatedCod = conditionValue + first1000Cod + extraCod;
             }
+
             setCod(calculatedCod);
         } else {
             setCod(null);
         }
     }, [condition]);
+
 
     const update = 'Processing';
 
@@ -122,16 +144,20 @@ const OnlineBookingHome = () => {
 
 
     useEffect(() => {
-        fetch('districts.json')
+        fetch('/districts.json')
             .then(res => res.json())
             .then(data => setAllDistricts(data))
     }, [])
 
     useEffect(() => {
-        fetch('areas.json')
+        fetch('/areas.json')
             .then(res => res.json())
             .then(data => setAllAreas(data))
     }, [])
+    const getDistrictName = (id) => {
+        const district = allDistricts.find(district => district.id === id);
+        return district ? district.name : "";
+    };
 
     useEffect(() => {
         if (selectedDistrict) {
@@ -141,99 +167,163 @@ const OnlineBookingHome = () => {
         }
     }, [selectedDistrict]);
 
-   
+    useEffect(() => {
 
+        const fetchOnlineCnNumber = async () => {
+            try {
+                const res = await axiosSecure.get("/number");
+                if (res.data && res.data?.length > 0 && res.data[0].Online_CnNumber) {
+                    SetCnNumber(res.data[0].Online_CnNumber)
+                } else {
+                    console.error("Error", res.data)
+                }
+
+            } catch (error) {
+                console.error("Error Fetching CN Number", error)
+            }
+        }
+        fetchOnlineCnNumber();
+    }, [])
 
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
+
         const form = e.target;
+        const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
         const recipientName = form.recipientName.value;
         const senderMobile = form.senderMobile.value;
+        const sender_Full_Adress = form.senderFullAdress.value;
+        const Receiver_Full_Adress = form.ReceiverFullAdress.value;
         const recipientMobile = form.recipientMobile.value;
         const productDetails = form.productDetails.value;
         const qty = form.qty.value;
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
-        const bookingTimestamp = new Date().toISOString();
-
-        // Update the balance based on the payment option
-        if (paymentOption === 'Cash') {
-            setBalance(prevBalance => prevBalance - parseInt(amount));
-        } else if (paymentOption === 'To Pay') {
-            setBalance(prevBalance => prevBalance + parseInt(amount));
-        }
-
-        const packageData = {
-            packageTrackingNumber: packageTrackingNumber.trackingNumber,
-            senderName,
-            senderMobile,
-            recipientName,
-            recipientMobile,
-            productDetails,
-            qty,
-            selectedDistrict,
-            selectedArea,
-            amount,
-            wordAmount,
-            booking: bookingTimestamp,
-            update,
-            cod,
-            deliveryOption,
-            paymentOption,
-            condition,
-            email: user?.email
-        };
-
-        setBookingInfo(packageData);
-        setIsOpen(true);
+        const bookingTimestamp = new Date().toISOString().split('T')[0];
         try {
+            // Safely calculate the current balance
+            // const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
+            // const CodAmount = parseFloat(amount || 0);
+
+            // const newBalance = CurrentBalance - CodAmount;
+
+
+            // Check for insufficient balance
+            // if (CodAmount > CurrentBalance) {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Insufficient Balance",
+            //         text: "You do not have enough balance to process this booking. Please recharge.",
+            //     });
+            //     return;
+            // }
+
+            const packageData = {
+                packageTrackingNumber: packageTrackingNumber.trackingNumber,
+                senderName,
+                senderMobile,
+                recipientName,
+                recipientMobile,
+                productDetails,
+                qty,
+                selectedArea,
+                amount,
+                wordAmount,
+                booking: bookingTimestamp,
+                update,
+                conditionCharge: cod,
+                deliveryOption,
+                paymentOption,
+                condition,
+                Receiver_Full_Adress,
+                sender_Full_Adress,
+                CnNumber: CnNumber,
+                districtName: districtName,
+                email: verifiedUser?.email || 'User Online Booking',
+                User_Online_Booking_From_Home_Page:'User_Online_Booking_From_Home_Page'
+            };
+
+            setBookingInfo(packageData);
+            setIsOpen(true);
+
             const response = await addPackage(packageData);
-            console.table('Package created:', response);
+
+            if (response?.insertedId) {
+
+
+                // const updateBalanceResponse = await axiosSecure.put(
+                //     `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
+                //     { newBalance }
+                // );
+
+
+                // if (updateBalanceResponse.status === 200) {
+                //     queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
+                //     Swal.fire({
+                //         position: "top-end",
+                //         icon: "success",
+                //         title: "Parcel Added Successfully",
+                //         showConfirmButton: false,
+                //         timer: 1500,
+                //     });
+                // } else {
+                //     throw new Error("Failed to update branch balance.");
+                // }
+                const response = await axiosSecure.put("/Online/CnNmber");
+                SetCnNumber(response.data.nextNumber);
+            }
+
             toast.success("Package Added!");
         } catch (error) {
-            toast.error(error.message);
+            console.error("Error:", error.message);
+            toast.error("An error occurred while creating the package.");
         }
 
         form.reset();
-        setAmount(''); // Reset amount
+        setAmount('');
     };
+
+
 
     const formRef = useRef();
 
-
-
-
     return (
-        <div className="my-10">
-            <div>
-                <h1 className="text-4xl font-bold font-rancho text-secondary text-center mb-5">Online Booking</h1>
-            </div>
-            {/* <div className="flex justify-center">
+        <div className="mb-10">
+            <div className="flex justify-center">
                 <img className="h-[50%]" src="https://t4.ftcdn.net/jpg/07/39/32/99/360_F_739329921_05Swu26SxilYCQOPqlWQ8WcPiw4gcm9S.jpg" alt="" />
-            </div> */}
-           {/* <div>
-           <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Create Package</h1>
-           <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1>
-           </div> */}
+            </div>
+            <div>
+                <h1 className="text-3xl font-bold font-rancho text-secondary text-center mb-5">Online Booking</h1>
+                {/* <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1> */}
+            </div>
             <hr />
 
             <form onSubmit={handleSubmit} ref={formRef}>
                 <div className='md:flex md:px-24'>
+
+                    <div className="form-control md:mr-4 md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Sender Mobile</span>
+                        </label>
+                        <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
+                    </div>
                     <div className="form-control md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Sender Name</span>
                         </label>
                         <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
                     </div>
-                    <div className="form-control md:ml-4 md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Sender Mobile</span>
-                        </label>
-                        <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
-                    </div>
                 </div>
+                <div className="form-control md:w-full md:px-24 mt-1">
+                    <label className="label">
+                        <span className="label-text font-rancho text-xl">Sender Full Address</span>
+                    </label>
+                    <input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
+                </div>
+
 
                 {/* Sender email and receiver contact number */}
                 <div className='md:flex md:px-24'>
@@ -251,14 +341,15 @@ const OnlineBookingHome = () => {
                     </div>
                 </div>
                 {/* Product Details and quantity */}
-                <div className='md:flex gap-5 mt-3 md:px-24'>
+                <div className='md:flex gap-5 md:px-24'>
                     <div className="form-control md:w-1/2">
-                        <label className="block text-gray-700 font-medium mb-1">
+                        <label className="block text-gray-700 font-medium mb-1 text-xl mt-1 ml-1">
                             Districts*
                         </label>
                         <select
                             className={`select select-bordered w-full p-2 rounded-lg border`}
                             onChange={(e) => setSelectedDistrict(e.target.value)}
+                            name="district"
                         >
                             <option value="">Select District</option>
                             {allDistricts.map((district) => (
@@ -269,7 +360,7 @@ const OnlineBookingHome = () => {
                         </select>
                     </div>
                     <div className="form-control md:w-1/2">
-                        <label className="block text-gray-700 font-medium mb-1">
+                        <label className="block text-gray-700 font-medium mb-1 text-xl mt-1">
                             Area*
                         </label>
                         <select className={`select select-bordered w-full p-2 rounded-lg border`}
@@ -289,17 +380,24 @@ const OnlineBookingHome = () => {
                 <div className='md:flex gap-5 md:px-24'>
                     <div className="form-control md:w-1/2">
                         <label className="label">
-                            <span className="label-text font-rancho text-xl">Receiver Name</span>
-                        </label>
-                        <input type="text" placeholder="Enter Recipient name" className="input input-bordered" name='recipientName' required />
-                    </div>
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
                             <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
                         </label>
                         <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile' required />
 
                     </div>
+                    <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Receiver Name</span>
+                        </label>
+                        <input type="text" placeholder="Enter Recipient name" className="input input-bordered" name='recipientName' required />
+                    </div>
+
+                </div>
+                <div className="form-control md:w-full md:px-24 mt-1">
+                    <label className="label">
+                        <span className="label-text font-rancho text-xl">Receiver Full Address</span>
+                    </label>
+                    <input type="text" placeholder="Enter Receiver Full Address" className="input input-bordered" name='ReceiverFullAdress' required />
                 </div>
                 <div className='md:flex md:px-24'>
                     <div className="form-control md:w-1/2">
@@ -337,19 +435,24 @@ const OnlineBookingHome = () => {
                     </div>
                 </div>
 
-                <div className='md:px-24 mt-5 mb-5'>
-                    <p>Condition + charge : {cod}</p>
+                <div className="flex md:px-24 mt-5 mb-5 justify-between">
+                    <div className=''>
+                        <p className="text-xl">Condition + charge : {cod || 0}</p>
+                    </div>
+                    <div>
+                        <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
+                    </div>
                 </div>
 
                 <div className="form-control md:px-24 w-full">
-                    <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled}/>
-                    {isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
+                    <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" />
+                    
                 </div>
             </form>
 
             <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
 
-            
+
 
         </div>
     );
