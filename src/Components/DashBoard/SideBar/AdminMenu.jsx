@@ -74,7 +74,7 @@ const AdminMenu = () => {
       <MenuItem
         icon={MdBookOnline}
 
-        label='Branch Booking view'
+        label='Online Booking view'
         address='booking-info'
       />
       <MenuItem
