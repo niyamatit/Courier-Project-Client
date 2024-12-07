@@ -6,7 +6,7 @@ import Section from "./Section";
 import axiosSecure from "../../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import OfflinePrintModal from "./OfflinePrintModal";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 
 const BookingForm = () => {
@@ -30,6 +30,7 @@ const BookingForm = () => {
   const [totalCharge, setTotalCharge] = useState(0);
   const [senderContactNo, setSenderContactNo] = useState("");
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
+  const [lot, setLot] = useState();
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -43,6 +44,7 @@ const BookingForm = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
+  const queryClient = useQueryClient();
 
 
 
@@ -67,7 +69,7 @@ const BookingForm = () => {
   useEffect(() => {
     const fetchCnNumber = async () => {
       try {
-        const response = await axiosSecure.get('/number');  // GET request to fetch the current CN number
+        const response = await axiosSecure.get('/number');
 
         if (response.data && response.data?.length > 0 && response.data[0].CnNumber) {
           // Access the first item in the array and set the CnNumber
@@ -82,33 +84,126 @@ const BookingForm = () => {
 
     fetchCnNumber();  // Call the function to fetch the CN number on mount
   }, []);
+  
   useEffect(() => {
     if (codCharge > 0) {
+      // Calculate service charge
       let calculatedServiceCharge = 20;
       if (codCharge > 1000) {
-        const additionalCharge = Math.ceil((codCharge - 1000) / 1000) * 10; // 10 per additional 1000
+        const additionalCharge = Math.ceil((codCharge - 1000) / 1000) * 10;
         calculatedServiceCharge += additionalCharge;
       }
-
+  
+      const calculatedSenderReceive = codCharge - calculatedServiceCharge;
+  
       setServiceCharge(calculatedServiceCharge);
-      setSenderReceive(codCharge - calculatedServiceCharge);
+      setSenderReceive(calculatedSenderReceive);
+      setValue("serviceCharge", calculatedServiceCharge);
+      setValue("senderReceive", calculatedSenderReceive);
     } else {
       setServiceCharge(0);
       setSenderReceive(0);
+      setValue("serviceCharge", 0);
+      setValue("senderReceive", 0);
     }
-
-    // Update form values for serviceCharge and senderReceive
-    setValue("serviceCharge", serviceCharge);
-    setValue("senderReceive", senderReceive);
-  }, [codCharge, setValue, serviceCharge, senderReceive]);
-
+  }, [codCharge, setValue]);
+  
+  const handleSenderReceiveChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value)) {
+      // Reverse calculation
+      let calculatedServiceCharge = 20;
+  
+      if (value > 980) { 
+        const additionalCharge = Math.ceil((value - 980) / 990) * 10; 
+        calculatedServiceCharge = (calculatedServiceCharge+additionalCharge);
+      }
+  
+      const calculatedCodCharge =( value + calculatedServiceCharge);
+     
+      setCodCharge(calculatedCodCharge);
+      setSenderReceive(value);
+      
+      setServiceCharge(calculatedServiceCharge);
+  
+      setValue("serviceCharge", calculatedServiceCharge);
+      setValue("codCharge", calculatedCodCharge);
+    } else {
+      setSenderReceive(0);
+      setCodCharge(0);
+      setServiceCharge(0);
+      setValue("serviceCharge", 0);
+      setValue("codCharge", 0);
+    }
+  };
+  
   const handleCodChange = (e) => {
     const value = parseInt(e.target.value, 10);
     setCodCharge(isNaN(value) ? 0 : value);
   };
+  
+  // const handleSenderReceiveChange = (e) => {
+  //   const value = parseInt(e.target.value, 10);
+  //   if (!isNaN(value)) {
+  //     let calculatedServiceCharge = 20;
+  
+  //     // Calculate reverse service charge
+  //     if (value > 980) {
+  //       const additionalCharge = Math.ceil((value - 980) / 990) * 10;
+  //       calculatedServiceCharge = 20 + additionalCharge;
+  //     }
+  
+  //     const calculatedCodCharge = value + calculatedServiceCharge;
+  
+  //     setCodCharge(calculatedCodCharge);
+  //     setSenderReceive(value);
+  //     setServiceCharge(calculatedServiceCharge);
+  
+  //     setValue("serviceCharge", calculatedServiceCharge);
+  //     setValue("codCharge", calculatedCodCharge);
+  //   } else {
+  //     setSenderReceive(0);
+  //     setCodCharge(0);
+  //     setServiceCharge(0);
+  //     setValue("serviceCharge", 0);
+  //     setValue("codCharge", 0);
+  //   }
+  // };
+  
+
+
+
 
   const onSubmit = async (data) => {
     try {
+
+      console.log("Branch_Balance:", Branch_Balance);
+
+
+      if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Branch balance data is not available. Please reload the page.",
+        });
+        return;
+      }
+
+      // Calculate the current and new balance
+      const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0);
+      const codAmount = parseFloat(data.receiverPay || 0);
+      const newBalance = currentBalance - codAmount;
+
+      if (codAmount > currentBalance) {
+        Swal.fire({
+          icon: "error",
+          title: "Insufficient Balance",
+          text: "You do not have enough balance to process this booking. Please recharge the balance.",
+        });
+        return;
+      }
+
+      // Build the booking info payload
       data.CnNumber = cnNumber;
       const Bookinginfo = {
         senderName: data.senderName || senderInfo.name,
@@ -116,6 +211,7 @@ const BookingForm = () => {
         receiverName: data.receiverName || receiverInfo.ReceiverName,
         receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
         branch: data.branch,
+        email: verifiedUser?.email,
         customerCode: data.customerCode,
         counter: data.counter,
         customerName: data.customerName,
@@ -139,34 +235,53 @@ const BookingForm = () => {
         othCharge: data.othCharge,
         receiverPay: data.receiverPay,
         serviceCharge: data.serviceCharge,
-        senderReceive: data.senderReceive
+        senderReceive: data.senderReceive,
+        Date: new Date().toISOString().split('T')[0]
+      };
 
-      }
-
-      // Submit the parcel data
+      // Submit booking information
       const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
-      if (ParcelProductDetails.data.insertedId) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Parcel Added Successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
 
-        // Increment the CN number using PUT request
-        const response = await axiosSecure.put('/number');
-        setCnNumber(response.data.nextNumber); // Set the next CN number for the next booking
-        // console.log("Cn Number",response.data.nextNumber)
+      if (ParcelProductDetails.data.insertedId) {
+        const updateBalanceResponse = await axiosSecure.put(
+          `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
+          { newBalance }
+        );
+
+        if (updateBalanceResponse.status === 200) {
+          queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
+
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Parcel Added Successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          // Increment the CN number
+          const response = await axiosSecure.put("/number");
+          setCnNumber(response.data.nextNumber);
+        } else {
+          throw new Error("Failed to update branch balance.");
+        }
+        setBookingInfo(Bookinginfo)
       }
-      setBookingInfo(Bookinginfo);
     } catch (error) {
       console.error("Error adding parcel:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong while processing the booking.",
+      });
     }
 
-
-    setIsOpen(true);
+    setIsOpen(true); // Open the modal after successful submission
   };
+
+
+
+
 
 
   useEffect(() => {
@@ -260,13 +375,18 @@ const BookingForm = () => {
     queryFn: async () => {
       const res = await axiosSecure.get("/users");
       return res.data;
-
     }
-
-  });
-
+  })
   const [verifiedUser] = useUsersData();
-
+  // Amount 
+  const { data: Branch_Balance = [] } = useQuery({
+    queryKey: ['Branch_Balance', verifiedUser?.email],
+    enabled: !!verifiedUser?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/recharge/taka/${verifiedUser?.email}`);
+      return res.data;
+    }
+  })
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -325,7 +445,9 @@ const BookingForm = () => {
                 placeholder="sender contact no."
                 required
                 onChange={(e) => setSenderContactNo(e.target.value)}
-                type={"number"}
+                type="number"
+                minLength={11}
+
               />
               <InputField
                 watchValues={watchValues}
@@ -419,6 +541,7 @@ const BookingForm = () => {
                 label="Contact No."
                 placeholder="receiver contact no."
                 onChange={(e) => setReceiverContactNo(e.target.value)}
+                type="number"
               />
               <InputField
                 watchValues={watchValues}
@@ -572,11 +695,17 @@ const BookingForm = () => {
                   watchValues={watchValues}
                   register={register}
                   name={"lot"}
-                  registerOptions={{ required: true }}
+                  registerOptions={{ required: false }}
                   errors={errors}
                   label="LOT"
                   placeholder="lot"
-                  required
+
+                  readOnly
+                  value={quantity
+
+                  }
+                  type="number"
+
                 />
               </div>
               <div className="grid grid-cols-3 gap-1">
@@ -589,6 +718,9 @@ const BookingForm = () => {
                   label="Qty"
                   placeholder="quantity"
                   required
+
+
+                  type="number"
                   onChange={(e) => {
                     setQuantity(e.target.value);
                     setIsManuallyEditing(false);
@@ -614,6 +746,7 @@ const BookingForm = () => {
                   label="Rate"
                   placeholder="rate"
                   required
+                  type="number"
                   onChange={(e) => {
                     setRate(e.target.value);
                     setIsManuallyEditing(false);
@@ -629,6 +762,7 @@ const BookingForm = () => {
                   label="Total Charge"
                   placeholder="total charge"
                   required
+                  type="number"
                   value={totalCharge}
                   onChange={(e) => {
                     setTotalCharge(e.target.value);
@@ -642,7 +776,8 @@ const BookingForm = () => {
                   registerOptions={{ required: false }}
                   errors={errors}
                   label="H/D Charge"
-                  placeholder=""
+                  placeholder="Home Delivery Charge"
+                  type="number"
 
                 />
                 <InputField
@@ -652,51 +787,54 @@ const BookingForm = () => {
                   registerOptions={{ required: false }}
                   errors={errors}
                   label="Oth. Charge"
-                  placeholder=""
+                  placeholder="Other Charge"
+                  type="number"
 
                 />
               </div>
             </Section>
             {/* COD Section */}
             <Section additionalClasses="mt-2">
-              <div className="grid grid-cols-2 gap-2">
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"receiverPay"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="COD (Receiver will pay)"
-                  placeholder=""
-                  required
-                  onChange={handleCodChange} // Handle COD input change
-                />
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"serviceCharge"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="COD Service charge"
-                  placeholder=""
-                  required
-                  value={serviceCharge}
-                  readOnly
-                />
-              </div>
-              <InputField
-                watchValues={watchValues}
-                register={register}
-                name={"senderReceive"}
-                registerOptions={{ required: true }}
-                errors={errors}
-                label="Sender will receive"
-                placeholder=""
-                required
-                value={senderReceive}
-                readOnly
-              />
-            </Section>
+    <div className="grid grid-cols-2 gap-2">
+      <InputField
+        watchValues={watchValues}
+        register={register}
+        name={"receiverPay"}
+        registerOptions={{ required: true }}
+        errors={errors}
+        label="COD (Receiver will pay)"
+        placeholder="Condition Amount"
+        required
+        onChange={handleCodChange} 
+        value={codCharge} 
+      />
+      <InputField
+        watchValues={watchValues}
+        register={register}
+        name={"serviceCharge"}
+        registerOptions={{ required: true }}
+        errors={errors}
+        label="COD Service charge"
+        placeholder=""
+        required
+        value={serviceCharge}
+        readOnly
+      />
+    </div>
+    <InputField
+      watchValues={watchValues}
+      register={register}
+      name={"senderReceive"}
+      registerOptions={{ required: true }}
+      errors={errors}
+      label="Sender will receive"
+      placeholder=""
+      required
+      onChange={handleSenderReceiveChange} 
+      value={senderReceive} 
+    />
+  </Section>
+
             .
           </div>
         </div>

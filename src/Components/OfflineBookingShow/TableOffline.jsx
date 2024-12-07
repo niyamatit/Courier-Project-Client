@@ -1,10 +1,10 @@
 import { useState } from "react";
-import PrintModal from "../PrintModal";
+import OfflinePrintModal from "../DashBoard/Host/CreatePackage/BookingForm/OfflinePrintModal";
 
 
-const TableBooking = ({ booking, onView }) => {
+const TableOffline = ({ offline, onView }) => {
 
-    const [bookingInfo, setBookingInfo] = useState(null);
+    const [offlineBookingShow, setOfflineBooking] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
 
 
@@ -13,7 +13,7 @@ const TableBooking = ({ booking, onView }) => {
     };
 
     const print = () => {
-        setBookingInfo(booking);
+        setOfflineBooking(offline);
         setIsOpen(true);
     }
 
@@ -21,33 +21,37 @@ const TableBooking = ({ booking, onView }) => {
         <>
             <tr className="font-rancho">
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>{booking?.idx}</p>
-                </td>
-                <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>{booking?.bookingTimestamp}</p>
-                </td>
-                <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <div className='flex items-center'>
-                        <p className='text-gray-900 whitespace-no-wrap'>
-                            {booking?.senderName}
-                        </p>
+                        <div className='flex-shrink-0'>
+                            <div className='block relative'>
+                                <p className='text-gray-900 whitespace-no-wrap'>
+                                    {offline?.senderName}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>{booking?.recipientName}</p>
+                    <p className='text-gray-900 whitespace-no-wrap'>{offline?.receiverName}</p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>{booking?.senderMobile}</p>
+                    <p className='text-gray-900 whitespace-no-wrap'>
+                        {offline?.bookingDate}
+                    </p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>{booking?.recipientMobile}</p>
+                    <p className='text-gray-900 whitespace-no-wrap'>
+                        {offline?.receiverContactNo}
+                    </p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>{booking?.productDetails}</p>
+                    <p className='text-gray-900 whitespace-no-wrap'>
+                        {offline?.CnNumber}
+                    </p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <button
-                        onClick={() => onView(booking)}
+                        onClick={() => onView(offline)}
                         className='text-blue-500 hover:underline'
                     >
                         View
@@ -65,8 +69,8 @@ const TableBooking = ({ booking, onView }) => {
                     </button>
                 </td>
             </tr>
-            <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo}></PrintModal>
+            <OfflinePrintModal closeModal={closeModal} isOpen={isOpen} offlineBookingShow={offlineBookingShow}></OfflinePrintModal>
         </>
     );
 };
-export default TableBooking;
+export default TableOffline;

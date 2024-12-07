@@ -9,8 +9,8 @@ const StickerDetails = ({ bookingInfo }) => {
 
             {/* Barcode Section */}
             <div className="my-2">
-                <Barcode className="h-[50px] w-full" value={bookingInfo?.packageTrackingNumber} />
-                <p className="text-sm text-gray-700">{bookingInfo?.packageTrackingNumber}/{bookingInfo?.qty}</p>
+                <Barcode className="h-[50px] w-full" value={bookingInfo?.CnNumber} />
+                <p className="text-sm text-gray-700">{bookingInfo?.CnNumber}/{bookingInfo?.qty}</p>
             </div>
 
             {/* Payment and Booking Info */}
@@ -20,7 +20,16 @@ const StickerDetails = ({ bookingInfo }) => {
                         ? <p><strong>Cash</strong> - {bookingInfo?.deliveryOption}</p>
                         : <p><strong>Payment</strong> - {bookingInfo?.paymentOption}</p>
                 }
-                <p><strong>Booking Date:</strong> {bookingInfo?.booking}</p>
+               <strong>Booking Date: </strong>
+{new Intl.DateTimeFormat('en-US', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+}).format(new Date(bookingInfo?.booking))}
+
             </div>
 
             {/* Receiver Info */}
@@ -30,15 +39,15 @@ const StickerDetails = ({ bookingInfo }) => {
             </div>
 
             {/* Route Info */}
-            <p className="my-2 text-sm text-gray-700">Chittagong Road to Mohammapur, Dhaka</p>
+           
 
             {/* Package Info */}
             <p className="my-2 text-sm text-gray-700"><strong>{bookingInfo?.productDetails}</strong></p>
-            <p className="my-2 text-sm text-gray-700"><strong>Condition Charge: {bookingInfo?.condition}</strong></p>
+            <p className="my-2 text-sm text-gray-700"><strong>Condition Charge: {bookingInfo?.conditionCharge}</strong></p>
 
             {/* QR Code Section */}
             <div className="flex justify-center my-2">
-                <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
+                <QRCode className="h-[50px]" value={bookingInfo?.CnNumber} />
             </div>
 
             {/* Print Time (Placeholder example) */}

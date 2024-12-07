@@ -31,7 +31,7 @@ const PickupparcelList = () => {
         )
       );
 
-      await axios.put(`https://courier-server-lake.vercel.app/parcel/${parcel._id}`, {
+      await axios.put(`https://courier-server-rho.vercel.app/parcel/${parcel._id}`, {
         deliveryStatus: value,
       });
     } catch (error) {

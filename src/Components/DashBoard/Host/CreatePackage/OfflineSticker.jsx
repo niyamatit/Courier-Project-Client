@@ -5,7 +5,7 @@ import QRCode from 'react-qr-code';
 const OfflineSticker = ({ bookingInfo }) => {
     return (
         <div className="p-4 bg-white border-2 border-gray-300 w-[300px]">
-            <h1 className="text-lg font-bold text-gray-800">Niyamat Expressgfgdgd</h1>
+            <h1 className="text-lg font-bold text-gray-800">Niyamat Express</h1>
 
             {/* Barcode Section */}
             <div className="my-2">
@@ -40,12 +40,12 @@ const OfflineSticker = ({ bookingInfo }) => {
             <p className="my-2 text-sm text-gray-700">{bookingInfo?.bookingBranch}</p>
 
             {/* Package Info */}
-            <p className="my-2 text-sm text-gray-700"><strong>4 CTN COILgdfgsg</strong></p>
+            <p className="my-2 text-sm text-gray-700"><strong>{bookingInfo?.product}</strong></p>
 
             {/* QR Code Section */}
             <div className="flex justify-end my-2">
                 <QRCode className="h-[50px]" value={bookingInfo?.CnNumber
-                } />
+                || 0} />
             </div>
 
             {/* Print Time (Placeholder example) */}

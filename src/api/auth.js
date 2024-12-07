@@ -56,6 +56,25 @@ export const updateBooking = async (updatedBooking) => {
     return response.data;
 };
 
+// offline Booking
+
+export const getOffline = async () => {
+    const { data } = await axiosSecure.get(`/offline`);
+    return data;
+};
+
+export const getAllOffline = async (email) => {
+    const { data } = await axiosSecure.get(`/offline/${email}`);
+    console.log("Fetching offline booking for email:", email);
+    return data;
+};
+
+
+export const updateOffline = async (updatedOffline) => {
+    const response = await axiosSecure.put(`/offlines/${updatedOffline._id}`, updateOffline);
+    return response.data;
+};
+
 
 export const getOffline = async () => {
     const { data } = await axiosSecure.get(`/offline`);

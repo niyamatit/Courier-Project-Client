@@ -24,25 +24,34 @@ export const PackageDetails = ({ bookingInfo }) => (
                     </div>
                     <div className='justify-end text-sm'>
                         <p>https://niyamatexpress.com/</p>
-                        <p>email:info@niyamatit.com</p>
-                        <p>Hotline: 01852583209</p>
+                        <p>email:support@niyamatexpress.com</p>
+                        <p>Hotline: 01969905735</p>
                     </div>
                 </div>
             </header>
 
             <div className="booking-details ">
-                <div className='flex justify-around'>
+                <div className='flex'>
                     <div>
-                        <Barcode className="ml-7 h-[50px]" value={bookingInfo?.packageTrackingNumber} />
-                        <p>{bookingInfo?.packageTrackingNumber}</p>
-                        <QRCode className="h-[50px]" value={bookingInfo?.packageTrackingNumber} />
+                        <Barcode className="ml-7 h-[50px] w-[200px]" value={bookingInfo?.CnNumber} />
+                        <p>{bookingInfo?.CnNumber}</p>
+                        <QRCode className="h-[50px]" value={bookingInfo?.CnNumber} />
 
                     </div>
-                    <div>
+                    {/* <div>
                          <strong>Booking: </strong>{bookingInfo?.origin}
-                    </div>
+                    </div> */}
                     <div>
-                        <strong>Booking Date: </strong>{bookingInfo?.booking}
+                    <strong>Booking Date: </strong>
+{new Intl.DateTimeFormat('en-US', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+}).format(new Date(bookingInfo?.booking))}
+
                     </div>
                     <div>
                         <p className='font-bold'>Destination: {bookingInfo?.selectedArea}</p>
@@ -88,7 +97,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                 </div>
 
                 <div className='mt-5'>
-                    condition+charge: {bookingInfo?.cod}
+                    condition+charge: {bookingInfo?.conditionCharge || 0}
                 </div>
                 <div>
                     {

@@ -644,7 +644,7 @@ useEffect(() => {
   const fetchLastCnNumber = async () => {
     try {
       const response = await axiosSecure.get("/merchant_cn_number");
-      const lastCnNumber = response.data.lastCnNumber || "MER-221621"; // Default if no record found
+      const lastCnNumber = response.data.lastCnNumber || "MER-221621"; 
       const nextCnNumber = incrementCnNumber(lastCnNumber);
       setMerchantCnNumber(nextCnNumber);
     } catch (error) {
@@ -681,7 +681,7 @@ const incrementCnNumber = (cnNumber) => {
       Product_Value: parseFloat(formData?.productValue) || "",
       Product_Details: formData?.productDetails || "",
       Product_Remark: formData?.remark || "",
-      Merchant_Parcel_Booking_CN_Number: formData.Merchant_CN_Number || "",
+      CnNumber: formData.Merchant_CN_Number || "",
       Merchant_email: verifiedUser?.email || "",
       Cod_Perchent: 1 || 0,
       Weight_Charge: ParcelweightCharge || 0,

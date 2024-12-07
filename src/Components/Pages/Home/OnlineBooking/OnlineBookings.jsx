@@ -13,6 +13,7 @@ const OnlineBookings = () => {
     const closeModal = () => {
         setIsOpen(false);
     }
+    
 
     const generateTrackingNumber = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
