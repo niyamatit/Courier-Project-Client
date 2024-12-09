@@ -4,11 +4,23 @@ import { BsFillCartPlusFill, BsFillHouseDoorFill } from 'react-icons/bs'
 import SalesLineChart from './SalesLineChart'
 import { useEffect, useState } from 'react'
 import { getAdminStat } from '../../../api/utils'
+import axiosSecure from '../../../api/axiosSecure'
+import useUsersData from '../../../hooks/useUsersData/useUsersData'
 
 
 
 const AdminStatistics = () => {
   const [statData, setStatData] = useState({})
+  const { data: users = [] } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+    }
+  })
+  const [verifiedUser] = useUsersData();
+  const merchants = users.filter(user => user.role === "merchant");
+const totalMerchants = merchants.length;
   
   useEffect(() => {
     getAdminStat()
@@ -77,10 +89,10 @@ const AdminStatistics = () => {
             </div>
             <div className='p-4 text-right'>
               <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Total Package
+                Total Merchant
               </p>
               <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                {statData?.packageCount}
+                {totalMerchants}
               </h4>
             </div>
           </div>

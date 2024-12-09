@@ -1,4 +1,5 @@
 
+
 import useRole from "../../hooks/useRole"
 import useUsersData from "../../hooks/useUsersData/useUsersData"
 
@@ -9,6 +10,8 @@ const Profile = () => {
   const [role] = useRole()
   console.log("Role:",role)
 
+
+ 
   return (
     <div className='flex justify-center items-center h-screen'>
       
@@ -30,19 +33,7 @@ const Profile = () => {
           <p className='p-2 px-4 text-xs text-white bg-pink-500 rounded-full'>
             {role && role.toUpperCase()}
           </p>
-          {/* <p className='mt-2 text-xl font-medium text-gray-800 '>
-            
-
-            {
-              role === "merchant" ? <div> <p>Merchant Id: {verifiedUser?.uid}</p>
-              
-              
-              
-              
-              
-              </div> : <>User Id: {verifiedUser?.uid}</>
-            }
-          </p> */}
+         
           <div className='w-full p-2 mt-4 rounded-lg'>
             <div className='flex flex-wrap items-center justify-between text-sm text-gray-600 '>
               <p className='flex flex-col'>
@@ -63,6 +54,7 @@ const Profile = () => {
                 <button className='bg-[#F43F5E] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]'>
                   Change Password
                 </button>
+               
               </div>
             </div>
           </div>
