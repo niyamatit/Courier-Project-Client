@@ -4,11 +4,11 @@ import { Fragment, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { OfflineBookingDetails } from "./OfflineBookingDetails";
 import OfflineSticker from "../OfflineSticker";
-// import StickerDetails from "../StickerDetails";
+
 
 const OfflinePrintModal = ({ closeModal, isOpen, bookingInfo }) => {
-  const packageRef = useRef(); // For PackageDetails
-  const stickerRef = useRef(); // For StickerDetails
+  const packageRef = useRef(); 
+  const stickerRef = useRef(); 
 
   const handlePrintPackage = useReactToPrint({
     content: () => packageRef.current,
