@@ -12,7 +12,9 @@ const InputField = ({ label, placeholder, minLength,type = "text", required = fa
             {...props}                                                                                       
             minLength={minLength}
         />
-        {errors[name] && !watchValues[name] && <p className="text-red-500">This field is required</p>}
+        {/* {errors[name] && (
+      <p className="text-red-500 mt-1 text-sm">{errors[name].message}</p>
+    )} */}
 
     </div>
 );

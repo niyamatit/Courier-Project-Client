@@ -9,38 +9,53 @@ import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
 import { useState } from "react";
+import './HostMenu.css'
 
 
 
 const HostMenu = () => {
-  const [showBalance, setShowBalance] = useState(false); 
+  const [showBalance, setShowBalance] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false); // Track animation state
+
   const handleToggleBalance = () => {
-    setShowBalance(true);
-    setTimeout(() => setShowBalance(false), 2000); 
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setShowBalance(true);
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 800); // Animation duration
+
+      // Automatically revert to "Check Balance" after 10 seconds
+      setTimeout(() => {
+        setShowBalance(false);
+      }, 5000);
+    }
   };
-  const [verifiedUser] = useUsersData()
+
+  const [verifiedUser] = useUsersData();
   const { data: Branch_Balance = [] } = useQuery({
-    queryKey: ['Branch_Balance', verifiedUser?.email],
+    queryKey: ["Branch_Balance", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/recharge/taka/${verifiedUser?.email}`);
       return res.data;
-    }
-  })
+    },
+  });
+
   const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0);
   return (
     <>
       <p className="text-2xl text-center font-semibold text-secondary">{verifiedUser?.name}</p>
       <div className="balance-container" onClick={handleToggleBalance}>
-        <p className="text-2xl text-center font-semibold text-secondary">
-          Balance: 
-          <span
-            className={`balance-animation ${showBalance ? "slide-in" : ""}`}
-          >
-            ট
+        {!showBalance ? (
+          <span className={`check-balance ${isAnimating ? "slide-out" : ""}`}>
+            ট Check Balance
           </span>
-            {showBalance && currentBalance}
-        </p>
+        ) : (
+          <p className="text-2xl text-center font-semibold text-secondary">
+            <span className="balance-background">Balance: {currentBalance}</span>
+          </p>
+        )}
       </div>
 
       <MenuItem

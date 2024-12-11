@@ -5,11 +5,25 @@ import SalesLineChart from './SalesLineChart'
 import { useEffect, useState } from 'react'
 import { getAdminStat } from '../../../api/utils'
 import StatisticsCard from './StatisticsCard'
+import axiosSecure from '../../../api/axiosSecure'
+import useUsersData from '../../../hooks/useUsersData/useUsersData'
+import { useQuery } from '@tanstack/react-query'
 
 
 
 const AdminStatistics = () => {
   const [statData, setStatData] = useState({})
+
+  const { data: users = [] } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+    }
+  })
+  const [verifiedUser] = useUsersData();
+  const merchants = users.filter(user => user.role === "merchant");
+  const totalMerchants = merchants.length;
 
   useEffect(() => {
     getAdminStat()
@@ -256,6 +270,21 @@ const AdminStatistics = () => {
             value={statData?.packageCount}
             color="bg-[#FADADD]"
           />
+          <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md'>
+            <div
+              className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
+            >
+              <BsFillHouseDoorFill className='w-6 h-6 text-white' />
+            </div>
+            <div className='p-4 text-right'>
+              <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
+                Total Merchant
+              </p>
+              <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
+                {totalMerchants}
+              </h4>
+            </div>
+          </div>
         </div>
 
 

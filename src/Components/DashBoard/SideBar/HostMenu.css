@@ -1,18 +1,56 @@
+/* Container styling */
 .balance-container {
-    cursor: pointer;
-    position: relative;
-  }
-  
-  .balance-animation {
-    display: inline-block;
-    margin-left: 10px;
-    transform: translateX(-100%);
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  margin: 20px auto;
+  width: fit-content;
+}
+
+/* Check Balance initial state */
+.check-balance {
+  display: inline-block;
+  background-color: #f8da8d; /* Warm yellow background */
+  color: #000;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.8s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Animation for sliding out and fading */
+.check-balance.slide-out-professional {
+  opacity: 0;
+  transform: translateX(-150%) scale(0.9);
+}
+
+/* Balance reveal state */
+.balance-background {
+  background-color: #34C798; /* Elegant green background */
+  color: white;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: inline-block;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeInScale 0.8s ease forwards;
+}
+
+/* Scale-up animation */
+@keyframes fadeInScale {
+  0% {
     opacity: 0;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    transform: scale(0.1);
   }
-  
-  .balance-animation.slide-in {
-    transform: translateX(0);
+  100% {
     opacity: 1;
+    transform: scale(1);
   }
-  
+}
