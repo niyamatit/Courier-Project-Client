@@ -796,18 +796,31 @@ const BookingForm = () => {
             {/* COD Section */}
             <Section additionalClasses="mt-2">
     <div className="grid grid-cols-2 gap-2">
-      <InputField
-        watchValues={watchValues}
-        register={register}
-        name={"receiverPay"}
-        registerOptions={{ required: true }}
-        errors={errors}
-        label="COD (Receiver will pay)"
-        placeholder="Condition Amount"
-        required
-        onChange={handleCodChange} 
-        value={codCharge} 
-      />
+    <div>
+    <InputField
+  watchValues={watchValues}
+  register={register}
+  name={"receiverPay"}
+  registerOptions={{
+    required: "This field is required",
+    validate: {
+      minValue: (value) => value >= 80 || "COD receiver pay cannot be less than 80",
+    },
+  }}
+  errors={errors}
+  label="COD (Receiver will pay)"
+  placeholder="Condition Amount"
+  onChange={handleCodChange}
+  value={codCharge}
+/>
+{/* Error Message */}
+{errors.receiverPay && (
+  <span className="error-text text-red-500 mt-1 text-sm">
+    {errors.receiverPay.message}
+  </span>
+)}
+    </div>
+
       <InputField
         watchValues={watchValues}
         register={register}

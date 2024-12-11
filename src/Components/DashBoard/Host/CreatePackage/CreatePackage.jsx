@@ -187,6 +187,11 @@ const CreatePackage = () => {
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+        if (parseFloat(amount) < 80) {
+            setAmountError("Value must be greater than or equal to 80");
+            toast.error("Amount must be at least 80!");
+            return; // Stop form submission
+        }
 
         const form = e.target;
         const districtName = getDistrictName(selectedDistrict);
