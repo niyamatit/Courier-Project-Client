@@ -190,7 +190,7 @@ const CreatePackage = () => {
         if (parseFloat(amount) < 80) {
             setAmountError("Value must be greater than or equal to 80");
             toast.error("Amount must be at least 80!");
-            return; // Stop form submission
+            return; 
         }
 
         const form = e.target;
