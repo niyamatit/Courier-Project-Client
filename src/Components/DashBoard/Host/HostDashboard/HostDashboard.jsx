@@ -1,7 +1,6 @@
 import { FaTruckPickup } from "react-icons/fa";
 import HostStatsCard from "./HostStatsCard";
 import { useEffect, useState } from "react";
-// import { getAdminStat } from "../../../../api/utils";
 import ParcelPieChart from "../../Merchant/MerchatDashboard/ParcelPieChart";
 import ParcelChart from "../../Merchant/MerchatDashboard/ParcelChart";
 import axiosSecure from "../../../../api/axiosSecure";
@@ -95,7 +94,7 @@ const HostDashboard = () => {
     }, []);
 
 
-    const [verifiedUser ] = useUsersData();
+    const [verifiedUser] = useUsersData();
     const { data: parcelData = [] } = useQuery({
         queryKey: ["parcelData", verifiedUser?.email],
         queryFn: async () => {

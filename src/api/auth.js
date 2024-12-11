@@ -58,6 +58,7 @@ export const updateBooking = async (updatedBooking) => {
 
 // offline Booking
 
+
 export const getOffline = async () => {
     const { data } = await axiosSecure.get(`/offline`);
     return data;
