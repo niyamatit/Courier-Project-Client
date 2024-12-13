@@ -185,14 +185,14 @@ const CreatePackage = () => {
 
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
+    
         if (parseFloat(amount) < 80) {
             setAmountError("Value must be greater than or equal to 80");
             toast.error("Amount must be at least 80!");
-            return; 
+            return;
         }
-
+    
         const form = e.target;
         const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
@@ -206,24 +206,35 @@ const CreatePackage = () => {
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
         const bookingTimestamp = new Date();
+    
         try {
-            // Safely calculate the current balance
             const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
             const CodAmount = parseFloat(amount || 0);
-
-            const newBalance = CurrentBalance - CodAmount;
-
-
-            // Check for insufficient balance
-            if (CodAmount > CurrentBalance) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Insufficient Balance",
-                    text: "You do not have enough balance to process this booking. Please recharge.",
-                });
-                return;
+    
+            if (paymentOption === "Cash") {
+                const newBalance = CurrentBalance - CodAmount;
+    
+                if (CodAmount > CurrentBalance) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Insufficient Balance",
+                        text: "You do not have enough balance to process this booking. Please recharge.",
+                    });
+                    return;
+                }
+    
+                const updateBalanceResponse = await axiosSecure.put(
+                    `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
+                    { newBalance }
+                );
+    
+                if (updateBalanceResponse.status !== 200) {
+                    throw new Error("Failed to update branch balance.");
+                }
+    
+                queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
             }
-
+    
             const packageData = {
                 packageTrackingNumber: CnNumber,
                 senderName,
@@ -247,46 +258,34 @@ const CreatePackage = () => {
                 districtName: districtName,
                 email: verifiedUser?.email,
             };
-
+    
             setBookingInfo(packageData);
             setIsOpen(true);
-
+    
             const response = await addPackage(packageData);
-
+    
             if (response?.insertedId) {
-
-
-                const updateBalanceResponse = await axiosSecure.put(
-                    `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
-                    { newBalance }
-                );
-
-
-                if (updateBalanceResponse.status === 200) {
-                    queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Parcel Added Successfully",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                } else {
-                    throw new Error("Failed to update branch balance.");
-                }
-                const response = await axiosSecure.put("/Online/CnNmber");
-                SetCnNumber(response.data.nextNumber);
+                const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
+                SetCnNumber(cnUpdateResponse.data.nextNumber);
+    
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Parcel Added Successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                toast.success("Package Added!");
             }
-
-            toast.success("Package Added!");
         } catch (error) {
             console.error("Error:", error.message);
             toast.error("An error occurred while creating the package.");
         }
-
+    
         form.reset();
         setAmount('');
     };
+    
 
 
 

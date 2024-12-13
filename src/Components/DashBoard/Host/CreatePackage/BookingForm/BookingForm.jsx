@@ -136,6 +136,37 @@ const BookingForm = () => {
       setValue("codCharge", 0);
     }
   };
+  // useEffect(() => {
+  //   if (senderReceive > 0) {
+  //     let calculatedServiceCharge = 20;
+  
+  //     // Calculate the estimated COD charge
+  //     const estimatedCodCharge = senderReceive + calculatedServiceCharge;
+  
+  //     // Add additional charge only if COD charge exceeds 1000
+  //     if (estimatedCodCharge > 1001) {
+  //       const additionalCharge = Math.floor((estimatedCodCharge - 1000) / 1000) * 10;
+  //       calculatedServiceCharge += additionalCharge;
+  //     }
+  
+  //     // Calculate final COD charge
+  //     const calculatedCodCharge = senderReceive + calculatedServiceCharge;
+  
+  //     // Update state and form values
+  //     setCodCharge(calculatedCodCharge);
+  //     setServiceCharge(calculatedServiceCharge);
+  
+  //     setValue("serviceCharge", calculatedServiceCharge);
+  //     setValue("codCharge", calculatedCodCharge);
+  //   } else {
+  //     // Reset values if input is invalid
+  //     setCodCharge(0);
+  //     setServiceCharge(0);
+  //     setValue("serviceCharge", 0);
+  //     setValue("codCharge", 0);
+  //   }
+  // }, [senderReceive, setValue]);
+  
   
   const handleCodChange = (e) => {
     const value = parseInt(e.target.value, 10);
