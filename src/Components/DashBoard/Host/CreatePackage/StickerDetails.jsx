@@ -35,18 +35,18 @@ const StickerDetails = ({ bookingInfo }) => {
             </div>
 
             {/* Sender & Receiver Information */}
-            <div className="flex justify-between text-xs text-gray-700 mt-2">
+            <div className=" text-xs text-gray-700 mt-2">
                 {/* Sender Info */}
-                <div className="w-1/2 pr-2 border-r border-gray-300">
+                {/* <div className="w-1/2 pr-2 border-r border-gray-300">
                     <p><strong>Sender:</strong> {bookingInfo?.senderName}</p>
                     <p><strong>Contact:</strong> {bookingInfo?.senderMobile}</p>
                     <p><strong>Address:</strong> {bookingInfo?.sender_Full_Adress}</p>
-                </div>
+                </div> */}
 
                 {/* Receiver Info */}
-                <div className="w-1/2 pl-2">
+                <div className="">
                     <p><strong>Receiver:</strong> {bookingInfo?.recipientName}</p>
-                    <p><strong>Contact:</strong> {bookingInfo?.recipientMobile}</p>
+                    {/* <p><strong>Contact:</strong> {bookingInfo?.recipientMobile}</p> */}
                     <p><strong>Address:</strong> {bookingInfo?.Receiver_Full_Adress}</p>
                 </div>
             </div>
@@ -59,6 +59,7 @@ const StickerDetails = ({ bookingInfo }) => {
                 <p className="text-xs text-gray-700">
                     <strong>Booking Date:</strong> {formattedBookingTime}
                 </p>
+                <p className='font-bold text-[14px] mt-4'>{bookingInfo?.sender_Full_Adress} to {bookingInfo?.selectedArea}</p>
             </div>
 
             {/* Package Info */}
