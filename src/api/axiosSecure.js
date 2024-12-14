@@ -1,11 +1,13 @@
 import axios from 'axios';
-
 const axiosSecure = axios.create({
-  //  baseURL: 'https://courier-server-rho.vercel.app',
-  //  baseURL: 'https://courier-server-rho.vercel.app/',
-  baseURL: 'http://localhost:5000',
+  baseURL: import.meta.env.VITE_API,
   withCredentials: true,
+  validateStatus: (status) => {
+    // Treat all responses as valid unless status is 500 or above
+    return status < 500;
+  },
 });
 
 export default axiosSecure;
+
 

@@ -31,6 +31,7 @@ const BookingForm = () => {
   const [senderContactNo, setSenderContactNo] = useState("");
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
   const [lot, setLot] = useState();
+  const [PaymentOption , setSelectedPayment] = useState('');
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -137,72 +138,57 @@ const BookingForm = () => {
     }
   };
   
+  
+  
   const handleCodChange = (e) => {
     const value = parseInt(e.target.value, 10);
     setCodCharge(isNaN(value) ? 0 : value);
   };
   
-  // const handleSenderReceiveChange = (e) => {
-  //   const value = parseInt(e.target.value, 10);
-  //   if (!isNaN(value)) {
-  //     let calculatedServiceCharge = 20;
-  
-  //     // Calculate reverse service charge
-  //     if (value > 980) {
-  //       const additionalCharge = Math.ceil((value - 980) / 990) * 10;
-  //       calculatedServiceCharge = 20 + additionalCharge;
-  //     }
-  
-  //     const calculatedCodCharge = value + calculatedServiceCharge;
-  
-  //     setCodCharge(calculatedCodCharge);
-  //     setSenderReceive(value);
-  //     setServiceCharge(calculatedServiceCharge);
-  
-  //     setValue("serviceCharge", calculatedServiceCharge);
-  //     setValue("codCharge", calculatedCodCharge);
-  //   } else {
-  //     setSenderReceive(0);
-  //     setCodCharge(0);
-  //     setServiceCharge(0);
-  //     setValue("serviceCharge", 0);
-  //     setValue("codCharge", 0);
-  //   }
-  // };
-  
-
 
 
 
   const onSubmit = async (data) => {
     try {
-
-      console.log("Branch_Balance:", Branch_Balance);
-
-
-      if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Branch balance data is not available. Please reload the page.",
-        });
-        return;
+      // If PaymentOption is "Cash", validate and update branch balance
+      if (PaymentOption === "Cash") {
+        if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Branch balance data is not available. Please reload the page.",
+          });
+          return;
+        }
+  
+        // Calculate the current and new balance
+        const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0);
+        const codAmount = parseFloat(data.receiverPay || 0);
+        const newBalance = currentBalance - codAmount;
+  
+        if (codAmount > currentBalance) {
+          Swal.fire({
+            icon: "error",
+            title: "Insufficient Balance",
+            text: "You do not have enough balance to process this booking. Please recharge the balance.",
+          });
+          return;
+        }
+  
+        // Update branch balance
+        const updateBalanceResponse = await axiosSecure.put(
+          `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
+          { newBalance }
+        );
+  
+        if (updateBalanceResponse.status !== 200) {
+          throw new Error("Failed to update branch balance.");
+        }
+  
+        // Invalidate cache to reflect updated balance
+        queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
       }
-
-      // Calculate the current and new balance
-      const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0);
-      const codAmount = parseFloat(data.receiverPay || 0);
-      const newBalance = currentBalance - codAmount;
-
-      if (codAmount > currentBalance) {
-        Swal.fire({
-          icon: "error",
-          title: "Insufficient Balance",
-          text: "You do not have enough balance to process this booking. Please recharge the balance.",
-        });
-        return;
-      }
-
+  
       // Build the booking info payload
       data.CnNumber = cnNumber;
       const Bookinginfo = {
@@ -210,7 +196,7 @@ const BookingForm = () => {
         address: data.address || senderInfo.address,
         receiverName: data.receiverName || receiverInfo.ReceiverName,
         receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
-        branch: data.branch,
+        Destbranch: data.branch,
         email: verifiedUser?.email,
         customerCode: data.customerCode,
         counter: data.counter,
@@ -230,42 +216,35 @@ const BookingForm = () => {
         qty: data.qty,
         unit: data.unit,
         rate: data.rate,
+        "H/D":data.hd,
+        "Exchange":data.exchange,
+        "O/D":data.od,
+
         totalCharge: data.totalCharge || totalCharge,
         hdCharge: data.hdCharge,
         othCharge: data.othCharge,
         receiverPay: data.receiverPay,
         serviceCharge: data.serviceCharge,
         senderReceive: data.senderReceive,
-        Date: new Date().toISOString().split('T')[0]
+        Date: new Date().toISOString().split('T')[0],
       };
-
+  
       // Submit booking information
       const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
-
+  
       if (ParcelProductDetails.data.insertedId) {
-        const updateBalanceResponse = await axiosSecure.put(
-          `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
-          { newBalance }
-        );
-
-        if (updateBalanceResponse.status === 200) {
-          queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
-
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Parcel Added Successfully",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-
-          // Increment the CN number
-          const response = await axiosSecure.put("/number");
-          setCnNumber(response.data.nextNumber);
-        } else {
-          throw new Error("Failed to update branch balance.");
-        }
-        setBookingInfo(Bookinginfo)
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Parcel Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+  
+        // Increment the CN number
+        const response = await axiosSecure.put("/number");
+        setCnNumber(response.data.nextNumber);
+        setBookingInfo(Bookinginfo);
       }
     } catch (error) {
       console.error("Error adding parcel:", error);
@@ -275,9 +254,10 @@ const BookingForm = () => {
         text: "Something went wrong while processing the booking.",
       });
     }
-
+  
     setIsOpen(true); // Open the modal after successful submission
   };
+  
 
 
 
@@ -485,13 +465,26 @@ const BookingForm = () => {
 
               />
               <div className="flex gap-2 mt-4">
-                <input type="checkbox" className="checkbox mt-1" />
-                <h2 className="text-blue-800 font-semibold text-xl">H/D</h2>
-                <input type="checkbox" className="checkbox mt-1" />
-                <h2 className="text-blue-800 font-semibold text-xl">
-                  Exchange
-                </h2>
-              </div>
+  <input
+    type="checkbox"
+    className="checkbox mt-1"
+    {...register("hd")} // Register for "H/D"
+  />
+  <h2 className="text-blue-800 font-semibold text-xl">H/D</h2>
+  <input
+    type="checkbox"
+    className="checkbox mt-1"
+    {...register("exchange")} // Register for "Exchange"
+  />
+  <h2 className="text-blue-800 font-semibold text-xl">Exchange</h2>
+  <input
+    type="checkbox"
+    className="checkbox mt-1"
+    {...register("od")} // Register for "Exchange"
+  />
+  <h2 className="text-blue-800 font-semibold text-xl">O/D</h2>
+</div>
+
             </Section>
             <Section additionalClasses="mt-4">
               {/* <InputField
@@ -673,6 +666,10 @@ const BookingForm = () => {
                   errors={errors}
                   label="Payment Method"
                   options={["Cash", "To Pay", "Credit"]}
+                  onChange={(e) => {
+                    // console.log("Selected value:", e.target.value); // Debugging log
+                    setSelectedPayment(e.target.value);
+                  }}
                   required
                 />
               </div>
@@ -753,6 +750,7 @@ const BookingForm = () => {
                   }}
 
                 />
+                
                 <InputField
                   watchValues={watchValues}
                   register={register}
