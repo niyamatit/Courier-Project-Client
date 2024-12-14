@@ -208,6 +208,14 @@ const CreatePackage = () => {
         const bookingTimestamp = new Date();
     
         try {
+             if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Error",
+                      text: "Branch balance data is not available. Please reload the page.",
+                    });
+                    return;
+                  }
             const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
             const CodAmount = parseFloat(amount || 0);
     

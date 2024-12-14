@@ -17,18 +17,22 @@ const OfflineSticker = ({ bookingInfo }) => {
 
             {/* Payment and Booking Info */}
             <div className="my-2 text-sm text-gray-700">
-                {
-                    bookingInfo?.paymentOption === 'Cash'
-                        ? <p><strong>Cash</strong> - {bookingInfo?.
-                            paymentMethod
-                        }</p>
-                        : <p><strong>Payment</strong> - {bookingInfo?.
-                            paymentMethod
-                        }</p>
-                }
-                <p><strong>Booking Date:</strong> {bookingInfo?.bookingDate
-                }</p>
-            </div>
+  {bookingInfo?.paymentMethod === "Cash" ? (
+    <p>
+      <strong>Payment</strong> - {bookingInfo?.paymentMethod} -{" "}
+      {bookingInfo["H/D"] && "H/D" || bookingInfo["O/D"] && "O/D"}
+    </p>
+  ) : (
+    <p>
+    <strong>Payment</strong> - {bookingInfo?.paymentMethod} -{" "}
+    {bookingInfo["H/D"] && "H/D" || bookingInfo["O/D"] && "O/D"}
+  </p>
+  )}
+  <p>
+    <strong>Booking Date:</strong> {bookingInfo?.bookingDate}
+  </p>
+</div>
+
 
             {/* Receiver Info */}
             <div className="my-2 text-sm text-gray-700">
@@ -37,7 +41,7 @@ const OfflineSticker = ({ bookingInfo }) => {
             </div>
 
             {/* Route Info */}
-            <p className="my-2 text-sm text-gray-700">{bookingInfo?.bookingBranch}</p>
+            <p className="my-2 text-[14px] font-bold text-gray-700">{bookingInfo?.bookingBranch} to {bookingInfo?.Destbranch}</p>
 
             {/* Package Info */}
             <p className="my-2 text-sm text-gray-700"><strong>{bookingInfo?.product}</strong></p>
