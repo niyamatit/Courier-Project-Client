@@ -11,46 +11,50 @@ const Login = () => {
   const from = location?.state?.from?.pathname || '/'; 
   
   // Handle form login
-  const handleLogIn = async e => {
+  const handleLogIn = async (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-
-     setLoading(true);
-
+  
+    setLoading(true);
+  
     try {
       // Send login request to the backend
       const response = await axiosSecure.post('/users/auth/user/login', { email, password });
-
+  
       if (response.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Login Successful',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
-        localStorage.setItem("email",email)
-        
+        localStorage.setItem("email", email);
+  
         navigate(from, { replace: true });
-      } else {
+      }
+    } catch (err) {
+      // Check if it's a validation error
+      if (err.response?.status === 400) {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: response.data.message || 'Login failed!',
+          text: err.response.data.message || 'Invalid email or password',
+        });
+      } else {
+        // Handle unexpected errors
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'An unexpected error occurred. Please try again later.',
         });
       }
-    } catch (err) {
-     
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: err?.response?.data?.message || 'Login failed!',
-      });
     } finally {
       setLoading(false);
     }
   };
+  
 
   
 
