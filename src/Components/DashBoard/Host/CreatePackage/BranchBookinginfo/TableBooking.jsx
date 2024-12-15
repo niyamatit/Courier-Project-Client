@@ -16,6 +16,18 @@ const TableBooking = ({ booking, onView }) => {
         setBookingInfo(booking);
         setIsOpen(true);
     }
+    const formatTime = (utcTime) => {
+        const date = new Date(utcTime);
+    
+        // Extract components
+        const day = date.toLocaleString('en-US', { day: '2-digit', timeZone: 'Asia/Dhaka' });
+        const month = date.toLocaleString('en-US', { month: '2-digit', timeZone: 'Asia/Dhaka' });
+        const year = date.toLocaleString('en-US', { year: 'numeric', timeZone: 'Asia/Dhaka' });
+    
+        // Combine in DD/MM/YYYY format
+        return `${day}/${month}/${year}`;
+    };
+    
 
     return (
         <>
@@ -24,7 +36,7 @@ const TableBooking = ({ booking, onView }) => {
                     <p className='text-gray-900 whitespace-no-wrap'>{booking?.idx}</p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>{booking?.bookingTimestamp}</p>
+                    <p className='text-gray-900 whitespace-no-wrap'>{formatTime(booking?.booking)}</p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <div className='flex items-center'>
