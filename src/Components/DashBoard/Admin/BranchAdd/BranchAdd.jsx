@@ -76,8 +76,8 @@ const BranchAdd = () => {
         Branch_District_Name: formData?.district || "",
         Branch_Area: formData?.area || "",
         Branch_type: formData?.branch_type || "",
-        Branch_User_ID: formData?.Staff_User_ID || "",
-        Branch_Password: formData?.Staff_Password || "",
+        email: formData?.Staff_User_ID || "",
+        Branch_Password:  "",
         Under_Branch: formData?.under_branch || "",
         Date: new Date().toISOString().split('T')[0],
 
@@ -102,7 +102,11 @@ const BranchAdd = () => {
           email: formData?.Staff_User_ID || "",
           password: formData?.Staff_Password || "",
           role: "host",
-          imageUrl: ""
+          imageUrl: "",
+          Branch_Number: formData?.contactNumber || "",
+          Branch_Address: formData?.YourCurrentAddress || "",
+          Branch_District_Name: formData?.district || "",
+          Branch_Area: formData?.area || "",
         };
 
         const response = await axiosSecure.post('/users/auth/register', BranchLogin);
