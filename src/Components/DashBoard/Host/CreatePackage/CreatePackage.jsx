@@ -265,6 +265,10 @@ const CreatePackage = () => {
                 CnNumber: CnNumber,
                 districtName: districtName,
                 email: verifiedUser?.email,
+                Branch_Name:verifiedUser?.name,
+                Branch_Number:verifiedUser?.Branch_Number,
+                Branch_Address:verifiedUser?.Branch_Address,
+                Branch_District_Name:verifiedUser?.Branch_Address,
             };
     
             setBookingInfo(packageData);

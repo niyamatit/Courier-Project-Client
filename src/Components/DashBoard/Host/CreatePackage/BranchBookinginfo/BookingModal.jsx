@@ -140,9 +140,57 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                         <p><strong>Delivery Option:</strong> {booking.deliveryOption}</p>
                         <p><strong>Payment Option:</strong> {booking.paymentOption}</p>
                         <p><strong>Condition:</strong> {booking.condition}</p>
-                        <p><strong>Email:</strong> {booking.email}</p>
+                        {/* <p><strong>Email:</strong> {booking.email}</p> */}
                     </>
                 )}
+                 {/* Tracking Timeline */}
+<div className="mt-8">
+   <div  className=" font-bold mb-6 text-gray-800 border-b pb-2">
+   <h3 className="text-2xl mb-6 text-gray-800 border-b pb-2 text-center">Tracking Updates</h3>
+   <p className="text-lg">Booking Branch: {booking.email}</p>
+   </div>
+    
+    <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Timeline Item */}
+            <div className="flex items-start space-x-4">
+                {/* Icon */}
+                <div
+                    className={`flex items-center justify-center w-10 h-10 rounded-full shadow-md ${
+                        booking?.districtName ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-500'
+                    }`}
+                >
+                    {booking?.districtName ? (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    ) : (
+                        <span className="text-lg">-</span>
+                    )}
+                </div>
+
+                {/* Details */}
+                <div className="flex-1">
+                    <h1 className="text-lg font-semibold text-gray-800">
+                        {booking?.districtName ? `Received By: ${booking.email}` : 'Status Pending'}
+                    </h1>
+                    <p className="text-gray-500 text-sm">
+                        {booking?.booking
+                            ? `Branch Received Time: ${booking.booking}`
+                            : 'Branch Received Time: Not Available'}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <div className="flex justify-end mt-4">
                     {isEditing ? (
@@ -176,6 +224,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                     </button>
                 </div>
             </div>
+           
         </div>
     );
 };

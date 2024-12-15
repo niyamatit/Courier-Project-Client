@@ -227,6 +227,11 @@ const BookingForm = () => {
         serviceCharge: data.serviceCharge,
         senderReceive: data.senderReceive,
         Date: new Date().toISOString().split('T')[0],
+        
+                Branch_Name:verifiedUser?.name,
+                Branch_Number:verifiedUser?.Branch_Number,
+                Branch_Address:verifiedUser?.Branch_Address,
+                Branch_District_Name:verifiedUser?.Branch_Address,
       };
   
       // Submit booking information
