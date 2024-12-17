@@ -211,7 +211,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                 </div>
         </div>
     </div>
-    {/* 2nd Line */}
+    {/* 3rd Line */}
     <div className="relative ">
         
         <div className="space-y-6">
@@ -232,7 +232,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                 </div>
         </div>
     </div>
-    {/* 2nd Line */}
+    {/* 4th  Line */}
     <div className="relative ">
         
         <div className="space-y-6">
