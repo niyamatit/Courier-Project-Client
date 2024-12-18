@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../../api/axiosSecure";
+import Swal from "sweetalert2";
 
 const SelectMotherHub = () => {
   const [verifiedUser] = useUsersData();
@@ -12,7 +13,7 @@ const SelectMotherHub = () => {
   const [selectedBranch, setSelectedBranch] = useState("");
 
   // Fetching data
-  const { data: Verify_Admin_MotherHub = [] } = useQuery({
+  const { data: Verify_Admin_MotherHub = [],refetch } = useQuery({
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
@@ -22,25 +23,51 @@ const SelectMotherHub = () => {
   });
 
   const handleAccept = async (pkgId) => {
-    // Backend call to accept package
-    await axiosSecure.post(`/package/accept/${pkgId}`);
-    alert("Package accepted!");
+    try {
+      await axiosSecure.post(`/package/accept/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Accepted",
+        text: "The parcel has been successfully accepted!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to accept the package. Please try again.",
+      });
+    }
   };
 
   const handleSelectBranch = async () => {
     if (!selectedBranch || !note) {
-      alert("Please fill in all fields!");
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete Information",
+        text: "Please fill in both the branch and the note!",
+      });
       return;
     }
 
-    // Backend call to select branch
-    await axiosSecure.post(`/package/select-branch`, {
-      packageId: selectedPackage._id,
-      branch: selectedBranch,
-      note,
-    });
-    alert("Destination branch selected successfully!");
-    setShowSelectBranchModal(false);
+    try {
+      await axiosSecure.post(`/package/select-branch/${selectedPackage._id}`, {
+        branch: selectedBranch,
+        note,
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Branch Selected",
+        text: "The destination branch has been successfully selected!",
+      });
+      setShowSelectBranchModal(false);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to select the branch. Please try again.",
+      });
+    }
   };
 
   return (
@@ -73,12 +100,15 @@ const SelectMotherHub = () => {
                 <td className="border border-blue-500 px-4 py-2">{pkg.recipientMobile}</td>
                 <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
                 <td className="border border-blue-500 px-4 py-2 flex flex-col md:flex-row gap-2">
-                  <button
+                  
+                  { 
+                    pkg?.Tracking_MotherHub_Received_Parcel ? <h1 className="text-green-500">Accepted</h1> :<button
                     className="bg-green-500 text-white px-2 py-1 rounded"
                     onClick={() => handleAccept(pkg._id)}
                   >
                     Accept
-                  </button>
+                  </button> 
+                  }
                   <button
                     className="bg-blue-500 text-white px-2 py-1 rounded"
                     onClick={() => {
