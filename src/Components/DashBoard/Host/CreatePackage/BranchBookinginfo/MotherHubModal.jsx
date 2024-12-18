@@ -17,7 +17,9 @@ const MotherHubModal = ({ isOpen, onClose, onSave, booking }) => {
       const [verifiedUser] = useUsersData();
     const handleSubmit = () => {
         // Call the save handler with updated fields
-        onSave({ ...booking, Tracking_Admin_Select_Online_MotherHub_Branch_email: branch, Tracking_Admin_Select_Online_MotherHub_Branch_Note: note,Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date()  });
+        onSave({ ...booking, Tracking_Admin_Select_Online_MotherHub_Branch_email: branch, Tracking_Admin_Select_Online_MotherHub_Branch_Note: note,Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date(),
+            MotherHub_Selection_Admin_Name:verifiedUser?.name
+          });
         onClose();
         Swal.fire({
             title: "Success!",
