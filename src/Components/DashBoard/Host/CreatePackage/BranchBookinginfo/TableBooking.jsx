@@ -1,13 +1,15 @@
 import { useState } from "react";
 import PrintModal from "../PrintModal";
+import MotherHubModal from "./MotherHubModal";
 
 
-const TableBooking = ({ booking, onView }) => {
+const TableBooking = ({ booking, onView ,onSave }) => {
 
     const [bookingInfo, setBookingInfo] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
-
-
+    const [isHubModalOpen, setIsHubModalOpen] = useState(false);
+    const closeHubModal = () => setIsHubModalOpen(false);
+    const openHubModal = () => setIsHubModalOpen(true);
     const closeModal = () => {
         setIsOpen(false);
     };
@@ -76,7 +78,23 @@ const TableBooking = ({ booking, onView }) => {
                         Print
                     </button>
                 </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+
+                    {/* Button to print StickerDetails */}
+                    {
+                      booking?.Tracking_Admin_Select_Online_MotherHub_Branch_email ? <h1 className="text-green-400">Already Selected</h1> :  <button onClick={openHubModal} className="text-blue-500">
+                      Select MotherHub
+                  </button>
+                    }
+                   
+                </td>
             </tr>
+            <MotherHubModal
+                isOpen={isHubModalOpen}
+                onClose={closeHubModal}
+                onSave={onSave}
+                booking={booking}
+            />
             <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo}></PrintModal>
         </>
     );
