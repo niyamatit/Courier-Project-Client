@@ -74,6 +74,7 @@ import MerchantPercelView from "../Components/DashBoard/Merchant/MerchantPercelV
 import MerchantParcelList from "../Components/DashBoard/Merchant/MerchantParcelList/MerchantParcelList";
 import AllBranch from "../Components/DashBoard/Admin/AllBranch/AllBranch";
 import OfflineBookingShow from "../Components/OfflineBookingShow/OfflineBookingShow";
+import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
 
 
 
@@ -448,6 +449,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <HostRoute>
             <PendingParcelList />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "parcel-admin-received",
+        element: <PrivateRoute>
+          <HostRoute>
+           <SelectMotherHub/>
           </HostRoute>
         </PrivateRoute>
       },
