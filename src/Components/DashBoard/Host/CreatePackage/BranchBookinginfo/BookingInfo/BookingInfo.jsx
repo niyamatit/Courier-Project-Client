@@ -96,7 +96,7 @@ const BookingInfo = () => {
                             </thead>
                             <tbody>
                                 {bookings.map((booking, index) => (
-                                    <TableBooking key={booking._id} booking={{ ...booking, idx: index + 1 }} onView={handleView} />
+                                    <TableBooking key={booking._id} booking={{ ...booking, idx: index + 1 }} onView={handleView} onSave={handleSave} />
                                 ))}
                             </tbody>
                         </table>

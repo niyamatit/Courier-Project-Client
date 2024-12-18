@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axiosSecure from '../../../../../api/axiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import useUsersData from '../../../../../hooks/useUsersData/useUsersData';
+import Swal from 'sweetalert2';
 
 const MotherHubModal = ({ isOpen, onClose, onSave, booking }) => {
     const [branch, setBranch] = useState('');
@@ -16,8 +17,14 @@ const MotherHubModal = ({ isOpen, onClose, onSave, booking }) => {
       const [verifiedUser] = useUsersData();
     const handleSubmit = () => {
         // Call the save handler with updated fields
-        onSave({ ...booking, Tracking_Admin_Select_Online_MotherHub_Branch: branch, Tracking_Admin_Select_Online_MotherHub_Branch_Note: note });
+        onSave({ ...booking, Tracking_Admin_Select_Online_MotherHub_Branch_email: branch, Tracking_Admin_Select_Online_MotherHub_Branch_Note: note,Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date()  });
         onClose();
+        Swal.fire({
+            title: "Success!",
+            text: "MotherHub branch Select successfully.",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
     };
 
     if (!isOpen) return null;
@@ -34,14 +41,16 @@ const MotherHubModal = ({ isOpen, onClose, onSave, booking }) => {
                         value={branch}
                         onChange={(e) => setBranch(e.target.value)}
                     >
-                        <option value="123233333">Select MotherHub</option>
-                        {
-                    users.filter(user => user?.role === 'host').map(user => (
-                      <option key={user._id} value={user?.name}>
-                        {user?.name || "No Name Found"}
-                      </option>
-                    ))
-                  }
+                        <option value="">Select MotherHub</option>
+{
+    users.filter(user => user?.role === 'host').map(user => (
+        <option key={user._id} value={user?.email}>
+            {/* {`${user?.name || "No Name Found"} (${user?.email})`} */}
+            {`${user?.name || "No Name Found"} (${user?.email})`}
+        </option>
+    ))
+}
+
                     </select>
                 </div>
                 <div className="mb-4">
