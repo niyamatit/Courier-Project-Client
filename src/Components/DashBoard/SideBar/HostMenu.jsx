@@ -206,6 +206,12 @@ const HostMenu = () => {
               label='Received Branch List'
               address='received-branch'
             /></li>
+          <li>
+            <MenuItem
+              icon={IoHome}
+              label='Admin Send Parcel'
+              address='parcel-admin-received'
+            /></li>
         </ul>
       </div>
       <MenuItem
