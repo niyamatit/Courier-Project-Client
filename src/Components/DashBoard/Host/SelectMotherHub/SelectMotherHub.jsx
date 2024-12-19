@@ -11,6 +11,13 @@ const SelectMotherHub = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [note, setNote] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
+  const { data: users = [] } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+    }
+  })
 
   // Fetching data
   const { data: Verify_Admin_MotherHub = [],refetch } = useQuery({
@@ -52,8 +59,9 @@ const SelectMotherHub = () => {
 
     try {
       await axiosSecure.post(`/package/select-branch/${selectedPackage._id}`, {
-        branch: selectedBranch,
-        note,
+        Tracking_MotherHub_Branch_Select_Dest_Branch_Name: selectedBranch,
+        Tracking_MotherHub_Branch_Note:note,
+        Tracking_MotherHub_Branch_Select_Dest_Branch_Date: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -164,14 +172,24 @@ const SelectMotherHub = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-1/2">
             <h2 className="text-2xl font-bold mb-4">Select Destination Branch</h2>
             <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">Branch Name:</label>
-              <input
-                type="text"
-                className="border border-gray-300 p-2 w-full rounded"
-                value={selectedBranch}
-                onChange={(e) => setSelectedBranch(e.target.value)}
-              />
-            </div>
+                    <label className="block mb-1">Branch:</label>
+                    <select
+                        className="border p-2 w-full"
+                        value={selectedBranch}
+                        onChange={(e) => setSelectedBranch(e.target.value)}
+                    >
+                        <option value="1212">Select Destination Branch</option>
+{
+    users.filter(user => user?.role === 'host').map(user => (
+        <option key={user._id} value={user?.email}>
+            {/* {`${user?.name || "No Name Found"} (${user?.email})`} */}
+            {`${user?.name || "No Name Found"} (${user?.email})`}
+        </option>
+    ))
+}
+
+                    </select>
+                </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2">Note:</label>
               <textarea
