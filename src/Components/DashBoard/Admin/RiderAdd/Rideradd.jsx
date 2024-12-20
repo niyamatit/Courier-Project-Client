@@ -6,6 +6,10 @@ import axiosSecure from "../../../../api/axiosSecure";
 import { imageUpload } from "../../../../api/utils";
 import useAuth from "../../../../hooks/useAuth";
 
+import { Dialog } from "primereact/dialog";
+import { useState } from "react";
+import { FaSpinner } from "react-icons/fa6";
+
 const Rideradd = () => {
     const { user } = useAuth();
     const {
@@ -17,10 +21,11 @@ const Rideradd = () => {
     // const onSubmit = (data) => {
     //     console.log(data);
     // };
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
 
     const onSubmit = async (data) => {
+        setIsSubmitting(true)
         try {
 
             const riderImage = await imageUpload(data.riderImage[0]);
@@ -73,6 +78,8 @@ const Rideradd = () => {
             } else {
                 console.error("Unexpected Error:", error);
             }
+        }finally {
+            setIsSubmitting(false); // Hide the modal
         }
 
     };
@@ -391,6 +398,32 @@ const Rideradd = () => {
                     <Button label="Submit" type="submit" className="p-button-success border pl-6 pr-6 font-semibold text-white bg-[#2196F3] p-4 rounded-lg" />
                 </div>
             </form>
+              {/* Modal for submitting */}
+              <Dialog
+    // header={
+    //     <div className="flex items-center space-x-2">
+    //         <FaSpinner className="animate-spin text-blue-500 text-xl" />
+    //         <span className="text-blue-700 font-semibold text-lg">Submitting</span>
+    //     </div>
+    // }
+    visible={isSubmitting}
+    style={{
+        width: '30vw',
+        borderRadius: '8px',
+        background: 'linear-gradient(135deg, #ffffff, #e3f2fd)',
+    }}
+    onHide={() => {}}
+    closable={false}
+    footer={null}
+>
+    <div className="flex flex-col items-center justify-center space-y-3">
+        <FaSpinner className="animate-spin text-blue-500 text-4xl" />
+        <p className="text-center text-blue-700 font-medium">
+            Please wait while we process your submission...
+        </p>
+    </div>
+</Dialog>
+
         </div>
     );
 };
