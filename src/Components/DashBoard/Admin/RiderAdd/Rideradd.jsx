@@ -9,6 +9,7 @@ import useAuth from "../../../../hooks/useAuth";
 import { Dialog } from "primereact/dialog";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa6";
+import { useQuery } from "@tanstack/react-query";
 
 const Rideradd = () => {
     const { user } = useAuth();
@@ -23,21 +24,30 @@ const Rideradd = () => {
     // };
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-
+    const {  data: users = []} = useQuery({
+        queryKey: ['users'],
+        queryFn: async() => {
+            const res = await axiosSecure.get("/users");
+            return res.data;
+           
+        }
+        
+    });
     const onSubmit = async (data) => {
         setIsSubmitting(true)
         try {
 
             const riderImage = await imageUpload(data.riderImage[0]);
             const grantedNidImage = await imageUpload(data.grantedNidImage[0]);
-            const grantedImage = await imageUpload(data.grantedImage[0]);
+            // const grantedImage = await imageUpload(data.grantedImage[0]);
+            const grantedbackImage = await imageUpload(data.grantedbackImage[0]);
 
             const ApplyRiderInformation = {
                 Rider_Name: data?.riderName || "",
                 Branch_Email: user?.email || "",
                 Rider_Number: data?.riderNumber || "",
                 Rider_Nid: data?.riderNid || "",
-                Rider_Address: data?.riderAddress || "",
+                Rider_Full_Address: data?.riderAddress || "",
                 Rider_Branch: data?.riderBranch || "",
                 Rider_Area: data?.riderArea || "",
                 Rider_Commission: data?.riderCommission || "",
@@ -48,11 +58,14 @@ const Rideradd = () => {
                 Rider_grantedNumber: data?.grantedNumber || "",
                 Rider_grantedAddress: data?.grantedAddress || "",
                 Rider_grantedOccupation: data?.grantedOccupation || "",
+                // RiderPassword:  "",
                 Rider_Image: riderImage?.data?.display_url || "",
-                Rider_grantedNidImage: grantedNidImage?.data?.display_url || "",
-                Rider_grantedImage: grantedImage?.data?.display_url || "",
+                Rider_Front_grantedNidImage: grantedNidImage?.data?.display_url || "",
+                Rider_Back_grantedNidImage: grantedbackImage?.data?.display_url || "",
+                // Rider_grantedImage: grantedImage?.data?.display_url || "",
                 Date: new Date().toISOString().split('T')[0],
-                update: "rider"
+                role: "rider"
+                
             };
 
             const ApplyRiderInfo = await axiosSecure.post("/rider", ApplyRiderInformation);
@@ -61,17 +74,30 @@ const Rideradd = () => {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "Staff Added Successfully",
+                    title: `Rider Added Successfully for the Branch ${data?.riderBranch}`,
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2500,
                 });
             }
+            const RiderLogin = {
+                name: data?.riderName || "",
+                email: data?.riderNumber || "",
+                password: data?.RiderPassword || "",
+                role: "rider",
+                imageUrl: riderImage?.data?.display_url || "",
+                
+                Rider_Address: data?.riderAddress || "",
+                Rider_District_and_area: data?.riderArea || "",
+                
+              };
+      
+              const response = await axiosSecure.post('/users/auth/register', RiderLogin);
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 Swal.fire({
                     position: "top-end",
                     icon: "error",
-                    title: "Already Added the Staff",
+                    title: "Already Added the Rider",
                     showConfirmButton: false,
                     timer: 1500,
                 });
@@ -79,7 +105,7 @@ const Rideradd = () => {
                 console.error("Unexpected Error:", error);
             }
         }finally {
-            setIsSubmitting(false); // Hide the modal
+            setIsSubmitting(false); 
         }
 
     };
@@ -157,7 +183,7 @@ const Rideradd = () => {
                         {/* Rider Address */}
                         <div className="field mt-3">
                             <label className="block text-gray-700 font-medium mb-1">
-                                Rider Address*
+                                Rider Full Address*
                             </label>
                             <input
                                 type="text"
@@ -175,12 +201,21 @@ const Rideradd = () => {
                             <label className="block text-gray-700 font-medium mb-1">
                                 Rider Branch/Hub*
                             </label>
-                            <input
-                                type="text"
-                                {...register('riderBranch', { required: true })}
-                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.riderBranch ? 'border-red-500' : 'border-gray-300'
-                                    }`}
-                            />
+                            <select
+                      {...register('riderBranch', { required: true })}
+                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.riderBranch ? 'border-red-500' : 'border-gray-300'
+                        }`}
+
+                    >
+                      <option value="hfjkdhjfhdjfj">Select Branch</option>
+                      
+                      {
+                        users.filter(user=>user?.role === 'host').map(user=>(
+                          <option key={user?._id} value={user?.name}>{user?.name}</option>
+                        ))
+                      }
+
+                    </select>
                             {errors.riderBranch && (
                                 <span className="text-red-500">This field is required</span>
                             )}
@@ -189,7 +224,7 @@ const Rideradd = () => {
                         {/* Rider Area */}
                         <div className="field mt-3">
                             <label className="block text-gray-700 font-medium mb-1">
-                                Rider Area*
+                                Rider District and Area*
                             </label>
                             <input
                                 type="text"
@@ -315,7 +350,7 @@ const Rideradd = () => {
                         {/* Rider granted NID Image */}
                         <div className="field mt-3">
                             <label className="block text-gray-700 font-medium mb-1">
-                                Rider Granted Image*
+                                Rider NID Fornt Image*
                             </label>
                             <input
                                 type="file"
@@ -324,6 +359,20 @@ const Rideradd = () => {
                                     }`}
                             />
                             {errors.grantedNidImage && (
+                                <span className="text-red-500">This field is required</span>
+                            )}
+                        </div>
+                        <div className="field mt-3">
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider NID Back Image*
+                            </label>
+                            <input
+                                type="file"
+                                {...register("grantedbackImage", { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.grantedbackImage ? "border-red-500" : "border-gray-300"
+                                    }`}
+                            />
+                            {errors.grantedbackImage && (
                                 <span className="text-red-500">This field is required</span>
                             )}
                         </div>
@@ -359,7 +408,7 @@ const Rideradd = () => {
                             )}
                         </div>
                         {/* Rider granted occupation */}
-                        <div className="field mt-3">
+                        {/* <div className="field mt-3">
                             <label className="block text-gray-700 font-medium mb-1">
                                 Rider Granted occupation*
                             </label>
@@ -372,10 +421,10 @@ const Rideradd = () => {
                             {errors.grantedOccupation && (
                                 <span className="text-red-500">This field is required</span>
                             )}
-                        </div>
+                        </div> */}
 
                         {/* Rider grantedImage */}
-                        <div className="field mt-3">
+                        {/* <div className="field mt-3">
                             <label className="block text-gray-700 font-medium mb-1">
                                 Granted Image*
                             </label>
@@ -386,6 +435,20 @@ const Rideradd = () => {
                                     }`}
                             />
                             {errors.grantedImage && (
+                                <span className="text-red-500">This field is required</span>
+                            )}
+                        </div> */}
+                        <div className="field mt-3">
+                            <label className="block text-gray-700 font-medium mb-1">
+                                Rider Login Password
+                            </label>
+                            <input
+                                type="text"
+                                {...register('RiderPassword', { required: true })}
+                                className={`input input-bordered w-full p-2 rounded-lg border ${errors.RiderPassword ? 'border-red-500' : 'border-gray-300'
+                                    }`}
+                            />
+                            {errors.RiderPassword && (
                                 <span className="text-red-500">This field is required</span>
                             )}
                         </div>

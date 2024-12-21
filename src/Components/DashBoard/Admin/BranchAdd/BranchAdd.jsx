@@ -77,7 +77,7 @@ const BranchAdd = () => {
         Branch_Area: formData?.area || "",
         Branch_type: formData?.branch_type || "",
         email: formData?.Staff_User_ID || "",
-        Branch_Password:  "",
+        // Branch_Password:  "",
         Under_Branch: formData?.under_branch || "",
         Date: new Date().toISOString().split('T')[0],
 
