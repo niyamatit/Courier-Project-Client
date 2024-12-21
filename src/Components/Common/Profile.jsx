@@ -91,7 +91,7 @@ const Profile = () => {
       </h1>
     )} */}
               <p className='flex flex-col'>
-                Email
+                ID
                 <span className='font-bold text-black '>{verifiedUser?.email}</span>
               </p>
 
