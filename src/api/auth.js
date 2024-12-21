@@ -83,6 +83,7 @@ export const getBranch = async () => {
     return data;
 };
 
+
 export const getAllBranch = async (email) => {
     const { data } = await axiosSecure.get(`/branch/${email}`);
     console.log("Fetching branch for email:", email);
@@ -143,9 +144,23 @@ export const updateActionOnline = async ({ update, id }) => {
 
 // Get all users
 export const getAllUsers = async () => {
-    const { data } = await axiosSecure(`/users`)
-    return data
-}
+    try {
+        const { data } = await axiosSecure.get("/admin");
+        console.log("API Response from /user:", data);
+        return data;
+    } catch (error) {
+        console.error("Error in getAllUsers:", error.message);
+        throw new Error("Failed to fetch users");
+    }
+};
+
+// export const getAllUsers = async () => {
+//     const { data } = await axiosSecure.get("/users");
+//     return data.users; // Adjust based on your actual API response structure
+// };
+
+
+
 // Get all apply
 export const getPendingApply = async () => {
     const { data } = await axiosSecure(`/apply`)

@@ -14,16 +14,16 @@ const BranchAdd = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   // const [loading, setLoading] = useState(false);
   const [filteredAreas, setFilteredAreas] = useState([]);
-  
-  const {  data: users = []} = useQuery({
+
+  const { data: users = [] } = useQuery({
     queryKey: ['users'],
-    queryFn: async() => {
-        const res = await axiosSecure.get("/users");
-        return res.data;
-       
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+
     }
-    
-});
+
+  });
 
   const {
     register,
@@ -77,10 +77,9 @@ const BranchAdd = () => {
         Branch_Area: formData?.area || "",
         Branch_type: formData?.branch_type || "",
         Branch_User_ID: formData?.Staff_User_ID || "",
-        Branch_Password: formData?.Staff_Password || "",
+        Branch_Password: "",
         Under_Branch: formData?.under_branch || "",
         Date: new Date().toISOString().split('T')[0],
-
       };
 
 
@@ -405,21 +404,21 @@ const BranchAdd = () => {
                 </div> */}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
-                <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Branch commission*
-                  </label>
-                  <input
-                    type="text"
-                    {...register('branch_lav', { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${errors.branch_lav ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                  />
-                  {errors.branch_lav && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
-                <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Branch commission*
+                    </label>
+                    <input
+                      type="text"
+                      {...register('branch_lav', { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.branch_lav ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                    />
+                    {errors.branch_lav && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
                       Under Branch*
                     </label>
@@ -430,9 +429,9 @@ const BranchAdd = () => {
 
                     >
                       <option value="hfjkdhjfhdjfj">Select Branch</option>
-                      
+
                       {
-                        users.filter(user=>user?.role === 'host').map(user=>(
+                        users.filter(user => user?.role === 'host').map(user => (
                           <option key={user?._id} value={user?.name}>{user?.name}</option>
                         ))
                       }

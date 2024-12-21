@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const BranchModal = ({ branch, onClose, onSave }) => {
+const BranchModalsup = ({ branch, onClose, onSave }) => {
     if (!branch) return null;
 
     const [editableBranch, setEditableBranch] = useState({ ...branch });
@@ -113,14 +113,14 @@ const BranchModal = ({ branch, onClose, onSave }) => {
                     </>
                 ) : (
                     <>
-                        <p><strong>Branch Number:</strong> {branch.Branch_Number}</p>
-                        <p><strong>Branch Name:</strong> {branch.Branch_Name}</p>
-                        <p><strong>Branch Commission:</strong> {branch.Branch_Commission}</p>
-                        <p><strong>Branch District:</strong> {branch.Branch_District_Name}</p>
-                        <p><strong>Branch type:</strong> {branch.Branch_type}</p>
-                        <p><strong>Branch User_ID:</strong> {branch.Branch_User_ID}</p>
-                        <p><strong>branch ID:</strong> {branch._id}</p>
-                        <p><strong>Branch type:</strong> {branch.Branch_type}</p>
+                        <span><strong>Branch Number:</strong> {branch.Branch_Number}</span>
+                        <span><strong>Branch Name:</strong> {branch.Branch_Name}</span>
+                        <span><strong>Branch Commission:</strong> {branch.Branch_Commission}</span>
+                        <span><strong>Branch District:</strong> {branch.Branch_District_Name}</span>
+                        <span><strong>Branch type:</strong> {branch.Branch_type}</span>
+                        <span><strong>Branch User_ID:</strong> {branch.Branch_User_ID}</span>
+                        <span><strong>branch ID:</strong> {branch._id}</span>
+                        <span><strong>Branch type:</strong> {branch.Branch_type}</span>
                     </>
                 )}
 
@@ -160,4 +160,4 @@ const BranchModal = ({ branch, onClose, onSave }) => {
     );
 };
 
-export default BranchModal;
+export default BranchModalsup;

@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
+
+import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axiosSecure from "../../../../api/axiosSecure";
-import { FaTrashAlt } from "react-icons/fa";
 
-const TableRider = ({ rider, refetch }) => {
-    const [status, setStatus] = useState('');
-    useEffect(() => {
-        console.log(rider?.Status)
-        if (!status) {
-            setStatus(rider?.Status || "processing")
-        }
-    }, [rider])
+const TableBranchsup = ({ branch, onView, refetch }) => {
 
     const handleDelete = async (id) => {
         try {
@@ -51,55 +44,50 @@ const TableRider = ({ rider, refetch }) => {
             console.error("Delete branch error:", error);
         }
     };
+
     return (
         <tr className="font-rancho">
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <div className='flex items-center'>
-                    <div className='flex-shrink-0'>
-                        <div className='block relative'>
-                            <p className='text-gray-900 whitespace-no-wrap'>
-                                {rider?.Rider_Name}
-                            </p>
-                        </div>
-                    </div>
-
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 font-semibold whitespace-no-wrap">{branch?.idx}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{branch?.Date}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <div className="flex items-center">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                        {branch?.Branch_Name}
+                    </p>
                 </div>
             </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Number}
-                </p>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Number}</p>
             </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Nid}
-                </p>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Commission}</p>
             </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Address}
-                </p>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_type}</p>
             </td>
-            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Branch}
-                </p>
-            </td>
-
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button
-                    onClick={() => handleDelete(rider._id)}
+                    onClick={() => onView(branch)}
+                    className="text-blue-500 hover:underline"
+                >
+                    View
+                </button>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <button
+                    onClick={() => handleDelete(branch._id)}
                     aria-label="Delete branch"
                     className="btn btn-ghost btn-xs"
                 >
                     <FaTrashAlt className="text-red-600" />
                 </button>
             </td>
-
-
-
         </tr>
     );
 };
 
-export default TableRider;
+export default TableBranchsup;

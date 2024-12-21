@@ -10,7 +10,6 @@ import { useQuery } from '@tanstack/react-query'
 import useUsersData from '../../../hooks/useUsersData/useUsersData'
 
 
-
 const AdminStatistics = () => {
   const [statData, setStatData] = useState({})
   const [pickupRequestData, setPickupRequestData] = useState([]);
