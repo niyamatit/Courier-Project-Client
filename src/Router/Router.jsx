@@ -78,6 +78,7 @@ import AllMerchantListsup from "../Components/DashBoard/SuperAdmin/AllMerchantLi
 import AllBranchListsup from "../Components/DashBoard/SuperAdmin/AllBranchListsup/AllBranchListsup";
 import FormComponent from "../Components/DashBoard/SuperAdmin/FormComponent/FormComponent";
 import AllAdminList from "../Components/DashBoard/SuperAdmin/AllAdminList/AllAdminList";
+import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
 
 
 
@@ -452,6 +453,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <HostRoute>
             <PendingParcelList />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "parcel-admin-received",
+        element: <PrivateRoute>
+          <HostRoute>
+            <SelectMotherHub />
           </HostRoute>
         </PrivateRoute>
       },

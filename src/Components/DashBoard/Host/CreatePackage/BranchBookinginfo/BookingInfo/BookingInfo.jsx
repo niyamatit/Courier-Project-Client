@@ -89,11 +89,14 @@ const BookingInfo = () => {
                                     <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
                                         Print
                                     </th>
+                                    <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
+                                        Select MotherHub
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {bookings.map((booking, index) => (
-                                    <TableBooking key={booking._id} booking={{ ...booking, idx: index + 1 }} onView={handleView} />
+                                    <TableBooking key={booking._id} booking={{ ...booking, idx: index + 1 }} onView={handleView} onSave={handleSave} />
                                 ))}
                             </tbody>
                         </table>
