@@ -85,7 +85,7 @@ const Rideradd = () => {
                 password: data?.RiderPassword || "",
                 role: "rider",
                 imageUrl: riderImage?.data?.display_url || "",
-                
+                Rider_Branch:data?.riderBranch || "",
                 Rider_Address: data?.riderAddress || "",
                 Rider_District_and_area: data?.riderArea || "",
                 
