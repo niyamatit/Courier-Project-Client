@@ -264,6 +264,31 @@ const BookingModal = ({ booking, onClose, onSave }) => {
         </div>
     </div>
     }
+    {/* 5th Line */}
+    {
+        booking?.Tracking_Destination_Branch_Select_Rider &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_Destination_Branch_Select_Rider ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_Destination_Branch_Select_Rider ? '✓' : '-'}
+                            </div>
+                            <div>
+                                <h1 className="text-gray-700 font-semibold">Branch Select Rider ({booking?.Tracking_Destination_Branch_Select_Rider})</h1>
+                                <p className="text-gray-500 text-sm">Select Time: {booking?.Tracking_Destination_Branch_Select_Rider_Date ? formatTime(booking.Tracking_Destination_Branch_Select_Rider_Date) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Note: {booking?.Tracking_Destination_Branch_Note || 'Not Available'}</p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
     
 </div>
 
