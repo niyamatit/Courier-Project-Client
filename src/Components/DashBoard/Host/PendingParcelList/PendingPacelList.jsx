@@ -220,7 +220,7 @@ const PendingPacelList = () => {
                       </button>
                     )}
                     {pkg?.Tracking_Destination_Branch_Select_Rider ? (
-                      <h1 className="text-green-500 border p-1 border-green-500">
+                       <h1 className="text-green-500 border p-1 border-green-500">
                         Already Selected Rider
                       </h1>
                     ) : (
