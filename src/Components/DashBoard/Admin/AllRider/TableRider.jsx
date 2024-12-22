@@ -15,6 +15,9 @@ const TableRider = ({ rider, index }) => {
                 <p className='text-gray-900 whitespace-no-wrap'>{index}</p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                <p className='text-gray-900 whitespace-no-wrap'>{rider?.Date}</p>
+            </td>
+            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <img
                     src={rider?.Rider_Image}
                     alt="Rider"
