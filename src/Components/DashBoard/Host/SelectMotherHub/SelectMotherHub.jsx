@@ -43,7 +43,7 @@ const SelectMotherHub = () => {
       Swal.fire({
         icon: "error",
         title: "Error",
-         text: "Failed to accept the package. Please try again.",
+           text: "Failed to accept the parcel. Please try again.",
       });
     }
   };
