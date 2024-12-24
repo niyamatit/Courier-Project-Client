@@ -303,7 +303,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                                 {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful ? '✓' : '-'}
                             </div>
                             <div>
-                                <h1 className="text-gray-700 font-semibold">{booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned}</h1>
+                                <h1 className="text-gray-700 font-semibold">{booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful || booking?. Tracking_Rider_Online_Booking_Delivary_Update_Returned}</ h1>
                                 <p className="text-gray-500 text-sm">
   {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time
     ? `Delivery Time: ${formatTime(booking.Tracking_Rider_Online_Booking_Delivary_Update_Time)}`
