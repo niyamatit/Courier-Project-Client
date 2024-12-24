@@ -313,7 +313,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
 </p>
 
 
-                                <p className="text-gray-500 text-sm">Note: {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Note || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p>
+                                 <p className="text-gray-500 text-sm">Note: {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Note || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p>
                                
                             </div>
                         </div>
