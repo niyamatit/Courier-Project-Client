@@ -289,6 +289,39 @@ const BookingModal = ({ booking, onClose, onSave }) => {
         </div>
     </div>
     }
+    {/* 6th Line */}
+    {
+        booking?.Tracking_Rider_Online_Booking_Delivary_Update &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
+                                {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful ? '✓' : '-'}
+                            </div>
+                            <div>
+                                <h1 className="text-gray-700 font-semibold">{booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned}</h1>
+                                <p className="text-gray-500 text-sm">
+  {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time
+    ? `Delivery Time: ${formatTime(booking.Tracking_Rider_Online_Booking_Delivary_Update_Time)}`
+    : booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time
+    ? `Returned Time: ${formatTime(booking.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time)}`
+    : 'Not Available'}
+</p>
+
+
+                                <p className="text-gray-500 text-sm">Note: {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Note || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
     
 </div>
 
