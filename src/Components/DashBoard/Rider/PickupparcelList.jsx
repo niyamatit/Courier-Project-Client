@@ -43,7 +43,7 @@ const mutation = useMutation({
       title: 'Success',
       text: 'Parcel updated successfully!',
     });
-    queryClient.invalidateQueries(['RiderPickup', verifiedUser?.email]); // Refresh data
+    queryClient.invalidateQueries(['RiderPickup', verifiedUser?.email]); 
     closeModal();
   },
   onError: () => {
@@ -127,8 +127,8 @@ const handleSubmit = () => {
   {Array.isArray(RiderPickup) && RiderPickup.length > 0 ? (
     RiderPickup.filter(
       (item) =>
-        !item.Tracking_Rider_Online_Booking_Update_Successful &&
-        !item.Tracking_Rider_Online_Booking_Update_Returned
+        !item.Tracking_Rider_Online_Booking_Delivary_Update_Successful &&
+        !item.Tracking_Rider_Online_Booking_Delivary_Update_Returned
     ).map((item, index) => (
       <tr key={item._id} className="hover:bg-gray-100">
         <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
@@ -141,6 +141,7 @@ const handleSubmit = () => {
         <td className="border border-gray-300 px-4 py-2 text-center">{item.conditionCharge}</td>
         <td className="border border-gray-300 px-4 py-2 text-center">{item.update}</td>
         <td className="border border-gray-300 px-4 py-2 text-center">
+          <div className='flex'>
           <button
             onClick={() => handleActionClick('Successful', item)}
             className="bg-green-500 text-white px-3 py-1 rounded mr-2"
@@ -153,6 +154,7 @@ const handleSubmit = () => {
           >
             Return
           </button>
+          </div>
         </td>
       </tr>
     ))
