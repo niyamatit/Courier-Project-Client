@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axiosSecure from '../../../api/axiosSecure';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
+import Swal from 'sweetalert2';
 
 const PickupparcelList = () => {
   const [modalData, setModalData] = useState({ isOpen: false, type: '', data: {} });
@@ -20,39 +21,89 @@ const PickupparcelList = () => {
   });
   
 
-  const mutation = useMutation({
-    mutationFn: async (updateData) => {
-      const res = await axiosSecure.patch('/rider/update-parcel', updateData);
+  
+
+const mutation = useMutation({
+  mutationFn: async (updateData) => {
+    try {
+      const res = await axiosSecure.patch(`/rider/update-parcel/rider/${updateData.id}`, updateData);
       return res.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['RiderPickup', verifiedUser?.email]);
-      closeModal();
-    },
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to update parcel. Please try again!',
+      });
+      throw error;
+    }
+  },
+  onSuccess: () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: 'Parcel updated successfully!',
+    });
+    queryClient.invalidateQueries(['RiderPickup', verifiedUser?.email]); // Refresh data
+    closeModal();
+  },
+  onError: () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Failed to update parcel. Please try again!',
+    });
+  },
+});
+
+const handleActionClick = (type, parcel) => {
+  setModalData({ isOpen: true, type, data: parcel });
+  setFormValues({ amount: parcel.amount || '', note: '' });
+};
+
+const closeModal = () => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Your changes will not be saved.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, close it!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      setModalData({ isOpen: false, type: '', data: {} });
+      setFormValues({ amount: '', note: '' });
+    }
   });
+};
 
-  const handleActionClick = (type, parcel) => {
-    setModalData({ isOpen: true, type, data: parcel });
-  };
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setFormValues((prev) => ({ ...prev, [name]: value }));
+};
 
-  const closeModal = () => {
-    setModalData({ isOpen: false, type: '', data: {} });
-    setFormValues({ amount: '', note: '' });
-  };
+const handleSubmit = () => {
+  Swal.fire({
+    title: 'Confirm Submission',
+    text: `Are you sure you want to mark this parcel as "${modalData.type}"?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, submit!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const updateData = {
+        id: modalData.data._id,
+        type: modalData.type,
+        ...formValues,
+      };
+      mutation.mutate(updateData);
+    }
+  });
+};
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = () => {
-    const updateData = {
-      id: modalData.data._id,
-      type: modalData.type,
-      ...formValues,
-    };
-    mutation.mutate(updateData);
-  };
+  
 
   return (
     <div className="p-4">
@@ -73,40 +124,45 @@ const PickupparcelList = () => {
           </tr>
         </thead>
         <tbody>
-          {RiderPickup.length > 0 ? (
-            RiderPickup.map((item, index) => (
-              <tr key={item._id} className="hover:bg-gray-100">
-                <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{new Date(item.booking).toLocaleDateString()}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{item.CnNumber}</td>
-                <td className="border border-gray-300 px-4 py-2">{item.senderName}</td>
-                <td className="border border-gray-300 px-4 py-2">{item.recipientName}</td>
-                <td className="border border-gray-300 px-4 py-2">{item.Receiver_Full_Adress}</td>
-                <td className="border border-gray-300 px-4 py-2">{item.districtName}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{item.conditionCharge}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{item.update}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  <button
-                    onClick={() => handleActionClick('Successful', item)}
-                    className="bg-green-500 text-white px-3 py-1 rounded mr-2"
-                  >
-                    Successful
-                  </button>
-                  <button
-                    onClick={() => handleActionClick('Return', item)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Return
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="10" className="text-center py-4 text-gray-500">No data available</td>
-            </tr>
-          )}
-        </tbody>
+  {Array.isArray(RiderPickup) && RiderPickup.length > 0 ? (
+    RiderPickup.filter(
+      (item) =>
+        !item.Tracking_Rider_Online_Booking_Update_Successful &&
+        !item.Tracking_Rider_Online_Booking_Update_Returned
+    ).map((item, index) => (
+      <tr key={item._id} className="hover:bg-gray-100">
+        <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
+        <td className="border border-gray-300 px-4 py-2 text-center">{new Date(item.booking).toLocaleDateString()}</td>
+        <td className="border border-gray-300 px-4 py-2 text-center">{item.CnNumber}</td>
+        <td className="border border-gray-300 px-4 py-2">{item.senderName}</td>
+        <td className="border border-gray-300 px-4 py-2">{item.recipientName}</td>
+        <td className="border border-gray-300 px-4 py-2">{item.Receiver_Full_Adress}</td>
+        <td className="border border-gray-300 px-4 py-2">{item.districtName}</td>
+        <td className="border border-gray-300 px-4 py-2 text-center">{item.conditionCharge}</td>
+        <td className="border border-gray-300 px-4 py-2 text-center">{item.update}</td>
+        <td className="border border-gray-300 px-4 py-2 text-center">
+          <button
+            onClick={() => handleActionClick('Successful', item)}
+            className="bg-green-500 text-white px-3 py-1 rounded mr-2"
+          >
+            Successful
+          </button>
+          <button
+            onClick={() => handleActionClick('Return', item)}
+            className="bg-red-500 text-white px-3 py-1 rounded"
+          >
+            Return
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="10" className="text-center py-4 text-gray-500">No data available</td>
+    </tr>
+  )}
+</tbody>
+
       </table>
 
       {/* Modal */}
@@ -123,7 +179,7 @@ const PickupparcelList = () => {
                   <input
                     type="number"
                     name="amount"
-                    value={formData.amount}
+                    value={formValues.amount}
                     onChange={handleInputChange}
                     className="w-full border border-gray-300 px-3 py-2 rounded"
                     placeholder="Enter Amount"
@@ -133,7 +189,7 @@ const PickupparcelList = () => {
               <label className="block mb-2 font-medium">Note:</label>
               <textarea
                 name="note"
-                value={formData.note}
+                value={formValues.note}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 px-3 py-2 rounded"
                 placeholder="Enter Note"
