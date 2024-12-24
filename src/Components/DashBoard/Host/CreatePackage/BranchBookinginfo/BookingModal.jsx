@@ -302,7 +302,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                             <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
                                 {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful ? '✓' : '-'}
                             </div>
-                            <div>
+                             <div>
                                 <h1 className="text-gray-700 font-semibold">{booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful || booking?. Tracking_Rider_Online_Booking_Delivary_Update_Returned}</ h1>
                                 <p className="text-gray-500 text-sm">
   {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time
