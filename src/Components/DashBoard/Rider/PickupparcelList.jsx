@@ -102,65 +102,97 @@
 
 // export default PickupparcelList;
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import axiosSecure from '../../../api/axiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import useUsersData from '../../../hooks/useUsersData/useUsersData';
 
 const PickupparcelList = () => {
   const [modalData, setModalData] = useState({ isOpen: false, type: '', data: {} });
+  const [formData, setFormData] = useState({ amount: '', note: '' });
+  const [verifiedUser] = useUsersData();
 
-  const handleActionClick = (type) => {
-    setModalData({ isOpen: true, type });
+  const { data: RiderPickup = [] } = useQuery({
+    queryKey: ['RiderPickup', verifiedUser?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/rider/email/rider/parcel/${verifiedUser?.email}`);
+      return Array.isArray(res.data) ? res.data : [res.data];
+    },
+  });
+  
+
+  const handleActionClick = (type, data) => {
+    setModalData({ isOpen: true, type, data });
   };
 
   const closeModal = () => {
     setModalData({ isOpen: false, type: '', data: {} });
+    setFormData({ amount: '', note: '' });
+  };
+
+  const handleSubmit = () => {
+    console.log('Submitting:', modalData.type, formData, modalData.data);
+    // Perform the required action (e.g., update status in the database)
+    closeModal();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
     <div className="p-4">
-      <h1 className="text-lg font-bold mb-4">Pickup Parcel List</h1>
-      <table className="table-auto w-full border-collapse border border-gray-300">
+      <h1 className="text-xl font-bold mb-4 text-center">Pickup Parcel List</h1>
+      <table className="table-auto w-full border-collapse border border-gray-300 shadow-lg">
         <thead>
-          <tr className="bg-blue-400">
-            <th className="border border-gray-300 px-4 py-2">SL</th>
-            <th className="border border-gray-300 px-4 py-2">Date</th>
-            <th className="border border-gray-300 px-4 py-2">CN Number</th>
-            <th className="border border-gray-300 px-4 py-2">Merchant Name</th>
-            <th className="border border-gray-300 px-4 py-2">Merchant Number</th>
-            <th className="border border-gray-300 px-4 py-2">Customer Name</th>
-            <th className="border border-gray-300 px-4 py-2">Pickup Address</th>
-            <th className="border border-gray-300 px-4 py-2">District</th>
-            <th className="border border-gray-300 px-4 py-2">Collectable Amount</th>
-            <th className="border border-gray-300 px-4 py-2">Status</th>
-            <th className="border border-gray-300 px-4 py-2">Action</th>
+          <tr className="bg-blue-600">
+            <th className="border border-gray-300 px-4 py-2 text-white">SL</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">Date</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">CN Number</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">Sender Name</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">Recipient Name</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">Pickup Address</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">District</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">Amount</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">Status</th>
+            <th className="border border-gray-300 px-4 py-2 text-white">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="border border-gray-300 px-4 py-2">1</td>
-            <td className="border border-gray-300 px-4 py-2">2024-12-24</td>
-            <td className="border border-gray-300 px-4 py-2">CN12345</td>
-            <td className="border border-gray-300 px-4 py-2">Merchant A</td>
-            <td className="border border-gray-300 px-4 py-2">0123456789</td>
-            <td className="border border-gray-300 px-4 py-2">John Doe</td>
-            <td className="border border-gray-300 px-4 py-2">123 Street</td>
-            <td className="border border-gray-300 px-4 py-2">Dhaka</td>
-            <td className="border border-gray-300 px-4 py-2">500</td>
-            <td className="border border-gray-300 px-4 py-2">Pending</td>
-            <td className="border border-gray-300 px-4 py-2">
-              <button
-                onClick={() => handleActionClick('Successful')}
-                className="bg-green-500 text-white px-2 py-1 rounded mr-2"
-              >
-                Successful
-              </button>
-              <button
-                onClick={() => handleActionClick('Return')}
-                className="bg-red-500 text-white px-2 py-1 rounded"
-              >
-                Return
-              </button>
-            </td>
-          </tr>
+          {RiderPickup.length > 0 ? (
+            RiderPickup.map((item, index) => (
+              <tr key={item._id} className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{new Date(item.booking).toLocaleDateString()}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{item.CnNumber}</td>
+                <td className="border border-gray-300 px-4 py-2">{item.senderName}</td>
+                <td className="border border-gray-300 px-4 py-2">{item.recipientName}</td>
+                <td className="border border-gray-300 px-4 py-2">{item.Receiver_Full_Adress}</td>
+                <td className="border border-gray-300 px-4 py-2">{item.districtName}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{item.conditionCharge}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{item.update}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  <button
+                    onClick={() => handleActionClick('Successful', item)}
+                    className="bg-green-500 text-white px-3 py-1 rounded mr-2"
+                  >
+                    Successful
+                  </button>
+                  <button
+                    onClick={() => handleActionClick('Return', item)}
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    Return
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="10" className="text-center py-4 text-gray-500">No data available</td>
+            </tr>
+          )}
         </tbody>
       </table>
 
@@ -168,32 +200,32 @@ const PickupparcelList = () => {
       {modalData.isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-1/3">
-            <h2 className="text-lg font-bold mb-4">
-              {modalData.type === 'Successful' ? 'Successful Action' : 'Return Action'}
+            <h2 className="text-lg font-bold mb-4 text-center">
+              {modalData.type === 'Successful' ? 'Mark as Successful' : 'Mark as Returned'}
             </h2>
-            {modalData.type === 'Successful' ? (
-              <div>
-                <label className="block mb-2">Amount:</label>
-                <input
-                  type="number"
-                  className="w-full border border-gray-300 px-3 py-2 rounded mb-4"
-                  placeholder="Enter Amount"
-                />
-                <label className="block mb-2">Note:</label>
-                <textarea
-                  className="w-full border border-gray-300 px-3 py-2 rounded"
-                  placeholder="Enter Note"
-                ></textarea>
-              </div>
-            ) : (
-              <div>
-                <label className="block mb-2">Note:</label>
-                <textarea
-                  className="w-full border border-gray-300 px-3 py-2 rounded"
-                  placeholder="Enter Note"
-                ></textarea>
-              </div>
-            )}
+            <div>
+              {modalData.type === 'Successful' && (
+                <div className="mb-4">
+                  <label className="block mb-2 font-medium">Amount:</label>
+                  <input
+                    type="number"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={handleInputChange}
+                    className="w-full border border-gray-300 px-3 py-2 rounded"
+                    placeholder="Enter Amount"
+                  />
+                </div>
+              )}
+              <label className="block mb-2 font-medium">Note:</label>
+              <textarea
+                name="note"
+                value={formData.note}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 px-3 py-2 rounded"
+                placeholder="Enter Note"
+              ></textarea>
+            </div>
             <div className="flex justify-end mt-4">
               <button
                 onClick={closeModal}
@@ -202,7 +234,7 @@ const PickupparcelList = () => {
                 Cancel
               </button>
               <button
-                onClick={closeModal}
+                onClick={handleSubmit}
                 className="bg-blue-500 text-white px-4 py-2 rounded"
               >
                 Submit
@@ -216,6 +248,7 @@ const PickupparcelList = () => {
 };
 
 export default PickupparcelList;
+
 
 
 
