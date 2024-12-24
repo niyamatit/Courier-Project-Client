@@ -1,115 +1,14 @@
-// import { DataTable } from "primereact/datatable";
-// import { Column } from "primereact/column";
-// import { Dropdown } from "primereact/dropdown";
-// import { useParcels } from "../../../hooks/useParcels";
-// import { useState, useEffect } from "react";
-// import axios from "axios";
 
-// const PickupparcelList = () => {
-//   const { data: initialParcels, isLoading } = useParcels();
-//   const [parcels, setParcels] = useState([]);
-
-//   const [statuses] = useState([
-//     { label: "Pickuped", value: "Ongoing" },
-//     { label: "Hold", value: "Hold" },
-//     { label: "Cancel", value: "Cancel" },
-//   ]);
-
-//   useEffect(() => {
-//     if (initialParcels) {
-//       setParcels(initialParcels.map((p, idx) => ({ ...p, idx: idx + 1 })));
-//     }
-//   }, [initialParcels]);
-
-//   const handleStatusChange = async (value, parcel) => {
-//     console.log("ornob", value);
-//     try {
-//       // Update the local state
-//       setParcels((prevParcels) =>
-//         prevParcels.map((p, idx) =>
-//           p._id === parcel._id ? { ...p, deliveryStatus: value, idx: idx + 1 } : { ...p, idx: idx + 1 }
-//         )
-//       );
-
-//       await axios.put(`https://courier-server-rho.vercel.app/parcel/${parcel._id}`, {
-//         deliveryStatus: value,
-//       });
-//     } catch (error) {
-//       console.error("Error updating parcel status:", error);
-//     }
-//   };
-
-
-//   return (
-//     <div className=" mx-auto  sm:px-8 ">
-//       <h2 className="mt-6 font-bold text-2xl">Pickup Parcel List</h2>
-
-//       <div className="py-4 w-full">
-//         <div className="shadow rounded-lg overflow-hidden">
-//           <DataTable
-//             value={parcels}
-//             paginator={parcels?.length > 5}
-//             rows={5}
-//             sortMode="multiple"
-//             className="p-datatable-customers"
-//             loading={isLoading}
-//             emptyMessage="No parcels found."
-//           >
-
-//             <Column
-//               field="idx"
-//               header="SL"
-//             />
-//             <Column
-//               field="Date"
-//               header="Date"
-//               sortable
-//               body={(rowData) => new Date(rowData.Date).toLocaleDateString()}
-//             />
-//             <Column field="Merchant_Order_ID" header="CN Number" sortable />
-//             <Column field="Store_Name" header="Merchant Name" sortable />
-//             <Column
-//               field="Customer_Contact_Number"
-//               header="Merchant Number"
-//               sortable
-//             />
-//             <Column field="Customer_Name" header="Customer Name" sortable />
-//             <Column field="Customer_Address" header="Pickup Address" sortable />
-//             <Column field="Customer_District_Name" header="District" sortable />
-//             <Column
-//               field="Total_Collection_Amount"
-//               header="Collectable Amount"
-//               sortable
-//             />
-//             <Column field="Service_Type" header="Status" sortable />
-//             <Column
-//               header="Action"
-//               body={(rowData) => (
-//                 <Dropdown
-//                   value={rowData.deliveryStatus || "Ongoing"}
-//                   options={statuses}
-//                   onChange={(e) => handleStatusChange(e.value, rowData)}
-//                   placeholder="Select a Status"
-//                 />
-//               )}
-//             />
-//           </DataTable>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default PickupparcelList;
 
 import { useState } from 'react';
 import axiosSecure from '../../../api/axiosSecure';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 
 const PickupparcelList = () => {
   const [modalData, setModalData] = useState({ isOpen: false, type: '', data: {} });
-  const [formData, setFormData] = useState({ amount: '', note: '' });
+  const [formValues, setFormValues] = useState({ amount: '', note: '' });
+  const queryClient = useQueryClient();
   const [verifiedUser] = useUsersData();
 
   const { data: RiderPickup = [] } = useQuery({
@@ -121,24 +20,38 @@ const PickupparcelList = () => {
   });
   
 
-  const handleActionClick = (type, data) => {
-    setModalData({ isOpen: true, type, data });
+  const mutation = useMutation({
+    mutationFn: async (updateData) => {
+      const res = await axiosSecure.patch('/rider/update-parcel', updateData);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['RiderPickup', verifiedUser?.email]);
+      closeModal();
+    },
+  });
+
+  const handleActionClick = (type, parcel) => {
+    setModalData({ isOpen: true, type, data: parcel });
   };
 
   const closeModal = () => {
     setModalData({ isOpen: false, type: '', data: {} });
-    setFormData({ amount: '', note: '' });
-  };
-
-  const handleSubmit = () => {
-    console.log('Submitting:', modalData.type, formData, modalData.data);
-    // Perform the required action (e.g., update status in the database)
-    closeModal();
+    setFormValues({ amount: '', note: '' });
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormValues((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = () => {
+    const updateData = {
+      id: modalData.data._id,
+      type: modalData.type,
+      ...formValues,
+    };
+    mutation.mutate(updateData);
   };
 
   return (
