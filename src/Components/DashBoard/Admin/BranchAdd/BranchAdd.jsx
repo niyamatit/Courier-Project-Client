@@ -496,7 +496,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       
                   />
                  
-                   {errors.Staff_Password?.type === 'minLength' && (
+                    {errors.Staff_Password?.type === 'minLength' && (
     <span className="text-red-500">Password must be at least 8 characters long</span>
   )}
                 </div>
