@@ -74,7 +74,7 @@ const ApplyPending = () => {
       )}
       {selectedDetails && (
         <Modal
-          title="Application Details"
+           title="Application Details"
            onClose={() => setSelectedDetails(null)}
         >
           <div className="text-gray-700 ">
