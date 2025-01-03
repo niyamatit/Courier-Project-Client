@@ -109,7 +109,7 @@ const BranchModal = ({ branch, onClose, onSave }) => {
                                 className="mt-1 block w-full border-gray-300 rounded-md"
                             />
                         </label>
-                        <label className="block mb-2">
+                        {/* <label className="block mb-2">
                             <span className="text-gray-700">Branch_Password:</span>
                             <input
                                 type="text"
@@ -118,7 +118,7 @@ const BranchModal = ({ branch, onClose, onSave }) => {
                                 onChange={handleChange}
                                 className="mt-1 block w-full border-gray-300 rounded-md"
                             />
-                        </label>
+                        </label> */}
 
                     </>
                 ) : (
@@ -129,7 +129,7 @@ const BranchModal = ({ branch, onClose, onSave }) => {
                         <p><strong>Branch District:</strong> {branch.Branch_District_Name}</p>
                         <p><strong>Branch type:</strong> {branch.Branch_type}</p>
                         <p><strong>Branch User_ID:</strong> {branch.email}</p>
-                        <p><strong>Branch Password:</strong> {branch.Branch_Password}</p>
+                        {/* <p><strong>Branch Password:</strong> {branch.Branch_Password}</p> */}
                         <p><strong>branch ID:</strong> {branch._id}</p>
                         <p><strong>Branch type:</strong> {branch.Branch_type}</p>
                     </>
