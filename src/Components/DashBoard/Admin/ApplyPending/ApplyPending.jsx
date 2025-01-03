@@ -34,12 +34,12 @@ const ApplyPending = () => {
               <tr>
                 <th className="border border-blue-300 px-4 py-2">#</th>
                 <th className="border border-blue-300 px-4 py-2">Date</th>
-                <th className="border border-blue-300 px-4 py-2">Name</th>
+                <th className="border border-blue-300 px-4 py-2">Customer Name</th>
                 <th className="border border-blue-300 px-4 py-2">Company Name</th>
                 <th className="border border-blue-300 px-4 py-2">Contact</th>
                 <th className="border border-blue-300 px-4 py-2">Email</th>
                 <th className="border border-blue-300 px-4 py-2">District</th>
-                <th className="border border-blue-300 px-4 py-2">Role</th>
+                {/* <th className="border border-blue-300 px-4 py-2">Role</th> */}
                 <th className="border border-blue-300 px-4 py-2">Apply For</th>
                 
                 <th className="border border-blue-300 px-4 py-2">Actions</th>
@@ -58,7 +58,7 @@ const ApplyPending = () => {
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Contact_Number}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Email}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_District_Name}</td>
-                  <td className="border border-blue-300 px-4 py-2">{pending.Role}</td>
+                  {/* <td className="border border-blue-300 px-4 py-2">{pending.Role}</td> */}
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
                   <td className="border border-blue-300 px-4 py-2">
                     <button
@@ -80,7 +80,7 @@ const ApplyPending = () => {
            onClose={() => setSelectedDetails(null)}
         >
           <div className="text-gray-700 ">
-            <p><strong>Name:</strong> {selectedDetails.Customer_Name}</p>
+            <p><strong>Customer Name:</strong> {selectedDetails.Customer_Name}</p>
             <p><strong>Contact:</strong> {selectedDetails.Customer_Contact_Number}</p>
             <p><strong>Email:</strong> {selectedDetails.Customer_Email}</p>
             <p><strong>Father's Name:</strong> {selectedDetails.Customer_Father_Name}</p>
@@ -96,12 +96,12 @@ const ApplyPending = () => {
             <p><strong>TIN/BIN:</strong> {selectedDetails.TIN_BIN}</p>
             <p><strong>Reference:</strong> {selectedDetails.Reference}</p>
             <p><strong>Business Address:</strong> {selectedDetails.Business_Address}</p>
-            <p><strong>Role:</strong> {selectedDetails.Role}</p>
+            {/* <p><strong>Role:</strong> {selectedDetails.Role}</p> */}
             <p><strong>Date:</strong> {selectedDetails.Date}</p>
             <div className="mt-4 grid grid-cols-2 gap-4">
   <div>
     <p><strong>Customer Images:</strong></p>
-    <img src={selectedDetails.Customer_Image} alt="Customer" className="w-64 h-64 rounded" />
+    <img src={selectedDetails.Customer_Image} alt="Customer" className="w-64 h-64 rounded mt-2" />
   </div>
   <div>
     <p><strong>NID Front:</strong></p>
