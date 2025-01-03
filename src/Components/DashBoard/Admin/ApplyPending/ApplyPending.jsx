@@ -32,12 +32,13 @@ const ApplyPending = () => {
           <table className="table-auto w-full border-collapse border border-blue-300">
             <thead className="bg-blue-500 text-white">
               <tr>
-                <th className="border border-blue-300 px-4 py-2">#</th>
-                <th className="border border-blue-300 px-4 py-2">Date</th>
+                <th className="border border-blue-300 px-4 py-2">SL</th>
+                <th className="border border-blue-300 px-4 py-2">Apply Date</th>
+                <th className="border border-blue-300 px-4 py-2">Image</th>
                 <th className="border border-blue-300 px-4 py-2">Customer Name</th>
                 <th className="border border-blue-300 px-4 py-2">Company Name</th>
                 <th className="border border-blue-300 px-4 py-2">Contact</th>
-                <th className="border border-blue-300 px-4 py-2">Email</th>
+                {/* <th className="border border-blue-300 px-4 py-2">Email</th> */}
                 <th className="border border-blue-300 px-4 py-2">District</th>
                 {/* <th className="border border-blue-300 px-4 py-2">Role</th> */}
                 <th className="border border-blue-300 px-4 py-2">Apply For</th>
@@ -53,10 +54,15 @@ const ApplyPending = () => {
                 >
                   <td className="border border-blue-300 px-4 py-2">{index + 1}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Date}</td>
+                  <td className="border border-blue-300 px-4 py-2"><img
+            src={pending.Customer_Image}
+            alt="Customer Image"
+            className="w-12 h-12 rounded-full object-cover"
+          /></td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Company_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Contact_Number}</td>
-                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Email}</td>
+                  {/* <td className="border border-blue-300 px-4 py-2">{pending.Customer_Email}</td> */}
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_District_Name}</td>
                   {/* <td className="border border-blue-300 px-4 py-2">{pending.Role}</td> */}
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
@@ -98,7 +104,7 @@ const ApplyPending = () => {
             <p><strong>Business Address:</strong> {selectedDetails.Business_Address}</p>
             {/* <p><strong>Role:</strong> {selectedDetails.Role}</p> */}
             <p><strong>Date:</strong> {selectedDetails.Date}</p>
-            <div className="mt-4 grid grid-cols-2 gap-4">
+            <div className="mt-4 ml-5  grid grid-cols-2 gap-4">
   <div>
     <p><strong>Customer Images:</strong></p>
     <img src={selectedDetails.Customer_Image} alt="Customer" className="w-64 h-64 rounded mt-2" />

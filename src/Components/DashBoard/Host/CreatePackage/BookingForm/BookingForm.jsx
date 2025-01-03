@@ -381,7 +381,7 @@ const BookingForm = () => {
         className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400"
       >
         <h1 className="text-xl sm:text-xl md:text-xl font-bold mb-4 sm:mb-6 md:mb-6 text-blue-700">
-          P.S.L Lot Booking
+         Offline Booking
         </h1>
         <div className="grid lg:grid-cols-2 gap-2">
           <div>
