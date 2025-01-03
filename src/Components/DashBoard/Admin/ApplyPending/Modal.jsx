@@ -6,7 +6,7 @@ const Modal = ({ title, children, onClose }) => {
       <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-2xl mx-4 sm:mx-auto">
         {/* Modal Header */}
         <div className="flex justify-between items-center border-b border-gray-300 px-4 py-2">
-          <h2 className="text-lg font-semibold text-gray-700">{title}</h2>
+          <h2 className="text-2xl font-semibold text-blue-700">{title}</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-800 focus:outline-none text-2xl"
