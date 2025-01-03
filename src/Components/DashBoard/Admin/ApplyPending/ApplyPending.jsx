@@ -33,6 +33,7 @@ const ApplyPending = () => {
             <thead className="bg-blue-500 text-white">
               <tr>
                 <th className="border border-blue-300 px-4 py-2">#</th>
+                <th className="border border-blue-300 px-4 py-2">Date</th>
                 <th className="border border-blue-300 px-4 py-2">Name</th>
                 <th className="border border-blue-300 px-4 py-2">Company Name</th>
                 <th className="border border-blue-300 px-4 py-2">Contact</th>
@@ -51,6 +52,7 @@ const ApplyPending = () => {
                   className={index % 2 === 0 ? "bg-blue-50" : "bg-white"}
                 >
                   <td className="border border-blue-300 px-4 py-2">{index + 1}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Date}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Company_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Contact_Number}</td>
@@ -96,13 +98,25 @@ const ApplyPending = () => {
             <p><strong>Business Address:</strong> {selectedDetails.Business_Address}</p>
             <p><strong>Role:</strong> {selectedDetails.Role}</p>
             <p><strong>Date:</strong> {selectedDetails.Date}</p>
-            <div className="mt-4">
-              <p><strong>Images:</strong></p>
-              <img src={selectedDetails.Customer_Image} alt="Customer" className="w-32 h-32 rounded" />
-              <img src={selectedDetails.NID_Front_Image} alt="NID Front" className="w-32 h-32 rounded mt-2" />
-              <img src={selectedDetails.NID_Back_Image} alt="NID Back" className="w-32 h-32 rounded mt-2" />
-              <img src={selectedDetails.TradeLicense_Image} alt="Trade License" className="w-32 h-32 rounded mt-2" />
-            </div>
+            <div className="mt-4 grid grid-cols-2 gap-4">
+  <div>
+    <p><strong>Customer Images:</strong></p>
+    <img src={selectedDetails.Customer_Image} alt="Customer" className="w-64 h-64 rounded" />
+  </div>
+  <div>
+    <p><strong>NID Front:</strong></p>
+    <img src={selectedDetails.NID_Front_Image} alt="NID Front" className="w-64 h-64 rounded mt-2" />
+  </div>
+  <div>
+    <p><strong>NID Back:</strong></p>
+    <img src={selectedDetails.NID_Back_Image} alt="NID Back" className="w-64 h-64 rounded mt-2" />
+  </div>
+  <div>
+    <p><strong>Trade License:</strong></p>
+    <img src={selectedDetails.TradeLicense_Image} alt="Trade License" className="w-64 h-64 rounded mt-2" />
+  </div>
+</div>
+
           </div>
         </Modal>
       )}
