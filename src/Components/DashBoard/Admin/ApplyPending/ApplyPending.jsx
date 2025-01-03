@@ -7,7 +7,7 @@ const ApplyPending = () => {
   const { data: pendings = [], isLoading } = useQuery({
     queryKey: ["pendings"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/apply");
+      const res = await axiosSecure.get("/hdfjkshfjjkcxcbmbxbcb1");
       return res.data;
     },
   });
@@ -34,10 +34,13 @@ const ApplyPending = () => {
               <tr>
                 <th className="border border-blue-300 px-4 py-2">#</th>
                 <th className="border border-blue-300 px-4 py-2">Name</th>
+                <th className="border border-blue-300 px-4 py-2">Company Name</th>
                 <th className="border border-blue-300 px-4 py-2">Contact</th>
                 <th className="border border-blue-300 px-4 py-2">Email</th>
                 <th className="border border-blue-300 px-4 py-2">District</th>
                 <th className="border border-blue-300 px-4 py-2">Role</th>
+                <th className="border border-blue-300 px-4 py-2">Apply For</th>
+                
                 <th className="border border-blue-300 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -49,10 +52,12 @@ const ApplyPending = () => {
                 >
                   <td className="border border-blue-300 px-4 py-2">{index + 1}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Name}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Company_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Contact_Number}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Email}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_District_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Role}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
                   <td className="border border-blue-300 px-4 py-2">
                     <button
                       onClick={() => handleViewDetails(pending)}
@@ -72,7 +77,7 @@ const ApplyPending = () => {
           title="Application Details"
           onClose={() => setSelectedDetails(null)}
         >
-          <div className="text-gray-700">
+          <div className="text-gray-700 ">
             <p><strong>Name:</strong> {selectedDetails.Customer_Name}</p>
             <p><strong>Contact:</strong> {selectedDetails.Customer_Contact_Number}</p>
             <p><strong>Email:</strong> {selectedDetails.Customer_Email}</p>
