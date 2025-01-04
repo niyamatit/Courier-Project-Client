@@ -1,0 +1,93 @@
+
+import { FaTrashAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
+import axiosSecure from "../../../../api/axiosSecure";
+
+const TableBranchsup = ({ branch, onView, refetch }) => {
+
+    const handleDelete = async (id) => {
+        try {
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            });
+
+            if (result.isConfirmed) {
+                const response = await axiosSecure.delete(`/branch/${id}`);
+                console.log("Delete Response:", response.data);
+
+                if (response.data?.deletedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Branch has been deleted successfully.",
+                        icon: "success",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Failed to delete the branch. Please try again.",
+                        icon: "error",
+                    });
+                }
+            }
+        } catch (error) {
+            Swal.fire({
+                title: "Error!",
+                text: "Something went wrong while deleting the branch.",
+                icon: "error",
+            });
+            console.error("Delete branch error:", error);
+        }
+    };
+
+    return (
+        <tr className="font-rancho">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 font-semibold whitespace-no-wrap">{branch?.idx}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{branch?.Date}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <div className="flex items-center">
+                    <p className="text-gray-900 whitespace-no-wrap">
+                        {branch?.Branch_Name}
+                    </p>
+                </div>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Number}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Commission}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_type}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <button
+                    onClick={() => onView(branch)}
+                    className="text-blue-500 hover:underline"
+                >
+                    View
+                </button>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <button
+                    onClick={() => handleDelete(branch._id)}
+                    aria-label="Delete branch"
+                    className="btn btn-ghost btn-xs"
+                >
+                    <FaTrashAlt className="text-red-600" />
+                </button>
+            </td>
+        </tr>
+    );
+};
+
+export default TableBranchsup;

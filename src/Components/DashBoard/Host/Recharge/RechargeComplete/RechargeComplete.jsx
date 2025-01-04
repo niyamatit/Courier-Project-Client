@@ -14,8 +14,9 @@ const RechargeComplete = () => {
         enabled: !!verifiedUser?.email, // Only run when email is available
     });
 
+    console.log({ recharge })
 
-    const CompleteRechargeList = recharge.filter(user => user?.update === 'recharge');
+    const CompleteRechargeList = recharge.filter(user => user?.Status === 'accept');
 
     return (
         <>

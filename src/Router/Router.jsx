@@ -74,6 +74,10 @@ import MerchantPercelView from "../Components/DashBoard/Merchant/MerchantPercelV
 import MerchantParcelList from "../Components/DashBoard/Merchant/MerchantParcelList/MerchantParcelList";
 import AllBranch from "../Components/DashBoard/Admin/AllBranch/AllBranch";
 import OfflineBookingShow from "../Components/OfflineBookingShow/OfflineBookingShow";
+import AllMerchantListsup from "../Components/DashBoard/SuperAdmin/AllMerchantListsup/AllMerchantListsup";
+import AllBranchListsup from "../Components/DashBoard/SuperAdmin/AllBranchListsup/AllBranchListsup";
+import FormComponent from "../Components/DashBoard/SuperAdmin/FormComponent/FormComponent";
+import AllAdminList from "../Components/DashBoard/SuperAdmin/AllAdminList/AllAdminList";
 import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
 
 
@@ -456,7 +460,7 @@ export const router = createBrowserRouter([
         path: "parcel-admin-received",
         element: <PrivateRoute>
           <HostRoute>
-           <SelectMotherHub/>
+            <SelectMotherHub />
           </HostRoute>
         </PrivateRoute>
       },
@@ -671,6 +675,24 @@ export const router = createBrowserRouter([
       {
         path: "merchantbooking-info",
         element: <MerchantPercelView></MerchantPercelView>
+      },
+
+      // super admin
+      {
+        path: "AllMerchnatListsup",
+        element: <AllMerchantListsup></AllMerchantListsup>
+      },
+      {
+        path: "all-branchsup",
+        element: <AllBranchListsup></AllBranchListsup>
+      },
+      {
+        path: "hash-add",
+        element: <FormComponent></FormComponent>
+      },
+      {
+        path: "adminList",
+        element: <AllAdminList></AllAdminList>
       },
 
     ],

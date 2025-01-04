@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import axiosSecure from "../../../../api/axiosSecure";
+import { FaTrashAlt } from "react-icons/fa";
 
 const TableRider = ({ rider, index }) => {
     const [status, setStatus] = useState("");
