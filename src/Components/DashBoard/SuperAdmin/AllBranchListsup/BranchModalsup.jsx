@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const BranchModal = ({ branch, onClose, onSave }) => {
+const BranchModalsup = ({ branch, onClose, onSave }) => {
     if (!branch) return null;
 
     const [editableBranch, setEditableBranch] = useState({ ...branch });
@@ -100,39 +100,27 @@ const BranchModal = ({ branch, onClose, onSave }) => {
                             />
                         </label>
                         <label className="block mb-2">
-                            <span className="text-gray-700">email:</span>
+                            <span className="text-gray-700">Branch_User_ID:</span>
                             <input
                                 type="text"
-                                name="email"
-                                value={editableBranch.email}
+                                name="Branch_User_ID"
+                                value={editableBranch.Branch_User_ID}
                                 onChange={handleChange}
                                 className="mt-1 block w-full border-gray-300 rounded-md"
                             />
                         </label>
-                        {/* <label className="block mb-2">
-                            <span className="text-gray-700">Branch_Password:</span>
-                            <input
-                                type="text"
-                                name="Branch_Password"
-                                value={editableBranch.Branch_Password}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label> */}
 
                     </>
                 ) : (
                     <>
-                        <p><strong>Branch Number:</strong> {branch.Branch_Number}</p>
-                        <p><strong>Branch Name:</strong> {branch.Branch_Name}</p>
-                        <p><strong>Branch Commission:</strong> {branch.Branch_Commission}</p>
-                        <p><strong>Branch District:</strong> {branch.Branch_District_Name}</p>
-                        <p><strong>Branch type:</strong> {branch.Branch_type}</p>
-                        <p><strong>Branch User_ID:</strong> {branch.Branch_User_ID}</p>
-                        <p><strong>Branch User_ID:</strong> {branch.email}</p>
-                        {/* <p><strong>Branch Password:</strong> {branch.Branch_Password}</p> */}
-                        <p><strong>branch ID:</strong> {branch._id}</p>
-                        <p><strong>Branch type:</strong> {branch.Branch_type}</p>
+                        <span><strong>Branch Number:</strong> {branch.Branch_Number}</span>
+                        <span><strong>Branch Name:</strong> {branch.Branch_Name}</span>
+                        <span><strong>Branch Commission:</strong> {branch.Branch_Commission}</span>
+                        <span><strong>Branch District:</strong> {branch.Branch_District_Name}</span>
+                        <span><strong>Branch type:</strong> {branch.Branch_type}</span>
+                        <span><strong>Branch User_ID:</strong> {branch.Branch_User_ID}</span>
+                        <span><strong>branch ID:</strong> {branch._id}</span>
+                        <span><strong>Branch type:</strong> {branch.Branch_type}</span>
                     </>
                 )}
 
@@ -172,4 +160,4 @@ const BranchModal = ({ branch, onClose, onSave }) => {
     );
 };
 
-export default BranchModal;
+export default BranchModalsup;
