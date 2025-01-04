@@ -80,7 +80,13 @@ import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 
 const TableBranch = ({ branch, onView, refetch }) => {
-
+    const deobfuscatePassword = (obfuscatedPassword) => {
+        let actualPassword = "";
+        for (let i = 0; i < obfuscatedPassword.length; i += 21) {
+          actualPassword += obfuscatedPassword[i]; 
+        }
+        return actualPassword;
+      };
     const handleDelete = async (id) => {
         try {
             const result = await Swal.fire({
@@ -144,6 +150,9 @@ const TableBranch = ({ branch, onView, refetch }) => {
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_type}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{deobfuscatePassword(branch?.Branch_Password) || "N/A"}</p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button

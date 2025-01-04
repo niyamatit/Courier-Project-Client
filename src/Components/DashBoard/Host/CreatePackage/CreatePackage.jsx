@@ -102,7 +102,7 @@ const CreatePackage = () => {
     }, []);
 
     useEffect(() => {
-        if (condition) {
+        if (condition && parseInt(condition) !== 0) {
             const conditionValue = parseInt(condition);
             let calculatedCod = 0;
 

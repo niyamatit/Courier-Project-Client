@@ -5,13 +5,15 @@ import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import { imageUpload } from "../../../../api/utils";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import { Dialog } from "primereact/dialog";
 
+import { FaSpinner } from "react-icons/fa6";
 const Apply = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [apply,setApply] = useState("")
   const [filteredAreas, setFilteredAreas] = useState([]);
   const[verifiedUser] = useUsersData()
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
@@ -614,67 +616,83 @@ const Areas =[
   };
 
   const onSubmit = async (data) => {
-    const districtName = getDistrictName(data.district);
-    const formData = { ...data, district: districtName };
-    const yourImage = await imageUpload(data.yourImage[0]);
-    const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
-    const nidBackImage = await imageUpload(data.nidBackImage[0]);
-    const TradeLicense  = await imageUpload(data.TradeLicense[0])
-    
-    const ApplyInformation = {
-      Customer_Contact_Number: formData?.contactNumber || "",
-      Customer_Name:formData?.YourName || "",
-      Customer_Email:formData?.email || "",
-      Customer_Father_Name:formData?.FatherName || "",
-      Customer_Mother_Name:formData?.MotherName || "",
-      Customer_Current_Address:formData?.YourCurrentAddress || "",
-      Customer_Permanant_Address:formData?.YourParmanentAddress || "",
-      Customer_Date_Of_Birth:formData?.date_of_birth || "",
-      Customer_Married_Status:formData?.married_status || "",
-      Customer_District_Name: formData?.district || "",
-      Customer_Area: formData?.area || "",
-      Customer_Apply_For: formData?.apply || "",
-      Company_Name: formData?.CompanyName || "",
-      TIN_BIN: formData?.TinBin || "",
-      Reference: formData?.Reference || "",
-      Business_Address: formData?.BusinessAddress || "",
-      Customer_Image: yourImage?.data?.display_url || "",
-      NID_Front_Image: nidFrontImage?.data?.display_url || "",
-      NID_Back_Image: nidBackImage?.data?.display_url || "",
-      TradeLicense_Image: TradeLicense?.data?.display_url || "",
-      Role: "Pending",
-      
-      
-      Date: new Date().toISOString().split('T')[0] || "2024-08-15"
-      
- }
-   console.log("Parcel Information:",ApplyInformation)
-
-   const ApplyCustomerInfo = await axiosSecure.post("/apply", ApplyInformation);
-   console.log(ApplyCustomerInfo.data); 
-   
-   if (ApplyCustomerInfo.data.insertedId) {
-     Swal.fire({
-       position: "top-end",
-       icon: "success",
-       title: "Parcel Added Successfully",
-       showConfirmButton: false,
-       timer: 1500,
-     });
-   } else {
-     console.log("Debugging Else Block:", ApplyCustomerInfo.data);
-     Swal.fire({
-       position: "top-end",
-       icon: "error",
-       title: "Already Applied",
-       showConfirmButton: false,
-       timer: 1500,
-     });
-   }
-   console.log(formData);
-   
-
+    setIsSubmitting(true)
+    try {
+      const districtName = getDistrictName(data.district);
+      const formData = { ...data, district: districtName };
+  
+      // Upload images
+      const yourImage = await imageUpload(data.yourImage[0]);
+      const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
+      const nidBackImage = await imageUpload(data.nidBackImage[0]);
+      const TradeLicense = await imageUpload(data.TradeLicense[0]);
+  
+      // Construct the application information object
+      const ApplyInformation = {
+        Customer_Contact_Number: formData?.contactNumber || "",
+        Customer_Name: formData?.YourName || "",
+        Customer_Email: formData?.email || "",
+        Customer_Father_Name: formData?.FatherName || "",
+        Customer_Mother_Name: formData?.MotherName || "",
+        Customer_Current_Address: formData?.YourCurrentAddress || "",
+        Customer_Permanant_Address: formData?.YourParmanentAddress || "",
+        Customer_Date_Of_Birth: formData?.date_of_birth || "",
+        Customer_Married_Status: formData?.married_status || "",
+        Customer_District_Name: formData?.district || "",
+        Customer_Area: formData?.area || "",
+        Customer_Apply_For: formData?.apply || "",
+        Company_Name: formData?.CompanyName || "",
+        TIN_BIN: formData?.TinBin || "",
+        Reference: formData?.Reference || "",
+        Business_Address: formData?.BusinessAddress || "",
+        Customer_Image: yourImage?.data?.display_url || "",
+        NID_Front_Image: nidFrontImage?.data?.display_url || "",
+        NID_Back_Image: nidBackImage?.data?.display_url || "",
+        TradeLicense_Image: TradeLicense?.data?.display_url || "",
+        Role: "Pending",
+        Date: new Date().toISOString().split('T')[0] || "2024-08-15"
+      };
+  
+      console.log("Parcel Information:", ApplyInformation);
+  
+      // Send application information to the server
+      const ApplyCustomerInfo = await axiosSecure.post("/apply", ApplyInformation);
+      console.log(ApplyCustomerInfo.data);
+  
+      // Show success or error notification
+      if (ApplyCustomerInfo.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Parcel Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        console.log("Debugging Else Block:", ApplyCustomerInfo.data);
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Already Applied",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error("Error occurred while submitting application:", error);
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "An error occurred",
+        text: "Please try again later.",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } finally {
+      setIsSubmitting(false)
+    }
   };
+  
   
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -1053,6 +1071,31 @@ const Areas =[
         </button>
       
     </form>
+     {/* Modal for submitting */}
+                  <Dialog
+        // header={
+        //     <div className="flex items-center space-x-2">
+        //         <FaSpinner className="animate-spin text-blue-500 text-xl" />
+        //         <span className="text-blue-700 font-semibold text-lg">Submitting</span>
+        //     </div>
+        // }
+        visible={isSubmitting}
+        style={{
+            width: '30vw',
+            borderRadius: '8px',
+            background: 'linear-gradient(135deg, #ffffff, #e3f2fd)',
+        }}
+        onHide={() => {}}
+        closable={false}
+        footer={null}
+    >
+        <div className="flex flex-col items-center justify-center space-y-3">
+            <FaSpinner className="animate-spin text-blue-500 text-4xl" />
+            <p className="text-center text-blue-700 font-medium">
+                Please wait while we process your submission...
+            </p>
+        </div>
+    </Dialog>
   </div>
 </div>
 

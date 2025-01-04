@@ -79,7 +79,7 @@ export const updateOffline = async (updatedOffline) => {
 
 
 export const getBranch = async () => {
-    const { data } = await axiosSecure.get(`/branch`);
+    const { data } = await axiosSecure.get(`/vgfsdhfsdhhsxgcfbxcjkxnbnj454557`);
     return data;
 };
 

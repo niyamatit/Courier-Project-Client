@@ -3,101 +3,53 @@ import Swal from "sweetalert2";
 import axiosSecure from "../../../../api/axiosSecure";
 import { FaTrashAlt } from "react-icons/fa";
 
-const TableRider = ({ rider, refetch }) => {
-    const [status, setStatus] = useState('');
+const TableRider = ({ rider, index }) => {
+    const [status, setStatus] = useState("");
+
     useEffect(() => {
-        console.log(rider?.Status)
         if (!status) {
-            setStatus(rider?.Status || "processing")
+            setStatus(rider?.Status || "processing");
         }
-    }, [rider])
+    }, [rider]);
 
-    const handleDelete = async (id) => {
-        try {
-            const result = await Swal.fire({
-                title: "Are you sure?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-            });
-
-            if (result.isConfirmed) {
-                const response = await axiosSecure.delete(`/branch/${id}`);
-                console.log("Delete Response:", response.data);
-
-                if (response.data?.deletedCount > 0) {
-                    refetch();
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "Branch has been deleted successfully.",
-                        icon: "success",
-                    });
-                } else {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "Failed to delete the branch. Please try again.",
-                        icon: "error",
-                    });
-                }
-            }
-        } catch (error) {
-            Swal.fire({
-                title: "Error!",
-                text: "Something went wrong while deleting the branch.",
-                icon: "error",
-            });
-            console.error("Delete branch error:", error);
-        }
-    };
     return (
         <tr className="font-rancho">
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <div className='flex items-center'>
-                    <div className='flex-shrink-0'>
-                        <div className='block relative'>
-                            <p className='text-gray-900 whitespace-no-wrap'>
-                                {rider?.Rider_Name}
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
+                <p className='text-gray-900 whitespace-no-wrap'>{index}</p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Number}
-                </p>
+                <p className='text-gray-900 whitespace-no-wrap'>{rider?.Date}</p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Nid}
-                </p>
+                <img
+                    src={rider?.Rider_Image}
+                    alt="Rider"
+                    className="w-12 h-12 rounded-full"
+                />
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Address}
-                </p>
+                <p className='text-gray-900 whitespace-no-wrap'>{rider?.Rider_Name}</p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                <p className='text-gray-900 whitespace-no-wrap'>
-                    {rider?.Rider_Branch}
-                </p>
+                <p className='text-gray-900 whitespace-no-wrap'>{rider?.Rider_Number}</p>
             </td>
-
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                <p className='text-gray-900 whitespace-no-wrap'>{rider?.Rider_Nid}</p>
+            </td>
+            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                <p className='text-gray-900 whitespace-no-wrap'>{rider?.Rider_Full_Address}</p>
+            </td>
+            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                <p className='text-gray-900 whitespace-no-wrap'>{rider?.Rider_Branch}</p>
+            </td>
+            {/* <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <button
-                    onClick={() => handleDelete(rider._id)}
-                    aria-label="Delete branch"
-                    className="btn btn-ghost btn-xs"
+                    className='text-blue-500 hover:text-blue-700 underline'
+                    onClick={() => alert(JSON.stringify(rider, null, 2))}
                 >
-                    <FaTrashAlt className="text-red-600" />
+                    View
                 </button>
-            </td>
-
-
-
+            </td> */}
         </tr>
     );
 };

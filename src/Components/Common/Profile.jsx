@@ -91,7 +91,7 @@ const Profile = () => {
       </h1>
     )} */}
               <p className='flex flex-col'>
-                Email
+                ID
                 <span className='font-bold text-black '>{verifiedUser?.email}</span>
               </p>
 
@@ -102,12 +102,13 @@ const Profile = () => {
                 <div>
                 <div className="relative inline-block">
                   {/* Hover Window Button */}
-                  <button
+                  {/* <button
                     onClick={() => setIsEditingPassword(!isEditingPassword)}
                     className='bg-[#F43F5E] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]'
                   >
                     Change Password
-                  </button>
+                  </button> */}
+                  
 
                   {/* Hover Window with Input Fields */}
                   {isEditingPassword && (
