@@ -39,7 +39,7 @@ const AdminStatistics = () => {
           <StatisticsCard
             title="Total Sales"
             icon={<FaSalesforce />}
-            value={statData?.totalSale}
+            value={0}
             color="bg-[#FFE5D9]"
           />
           {/* Users Card */}
@@ -67,29 +67,29 @@ const AdminStatistics = () => {
           <StatisticsCard
             title="Total Online Bookings"
             icon={<FaUserAlt />}
-            value={statData?.bookingCount}
+            value={0}
             color="bg-[#B0E0E6]"
           />
           {/* Total Rooms */}
           <StatisticsCard
-            title="Total Package"
+            title="Total Rider"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#FFD1DC]"
           />
           <StatisticsCard
-            title="Total Package"
+            title="Total Merchnat"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#E6E6FA]"
           />
           <StatisticsCard
-            title="Total Package"
+            title="Total Recharge"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#FFFACD]"
           />
-          <StatisticsCard
+          {/* <StatisticsCard
             title="Total Package"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount}
@@ -112,7 +112,7 @@ const AdminStatistics = () => {
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount}
             color="bg-[#F7E7CE]"
-          />
+          /> */}
           <StatisticsCard
             title="Total Package"
             icon={<BsFillHouseDoorFill />}
@@ -128,17 +128,17 @@ const AdminStatistics = () => {
           <StatisticsCard
             title="Total Online Bookings"
             icon={<FaUserAlt />}
-            value={statData?.bookingCount}
+            value={0}
             color="bg-[#B0E0E6]"
           />
           {/* Total Rooms */}
-          <StatisticsCard
+          {/* <StatisticsCard
             title="Total Package"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount}
             color="bg-[#FFD1DC]"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Total Package"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount}
@@ -269,7 +269,7 @@ const AdminStatistics = () => {
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount}
             color="bg-[#FADADD]"
-          />
+          /> */}
           <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md'>
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
