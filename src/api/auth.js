@@ -40,12 +40,12 @@ export const getParcel = async () => {
 };
 
 export const getPackage = async () => {
-    const { data } = await axiosSecure.get(`/package`);
+    const { data } = await axiosSecure.get(`/packagfhguieormbncdmnn44ge`);
     return data;
 };
 
 export const getAllPackage = async (email) => {
-    const { data } = await axiosSecure.get(`/package/${email}`);
+    const { data } = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${email}`);
     console.log("Fetching packages for email:", email);
     return data;
 };
