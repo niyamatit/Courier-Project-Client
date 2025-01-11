@@ -38,7 +38,7 @@ const AdminStatistics = () => {
   const { data: parcelDataus = [] } = useQuery({
     queryKey: ["parcelData", verifiedUser?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/package");
+      const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
       return res.data;
     },
     enabled: !!verifiedUser?.email,
@@ -46,7 +46,7 @@ const AdminStatistics = () => {
 
 
   useEffect(() => {
-    fetch('https://courier-server-rho.vercel.app/package')
+    fetch('https://courier-server-rho.vercel.app/packagfhguieormbncdmnn44ge')
       .then(res => res.json())
       .then(data => {
         // setHostData(data);

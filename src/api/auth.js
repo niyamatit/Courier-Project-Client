@@ -40,7 +40,7 @@ export const getParcel = async () => {
 };
 
 export const getPackage = async () => {
-    const { data } = await axiosSecure.get(`/package`);
+    const { data } = await axiosSecure.get(`/packagfhguieormbncdmnn44ge`);
     return data;
 };
 

@@ -98,7 +98,7 @@ const HostDashboard = () => {
     const { data: parcelData = [] } = useQuery({
         queryKey: ["parcelData", verifiedUser?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get("/package");
+            const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
             return res.data;
         },
         enabled: !!verifiedUser?.email,
