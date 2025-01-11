@@ -139,8 +139,8 @@ const PackageTracking = () => {
             </div>
             <div>
               <h1 className="text-gray-700 font-semibold">
-                Sent To MotherHub Branch (
-                {searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email})
+                Sent To MotherHub Branch
+               
               </h1>
               <p className="text-gray-500 text-sm">
                 Sent Time:{" "}
@@ -150,11 +150,11 @@ const PackageTracking = () => {
                     )
                   : "Not Available"}
               </p>
-              <p className="text-gray-500 text-sm">
+              {/* <p className="text-gray-500 text-sm">
                 Admin Note:{" "}
                 {searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Note ||
                   "No Message"}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -205,8 +205,7 @@ const PackageTracking = () => {
             </div>
             <div>
               <h1 className="text-gray-700 font-semibold">
-                Sent to Destination Branch (
-                {searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name})
+                Sent to Destination Branch
               </h1>
               <p className="text-gray-500 text-sm">
                 Sent Time:{" "}
@@ -216,10 +215,10 @@ const PackageTracking = () => {
                     )
                   : "Not Available"}
               </p>
-              <p className="text-gray-500 text-sm">
+              {/* <p className="text-gray-500 text-sm">
                 Note:{" "}
                 {searchResult?.Tracking_MotherHub_Branch_Note || "Not Available"}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -251,10 +250,10 @@ const PackageTracking = () => {
                     )
                   : "Not Available"}
               </p>
-              <p className="text-gray-500 text-sm">
+              {/* <p className="text-gray-500 text-sm">
                 Note:{" "}
                 {searchResult?.Tracking_Destination_Branch_Note || "Not Available"}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -284,7 +283,7 @@ const PackageTracking = () => {
 </p>
 
 
-                                 <p className="text-gray-500 text-sm">Note: {searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Note || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p>
+                                 {/* <p className="text-gray-500 text-sm">Note: {searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Note || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p> */}
                                
                             </div>
                         </div>
