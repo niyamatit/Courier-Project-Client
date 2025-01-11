@@ -71,7 +71,7 @@ const PackageTracking = () => {
         style={{ maxHeight: "100vh" }}>
         <div className="max-w-2xl bg-black p-5 ">
           <h1 className="md:text-xl md:font-bold font-rancho text-primary text-center my-4">
-            Track Your Product
+             Track Your Product
           </h1>
 
           {/* Render the search form once */}
