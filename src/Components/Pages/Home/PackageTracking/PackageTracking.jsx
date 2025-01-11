@@ -70,7 +70,7 @@ const PackageTracking = () => {
       <div className="hero-content text-neutral-content overflow-auto max-h-screen w-full"
         style={{ maxHeight: "100vh" }}>
         <div className="max-w-2xl bg-black p-5 ">
-          <h1 className="md:text-xl md:font-bold font-rancho text-primary text-center my-4">
+          <h1 className="text-2xl font-bold font-rancho text-primary text-center my-4">
              Track Your Product
           </h1>
 
