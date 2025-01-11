@@ -90,7 +90,10 @@ const PackageTracking = () => {
       <h3 className="text-2xl mb-6 text-gray-800 border-b pb-2 text-center">
         Tracking Updates
       </h3>
-     
+     <p>Products: {searchResult?.productDetails}</p>
+     <p>Sender Name: {searchResult?.senderName}</p>
+     <p>Receiver Name: {searchResult?.recipientName}</p>
+     <p>Receiver Address: {searchResult?.selectedArea}</p>
     </div>
 
     {/* Timeline Tracking */}
