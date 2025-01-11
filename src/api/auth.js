@@ -45,7 +45,7 @@ export const getPackage = async () => {
 };
 
 export const getAllPackage = async (email) => {
-    const { data } = await axiosSecure.get(`/package/${email}`);
+    const { data } = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${email}`);
     console.log("Fetching packages for email:", email);
     return data;
 };
