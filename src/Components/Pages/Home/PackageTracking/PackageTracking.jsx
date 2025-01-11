@@ -86,14 +86,14 @@ const PackageTracking = () => {
           {searchResult && (
   <div className="mt-8 bg-gray-100 p-4 overflow-y-auto max-h-[75vh]">
     {/* Header Section */}
-    <div className="font-bold mb-6 text-gray-800 border-b pb-2">
-      <h3 className="text-2xl mb-6 text-gray-800 border-b pb-2 text-center">
+    <div className="font-bold mb-6 text-gray-800 border-b border-black pb-2">
+      <h3 className="text-2xl mb-6 text-blue-600 border-b border-black pb-2 text-center">
         Tracking Updates
       </h3>
-     <p>Products: {searchResult?.productDetails}</p>
-     <p>Sender Name: {searchResult?.senderName}</p>
-     <p>Receiver Name: {searchResult?.recipientName}</p>
-     <p>Receiver Address: {searchResult?.selectedArea}</p>
+     <p className="text-gray-600">Products: {searchResult?.productDetails}</p>
+     <p className="text-gray-600">Sender Name: {searchResult?.senderName}</p>
+     <p className="text-gray-600">Receiver Name: {searchResult?.recipientName}</p>
+     <p className="text-gray-600">Receiver Address: {searchResult?.selectedArea}</p>
     </div>
 
     {/* Timeline Tracking */}
