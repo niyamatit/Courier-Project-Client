@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-const OfflineModal = ({ booking, onClose, onSave }) => {
-    if (!booking) return null;
+const OfflineModal = ({ offline, onClose, onSave }) => {
+    if (!offline) return null;
 
-    const [editableBooking, setEditableBooking] = useState({ ...booking });
+    const [editableBooking, setEditableBooking] = useState({ ...offline });
     const [isEditing, setIsEditing] = useState(false); // Track edit mode
 
     const handleChange = (e) => {
@@ -123,24 +123,27 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
                     </>
                 ) : (
                     <>
-                        <p><strong>Sender Name:</strong> {booking.senderName}</p>
-                        <p><strong>Recipient Name:</strong> {booking.recipientName}</p>
-                        <p><strong>Sender Mobile:</strong> {booking.senderMobile}</p>
-                        <p><strong>Recipient Mobile:</strong> {booking.recipientMobile}</p>
-                        <p><strong>Product Details:</strong> {booking.productDetails}</p>
-                        <p><strong>Booking ID:</strong> {booking._id}</p>
-                        <p><strong>Package Tracking Number:</strong> {booking.packageTrackingNumber}</p>
-                        <p><strong>Package Quantity:</strong> {booking.qty}</p>
-                        <p><strong>District:</strong> {booking.selectedDistrict}</p>
-                        <p><strong>Area:</strong> {booking.selectedArea}</p>
-                        <p><strong>Amount:</strong> {booking.amount}</p>
-                        <p><strong>Word Amount:</strong> {booking.wordAmount}</p>
-                        <p><strong>Booking Date & Time:</strong> {booking.booking}</p>
-                        <p><strong>Update:</strong> {booking.update}</p>
-                        <p><strong>Delivery Option:</strong> {booking.deliveryOption}</p>
-                        <p><strong>Payment Option:</strong> {booking.paymentOption}</p>
-                        <p><strong>Condition:</strong> {booking.condition}</p>
-                        <p><strong>Email:</strong> {booking.email}</p>
+                        <p><strong>Sender Name:</strong> {offline.senderName}</p>
+                        <p><strong>Sender Address:</strong> {offline.address}</p>
+                        <p><strong>Sender Mobile:</strong> {offline.senderContactNo}</p>
+                        <p><strong>Recipient Name:</strong> {offline.receiverName}</p>
+                        <p><strong>Recipient Address:</strong> {offline.receiveraddress}</p>
+                        
+                        <p><strong>Recipient Mobile:</strong> {offline.receiverContactNo}</p>
+                        <p><strong>Product Details:</strong> {offline.productDetails}</p>
+                        <p><strong>Booking ID:</strong> {offline._id}</p>
+                        <p><strong>Package Tracking Number:</strong> {offline.packageTrackingNumber}</p>
+                        <p><strong>Package Quantity:</strong> {offline.qty}</p>
+                        <p><strong>District:</strong> {offline.selectedDistrict}</p>
+                        <p><strong>Area:</strong> {offline.selectedArea}</p>
+                        <p><strong>Amount:</strong> {offline.amount}</p>
+                        <p><strong>Word Amount:</strong> {offline.wordAmount}</p>
+                        <p><strong>Booking Date & Time:</strong> {offline.booking}</p>
+                        <p><strong>Update:</strong> {offline.update}</p>
+                        <p><strong>Delivery Option:</strong> {offline.deliveryOption}</p>
+                        <p><strong>Payment Option:</strong> {offline.paymentOption}</p>
+                        <p><strong>Condition:</strong> {offline.condition}</p>
+                        <p><strong>Email:</strong> {offline.email}</p>
                     </>
                 )}
 

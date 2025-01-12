@@ -51,7 +51,7 @@ const TableOffline = ({ offline, onView }) => {
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <button
-                        onClick={() => onView(offline)}
+                        onClick={() => onView(offline)} 
                         className='text-blue-500 hover:underline'
                     >
                         View
