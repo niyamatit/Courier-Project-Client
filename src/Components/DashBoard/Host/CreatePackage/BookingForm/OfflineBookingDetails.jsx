@@ -90,7 +90,7 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
                 </div>
 
                 <div className=''>
-                    condition charge: {bookingInfo?.serviceCharge}
+                    condition charge: {bookingInfo?.totalCharge}
                 </div>
                 <div>
                     {
