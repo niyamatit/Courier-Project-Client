@@ -60,10 +60,10 @@ const SelectMotherHub_Offline = () => {
     }
 
     try {
-       await axiosSecure.post(`/offline/select-MotherHub/branch/${selectedPackage._id}`, {
-          Tracking_Booking_Branch_Select_MotherHub: selectedBranch,
-        Tracking_Booking_Branch_Select_MotherHub_Note: note,
-        Tracking_Booking_Branch_Select_MotherHub_Date: new Date()
+       await axiosSecure.post(`/offline/select-Destion/branch/again/${selectedPackage._id}`, {
+          Tracking_MotherHub_Branch_Select_Destiantion_Branch: selectedBranch,
+        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note: note,
+        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -93,10 +93,11 @@ const SelectMotherHub_Offline = () => {
                 <th className="border border-blue-500 px-4 py-2">Date</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Name</th>
-                <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
+                {/* <th className="border border-blue-500 px-4 py-2">Sender Mobile</th> */}
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
                 <th className="border border-blue-500 px-4 py-2">CN Number</th>
+                <th className="border border-blue-500 px-4 py-2">Dest. Branch</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -109,10 +110,11 @@ const SelectMotherHub_Offline = () => {
                   </td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.receiverName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td>
+                  {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td> */}
                   <td className="border border-blue-500 px-4 py-2">{pkg.receiverContactNo}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.product}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Destbranch}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                   {pkg?.Tracking_MotherHub_Branch_Received_Parcel ? (
   <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
@@ -126,9 +128,9 @@ const SelectMotherHub_Offline = () => {
 )}
 
 {pkg?.Tracking_MotherHub_Branch_Received_Parcel ? (
-  pkg?.Tracking_Booking_Branch_Select_MotherHub ? (
+  pkg?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? (
     <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected MotherHub
+      Already Selected Destination Branch
     </h1>
   ) : (
     <button
@@ -138,7 +140,7 @@ const SelectMotherHub_Offline = () => {
         setShowSelectBranchModal(true);
       }}
     >
-      Select MotherHub
+      Select Destination Branch
     </button>
   )
 ) : (
@@ -193,7 +195,7 @@ const SelectMotherHub_Offline = () => {
       {showSelectBranchModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Select MotherHub</h2>
+            <h2 className="text-2xl font-bold mb-4">Select Dest. Branch</h2>
             <div className="mb-4">
               
               <select
@@ -201,7 +203,7 @@ const SelectMotherHub_Offline = () => {
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="">Select MotherHub Branch</option>
+                <option value="">Select Dest. Branch</option>
                 {users
   .filter(
     (user) =>
