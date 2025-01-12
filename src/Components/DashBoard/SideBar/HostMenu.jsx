@@ -194,7 +194,7 @@ const HostMenu = () => {
               label='Pending Parcel List (Online)'
               address='pending-parcel-list'
             /></li>
-          <li>
+          
           <li>
             <MenuItem
               icon={IoHome}
