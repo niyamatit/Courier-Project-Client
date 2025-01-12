@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-const OfflineModal = ({ offline, onClose, onSave }) => {
-    if (!offline) return null;
+const OfflineModal = ({ booking, onClose, onSave }) => {
+    if (!booking) return null;
 
-    const [editableBooking, setEditableBooking] = useState({ ...offline });
+    const [editableBooking, setEditableBooking] = useState({ ...booking });
     const [isEditing, setIsEditing] = useState(false); // Track edit mode
 
+   
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEditableBooking((prevBooking) => ({
@@ -15,9 +16,9 @@ const OfflineModal = ({ offline, onClose, onSave }) => {
     };
 
     const handleSave = () => {
-        onSave(editableBooking); // Call the save function with the updated booking
-        setIsEditing(false); // Exit edit mode after saving
-        onClose(); // Close the modal after saving
+        onSave(editableBooking); // Save the updated booking
+        setIsEditing(false); // Exit edit mode
+        onClose();
     };
 
     return (
@@ -28,126 +29,95 @@ const OfflineModal = ({ offline, onClose, onSave }) => {
                 </h2>
 
                 {isEditing ? (
-                    <>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Sender Name:</span>
-                            <input
-                                type="text"
-                                name="senderName"
-                                value={editableBooking.senderName}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Recipient Name:</span>
-                            <input
-                                type="text"
-                                name="recipientName"
-                                value={editableBooking.recipientName}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Sender Mobile:</span>
-                            <input
-                                type="text"
-                                name="senderMobile"
-                                value={editableBooking.senderMobile}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Recipient Mobile:</span>
-                            <input
-                                type="text"
-                                name="recipientMobile"
-                                value={editableBooking.recipientMobile}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Product Details:</span>
-                            <input
-                                type="text"
-                                name="productDetails"
-                                value={editableBooking.productDetails}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Product _id:</span>
-                            <input
-                                type="text"
-                                name="product_id"
-                                value={editableBooking._id}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Package Tracking Number:</span>
-                            <input
-                                type="text"
-                                name="packageTrackingNumber"
-                                value={editableBooking.packageTrackingNumber}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Product qty:</span>
-                            <input
-                                type="text"
-                                name="qty"
-                                value={editableBooking.qty}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Selected District:</span>
-                            <input
-                                type="text"
-                                name="productDetails"
-                                value={editableBooking.productDetails}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-
-                    </>
+                     <>
+                     <label className="block mb-2">
+                         <span className="text-gray-700">Sender Name:</span>
+                         <input
+                             type="text"
+                             name="senderName"
+                             value={editableBooking.senderName || ""}
+                             onChange={handleChange}
+                             className="mt-1 block w-full border-gray-300 rounded-md"
+                         />
+                     </label>
+                     <label className="block mb-2">
+                         <span className="text-gray-700">Recipient Name:</span>
+                         <input
+                             type="text"
+                             name="receiverName"
+                             value={editableBooking.receiverName || ""}
+                             onChange={handleChange}
+                             className="mt-1 block w-full border-gray-300 rounded-md"
+                         />
+                     </label>
+                     <label className="block mb-2">
+                         <span className="text-gray-700">Sender Mobile:</span>
+                         <input
+                             type="text"
+                             name="senderContactNo"
+                             value={editableBooking.senderContactNo || ""}
+                             onChange={handleChange}
+                             className="mt-1 block w-full border-gray-300 rounded-md"
+                         />
+                     </label>
+                     <label className="block mb-2">
+                         <span className="text-gray-700">Recipient Mobile:</span>
+                         <input
+                             type="text"
+                             name="receiverContactNo"
+                             value={editableBooking.receiverContactNo || ""}
+                             onChange={handleChange}
+                             className="mt-1 block w-full border-gray-300 rounded-md"
+                         />
+                     </label>
+                     <label className="block mb-2">
+                         <span className="text-gray-700">Product Details:</span>
+                         <input
+                             type="text"
+                             name="product"
+                             value={editableBooking.product || ""}
+                             onChange={handleChange}
+                             className="mt-1 block w-full border-gray-300 rounded-md"
+                         />
+                     </label>
+                     <label className="block mb-2">
+                         <span className="text-gray-700">Quantity:</span>
+                         <input
+                             type="number"
+                             name="qty"
+                             value={editableBooking.qty || ""}
+                             onChange={handleChange}
+                             className="mt-1 block w-full border-gray-300 rounded-md"
+                         />
+                     </label>
+                 </>
                 ) : (
                     <>
-                        <p><strong>Sender Name:</strong> {offline.senderName}</p>
-                        <p><strong>Sender Address:</strong> {offline.address}</p>
-                        <p><strong>Sender Mobile:</strong> {offline.senderContactNo}</p>
-                        <p><strong>Recipient Name:</strong> {offline.receiverName}</p>
-                        <p><strong>Recipient Address:</strong> {offline.receiveraddress}</p>
+                        <p><strong>Sender Name:</strong> {booking.senderName}</p>
+                        <p><strong>Sender Address:</strong> {booking.address}</p>
+                        <p><strong>Sender Mobile:</strong> {booking.senderContactNo}</p>
+                        <p><strong>Recipient Name:</strong> {booking.receiverName}</p>
+                        <p><strong>Recipient Address:</strong> {booking.receiveraddress}</p>
                         
-                        <p><strong>Recipient Mobile:</strong> {offline.receiverContactNo}</p>
-                        <p><strong>Product Details:</strong> {offline.product}</p>
-                        {/* <p><strong>Booking ID:</strong> {offline.CnNumber}</p> */}
-                        <p><strong>Booking Tracking Number:</strong> {offline.CnNumber}</p>
-                        <p><strong>Package Quantity:</strong> {offline.qty}</p>
-                        {/* <p><strong>District:</strong> {offline.selectedDistrict}</p> */}
-                        {/* <p><strong>Area:</strong> {offline.selectedArea}</p> */}
-                        <p><strong>Amount:</strong> {offline.totalCharge} Tk</p>
-                        {/* <p><strong>Word Amount:</strong> {offline.wordAmount}</p> */}
-                        <p><strong>Booking Date & Time:</strong> {offline.bookingDate}</p>
-                        {/* <p><strong>Update:</strong> {offline.update}</p> */}
-                        <p><strong>Delivery Type:</strong> {offline.serviceType}</p>
-                        <p><strong>Payment Option:</strong> {offline.paymentMethod}</p>
-                        <p><strong>Receiver Pay:</strong> {offline.receiverPay} Tk</p>
-                        <p><strong>Sender Receive:</strong> {offline.senderReceive} Tk</p>
-                        <p><strong>Service Charge:</strong> {offline.serviceCharge} Tk</p>
-                        <p><strong>Booking Branch ID:</strong> {offline.email}</p>
-                        <p><strong>Booking Branch Name:</strong> {offline.Branch_Name}</p>
-                        <p><strong>Booking Branch Mobile:</strong> {offline.Branch_Number}</p>
+                        <p><strong>Recipient Mobile:</strong> {booking.receiverContactNo}</p>
+                        <p><strong>Product Details:</strong> {booking.product}</p>
+                        {/* <p><strong>Booking ID:</strong> {booking.CnNumber}</p> */}
+                        <p><strong>Booking Tracking Number:</strong> {booking.CnNumber}</p>
+                        <p><strong>Package Quantity:</strong> {booking.qty}</p>
+                        {/* <p><strong>District:</strong> {booking.selectedDistrict}</p> */}
+                        {/* <p><strong>Area:</strong> {booking.selectedArea}</p> */}
+                        <p><strong>Amount:</strong> {booking.totalCharge} Tk</p>
+                        {/* <p><strong>Word Amount:</strong> {booking.wordAmount}</p> */}
+                        <p><strong>Booking Date & Time:</strong> {booking.bookingDate}</p>
+                        {/* <p><strong>Update:</strong> {booking.update}</p> */}
+                        <p><strong>Delivery Type:</strong> {booking.serviceType}</p>
+                        <p><strong>Payment Option:</strong> {booking.paymentMethod}</p>
+                        <p><strong>Receiver Pay:</strong> {booking.receiverPay} Tk</p>
+                        <p><strong>Sender Receive:</strong> {booking.senderReceive} Tk</p>
+                        <p><strong>Service Charge:</strong> {booking.serviceCharge} Tk</p>
+                        <p><strong>Booking Branch ID:</strong> {booking.email}</p>
+                        <p><strong>Booking Branch Name:</strong> {booking.Branch_Name}</p>
+                        <p><strong>Booking Branch Mobile:</strong> {booking.Branch_Number}</p>
                     </>
                 )}
 

@@ -69,7 +69,7 @@ const TableOffline = ({ offline, onView }) => {
                     </button>
                 </td>
             </tr>
-            <OfflinePrintModal closeModal={closeModal} isOpen={isOpen} offlineBookingShow={offlineBookingShow}></OfflinePrintModal>
+            <OfflinePrintModal closeModal={closeModal} isOpen={isOpen} offlineBookingShow={offlineBookingShow} bookingInfo={offlineBookingShow}></OfflinePrintModal>
         </>
     );
 };
