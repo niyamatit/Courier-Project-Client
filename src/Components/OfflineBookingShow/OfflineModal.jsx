@@ -6,6 +6,19 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
     const [editableBooking, setEditableBooking] = useState({ ...booking });
     const [isEditing, setIsEditing] = useState(false); // Track edit mode
 
+    const formatTime = (utcTime) => {
+        const options = {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            timeZone: 'Asia/Dhaka',
+        };
+        return new Date(utcTime).toLocaleString('en-US', options);
+    };
+
    
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -120,6 +133,173 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
                         <p><strong>Booking Branch Mobile:</strong> {booking.Branch_Number}</p>
                     </>
                 )}
+                <div className="mt-8">
+   <div  className=" font-bold mb-6 text-gray-800 border-b pb-2">
+   <h3 className="text-2xl mb-6 text-gray-800 border-b pb-2 text-center">Tracking Updates</h3>
+   <p className="text-lg">Booking Branch: {booking.email}</p>
+   </div>
+    {/* 1st Line */}
+    <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_Booking_Branch_Received_Parcel ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_Booking_Branch_Received_Parcel ? '✓' : '-'}
+                            </div>
+                            {/* <div>
+                                <h1 className="text-gray-700 font-semibold">Received By: {booking?.Branch_Name || 'N/A'}</h1>
+                                <p className="text-gray-500 text-sm">Branch Received Time: {booking?.booking ? formatTime(booking.booking) : 'Not Available'}</p>
+                            </div> */}
+                            {
+                                booking?.Tracking_Booking_Branch_Received_Parcel && 
+                                <div>
+                                <h1 className="text-gray-700 font-semibold">Accepted By: {booking?.Branch_Name || 'N/A'}</h1>
+                                <p className="text-gray-500 text-sm">Branch Accept Time: {booking?.Tracking_Booking_Branch_Received_Parcel_Time ? formatTime(booking.Tracking_Booking_Branch_Received_Parcel_Time) : 'Not Available'}</p>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    {/* 2nd Line */}
+    {
+        booking?.Tracking_Admin_Select_Online_MotherHub_Branch_email &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Branch_Name ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Branch_Name ? '✓' : '-'}
+                            </div>
+                            <div>
+                                <h1 className="text-gray-700 font-semibold">Sent To MotherHub Branch ({booking?.Tracking_Admin_Select_Online_MotherHub_Branch_email})</h1>
+                                <p className="text-gray-500 text-sm">Sent Time: {booking?.Tracking_Admin_Select_Online_MotherHub_Branch_Date ? formatTime(booking.Tracking_Admin_Select_Online_MotherHub_Branch_Date) : 'Not Available'}</p>
+                                <h1 className="text-gray-500 text-sm">Admin Note: {booking?.Tracking_Admin_Select_Online_MotherHub_Branch_Note || "No Message"}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
+   
+    {/* 3rd Line */}
+    {
+        booking?.Tracking_MotherHub_Received_Parcel &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_MotherHub_Received_Parcel ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_MotherHub_Received_Parcel ? '✓' : '-'}
+                            </div>
+                            <div>
+                                <h1 className="text-gray-700 font-semibold">Received MotherHub Branch</h1>
+                                <p className="text-gray-500 text-sm">Received Time: {booking?.Tracking_Admin_Select_Online_MotherHub_Branch_Date ? formatTime(booking.Tracking_MotherHub_Received_Parcel_Time) : 'Not Available'}</p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
+    {/* 4th Line */}
+    {
+        booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name ? '✓' : '-'}
+                            </div>
+                            <div>
+                                <h1 className="text-gray-700 font-semibold">Sent to Destination Branch ({booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name})</h1>
+                                <p className="text-gray-500 text-sm">Sent Time: {booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Date ? formatTime(booking.Tracking_MotherHub_Branch_Select_Dest_Branch_Date) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Note: {booking?.Tracking_MotherHub_Branch_Note || 'Not Available'}</p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
+    {/* 5th Line */}
+    {
+        booking?.Tracking_Destination_Branch_Select_Rider &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_Destination_Branch_Select_Rider ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_Destination_Branch_Select_Rider ? '✓' : '-'}
+                            </div>
+                            <div>
+                                <h1 className="text-gray-700 font-semibold">Branch Select Rider ({booking?.Tracking_Destination_Branch_Select_Rider})</h1>
+                                <p className="text-gray-500 text-sm">Select Time: {booking?.Tracking_Destination_Branch_Select_Rider_Date ? formatTime(booking.Tracking_Destination_Branch_Select_Rider_Date) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Note: {booking?.Tracking_Destination_Branch_Note || 'Not Available'}</p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
+    {/* 6th Line */}
+    {
+        booking?.Tracking_Rider_Online_Booking_Delivary_Update &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
+                                {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful ? '✓' : '-'}
+                            </div>
+                             <div>
+                                <h1 className="text-gray-700 font-semibold">{booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful || booking?. Tracking_Rider_Online_Booking_Delivary_Update_Returned}</ h1>
+                                <p className="text-gray-500 text-sm">
+  {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time
+    ? `Delivery Time: ${formatTime(booking.Tracking_Rider_Online_Booking_Delivary_Update_Time)}`
+    : booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time
+    ? `Returned Time: ${formatTime(booking.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time)}`
+    : 'Not Available'}
+</p>
+
+
+                                 <p className="text-gray-500 text-sm">Note: {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Note || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
+    
+</div>
 
                 <div className="flex justify-end mt-4">
                     {isEditing ? (
