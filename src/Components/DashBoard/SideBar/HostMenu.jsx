@@ -209,8 +209,14 @@ const HostMenu = () => {
           <li>
             <MenuItem
               icon={IoHome}
-              label='Admin Send Parcel'
+              label='MotherHub PickUp Parcel (Online)'
               address='parcel-admin-received'
+            /></li>
+          <li>
+            <MenuItem
+              icon={IoHome}
+              label='MotherHub PickUp Parcel (Offline)'
+              address='parcel-motherHub-Select-Offline'
             /></li>
         </ul>
       </div>

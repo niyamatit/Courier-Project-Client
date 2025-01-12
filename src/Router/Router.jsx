@@ -79,6 +79,7 @@ import AllBranchListsup from "../Components/DashBoard/SuperAdmin/AllBranchListsu
 import FormComponent from "../Components/DashBoard/SuperAdmin/FormComponent/FormComponent";
 import AllAdminList from "../Components/DashBoard/SuperAdmin/AllAdminList/AllAdminList";
 import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
+import SelectMotherHub_Offline from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Offline";
 
 
 
@@ -461,6 +462,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <HostRoute>
             <SelectMotherHub />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "parcel-motherHub-Select-Offline",
+        element: <PrivateRoute>
+          <HostRoute>
+            <SelectMotherHub_Offline/>
           </HostRoute>
         </PrivateRoute>
       },
