@@ -33,7 +33,7 @@ const DeliverySchedule = () => {
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/package/accept/destination/${pkgId}`);
+      await axiosSecure.post(`/offline/accept/parcel/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -60,16 +60,17 @@ const DeliverySchedule = () => {
     }
 
     try {
-      await axiosSecure.post(`/package/select-rider/rider/${selectedPackage._id}`, {
-        Tracking_Destination_Branch_Select_Rider: selectedBranch,
-        Tracking_Destination_Branch_Note: note,
-        Tracking_Destination_Branch_Select_Rider_Date: new Date()
+      await axiosSecure.post(`/offline/select-MotherHub/branch/${selectedPackage._id}`, {
+        Tracking_Booking_Branch_Select_MotherHub: selectedBranch,
+        Tracking_Booking_Branch_Select_MotherHub_Note: note,
+        Tracking_Booking_Branch_Select_MotherHub_Date: new Date()
       });
       Swal.fire({
         icon: "success",
-        title: "Rider Selected",
-        text: "The rider has been successfully selected!",
+        title: "MotherHub Branch Selected",
+        text: "MotherHub Branch has been successfully selected!",
       });
+      refetch()
       setShowSelectBranchModal(false);
     } catch (error) {
       Swal.fire({
@@ -113,38 +114,46 @@ const DeliverySchedule = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.product}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                    {pkg?.Tracking_Destination_Branch_Received_Parcel ? (
-                      <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
-                    ) : (
-                      <button
-                        className="bg-green-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleAccept(pkg._id)}
-                      >
-                        Accept
-                      </button>
-                    )}
-                    {pkg?.Tracking_Destination_Branch_Select_Rider ? (
-                       <h1 className="text-green-500 border p-1 border-green-500">
-                         Already Selected Rider
-                      </h1>
-                    ) : (
-                      <button
-                        className="bg-blue-500 text-white px-2 py-1 rounded"
-                        onClick={() => {
-                          setSelectedPackage(pkg);
-                          setShowSelectBranchModal(true);
-                        }}
-                      >
-                        Select Rider
-                      </button>
-                    )}
-                    <button
-                      className="bg-gray-500 text-white px-2 py-1 rounded"
-                      onClick={() => {
-                        setSelectedPackage(pkg);
-                        setShowViewModal(true);
-                      }}
-                    >
+                  {pkg?.Tracking_Booking_Branch_Received_Parcel ? (
+  <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
+) : (
+  <button
+    className="bg-green-500 text-white px-2 py-1 rounded"
+    onClick={() => handleAccept(pkg._id)}
+  >
+    Accept
+  </button>
+)}
+
+{pkg?.Tracking_Booking_Branch_Received_Parcel ? (
+  pkg?.Tracking_Booking_Branch_Select_MotherHub ? (
+    <h1 className="text-green-500 border p-1 border-green-500">
+      Already Selected MotherHub
+    </h1>
+  ) : (
+    <button
+      className="bg-blue-500 text-white px-2 py-1 rounded"
+      onClick={() => {
+        setSelectedPackage(pkg);
+        setShowSelectBranchModal(true);
+      }}
+    >
+      Select MotherHub
+    </button>
+  )
+) : (
+  <button className="bg-gray-500 text-white px-2 py-1 rounded">
+    Accept First
+  </button>
+)}
+
+<button
+  className="bg-gray-500 text-white px-2 py-1 rounded"
+  onClick={() => {
+    setSelectedPackage(pkg);
+    setShowViewModal(true);
+  }}
+>
                       View
                     </button>
                   </td>
@@ -184,19 +193,19 @@ const DeliverySchedule = () => {
       {showSelectBranchModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Select Rider</h2>
+            <h2 className="text-2xl font-bold mb-4">Select MotherHub</h2>
             <div className="mb-4">
-              <label className="block mb-1">Rider:</label>
+              
               <select
                 className="border p-2 w-full"
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="">Select Destination Branch</option>
+                <option value="">Select MotherHub Branch</option>
                 {users
   .filter(
     (user) =>
-      user?.role === "rider" && user?.Rider_Branch === verifiedUser?.name
+      user?.role === "host" 
   )
   .map((user) => (
     <option key={user._id} value={user?.email}>
