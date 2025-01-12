@@ -84,7 +84,7 @@ const PackageTracking = () => {
 
           {/* Display search result */}
           {searchResult && (
-  <div className="mt-8 bg-gray-100 p-4 overflow-y-auto max-h-[75vh]">
+  <div className="mt-8 bg-white  p-4 overflow-y-auto max-h-[75vh]">
     {/* Header Section */}
     <div className="font-bold mb-6 text-gray-800 border-b border-black pb-2">
       <h3 className="text-2xl mb-6 text-blue-600 border-b border-black pb-2 text-center">
