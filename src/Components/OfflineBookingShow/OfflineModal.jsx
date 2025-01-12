@@ -130,20 +130,24 @@ const OfflineModal = ({ offline, onClose, onSave }) => {
                         <p><strong>Recipient Address:</strong> {offline.receiveraddress}</p>
                         
                         <p><strong>Recipient Mobile:</strong> {offline.receiverContactNo}</p>
-                        <p><strong>Product Details:</strong> {offline.productDetails}</p>
-                        <p><strong>Booking ID:</strong> {offline._id}</p>
-                        <p><strong>Package Tracking Number:</strong> {offline.packageTrackingNumber}</p>
+                        <p><strong>Product Details:</strong> {offline.product}</p>
+                        {/* <p><strong>Booking ID:</strong> {offline.CnNumber}</p> */}
+                        <p><strong>Booking Tracking Number:</strong> {offline.CnNumber}</p>
                         <p><strong>Package Quantity:</strong> {offline.qty}</p>
-                        <p><strong>District:</strong> {offline.selectedDistrict}</p>
-                        <p><strong>Area:</strong> {offline.selectedArea}</p>
-                        <p><strong>Amount:</strong> {offline.amount}</p>
-                        <p><strong>Word Amount:</strong> {offline.wordAmount}</p>
-                        <p><strong>Booking Date & Time:</strong> {offline.booking}</p>
-                        <p><strong>Update:</strong> {offline.update}</p>
-                        <p><strong>Delivery Option:</strong> {offline.deliveryOption}</p>
-                        <p><strong>Payment Option:</strong> {offline.paymentOption}</p>
-                        <p><strong>Condition:</strong> {offline.condition}</p>
-                        <p><strong>Email:</strong> {offline.email}</p>
+                        {/* <p><strong>District:</strong> {offline.selectedDistrict}</p> */}
+                        {/* <p><strong>Area:</strong> {offline.selectedArea}</p> */}
+                        <p><strong>Amount:</strong> {offline.totalCharge} Tk</p>
+                        {/* <p><strong>Word Amount:</strong> {offline.wordAmount}</p> */}
+                        <p><strong>Booking Date & Time:</strong> {offline.bookingDate}</p>
+                        {/* <p><strong>Update:</strong> {offline.update}</p> */}
+                        <p><strong>Delivery Type:</strong> {offline.serviceType}</p>
+                        <p><strong>Payment Option:</strong> {offline.paymentMethod}</p>
+                        <p><strong>Receiver Pay:</strong> {offline.receiverPay} Tk</p>
+                        <p><strong>Sender Receive:</strong> {offline.senderReceive} Tk</p>
+                        <p><strong>Service Charge:</strong> {offline.serviceCharge} Tk</p>
+                        <p><strong>Booking Branch ID:</strong> {offline.email}</p>
+                        <p><strong>Booking Branch Name:</strong> {offline.Branch_Name}</p>
+                        <p><strong>Booking Branch Mobile:</strong> {offline.Branch_Number}</p>
                     </>
                 )}
 
