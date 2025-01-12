@@ -191,8 +191,15 @@ const HostMenu = () => {
           <li>
             <MenuItem
               icon={IoHome}
-              label='Pending Parcel List'
+              label='Pending Parcel List (Online)'
               address='pending-parcel-list'
+            /></li>
+          
+          <li>
+            <MenuItem
+              icon={IoHome}
+              label='Pending Parcel List (Offline)'
+              address='pending-parcel-list-Offline'
             /></li>
           <li>
             <MenuItem

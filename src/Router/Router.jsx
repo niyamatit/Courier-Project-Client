@@ -80,6 +80,7 @@ import FormComponent from "../Components/DashBoard/SuperAdmin/FormComponent/Form
 import AllAdminList from "../Components/DashBoard/SuperAdmin/AllAdminList/AllAdminList";
 import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
 import SelectMotherHub_Offline from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Offline";
+import PendingPareclList_Offline from "../Components/DashBoard/Host/PendingParcelList/PendingPareclList_Offline";
 
 
 
@@ -454,6 +455,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <HostRoute>
             <PendingParcelList />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "pending-parcel-list-Offline",
+        element: <PrivateRoute>
+          <HostRoute>
+            <PendingPareclList_Offline />
           </HostRoute>
         </PrivateRoute>
       },

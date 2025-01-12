@@ -1,13 +1,11 @@
-
+import  { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import Swal from "sweetalert2";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 
-
-const SelectMotherHub_Offline = () => {
+const PendingPareclList_Offline = () => {
   const [verifiedUser] = useUsersData();
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
@@ -26,14 +24,14 @@ const SelectMotherHub_Offline = () => {
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/offline/email/Branch/destination/${verifiedUser?.email}`);
+      const res = await axiosSecure.get(`/offline/email/Branch/destination/again/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/offline/accept/parcel/destination/${pkgId}`);
+      await axiosSecure.post(`/package/accept/destination/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -60,17 +58,16 @@ const SelectMotherHub_Offline = () => {
     }
 
     try {
-       await axiosSecure.post(`/offline/select-Destion/branch/again/${selectedPackage._id}`, {
-          Tracking_MotherHub_Branch_Select_Destiantion_Branch: selectedBranch,
-        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note: note,
-        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date: new Date()
+      await axiosSecure.post(`/package/select-rider/rider/${selectedPackage._id}`, {
+        Tracking_Destination_Branch_Select_Rider: selectedBranch,
+        Tracking_Destination_Branch_Note: note,
+        Tracking_Destination_Branch_Select_Rider_Date: new Date()
       });
       Swal.fire({
         icon: "success",
-        title: "MotherHub Branch Selected",
-        text: "MotherHub Branch has been successfully selected!",
+        title: "Rider Selected",
+        text: "The rider has been successfully selected!",
       });
-      refetch()
       setShowSelectBranchModal(false);
     } catch (error) {
       Swal.fire({
@@ -83,7 +80,7 @@ const SelectMotherHub_Offline = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Select Destination Branch For Offline Parcels of {verifiedUser?.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">Select Rider For Offline Parcels {verifiedUser?.name}</h1>
       {Array.isArray(Verify_Admin_MotherHub) && Verify_Admin_MotherHub.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
@@ -93,11 +90,9 @@ const SelectMotherHub_Offline = () => {
                 <th className="border border-blue-500 px-4 py-2">Date</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Name</th>
-                {/* <th className="border border-blue-500 px-4 py-2">Sender Mobile</th> */}
+                <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
-                <th className="border border-blue-500 px-4 py-2">CN Number</th>
-                <th className="border border-blue-500 px-4 py-2">Dest. Branch</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -110,52 +105,42 @@ const SelectMotherHub_Offline = () => {
                   </td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.receiverName}</td>
-                  {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td> */}
+                  <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.receiverContactNo}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.product}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.Destbranch}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                  {pkg?.Tracking_MotherHub_Branch_Received_Parcel ? (
-  <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
-) : (
-  <button
-    className="bg-green-500 text-white px-2 py-1 rounded"
-    onClick={() => handleAccept(pkg._id)}
-  >
-    Accept
-  </button>
-)}
-
-{pkg?.Tracking_MotherHub_Branch_Received_Parcel ? (
-  pkg?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? (
-    <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected Destination Branch
-    </h1>
-  ) : (
-    <button
-      className="bg-blue-500 text-white px-2 py-1 rounded"
-      onClick={() => {
-        setSelectedPackage(pkg);
-        setShowSelectBranchModal(true);
-      }}
-    >
-      Select Destination Branch
-    </button>
-  )
-) : (
-  <button className="bg-gray-500 text-white px-2 py-1 rounded">
-    Accept First
-  </button>
-)}
-
-<button
-  className="bg-gray-500 text-white px-2 py-1 rounded"
-  onClick={() => {
-    setSelectedPackage(pkg);
-    setShowViewModal(true);
-  }}
->
+                    {pkg?.Tracking_Destination_Branch_Received_Parcel ? (
+                      <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
+                    ) : (
+                      <button
+                        className="bg-green-500 text-white px-2 py-1 rounded"
+                        onClick={() => handleAccept(pkg._id)}
+                      >
+                        Accept
+                      </button>
+                    )}
+                    {pkg?.Tracking_Destination_Branch_Select_Rider ? (
+                       <h1 className="text-green-500 border p-1 border-green-500">
+                         Already Selected Rider
+                      </h1>
+                    ) : (
+                      <button
+                        className="bg-blue-500 text-white px-2 py-1 rounded"
+                        onClick={() => {
+                          setSelectedPackage(pkg);
+                          setShowSelectBranchModal(true);
+                        }}
+                      >
+                        Select Rider
+                      </button>
+                    )}
+                    <button
+                      className="bg-gray-500 text-white px-2 py-1 rounded"
+                      onClick={() => {
+                        setSelectedPackage(pkg);
+                        setShowViewModal(true);
+                      }}
+                    >
                       View
                     </button>
                   </td>
@@ -195,19 +180,19 @@ const SelectMotherHub_Offline = () => {
       {showSelectBranchModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Select Dest. Branch</h2>
+            <h2 className="text-2xl font-bold mb-4">Select Rider</h2>
             <div className="mb-4">
-              
+              <label className="block mb-1">Rider:</label>
               <select
                 className="border p-2 w-full"
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="">Select Dest. Branch</option>
+                <option value="">Select Destination Branch</option>
                 {users
   .filter(
     (user) =>
-      user?.role === "host" 
+      user?.role === "rider" && user?.Rider_Branch === verifiedUser?.name
   )
   .map((user) => (
     <option key={user._id} value={user?.email}>
@@ -244,4 +229,4 @@ const SelectMotherHub_Offline = () => {
   );
 };
 
-export default SelectMotherHub_Offline;
+export default PendingPareclList_Offline;

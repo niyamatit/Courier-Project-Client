@@ -94,6 +94,7 @@ const SelectMotherHub = () => {
                 <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
+                <th className="border border-blue-500 px-4 py-2">Dest. Branch</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -109,6 +110,7 @@ const SelectMotherHub = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.senderMobile}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.recipientMobile}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
+                  
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                     {pkg?.Tracking_MotherHub_Received_Parcel ? (
                       <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
