@@ -35,8 +35,8 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-lg w-1/3">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center overflow-y-auto">
+            <div className="bg-white p-6 rounded shadow-lg w-full max-w-3xl max-h-screen overflow-y-auto relative">
                 <h2 className="text-xl font-bold mb-4">
                     {isEditing ? "Edit Booking Details" : "Booking Details"}
                 </h2>
@@ -202,7 +202,7 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
                                 {booking?.Tracking_MotherHub_Branch_Received_Parcel ? '✓' : '-'}
                             </div>
                             <div>
-                                <h1 className="text-gray-700 font-semibold">Parcels Received MotherHub Branch</h1>
+                                <h1 className="text-gray-700 font-semibold">Parcel Received MotherHub Branch</h1>
                                 <p className="text-gray-500 text-sm">Received Time: {booking?.Tracking_MotherHub_Branch_Received_Parcel_Time ? formatTime(booking.Tracking_MotherHub_Branch_Received_Parcel_Time) : 'Not Available'}</p>
                                
                             </div>
@@ -214,7 +214,7 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
     }
     {/* 4th Line */}
     {
-        booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name &&  <div className="relative ">
+        booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -222,13 +222,13 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? '✓' : '-'}
                             </div>
                             <div>
-                                <h1 className="text-gray-700 font-semibold">Sent to Destination Branch ({booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name})</h1>
-                                <p className="text-gray-500 text-sm">Sent Time: {booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Date ? formatTime(booking.Tracking_MotherHub_Branch_Select_Dest_Branch_Date) : 'Not Available'}</p>
-                                <p className="text-gray-500 text-sm">Note: {booking?.Tracking_MotherHub_Branch_Note || 'Not Available'}</p>
+                                <h1 className="text-gray-700 font-semibold">Sent to Destination Branch ({booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch})</h1>
+                                <p className="text-gray-500 text-sm">Sent Time: {booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date ? formatTime(booking.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Note: {booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note || 'Not Available'}</p>
                                
                             </div>
                         </div>
