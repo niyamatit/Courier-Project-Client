@@ -35,7 +35,7 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center overflow-y-auto">
+         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center overflow-y-auto">
             <div className="bg-white p-6 rounded shadow-lg w-full max-w-3xl max-h-screen overflow-y-auto relative">
                 <h2 className="text-xl font-bold mb-4">
                     {isEditing ? "Edit Booking Details" : "Booking Details"}
