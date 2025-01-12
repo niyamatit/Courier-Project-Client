@@ -51,7 +51,7 @@ const TableOffline = ({ offline, onView }) => {
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <button
-                        onClick={() => onView(offline)}
+                        onClick={() => onView(offline)} 
                         className='text-blue-500 hover:underline'
                     >
                         View
@@ -69,7 +69,7 @@ const TableOffline = ({ offline, onView }) => {
                     </button>
                 </td>
             </tr>
-            <OfflinePrintModal closeModal={closeModal} isOpen={isOpen} offlineBookingShow={offlineBookingShow}></OfflinePrintModal>
+            <OfflinePrintModal closeModal={closeModal} isOpen={isOpen} offlineBookingShow={offlineBookingShow} bookingInfo={offlineBookingShow}></OfflinePrintModal>
         </>
     );
 };

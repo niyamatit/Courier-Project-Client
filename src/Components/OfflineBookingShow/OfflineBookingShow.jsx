@@ -34,7 +34,7 @@ const OfflineBookingShow = () => {
             setInitialOffline(data);
         },
     });
-    console.log("offline", offlines)
+    // console.log("offline", offlines)
 
     const mutation = useMutation({
         mutationFn: updateOffline,
@@ -46,7 +46,10 @@ const OfflineBookingShow = () => {
         },
     });
 
-    const handleView = (offline) => setSelectedOffline(offline);
+    const handleView = (offline) => {
+        setSelectedOffline(offline); // Pass the correct offline object
+    };
+    
     const handleCloseModal = () => setSelectedOffline(null);
 
     const handleSave = (updatedOffline) => {
@@ -117,12 +120,12 @@ const OfflineBookingShow = () => {
 
             {/* Render the modal if a offline is selected */}
             {selectedOffline && (
-                <OfflineModal
-                    offline={selectedOffline}
-                    onClose={handleCloseModal}
-                    onSave={handleSave} // Pass handleSave to BookingModal
-                />
-            )}
+    <OfflineModal
+    booking={selectedOffline}
+        onClose={handleCloseModal}
+        onSave={handleSave}
+    />
+)}
         </div>
     );
 };

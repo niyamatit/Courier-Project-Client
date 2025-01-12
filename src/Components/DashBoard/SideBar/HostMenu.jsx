@@ -49,7 +49,7 @@ const HostMenu = () => {
       <div className="balance-container" onClick={handleToggleBalance}>
         {!showBalance ? (
           <span className={`check-balance ${isAnimating ? "slide-out" : ""}`}>
-            ট Check Balance
+            <span className="text-2xl font-bold">৳</span> Check Balance
           </span>
         ) : (
           <p className="text-2xl text-center font-semibold text-secondary">
