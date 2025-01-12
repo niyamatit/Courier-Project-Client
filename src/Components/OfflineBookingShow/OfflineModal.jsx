@@ -190,7 +190,7 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
    
     {/* 3rd Line */}
     {
-        booking?.Tracking_MotherHub_Received_Parcel &&  <div className="relative ">
+        booking?.Tracking_MotherHub_Branch_Received_Parcel &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -198,12 +198,12 @@ const OfflineModal = ({ booking, onClose, onSave }) => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_MotherHub_Received_Parcel ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {booking?.Tracking_MotherHub_Received_Parcel ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_MotherHub_Branch_Received_Parcel ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_MotherHub_Branch_Received_Parcel ? '✓' : '-'}
                             </div>
                             <div>
-                                <h1 className="text-gray-700 font-semibold">Received MotherHub Branch</h1>
-                                <p className="text-gray-500 text-sm">Received Time: {booking?.Tracking_Admin_Select_Online_MotherHub_Branch_Date ? formatTime(booking.Tracking_MotherHub_Received_Parcel_Time) : 'Not Available'}</p>
+                                <h1 className="text-gray-700 font-semibold">Parcels Received MotherHub Branch</h1>
+                                <p className="text-gray-500 text-sm">Received Time: {booking?.Tracking_MotherHub_Branch_Received_Parcel_Time ? formatTime(booking.Tracking_MotherHub_Branch_Received_Parcel_Time) : 'Not Available'}</p>
                                
                             </div>
                         </div>
