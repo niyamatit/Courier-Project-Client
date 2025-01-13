@@ -204,7 +204,7 @@ const PendingPareclList_Offline = () => {
       user?.role === "rider" && user?.Rider_Branch === verifiedUser?.name
   )
   .map((user) => (
-    <option key={user._id} value={user?.email (user?.name) }>
+    <option key={user._id} value={`${user?.email}(${user?.name})` }>
       {`${user?.name || "No Name Found"} (${user?.email})`}
     </option>
   ))}
