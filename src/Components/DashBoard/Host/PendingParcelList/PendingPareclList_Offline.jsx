@@ -58,16 +58,17 @@ const PendingPareclList_Offline = () => {
     }
 
     try {
-      await axiosSecure.post(`/package/select-rider/rider/${selectedPackage._id}`, {
-        Tracking_Destination_Branch_Select_Rider: selectedBranch,
-        Tracking_Destination_Branch_Note: note,
-        Tracking_Destination_Branch_Select_Rider_Date: new Date()
+      await axiosSecure.post(`/offline/select-Des/branch/rider/${selectedPackage._id}`, {
+        Tracking_Destination_Branch_Select_Rider_Offline: selectedBranch,
+        Tracking_Destination_Branch_Note_Offline: note,
+        Tracking_Destination_Branch_Select_Rider_Date_Offline: new Date()
       });
       Swal.fire({
         icon: "success",
         title: "Rider Selected",
         text: "The rider has been successfully selected!",
       });
+      refetch()
       setShowSelectBranchModal(false);
     } catch (error) {
       Swal.fire({
@@ -121,9 +122,9 @@ const PendingPareclList_Offline = () => {
 )}
 
 {pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
-  pkg?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? (
+  pkg?.Tracking_Destination_Branch_Select_Rider_Offline ? (
     <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected Destination Branch
+      Already Selected Rider
     </h1>
   ) : (
     <button
@@ -133,7 +134,7 @@ const PendingPareclList_Offline = () => {
         setShowSelectBranchModal(true);
       }}
     >
-      Select Destination Branch
+      Select Rider
     </button>
   )
 ) : (
@@ -196,14 +197,14 @@ const PendingPareclList_Offline = () => {
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="">Select Destination Branch</option>
+                <option value="">Select Rider</option>
                 {users
   .filter(
     (user) =>
       user?.role === "rider" && user?.Rider_Branch === verifiedUser?.name
   )
   .map((user) => (
-    <option key={user._id} value={user?.email}>
+    <option key={user._id} value={user?.email (user?.name) }>
       {`${user?.name || "No Name Found"} (${user?.email})`}
     </option>
   ))}
