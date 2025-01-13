@@ -98,7 +98,7 @@
 // export default PendingParcelList; 
 
 
-import  { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import Swal from "sweetalert2";
@@ -220,8 +220,8 @@ const PendingPacelList = () => {
                       </button>
                     )}
                     {pkg?.Tracking_Destination_Branch_Select_Rider ? (
-                       <h1 className="text-green-500 border p-1 border-green-500">
-                         Already Selected Rider
+                      <h1 className="text-green-500 border p-1 border-green-500">
+                        Already Selected Rider
                       </h1>
                     ) : (
                       <button
@@ -256,24 +256,24 @@ const PendingPacelList = () => {
       {/* Modal for Viewing Package */}
       {showViewModal && (
         <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-4">Package Details</h2>
-          <ul className="list-disc pl-6">
-            {Object.entries(selectedPackage).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded mt-4"
-            onClick={() => setShowViewModal(false)}
-          >
-            Close
-          </button>
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">Package Details</h2>
+            <ul className="list-disc pl-6">
+              {Object.entries(selectedPackage).map(([key, value]) => (
+                <li key={key}>
+                  <strong>{key}:</strong> {value}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+              onClick={() => setShowViewModal(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-      
+
       )}
 
       {/* Modal for Selecting Branch */}
@@ -290,15 +290,15 @@ const PendingPacelList = () => {
               >
                 <option value="">Select Destination Branch</option>
                 {users
-  .filter(
-    (user) =>
-      user?.role === "rider" && user?.Rider_Branch === verifiedUser?.name
-  )
-  .map((user) => (
-    <option key={user._id} value={user?.email}>
-      {`${user?.name || "No Name Found"} (${user?.email})`}
-    </option>
-  ))}
+                  .filter(
+                    (user) =>
+                      user?.role === "rider" && user?.Rider_Branch === verifiedUser?.name
+                  )
+                  .map((user) => (
+                    <option key={user._id} value={user?.email}>
+                      {`${user?.name || "No Name Found"} (${user?.email})`}
+                    </option>
+                  ))}
 
               </select>
             </div>

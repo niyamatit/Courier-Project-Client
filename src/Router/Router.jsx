@@ -81,6 +81,7 @@ import AllAdminList from "../Components/DashBoard/SuperAdmin/AllAdminList/AllAdm
 import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
 import SelectMotherHub_Offline from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Offline";
 import PendingPareclList_Offline from "../Components/DashBoard/Host/PendingParcelList/PendingPareclList_Offline";
+import PickupParcelList_Offline from "../Components/DashBoard/Rider/PickupParcelList_Offline";
 
 
 
@@ -610,6 +611,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <PickupparcelList></PickupparcelList>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pickup-list-Offline",
+        element: (
+          <PrivateRoute>
+            <PickupParcelList_Offline/>
           </PrivateRoute>
         ),
       },

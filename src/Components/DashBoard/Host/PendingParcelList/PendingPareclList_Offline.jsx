@@ -31,7 +31,7 @@ const PendingPareclList_Offline = () => {
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/package/accept/destination/${pkgId}`);
+      await axiosSecure.post(`/offline/accept/parcel/destination/again/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -58,16 +58,17 @@ const PendingPareclList_Offline = () => {
     }
 
     try {
-      await axiosSecure.post(`/package/select-rider/rider/${selectedPackage._id}`, {
-        Tracking_Destination_Branch_Select_Rider: selectedBranch,
-        Tracking_Destination_Branch_Note: note,
-        Tracking_Destination_Branch_Select_Rider_Date: new Date()
+      await axiosSecure.post(`/offline/select-Des/branch/rider/${selectedPackage._id}`, {
+        Tracking_Destination_Branch_Select_Rider_Offline: selectedBranch,
+        Tracking_Destination_Branch_Note_Offline: note,
+        Tracking_Destination_Branch_Select_Rider_Date_Offline: new Date()
       });
       Swal.fire({
         icon: "success",
         title: "Rider Selected",
         text: "The rider has been successfully selected!",
       });
+      refetch()
       setShowSelectBranchModal(false);
     } catch (error) {
       Swal.fire({
@@ -109,38 +110,46 @@ const PendingPareclList_Offline = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.receiverContactNo}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.product}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                    {pkg?.Tracking_Destination_Branch_Received_Parcel ? (
-                      <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
-                    ) : (
-                      <button
-                        className="bg-green-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleAccept(pkg._id)}
-                      >
-                        Accept
-                      </button>
-                    )}
-                    {pkg?.Tracking_Destination_Branch_Select_Rider ? (
-                       <h1 className="text-green-500 border p-1 border-green-500">
-                         Already Selected Rider
-                      </h1>
-                    ) : (
-                      <button
-                        className="bg-blue-500 text-white px-2 py-1 rounded"
-                        onClick={() => {
-                          setSelectedPackage(pkg);
-                          setShowSelectBranchModal(true);
-                        }}
-                      >
-                        Select Rider
-                      </button>
-                    )}
-                    <button
-                      className="bg-gray-500 text-white px-2 py-1 rounded"
-                      onClick={() => {
-                        setSelectedPackage(pkg);
-                        setShowViewModal(true);
-                      }}
-                    >
+                  {pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
+  <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
+) : (
+  <button
+    className="bg-green-500 text-white px-2 py-1 rounded"
+    onClick={() => handleAccept(pkg._id)}
+  >
+    Accept
+  </button>
+)}
+
+{pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
+  pkg?.Tracking_Destination_Branch_Select_Rider_Offline ? (
+    <h1 className="text-green-500 border p-1 border-green-500">
+      Already Selected Rider
+    </h1>
+  ) : (
+    <button
+      className="bg-blue-500 text-white px-2 py-1 rounded"
+      onClick={() => {
+        setSelectedPackage(pkg);
+        setShowSelectBranchModal(true);
+      }}
+    >
+      Select Rider
+    </button>
+  )
+) : (
+  <button className="bg-gray-500 text-white px-2 py-1 rounded">
+    Accept First
+  </button>
+)}
+
+<button
+  className="bg-gray-500 text-white px-2 py-1 rounded"
+  onClick={() => {
+    setSelectedPackage(pkg);
+    setShowViewModal(true);
+  }}
+>
                       View
                     </button>
                   </td>
@@ -188,7 +197,7 @@ const PendingPareclList_Offline = () => {
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="">Select Destination Branch</option>
+                <option value="">Select Rider</option>
                 {users
   .filter(
     (user) =>
