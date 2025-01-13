@@ -403,6 +403,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "delivery-complete-offline",
+        element: (
+          <PrivateRoute>
+            <DeliveryComplete></DeliveryComplete>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "return-parcel",
         element: (
           <PrivateRoute>
