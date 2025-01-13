@@ -31,7 +31,7 @@ const PendingPareclList_Offline = () => {
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/package/accept/destination/${pkgId}`);
+      await axiosSecure.post(`/offline/accept/parcel/destination/again/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -109,38 +109,46 @@ const PendingPareclList_Offline = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.receiverContactNo}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.product}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                    {pkg?.Tracking_Destination_Branch_Received_Parcel ? (
-                      <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
-                    ) : (
-                      <button
-                        className="bg-green-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleAccept(pkg._id)}
-                      >
-                        Accept
-                      </button>
-                    )}
-                    {pkg?.Tracking_Destination_Branch_Select_Rider ? (
-                       <h1 className="text-green-500 border p-1 border-green-500">
-                         Already Selected Rider
-                      </h1>
-                    ) : (
-                      <button
-                        className="bg-blue-500 text-white px-2 py-1 rounded"
-                        onClick={() => {
-                          setSelectedPackage(pkg);
-                          setShowSelectBranchModal(true);
-                        }}
-                      >
-                        Select Rider
-                      </button>
-                    )}
-                    <button
-                      className="bg-gray-500 text-white px-2 py-1 rounded"
-                      onClick={() => {
-                        setSelectedPackage(pkg);
-                        setShowViewModal(true);
-                      }}
-                    >
+                  {pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
+  <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
+) : (
+  <button
+    className="bg-green-500 text-white px-2 py-1 rounded"
+    onClick={() => handleAccept(pkg._id)}
+  >
+    Accept
+  </button>
+)}
+
+{pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
+  pkg?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? (
+    <h1 className="text-green-500 border p-1 border-green-500">
+      Already Selected Destination Branch
+    </h1>
+  ) : (
+    <button
+      className="bg-blue-500 text-white px-2 py-1 rounded"
+      onClick={() => {
+        setSelectedPackage(pkg);
+        setShowSelectBranchModal(true);
+      }}
+    >
+      Select Destination Branch
+    </button>
+  )
+) : (
+  <button className="bg-gray-500 text-white px-2 py-1 rounded">
+    Accept First
+  </button>
+)}
+
+<button
+  className="bg-gray-500 text-white px-2 py-1 rounded"
+  onClick={() => {
+    setSelectedPackage(pkg);
+    setShowViewModal(true);
+  }}
+>
                       View
                     </button>
                   </td>
