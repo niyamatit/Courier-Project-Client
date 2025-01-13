@@ -82,6 +82,7 @@ import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/Select
 import SelectMotherHub_Offline from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Offline";
 import PendingPareclList_Offline from "../Components/DashBoard/Host/PendingParcelList/PendingPareclList_Offline";
 import PickupParcelList_Offline from "../Components/DashBoard/Rider/PickupParcelList_Offline";
+import DeliveryComplete_Offline from "../Components/DashBoard/Rider/DeliveryComplete_Offline";
 
 
 
@@ -406,7 +407,7 @@ export const router = createBrowserRouter([
         path: "delivery-complete-offline",
         element: (
           <PrivateRoute>
-            <DeliveryComplete></DeliveryComplete>
+            <DeliveryComplete_Offline/>
           </PrivateRoute>
         ),
       },
