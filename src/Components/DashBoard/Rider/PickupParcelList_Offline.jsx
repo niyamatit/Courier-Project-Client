@@ -20,7 +20,7 @@ const PickupParcelList_Offline = () => {
         },
     });
 
-    
+
 
 
     const mutation = useMutation({
@@ -116,10 +116,10 @@ const PickupParcelList_Offline = () => {
                         <th className="border border-gray-300 px-4 py-2 text-white">CN Number</th>
                         <th className="border border-gray-300 px-4 py-2 text-white">Sender Name</th>
                         <th className="border border-gray-300 px-4 py-2 text-white">Recipient Name</th>
-                        <th className="border border-gray-300 px-4 py-2 text-white">Pickup Address</th>
-                        <th className="border border-gray-300 px-4 py-2 text-white">District</th>
+                        <th className="border border-gray-300 px-4 py-2 text-white">Delivary Address</th>
+                        {/* <th className="border border-gray-300 px-4 py-2 text-white">District</th> */}
                         <th className="border border-gray-300 px-4 py-2 text-white">Amount</th>
-                        <th className="border border-gray-300 px-4 py-2 text-white">Status</th>
+                        <th className="border border-gray-300 px-4 py-2 text-white">Receiver Number</th>
                         <th className="border border-gray-300 px-4 py-2 text-white">Action</th>
                     </tr>
                 </thead>
@@ -132,14 +132,14 @@ const PickupParcelList_Offline = () => {
                         ).map((item, index) => (
                             <tr key={item._id} className="hover:bg-gray-100">
                                 <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{new Date(item.booking).toLocaleDateString()}</td>
+                                <td className="border border-gray-300 px-4 py-2 text-center">{new Date(item.bookingDate).toLocaleDateString()}</td>
                                 <td className="border border-gray-300 px-4 py-2 text-center">{item.CnNumber}</td>
                                 <td className="border border-gray-300 px-4 py-2">{item.senderName}</td>
-                                <td className="border border-gray-300 px-4 py-2">{item.recipientName}</td>
-                                <td className="border border-gray-300 px-4 py-2">{item.Receiver_Full_Adress}</td>
-                                <td className="border border-gray-300 px-4 py-2">{item.districtName}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{item.conditionCharge}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{item.update}</td>
+                                <td className="border border-gray-300 px-4 py-2">{item.receiverName}</td>
+                                <td className="border border-gray-300 px-4 py-2">{item.receiveraddress}</td>
+                                {/* <td className="border border-gray-300 px-4 py-2">{item.districtName}</td> */}
+                                <td className="border border-gray-300 px-4 py-2 text-center">{item.totalCharge}</td>
+                                <td className="border border-gray-300 px-4 py-2 text-center">{item.receiverContactNo}</td>
                                 <td className="border border-gray-300 px-4 py-2 text-center">
                                     <div className='flex'>
                                         <button
