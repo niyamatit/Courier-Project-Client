@@ -26,7 +26,7 @@ const PickupParcelList_Offline = () => {
     const mutation = useMutation({
         mutationFn: async (updateData) => {
             try {
-                const res = await axiosSecure.patch(`/rider/update-parcel/rider/${updateData.id}`, updateData);
+                const res = await axiosSecure.patch(`/rider/update-parcel/rider/offline/${updateData.id}`, updateData);
                 return res.data;
             } catch (error) {
                 Swal.fire({
@@ -141,7 +141,13 @@ const PickupParcelList_Offline = () => {
                                 <td className="border border-gray-300 px-4 py-2 text-center">{item.totalCharge}</td>
                                 <td className="border border-gray-300 px-4 py-2 text-center">{item.receiverContactNo}</td>
                                 <td className="border border-gray-300 px-4 py-2 text-center">
-                                    <div className='flex'>
+                                   
+                                    {
+                                        item?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || item?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned ?
+                                        
+                                         <h1 className='font-bold text-green-600'>{item?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || item?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned}</h1>
+                                        :
+                                        <div className='flex'>
                                         <button
                                             onClick={() => handleActionClick('Successful', item)}
                                             className="bg-green-500 text-white px-3 py-1 rounded mr-2"
@@ -155,6 +161,7 @@ const PickupParcelList_Offline = () => {
                                             Return
                                         </button>
                                     </div>
+                                    }
                                 </td>
                             </tr>
                         ))
