@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 import Swal from 'sweetalert2';
 
-const PickupParcelList_Offline = () => {
+const DeliveryComplete_Offline = () => {
     const [modalData, setModalData] = useState({ isOpen: false, type: '', data: {} });
     const [formValues, setFormValues] = useState({ amount: '', note: '' });
     const queryClient = useQueryClient();
@@ -107,7 +107,7 @@ const PickupParcelList_Offline = () => {
 
     return (
         <div className="p-4">
-            <h1 className="text-xl font-bold mb-4 text-center">Pickup Parcel List Offline</h1>
+            <h1 className="text-xl font-bold mb-4 text-center">Complete Delivery Parcel List Offline</h1>
             <table className="table-auto w-full border-collapse border border-gray-300 shadow-lg">
                 <thead>
                     <tr className="bg-blue-600">
@@ -127,8 +127,8 @@ const PickupParcelList_Offline = () => {
                     {Array.isArray(RiderPickup) && RiderPickup.length > 0 ? (
                         RiderPickup.filter(
                             (item) =>
-                                !item.Tracking_Rider_Offline_Booking_Delivary_Update_Successful &&
-                                !item.Tracking_Rider_Offline_Booking_Delivary_Update_Returned
+                                item.Tracking_Rider_Offline_Booking_Delivary_Update_Successful ||
+                                item.Tracking_Rider_Offline_Booking_Delivary_Update_Returned
                         ).map((item, index) => (
                             <tr key={item._id} className="hover:bg-gray-100">
                                 <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
@@ -225,7 +225,7 @@ const PickupParcelList_Offline = () => {
     );
 };
 
-export default PickupParcelList_Offline;
+export default DeliveryComplete_Offline;
 
 
 
