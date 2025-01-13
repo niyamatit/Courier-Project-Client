@@ -127,8 +127,8 @@ const PickupParcelList_Offline = () => {
                     {Array.isArray(RiderPickup) && RiderPickup.length > 0 ? (
                         RiderPickup.filter(
                             (item) =>
-                                !item.Tracking_Rider_Online_Booking_Delivary_Update_Successful &&
-                                !item.Tracking_Rider_Online_Booking_Delivary_Update_Returned
+                                !item.Tracking_Rider_Offline_Booking_Delivary_Update_Successful &&
+                                !item.Tracking_Rider_Offline_Booking_Delivary_Update_Returned
                         ).map((item, index) => (
                             <tr key={item._id} className="hover:bg-gray-100">
                                 <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
