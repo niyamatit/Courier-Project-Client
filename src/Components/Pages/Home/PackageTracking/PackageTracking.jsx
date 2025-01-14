@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import axiosSecure from "../../../../api/axiosSecure";
-
+import { AiOutlineLoading } from "react-icons/ai";
 import PackageTrackingForm from "./PackageTrackingForm";
 
 const PackageTracking = () => {
@@ -9,7 +9,7 @@ const PackageTracking = () => {
   const [searchError, setSearchError] = useState(false);
 
   // Fetch packages using react-query
-  const { data: packages,  } = useQuery({
+  const { data: packages, isLoading } = useQuery({
     queryKey: ["packages"],
     queryFn: async () => {
       const { data } = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
@@ -76,6 +76,11 @@ const PackageTracking = () => {
 
           {/* Render the search form once */}
           <PackageTrackingForm onSearch={handleSearch} />
+          {isLoading && (
+            <div className="flex justify-center items-center mt-4">
+              <AiOutlineLoading className="animate-spin text-blue-500 text-4xl" />
+            </div>
+          )}
 
           {/* Error message */}
           {searchError && (
