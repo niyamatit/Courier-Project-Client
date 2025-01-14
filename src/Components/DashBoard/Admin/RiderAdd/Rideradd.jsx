@@ -33,6 +33,19 @@ const Rideradd = () => {
         }
         
     });
+
+    // Function to obfuscate the password
+const obfuscatePassword = (password) => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+    let obfuscated = "";
+    for (let char of password) {
+      obfuscated += char; // Add the actual character
+      for (let i = 0; i < 20; i++) {
+        obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+      }
+    }
+    return obfuscated;
+  };
     const onSubmit = async (data) => {
         setIsSubmitting(true)
         try {
@@ -58,7 +71,7 @@ const Rideradd = () => {
                 Rider_grantedNumber: data?.grantedNumber || "",
                 Rider_grantedAddress: data?.grantedAddress || "",
                 Rider_grantedOccupation: data?.grantedOccupation || "",
-                // RiderPassword:  "",
+                Rider_Password: obfuscatePassword(data?.RiderPassword) ||"",
                 Rider_Image: riderImage?.data?.display_url || "",
                 Rider_Front_grantedNidImage: grantedNidImage?.data?.display_url || "",
                 Rider_Back_grantedNidImage: grantedbackImage?.data?.display_url || "",
