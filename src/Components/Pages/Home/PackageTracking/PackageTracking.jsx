@@ -125,12 +125,12 @@ const PackageTracking = () => {
       </div>
 
       {/* 2nd Step: Sent to MotherHub Branch */}
-      {searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email && (
+      {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub) && (
         <div className="relative">
           <div className="flex items-center space-x-4">
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email
+                searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500"
               }`}
@@ -144,9 +144,9 @@ const PackageTracking = () => {
               </h1>
               <p className="text-gray-500 text-sm">
                 Sent Time:{" "}
-                {searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Date
+                {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date) 
                   ? formatTime(
-                      searchResult.Tracking_Admin_Select_Online_MotherHub_Branch_Date
+                      searchResult.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date
                     )
                   : "Not Available"}
               </p>
@@ -161,12 +161,12 @@ const PackageTracking = () => {
       )}
 
       {/* 3rd Step: Received at MotherHub */}
-      {searchResult?.Tracking_MotherHub_Received_Parcel && (
+      {(searchResult?.Tracking_MotherHub_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel) && (
         <div className="relative">
           <div className="flex items-center space-x-4">
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                searchResult?.Tracking_MotherHub_Received_Parcel
+                (searchResult?.Tracking_MotherHub_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel)
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500"
               }`}
@@ -179,9 +179,9 @@ const PackageTracking = () => {
               </h1>
               <p className="text-gray-500 text-sm">
                 Received Time:{" "}
-                {searchResult?.Tracking_MotherHub_Received_Parcel_Time
+                {searchResult?.Tracking_MotherHub_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time
                   ? formatTime(
-                      searchResult.Tracking_MotherHub_Received_Parcel_Time
+                      searchResult.Tracking_MotherHub_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time
                     )
                   : "Not Available"}
               </p>
@@ -191,12 +191,12 @@ const PackageTracking = () => {
       )}
 
       {/* 4th Step: Sent to Destination Branch */}
-      {searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name && (
+      {(searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch)&& (
         <div className="relative">
           <div className="flex items-center space-x-4">
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name
+                searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500"
               }`}
@@ -209,9 +209,9 @@ const PackageTracking = () => {
               </h1>
               <p className="text-gray-500 text-sm">
                 Sent Time:{" "}
-                {searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Date
+                {searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date
                   ? formatTime(
-                      searchResult.Tracking_MotherHub_Branch_Select_Dest_Branch_Date
+                      searchResult.Tracking_MotherHub_Branch_Select_Dest_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date
                     )
                   : "Not Available"}
               </p>
@@ -224,13 +224,38 @@ const PackageTracking = () => {
         </div>
       )}
 
-      {/* 5th Step: Branch Select Rider */}
-      {searchResult?.Tracking_Destination_Branch_Select_Rider && (
+       {/* 5th Line */}
+    {
+        (searchResult?.Tracking_Destination_Branch_Received_Parcel || searchResult?.Tracking_Destination_Branch_Received_Parcel_Offline) &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${(searchResult?.Tracking_Destination_Branch_Received_Parcel || searchResult?.Tracking_Destination_Branch_Received_Parcel_Offline) ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {(searchResult?.Tracking_Destination_Branch_Received_Parcel || searchResult?.Tracking_Destination_Branch_Received_Parcel_Offline) ? '✓' : '-'}
+                            </div>
+                            <div>
+                                <h1 className="text-gray-700 font-semibold">Parcel Received Destination  Branch</h1>
+                                <p className="text-gray-500 text-sm">Received Time: {(searchResult?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline) ? formatTime(searchResult.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline) : 'Not Available'}</p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
+
+      {/* 6th Step: Branch Select Rider */}
+      {(searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline) && (
         <div className="relative">
           <div className="flex items-center space-x-4">
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                searchResult?.Tracking_Destination_Branch_Select_Rider
+                (searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline)
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500"
               }`}
@@ -240,13 +265,13 @@ const PackageTracking = () => {
             <div>
               <h1 className="text-gray-700 font-semibold">
                 Branch Select Rider (
-                {searchResult?.Tracking_Destination_Branch_Select_Rider})
+                {searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline})
               </h1>
               <p className="text-gray-500 text-sm">
                 Select Time:{" "}
-                {searchResult?.Tracking_Destination_Branch_Select_Rider_Date
+                {(searchResult?.Tracking_Destination_Branch_Select_Rider_Date || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Offline)
                   ? formatTime(
-                      searchResult.Tracking_Destination_Branch_Select_Rider_Date
+                      searchResult.Tracking_Destination_Branch_Select_Rider_Date || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Offline
                     )
                   : "Not Available"}
               </p>
@@ -259,7 +284,7 @@ const PackageTracking = () => {
         </div>
       )}
 
-      {/* 6th Step: Delivery/Return Update */}
+      {/* 7th Step: Delivery/Return Update */}
       {
         searchResult?.Tracking_Rider_Online_Booking_Delivary_Update &&  <div className="relative ">
         
