@@ -178,13 +178,16 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Branch_Name ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {booking?.Branch_Name ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_Online_Booking_Branch_Received_Parcel ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_Online_Booking_Branch_Received_Parcel ? '✓' : '-'}
                             </div>
-                            <div>
-                                <h1 className="text-gray-700 font-semibold">Received By: {booking?.Branch_Name || 'N/A'}</h1>
-                                <p className="text-gray-500 text-sm">Branch Received Time: {booking?.booking ? formatTime(booking.booking) : 'Not Available'}</p>
+                            {
+                                booking?.Tracking_Online_Booking_Branch_Received_Parcel && 
+                                <div>
+                                <h1 className="text-gray-700 font-semibold">Accepted By: {booking?.Branch_Name || 'N/A'}</h1>
+                                <p className="text-gray-500 text-sm">Branch Accept Time: {booking?.Tracking_Online_Booking_Branch_Received_Parcel_Time ? formatTime(booking.Tracking_Online_Booking_Branch_Received_Parcel_Time) : 'Not Available'}</p>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -256,6 +259,30 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                                 <h1 className="text-gray-700 font-semibold">Sent to Destination Branch ({booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name})</h1>
                                 <p className="text-gray-500 text-sm">Sent Time: {booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Date ? formatTime(booking.Tracking_MotherHub_Branch_Select_Dest_Branch_Date) : 'Not Available'}</p>
                                 <p className="text-gray-500 text-sm">Note: {booking?.Tracking_MotherHub_Branch_Note || 'Not Available'}</p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    }
+    {/* 5th Line */}
+    {
+        booking?.Tracking_Destination_Branch_Received_Parcel &&  <div className="relative ">
+        
+        <div className="space-y-6">
+            {/* Tracking Timeline */}
+            <div className="mt-6">
+                    
+                    <div className="relative">
+                        <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${booking?.Tracking_Destination_Branch_Received_Parcel ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {booking?.Tracking_Destination_Branch_Received_Parcel ? '✓' : '-'}
+                            </div>
+                            <div>
+                                <h1 className="text-gray-700 font-semibold">Parcel Received Destination  Branch</h1>
+                                <p className="text-gray-500 text-sm">Received Time: {booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time ? formatTime(booking.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time) : 'Not Available'}</p>
                                
                             </div>
                         </div>

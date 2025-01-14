@@ -168,6 +168,7 @@ const PendingPacelList = () => {
         title: "Rider Selected",
         text: "The rider has been successfully selected!",
       });
+      refetch()
       setShowSelectBranchModal(false);
     } catch (error) {
       Swal.fire({
