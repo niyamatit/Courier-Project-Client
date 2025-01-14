@@ -696,6 +696,26 @@ const AddBaranchStaff = () => {
     }
 
   });
+  const { data: usersess = [],  } = useQuery({
+    queryKey: ['usersess'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/vgfsdhfsdhhsxgcfbxcjkxnbnj454557");
+      return res.data;
+
+    }
+
+  });
+  // const { data: usersess = [], isLoading, error } = useQuery({
+  //   queryKey: ['usersess'],
+  //   queryFn: async () => {
+  //     const res = await axiosSecure.get("/vgfsdhfsdhhsxgcfbxcjkxnbnj454557");
+  //     console.log("API Response:", res.data); // Log the API response
+  //     return res.data;
+  //   },
+  // });
+  
+
+  // console.log("Branches",usersess)
 
 
   const onSubmit = async (data) => {
@@ -758,8 +778,18 @@ const AddBaranchStaff = () => {
   };
   const handleBranchChange = (e) => {
     const selectedBranchName = e.target.value;
-    const user = users.find(user => user?.name === selectedBranchName);
+    const user = usersess.find(user => user?.Branch_Name === selectedBranchName);
     setSelectedUser(user);
+    console.log("Branch", user)
+    console.log("Branch1", user?.Branch_Name)
+  };
+
+  const deobfuscatePassword = (obfuscatedPassword) => {
+    let actualPassword = "";
+    for (let i = 0; i < obfuscatedPassword?.length; i += 21) {
+      actualPassword += obfuscatedPassword[i]; 
+    }
+    return actualPassword;
   };
 
 
@@ -1064,7 +1094,7 @@ const AddBaranchStaff = () => {
                     {...register('Staff_Password', { required: true })}
                     className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
                       }`}
-                    value={selectedUser?.password || 'No Password Found'}
+                    value={deobfuscatePassword(selectedUser?.Branch_Password) || 'No Password Found'}
                     readOnly
                   />
                   {errors.Staff_Password && <span className="text-red-500">This field is required</span>}
