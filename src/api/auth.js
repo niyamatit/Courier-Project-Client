@@ -60,7 +60,7 @@ export const updateBooking = async (updatedBooking) => {
 
 
 export const getOffline = async () => {
-    const { data } = await axiosSecure.get(`/offline`);
+    const { data } = await axiosSecure.get(`/offlinejjfjbvfbv44`);
     return data;
 };
 
