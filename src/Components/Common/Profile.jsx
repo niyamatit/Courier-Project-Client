@@ -18,6 +18,18 @@ const Profile = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [updatedPassword,setUpdatedPassword] = useState('')
+  // Function to obfuscate the password
+const obfuscatePassword = (password) => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+  let obfuscated = "";
+  for (let char of password) {
+    obfuscated += char; // Add the actual character
+    for (let i = 0; i < 20; i++) {
+      obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+    }
+  }
+  return obfuscated;
+};
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
       setPasswordError("New passwords do not match");
@@ -32,6 +44,10 @@ const Profile = () => {
       });
 
       setUpdatedPassword(newPassword);
+      const res = await axiosSecure.put("/api/users/change-password/show", {
+        email: verifiedUser.email,
+        updatedPassword:obfuscatePassword(newPassword)
+      });
       setIsEditingPassword(false);
       Swal.fire({
         icon: 'success',
@@ -102,12 +118,12 @@ const Profile = () => {
                 <div>
                 <div className="relative inline-block">
                   {/* Hover Window Button */}
-                  {/* <button
+                  <button
                     onClick={() => setIsEditingPassword(!isEditingPassword)}
                     className='bg-[#F43F5E] px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053]'
                   >
                     Change Password
-                  </button> */}
+                  </button>
                   
 
                   {/* Hover Window with Input Fields */}
