@@ -90,10 +90,10 @@ const PackageTracking = () => {
       <h3 className="text-2xl mb-6 text-blue-600 border-b border-black pb-2 text-center">
         Tracking Updates
       </h3>
-     <p className="text-gray-600">Products: {searchResult?.productDetails}</p>
-     <p className="text-gray-600">Sender Name: {searchResult?.senderName}</p>
-     <p className="text-gray-600">Receiver Name: {searchResult?.recipientName}</p>
-     <p className="text-gray-600">Receiver Address: {searchResult?.selectedArea}</p>
+     <p className="text-gray-600">Products: {searchResult?.productDetails || searchResult?.product}</p>
+     <p className="text-gray-600">Sender Name: {searchResult?.senderName || searchResult?.senderName}</p>
+     <p className="text-gray-600">Receiver Name: {searchResult?.recipientName || searchResult?.receiverName}</p>
+     <p className="text-gray-600">Receiver Address: {searchResult?.selectedArea || searchResult?.receiveraddress}</p>
     </div>
 
     {/* Timeline Tracking */}
@@ -116,8 +116,8 @@ const PackageTracking = () => {
             </h1>
             <p className="text-gray-500 text-sm">
               Branch Received Time:{" "}
-              {searchResult?.booking
-                ? formatTime(searchResult.booking)
+              {(searchResult?.Tracking_Online_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time)
+                ? formatTime(searchResult.Tracking_Online_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time)
                 : "Not Available"}
             </p>
           </div>
