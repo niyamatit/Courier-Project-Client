@@ -5,6 +5,13 @@ import { FaTrashAlt } from "react-icons/fa";
 
 const TableRider = ({ rider, index }) => {
     const [status, setStatus] = useState("");
+    const deobfuscatePassword = (obfuscatedPassword) => {
+        let actualPassword = "";
+        for (let i = 0; i < obfuscatedPassword.length; i += 21) {
+          actualPassword += obfuscatedPassword[i]; 
+        }
+        return actualPassword;
+      };
 
     useEffect(() => {
         if (!status) {
@@ -38,6 +45,9 @@ const TableRider = ({ rider, index }) => {
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>{rider?.Rider_Full_Address}</p>
+            </td>
+            <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                <p className='text-gray-900 whitespace-no-wrap'>{deobfuscatePassword(rider?.Rider_Password)}</p>
             </td>
             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                 <p className='text-gray-900 whitespace-no-wrap'>{rider?.Rider_Branch}</p>
