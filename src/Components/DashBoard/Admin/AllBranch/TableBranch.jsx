@@ -87,7 +87,7 @@ const TableBranch = ({ branch, onView, refetch }) => {
         }
         return actualPassword;
       };
-    const handleDelete = async (id) => {
+    const handleDelete = async (email) => {
         try {
             const result = await Swal.fire({
                 title: "Are you sure?",
@@ -99,8 +99,10 @@ const TableBranch = ({ branch, onView, refetch }) => {
             });
 
             if (result.isConfirmed) {
-                const response = await axiosSecure.delete(`/branch/${id}`);
-                console.log("Delete Response:", response.data);
+                const response = await axiosSecure.delete(`/branch/${email}`);
+               
+                const res = await axiosSecure.delete(`/users/branch/${email}`);
+               
 
                 if (response.data?.deletedCount > 0) {
                     refetch();
@@ -164,7 +166,7 @@ const TableBranch = ({ branch, onView, refetch }) => {
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button
-                    onClick={() => handleDelete(branch._id)}
+                    onClick={() => handleDelete(branch?.email)}
                     aria-label="Delete branch"
                     className="btn btn-ghost btn-xs"
                 >

@@ -44,6 +44,6 @@ export const getOfflineBookings = async (email) => {
 };
 
 export const getOfflineBooking = async () => {
-  const { data } = await axiosSecure.get(`/offline`);
+  const { data } = await axiosSecure.get(`/offlinejjfjbvfbv44`);
   return data;
 };
