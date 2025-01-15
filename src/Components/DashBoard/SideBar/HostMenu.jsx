@@ -204,6 +204,12 @@ const HostMenu = () => {
           <li>
             <MenuItem
               icon={IoHome}
+              label='Pending Parcel List (Merchant)'
+              address='pending-parcel-list-Merchant'
+            /></li>
+          <li>
+            <MenuItem
+              icon={IoHome}
               label='Processing'
               address='pickup-processing'
             /></li>
@@ -224,6 +230,12 @@ const HostMenu = () => {
               icon={IoHome}
               label='MotherHub PickUp Parcel (Offline)'
               address='parcel-motherHub-Select-Offline'
+            /></li>
+          <li>
+            <MenuItem
+              icon={IoHome}
+              label='MotherHub PickUp Parcel (Merchant)'
+              address='parcel-motherHub-Select-Merchant'
             /></li>
         </ul>
       </div>
