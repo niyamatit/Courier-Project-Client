@@ -48,6 +48,10 @@ const obfuscatePassword = (password) => {
         email: verifiedUser.email,
         updatedPassword:obfuscatePassword(newPassword)
       });
+      const resRIder = await axiosSecure.put("/api/users/change-password/show/rider", {
+        email: verifiedUser.email,
+        updatedPassword:obfuscatePassword(newPassword)
+      });
       setIsEditingPassword(false);
       Swal.fire({
         icon: 'success',

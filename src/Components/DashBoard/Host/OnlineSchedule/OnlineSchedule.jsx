@@ -128,7 +128,7 @@ const OnlineSchedule = () => {
 {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
   pkg?.Tracking_Admin_Select_Online_MotherHub_Branch_email ? (
     <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected MotherHub
+      Already Selected 
     </h1>
   ) : (
     <button

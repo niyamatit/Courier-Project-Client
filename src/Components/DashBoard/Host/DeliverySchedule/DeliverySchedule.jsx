@@ -128,7 +128,7 @@ const DeliverySchedule = () => {
 {pkg?.Tracking_Booking_Branch_Received_Parcel ? (
   pkg?.Tracking_Booking_Branch_Select_MotherHub ? (
     <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected MotherHub
+      Already Selected
     </h1>
   ) : (
     <button

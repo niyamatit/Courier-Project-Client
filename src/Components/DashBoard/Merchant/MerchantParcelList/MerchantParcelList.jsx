@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../../../api/axiosSecure';
 import useUsersData from '../../../../hooks/useUsersData/useUsersData';
+import Swal from 'sweetalert2';
 
 const fetchParcels = async ({ queryKey }) => {
   const [, merchant_email] = queryKey;
@@ -15,11 +16,12 @@ const updateParcel = async ({ id, updatedData }) => {
 };
 
 const MerchantParcelList = () => {
+  // const [verifiedUser] = useUsersData();
   const [verifiedUser] = useUsersData();
   const merchantEmail = verifiedUser?.email;
   const queryClient = useQueryClient();
 
-  const { data: parcels = [], isLoading } = useQuery({
+  const { data: parcels = [], isLoading,refetch } = useQuery({
     queryKey: ['parcels', merchantEmail],
     queryFn: fetchParcels,
   });
@@ -33,6 +35,19 @@ const MerchantParcelList = () => {
 
   const [selectedParcel, setSelectedParcel] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
+  
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [note, setNote] = useState("");
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const { data: users = [] } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+      return res.data;
+    }
+  });
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -62,6 +77,55 @@ const MerchantParcelList = () => {
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
     return new Date(dateString).toLocaleString('en-US', options);
   };
+  const handleAccept = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/merchant/accept/parcel/mer/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Accepted",
+        text: "The parcel has been successfully accepted!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to accept the package. Please try again.",
+      });
+    }
+  };
+
+  const handleSelectBranch = async () => {
+    if (!selectedBranch || !note) {
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete Information",
+        text: "Please fill in both the branch and the note!",
+      });
+      return;
+    }
+
+    try {
+       await axiosSecure.post(`/Merchant/select-MotherHub/Mer/${selectedPackage._id}`, {
+          Tracking_Booking_Merchant_Select_MotherHub: selectedBranch,
+          Tracking_Booking_Merchant_Select_MotherHub_Note: note,
+          Tracking_Booking_Merchant_Select_MotherHub_Date: new Date()
+      });
+      Swal.fire({
+        icon: "success",
+        title: "MotherHub Branch Selected",
+        text: "MotherHub Branch has been successfully selected!",
+      });
+      refetch()
+      setShowSelectBranchModal(false);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to select the rider. Please try again.",
+      });
+    }
+  };
 
   return (
     <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
@@ -86,26 +150,53 @@ const MerchantParcelList = () => {
               parcels.map(parcel => (
                 <tr key={parcel._id} className="hover:bg-gray-50">
                   <td className="p-3 border">{formatDateForTable(parcel.Date)}</td>
-                  <td className="p-3 border">{parcel.Merchant_Parcel_Booking_CN_Number}</td>
+                  <td className="p-3 border">{parcel.CnNumber}</td>
                   <td className="p-3 border">{parcel.Customer_Contact_Number}</td>
                   <td className="p-3 border">{parcel?.Customer_District_Name || 'N/A'},{parcel?.Customer_Area}</td>
                   <td className="p-3 border">{parcel.Customer_Name}</td>
                   <td className="p-3 border">{parcel.Store_Name}</td>
                   <td className="p-3 border">{parcel.Item_Type}</td>
                   <td className="p-3 border">{parcel.Parcel_Weight} kg</td>
-                  <td className="p-3 border flex gap-2">
-                    <button
-                      onClick={() => setSelectedParcel(parcel)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
-                    >
-                      View Details
-                    </button>
-                    {/* <button
-                      onClick={() => handleEdit(parcel)}
-                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors"
-                    >
-                      Edit
-                    </button> */}
+                  <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
+                  {parcel?.Tracking_Merchant_Booking_Received_Parcel ? (
+  <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
+) : (
+  <button
+    className="bg-green-500 text-white px-2 py-1 rounded"
+    onClick={() => handleAccept(parcel._id)}
+  >
+    Accept
+  </button>
+)}
+
+{parcel?.Tracking_Merchant_Booking_Received_Parcel ? (
+  parcel?.Tracking_Booking_Merchant_Select_MotherHub ? (
+    <h1 className="text-green-500 border p-1 border-green-500">
+      Already Selected
+    </h1>
+  ) : (
+    <button
+      className="bg-blue-500 text-white px-2 py-1 rounded"
+      onClick={() => {
+        setSelectedPackage(parcel);
+        setShowSelectBranchModal(true);
+      }}
+    >
+      Select MotherHub
+    </button>
+  )
+) : (
+  <button className="bg-gray-500 text-white px-2 py-1 rounded">
+    Accept First
+  </button>
+)}
+
+<button
+onClick={() => setSelectedParcel(parcel)}
+className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
+>
+View Details
+</button> 
                   </td>
                 </tr>
               ))
@@ -171,7 +262,7 @@ const MerchantParcelList = () => {
 )}
 
       {/* Modal for Editing Parcel */}
-      {isEdit && selectedParcel && (
+      {/* {isEdit && selectedParcel && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
             <h2 className="text-lg font-semibold mb-4">Edit Parcel</h2>
@@ -203,9 +294,65 @@ const MerchantParcelList = () => {
             </div>
           </div>
         </div>
+      )} */}
+        {showSelectBranchModal && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+            <h2 className="text-2xl font-bold mb-4">Select MotherHub</h2>
+            <div className="mb-4">
+              
+              <select
+                className="border p-2 w-full"
+                value={selectedBranch}
+                onChange={(e) => setSelectedBranch(e.target.value)}
+              >
+                <option value="">Select MotherHub Branch</option>
+                {users
+  .filter(
+    (user) =>
+      user?.role === "host" 
+  )
+  .map((user) => (
+    <option key={user._id} value={user?.email}>
+      {`${user?.name || "No Name Found"} (${user?.email})`}
+    </option>
+  ))}
+
+              </select>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2">Note:</label>
+              <textarea
+                className="border border-gray-300 p-2 w-full rounded"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
+            </div>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+              onClick={handleSelectBranch}
+            >
+              Submit
+            </button>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => setShowSelectBranchModal(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
 export default MerchantParcelList;
+
+
+{/* <button
+onClick={() => setSelectedParcel(parcel)}
+className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
+>
+View Details
+</button> */}
