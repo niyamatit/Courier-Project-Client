@@ -26,7 +26,7 @@ const SelectMotherHub_Merchant = () => {
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/offline/email/Branch/destination/${verifiedUser?.email}`);
+       const res = await axiosSecure.get(`/offline/email/Branch/destination/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
