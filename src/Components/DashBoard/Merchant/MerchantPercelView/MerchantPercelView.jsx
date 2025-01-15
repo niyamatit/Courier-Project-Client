@@ -82,6 +82,7 @@ const MerchantParcelList = () => {
               <th className="p-3 border">Customer Name</th>
               <th className="p-3 border">Store</th>
               <th className="p-3 border">Item</th>
+              <th className="p-3 border">CN Number</th>
               <th className="p-3 border">Weight</th>
               <th className="p-3 border">Actions</th>
             </tr>
@@ -97,6 +98,7 @@ const MerchantParcelList = () => {
                   <td className="p-3 border">{parcel.Customer_Name}</td>
                   <td className="p-3 border">{parcel.Store_Name}</td>
                   <td className="p-3 border">{parcel.Item_Type}</td>
+                  <td className="p-3 border">{parcel.CnNumber}</td>
                   <td className="p-3 border">{parcel.Parcel_Weight} kg</td>
                   <td className="p-3 border flex gap-2">
                   <button

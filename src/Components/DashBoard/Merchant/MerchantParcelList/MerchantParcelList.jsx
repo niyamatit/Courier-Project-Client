@@ -86,7 +86,7 @@ const MerchantParcelList = () => {
               parcels.map(parcel => (
                 <tr key={parcel._id} className="hover:bg-gray-50">
                   <td className="p-3 border">{formatDateForTable(parcel.Date)}</td>
-                  <td className="p-3 border">{parcel.Merchant_Parcel_Booking_CN_Number}</td>
+                  <td className="p-3 border">{parcel.CnNumber}</td>
                   <td className="p-3 border">{parcel.Customer_Contact_Number}</td>
                   <td className="p-3 border">{parcel?.Customer_District_Name || 'N/A'},{parcel?.Customer_Area}</td>
                   <td className="p-3 border">{parcel.Customer_Name}</td>
