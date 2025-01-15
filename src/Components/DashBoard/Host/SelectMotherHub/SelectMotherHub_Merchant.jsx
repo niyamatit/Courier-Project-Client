@@ -26,7 +26,7 @@ const SelectMotherHub_Merchant = () => {
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
-       const res = await axiosSecure.get(`/offline/email/Branch/destination/${verifiedUser?.email}`);
+       const res = await axiosSecure.get(`/Merchant/email/Branch/destination/mer/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
@@ -97,7 +97,7 @@ const SelectMotherHub_Merchant = () => {
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
                 <th className="border border-blue-500 px-4 py-2">CN Number</th>
-                <th className="border border-blue-500 px-4 py-2">Dest. Branch</th>
+                <th className="border border-blue-500 px-4 py-2">Customer Area</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -106,15 +106,17 @@ const SelectMotherHub_Merchant = () => {
                 <tr key={pkg._id} className="hover:bg-blue-100">
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
-                    {new Date(pkg.bookingDate).toLocaleDateString()}
+                    {new Date(pkg.Date).toLocaleDateString()}
                   </td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.receiverName}</td>
+                  <td className="border border-blue-500 px-4 py-2">
+  {pkg?.Merchant_email} (Merchant)
+</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Name}</td>
                   {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td> */}
-                  <td className="border border-blue-500 px-4 py-2">{pkg.receiverContactNo}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.product}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Contact_Number}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Product_Details}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.Destbranch}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Area}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                   {pkg?.Tracking_MotherHub_Branch_Received_Parcel_Merchant ? (
   <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
