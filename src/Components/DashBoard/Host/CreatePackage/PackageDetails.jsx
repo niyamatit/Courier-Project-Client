@@ -19,8 +19,8 @@ export const PackageDetails = ({ bookingInfo }) => (
                 </div>
                 <div className="company-details flex gap-5">
                     <div>
-                        <h3 className='text-2xl font-bold text-gray-800'>Niyamat Express</h3>
-                        <p>Chittagong Road, Narayanganj 1430</p>
+                        <h3 className='text-2xl font-bold text-gray-800 mr-5'>Niyamat Express</h3>
+                        <p className='text-center'>Chittagong Road, Narayanganj 1430</p>
                     </div>
                     <div className='justify-end text-sm'>
                         <p>https://niyamatexpress.com/</p>
@@ -107,7 +107,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                     }
                 </div>
             </div>
-            <p className='text-sm'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
+            <p className='text-sm mt-2'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
         </div>
        
         <div className='flex justify-center items-center'>
