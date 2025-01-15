@@ -60,10 +60,10 @@ const SelectMotherHub_Merchant = () => {
     }
 
     try {
-       await axiosSecure.post(`/offline/select-Destion/branch/again/${selectedPackage._id}`, {
-          Tracking_MotherHub_Branch_Select_Destiantion_Branch: selectedBranch,
-        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note: note,
-        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date: new Date()
+       await axiosSecure.post(`/merchant/select-Destion/branch/again/mer/${selectedPackage._id}`, {
+          Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant: selectedBranch,
+        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note_Merchant: note,
+        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -130,9 +130,9 @@ const SelectMotherHub_Merchant = () => {
 )}
 
 {pkg?.Tracking_MotherHub_Branch_Received_Parcel_Merchant ? (
-  pkg?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? (
+  pkg?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant ? (
     <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected Destination Branch
+      Already Selected Dest. Branch
     </h1>
   ) : (
     <button
