@@ -106,10 +106,10 @@ const MerchantParcelList = () => {
     }
 
     try {
-       await axiosSecure.post(`/offline/select-MotherHub/branch/${selectedPackage._id}`, {
-          Tracking_Booking_Branch_Select_MotherHub: selectedBranch,
-        Tracking_Booking_Branch_Select_MotherHub_Note: note,
-        Tracking_Booking_Branch_Select_MotherHub_Date: new Date()
+       await axiosSecure.post(`/Merchant/select-MotherHub/Mer/${selectedPackage._id}`, {
+          Tracking_Booking_Merchant_Select_MotherHub: selectedBranch,
+          Tracking_Booking_Merchant_Select_MotherHub_Note: note,
+          Tracking_Booking_Merchant_Select_MotherHub_Date: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -170,7 +170,7 @@ const MerchantParcelList = () => {
 )}
 
 {parcel?.Tracking_Merchant_Booking_Received_Parcel ? (
-  parcel?.Tracking_Booking_Branch_Select_MotherHub ? (
+  parcel?.Tracking_Booking_Merchant_Select_MotherHub ? (
     <h1 className="text-green-500 border p-1 border-green-500">
       Already Selected
     </h1>
