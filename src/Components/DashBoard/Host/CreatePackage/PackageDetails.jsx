@@ -12,14 +12,14 @@ export const PackageDetails = ({ bookingInfo }) => (
     <>
 
         <div className="invoice-container">
-            <p className='text-sm'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
+            
             <header className="header">
                 <div className="logo">
-                    <img className='h-[30px] w-[50px]' src={logoImg} alt="Niyamat Express" />
+                    <img className='h-[40px] w-[60px]' src={logoImg} alt="Niyamat Express" />
                 </div>
                 <div className="company-details flex gap-5">
                     <div>
-                        <h3>Niyamat Express</h3>
+                        <h3 className='text-2xl font-bold text-gray-800'>Niyamat Express</h3>
                         <p>Chittagong Road, Narayanganj 1430</p>
                     </div>
                     <div className='justify-end text-sm'>
@@ -107,7 +107,9 @@ export const PackageDetails = ({ bookingInfo }) => (
                     }
                 </div>
             </div>
+            <p className='text-sm'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
         </div>
+       
         <div className='flex justify-center items-center'>
             <PiScissorsLight className='w-5 h-5' />
             <p>-----------------------------------------</p>
