@@ -69,6 +69,7 @@ const SelectMotherHub = () => {
         title: "Branch Selected",
         text: "The destination branch has been successfully selected!",
       });
+      refetch();
       setShowSelectBranchModal(false);
     } catch (error) {
       Swal.fire({
