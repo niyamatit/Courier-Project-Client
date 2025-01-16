@@ -28,6 +28,8 @@ const BookingForm = () => {
   const [rate, setRate] = useState('');
   const [quantity, setQuantity] = useState('');
   const [totalCharge, setTotalCharge] = useState(0);
+  const [OtpCharge, setOthCharge] = useState(0);
+  const [HDCharge, setHDCharge] = useState(0);
   const [senderContactNo, setSenderContactNo] = useState("");
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
   const [lot, setLot] = useState();
@@ -52,9 +54,16 @@ const BookingForm = () => {
 
   useEffect(() => {
     if (!isManuallyEditing) {
-      setTotalCharge(parseFloat(rate * quantity));
+      const validRate = parseFloat(rate) || 0;
+      const validQuantity = parseFloat(quantity) || 0;
+      const validOtpCharge = parseFloat(OtpCharge) || 0;
+      const validHDCharge = parseFloat(HDCharge) || 0;
+  
+      const total = validRate * validQuantity + validOtpCharge + validHDCharge;
+      setTotalCharge(total);
     }
-  }, [rate, quantity, isManuallyEditing]);
+  }, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge]);
+  
 
 
 
@@ -163,7 +172,7 @@ const BookingForm = () => {
   
         // Calculate the current and new balance
         const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0);
-        const codAmount = parseFloat(data.receiverPay || 0);
+        const codAmount = parseFloat(data.totalCharge || totalCharge || 0);
         const newBalance = currentBalance - codAmount;
   
         if (codAmount > currentBalance) {
@@ -757,22 +766,7 @@ const BookingForm = () => {
 
                 />
                 
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"TotalCharge"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Total Charge"
-                  placeholder="total charge"
-                  required
-                  type="number"
-                  value={totalCharge}
-                  onChange={(e) => {
-                    setTotalCharge(e.target.value);
-                    setIsManuallyEditing(true);
-                  }}
-                />
+               
                 <InputField
                   watchValues={watchValues}
                   register={register}
@@ -782,6 +776,10 @@ const BookingForm = () => {
                   label="H/D Charge"
                   placeholder="Home Delivery Charge"
                   type="number"
+                  onChange={(e) => {
+                    setHDCharge(e.target.value);
+                    
+                  }}
 
                 />
                 <InputField
@@ -793,7 +791,32 @@ const BookingForm = () => {
                   label="Oth. Charge"
                   placeholder="Other Charge"
                   type="number"
+                  onChange={(e) => {
+                    setOthCharge(e.target.value);
+                    
+                  }}
 
+                />
+                 <InputField
+                  watchValues={watchValues}
+                  register={register}
+                  name={"TotalCharge"}
+                  registerOptions={{
+                    required: "This field is required",
+                    validate: {
+                      minValue: (value) => value >= 80 || "pay cannot be less than 80",
+                    },
+                  }}
+                  errors={errors}
+                  label="Total Charge"
+                  placeholder="total charge"
+                  required
+                  type="number"
+                  value={totalCharge}
+                  onChange={(e) => {
+                    setTotalCharge(e.target.value);
+                    setIsManuallyEditing(true);
+                  }}
                 />
               </div>
             </Section>
@@ -807,9 +830,9 @@ const BookingForm = () => {
   name={"receiverPay"}
   registerOptions={{
     required: "This field is required",
-    validate: {
-      minValue: (value) => value >= 80 || "COD receiver pay cannot be less than 80",
-    },
+    // validate: {
+    //   minValue: (value) => value >= 80 || "COD receiver pay cannot be less than 80",
+    // },
   }}
   errors={errors}
   label="COD (Receiver will pay)"
