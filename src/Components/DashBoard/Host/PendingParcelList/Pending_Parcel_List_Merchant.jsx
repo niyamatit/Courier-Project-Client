@@ -31,7 +31,7 @@ const Pending_Parcel_List_Merchant = () => {
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/offline/accept/parcel/destination/again/${pkgId}`);
+      await axiosSecure.post(`/Merchant/accept/parcel/destination/again/mer/hello/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -58,10 +58,10 @@ const Pending_Parcel_List_Merchant = () => {
     }
 
     try {
-      await axiosSecure.post(`/offline/select-Des/branch/rider/${selectedPackage._id}`, {
-        Tracking_Destination_Branch_Select_Rider_Offline: selectedBranch,
-        Tracking_Destination_Branch_Note_Offline: note,
-        Tracking_Destination_Branch_Select_Rider_Date_Offline: new Date()
+      await axiosSecure.post(`/Merchant/select-Des/branch/rider/mer/${selectedPackage._id}`, {
+        Tracking_Destination_Branch_Select_Rider_Merchant: selectedBranch,
+        Tracking_Destination_Branch_Note_Merchant: note,
+        Tracking_Destination_Branch_Select_Rider_Date_Merchant: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -116,7 +116,7 @@ const Pending_Parcel_List_Merchant = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Area}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                  {pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
+                  {pkg?.Tracking_Destination_Branch_Received_Parcel_Merchant ? (
   <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
 ) : (
   <button
@@ -127,8 +127,8 @@ const Pending_Parcel_List_Merchant = () => {
   </button>
 )}
 
-{pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
-  pkg?.Tracking_Destination_Branch_Select_Rider_Offline ? (
+{pkg?.Tracking_Destination_Branch_Received_Parcel_Merchant ? (
+  pkg?.Tracking_Destination_Branch_Select_Rider_Merchant ? (
     <h1 className="text-green-500 border p-1 border-green-500">
       Already Selected Rider
     </h1>
