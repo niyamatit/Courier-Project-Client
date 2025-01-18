@@ -84,6 +84,8 @@ import PendingPareclList_Offline from "../Components/DashBoard/Host/PendingParce
 import PickupParcelList_Offline from "../Components/DashBoard/Rider/PickupParcelList_Offline";
 import DeliveryComplete_Offline from "../Components/DashBoard/Rider/DeliveryComplete_Offline";
 import SelectMotherHub_Merchant from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Merchant";
+import PendingPacelList from "../Components/DashBoard/Host/PendingParcelList/PendingPacelList";
+import Pending_Parcel_List_Merchant from "../Components/DashBoard/Host/PendingParcelList/Pending_Parcel_List_Merchant";
 
 
 
@@ -481,7 +483,7 @@ export const router = createBrowserRouter([
         path: "pending-parcel-list-Merchant",
         element: <PrivateRoute>
           <HostRoute>
-            <PendingPareclList_Offline />
+            <Pending_Parcel_List_Merchant/>
           </HostRoute>
         </PrivateRoute>
       },
