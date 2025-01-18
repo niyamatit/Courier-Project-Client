@@ -86,6 +86,7 @@ import DeliveryComplete_Offline from "../Components/DashBoard/Rider/DeliveryComp
 import SelectMotherHub_Merchant from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Merchant";
 import PendingPacelList from "../Components/DashBoard/Host/PendingParcelList/PendingPacelList";
 import Pending_Parcel_List_Merchant from "../Components/DashBoard/Host/PendingParcelList/Pending_Parcel_List_Merchant";
+import PickUpParcelList_Merchant from "../Components/DashBoard/Rider/PickUpParcelList_Merchant";
 
 
 
@@ -647,6 +648,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <PickupParcelList_Offline/>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pickup-list-Merchant",
+        element: (
+          <PrivateRoute>
+           <PickUpParcelList_Merchant/>
           </PrivateRoute>
         ),
       },
