@@ -124,7 +124,7 @@ const Pending_Parcel_List_Merchant = () => {
     onClick={() => handleAccept(pkg._id)}
   >
     Accept
-  </button>
+   </button>
 )}
 
 {pkg?.Tracking_Destination_Branch_Received_Parcel_Merchant ? (
