@@ -87,13 +87,15 @@ const Pending_Parcel_List_Merchant = () => {
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
             <thead className="bg-blue-500 text-white">
               <tr>
-                <th className="border border-blue-500 px-4 py-2">SL</th>
+              <th className="border border-blue-500 px-4 py-2">SL</th>
                 <th className="border border-blue-500 px-4 py-2">Date</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Name</th>
-                <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
+                {/* <th className="border border-blue-500 px-4 py-2">Sender Mobile</th> */}
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
+                <th className="border border-blue-500 px-4 py-2">CN Number</th>
+                <th className="border border-blue-500 px-4 py-2">Customer Area</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -102,13 +104,17 @@ const Pending_Parcel_List_Merchant = () => {
                 <tr key={pkg._id} className="hover:bg-blue-100">
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
-                    {new Date(pkg.bookingDate).toLocaleDateString()}
+                    {new Date(pkg.Date).toLocaleDateString()}
                   </td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.receiverName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.receiverContactNo}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.product}</td>
+                  <td className="border border-blue-500 px-4 py-2">
+  {pkg?.Merchant_email} (Merchant)
+</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Name}</td>
+                  {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td> */}
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Contact_Number}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Product_Details}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Area}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                   {pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
   <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
