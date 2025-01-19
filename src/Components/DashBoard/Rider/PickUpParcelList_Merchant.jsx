@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 import Swal from 'sweetalert2';
 
-const PickupParcelList_Offline = () => {
+const PickUpParcelList_Merchant = () => {
     const [modalData, setModalData] = useState({ isOpen: false, type: '', data: {} });
     const [formValues, setFormValues] = useState({ amount: '', note: '' });
     const queryClient = useQueryClient();
@@ -15,7 +15,7 @@ const PickupParcelList_Offline = () => {
     const { data: RiderPickup = [] } = useQuery({
         queryKey: ['RiderPickup', verifiedUser?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/rider/email/rider/parcel/offline/${verifiedUser?.email}`);
+            const res = await axiosSecure.get(`/rider/email/rider/parcel/merchant/mer/hello/${verifiedUser?.email}`);
             return Array.isArray(res.data) ? res.data : [res.data];
         },
     });
@@ -132,14 +132,16 @@ const PickupParcelList_Offline = () => {
                         ).map((item, index) => (
                             <tr key={item._id} className="hover:bg-gray-100">
                                 <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{new Date(item.bookingDate).toLocaleDateString()}</td>
+                                <td className="border border-gray-300 px-4 py-2 text-center">{new Date(item.Date).toLocaleDateString()}</td>
                                 <td className="border border-gray-300 px-4 py-2 text-center">{item.CnNumber}</td>
-                                <td className="border border-gray-300 px-4 py-2">{item.senderName}</td>
-                                <td className="border border-gray-300 px-4 py-2">{item.receiverName}</td>
-                                <td className="border border-gray-300 px-4 py-2">{item.receiveraddress}</td>
+                                <td className="border border-blue-500 px-4 py-2">
+  {item?.Merchant_email} (Merchant)
+</td>
+                                <td className="border border-gray-300 px-4 py-2">{item.Customer_Name}</td>
+                                <td className="border border-gray-300 px-4 py-2">{item.Customer_Area}</td>
                                 {/* <td className="border border-gray-300 px-4 py-2">{item.districtName}</td> */}
-                                <td className="border border-gray-300 px-4 py-2 text-center">{item.totalCharge}</td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">{item.receiverContactNo}</td>
+                                <td className="border border-gray-300 px-4 py-2 text-center">{item.Total_Charge} Tk</td>
+                                <td className="border border-gray-300 px-4 py-2 text-center">{item.Customer_Contact_Number}</td>
                                 <td className="border border-gray-300 px-4 py-2 text-center">
                                    
                                     {
@@ -225,7 +227,7 @@ const PickupParcelList_Offline = () => {
     );
 };
 
-export default PickupParcelList_Offline;
+export default PickUpParcelList_Merchant;
 
 
 
