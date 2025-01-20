@@ -8,7 +8,7 @@ const AllMerchantList = () => {
     const { data: merchants, isLoading, error } = useQuery({
         queryKey: ['merchants'],
         queryFn: async () => {
-            const response = await axiosSecure.get('/users?role=merchant');
+            const response = await axiosSecure.get('/shfjksdhfjdjkfhxnbcnbc67437gch?role=merchant');
             return response.data;
         },
     });
