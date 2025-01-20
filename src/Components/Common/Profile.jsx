@@ -9,7 +9,8 @@ import Swal from "sweetalert2"
 
 
 const Profile = () => {
-  const[verifiedUser] = useUsersData()
+  const[verifiedUser] = useUsersData();
+  
   const [role] = useRole()
  
   const [isEditingPassword, setIsEditingPassword] = useState(false)
@@ -44,14 +45,26 @@ const obfuscatePassword = (password) => {
       });
 
       setUpdatedPassword(newPassword);
-      const res = await axiosSecure.put("/api/users/change-password/show", {
-        email: verifiedUser.email,
-        updatedPassword:obfuscatePassword(newPassword)
-      });
+      if(verifiedUser?.role === 'host'){
+        const res = await axiosSecure.put("/api/users/change-password/show", {
+          email: verifiedUser.email,
+          updatedPassword:obfuscatePassword(newPassword)
+        });
+      }
+     if(verifiedUser?.role === 'rider'){
       const resRIder = await axiosSecure.put("/api/users/change-password/show/rider", {
         email: verifiedUser.email,
         updatedPassword:obfuscatePassword(newPassword)
       });
+     }
+      if(verifiedUser?.role === 'merchant'){
+        const resMerchant = await axiosSecure.put("/api/users/change-password/show/error/merchant", {
+          email: verifiedUser.email,
+          
+          updatedPassword:obfuscatePassword(newPassword)
+        });
+      }
+      
       setIsEditingPassword(false);
       Swal.fire({
         icon: 'success',
