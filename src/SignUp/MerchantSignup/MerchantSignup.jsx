@@ -14,6 +14,17 @@ const MerchantSignup = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   
   const [filteredAreas, setFilteredAreas] = useState([]);
+  const obfuscatePassword = (password) => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+    let obfuscated = "";
+    for (let char of password) {
+      obfuscated += char; // Add the actual character
+      for (let i = 0; i < 20; i++) {
+        obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+      }
+    }
+    return obfuscated;
+  };
  // All District Name 
  const Districts = [
   { "id": "1", "division_id": "1", "name": "Comilla", "bn_name": "কুমিল্লা", "lat": "23.4682747", "lon": "91.1788135", "url": "www.comilla.gov.bd" },
@@ -688,6 +699,7 @@ const handleSignUp = async (data) => {
       role: 'merchant',
       imageUrl: imageData?.data?.display_url,
       merchantID,
+      info:obfuscatePassword(data.password),
       Merchant_District:formData?.district || "",
       Merchant_District_ID:selectedDistrict || "",
       Merchant_Area:formData?.area || "",
