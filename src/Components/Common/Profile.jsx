@@ -44,7 +44,7 @@ const obfuscatePassword = (password) => {
         newPassword,
       });
 
-      setUpdatedPassword(newPassword);
+         setUpdatedPassword(newPassword);
       if(verifiedUser?.role === 'host'){
         const res = await axiosSecure.put("/api/users/change-password/show", {
           email: verifiedUser.email,
