@@ -108,12 +108,12 @@ const PackageTracking = () => {
         <div className="flex items-center space-x-4">
           <div
             className={`flex items-center justify-center w-10 h-10 rounded-full ${
-              searchResult?.Branch_Name
+              (searchResult?.Branch_Name || searchResult?.Merchant_email)
                 ? "bg-green-500 text-white"
                 : "bg-gray-300 text-gray-500"
             }`}
           >
-            {searchResult?.Branch_Name ? "✓" : "-"}
+            { (searchResult?.Branch_Name || searchResult?.Merchant_email) ? "✓" : "-"}
           </div>
           <div>
             <h1 className="text-gray-700 font-semibold">
@@ -121,8 +121,8 @@ const PackageTracking = () => {
             </h1>
             <p className="text-gray-500 text-sm">
               Branch Received Time:{" "}
-              {(searchResult?.Tracking_Online_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time)
-                ? formatTime(searchResult.Tracking_Online_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time)
+              {(searchResult?.Tracking_Online_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Merchant_Booking_Received_Parcel)
+                ? formatTime(searchResult.Tracking_Online_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Merchnat_Booking_Received_Parcel_Time)
                 : "Not Available"}
             </p>
           </div>
