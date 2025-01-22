@@ -752,7 +752,7 @@ const incrementCnNumber = (cnNumber) => {
       Service_Type: formData?.serviceType || "",
       Item_Type: formData?.itemType || "",
       Product_Value: parseFloat(formData?.productValue) || "",
-      Product_Details: formData?.productDetails || "",
+       Product_Details: formData?.productDetails || "",
       Product_Remark: formData?.remark || "",
       CnNumber: formData.Merchant_CN_Number || "",
       Merchant_email: verifiedUser?.email || "",
