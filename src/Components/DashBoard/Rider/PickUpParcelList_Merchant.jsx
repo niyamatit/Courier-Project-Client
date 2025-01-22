@@ -26,7 +26,7 @@ const PickUpParcelList_Merchant = () => {
     const mutation = useMutation({
         mutationFn: async (updateData) => {
             try {
-                const res = await axiosSecure.patch(`/rider/update-parcel/rider/offline/${updateData.id}`, updateData);
+                const res = await axiosSecure.patch(`/rider/update-parcel/rider/merchant/mer/${updateData.id}`, updateData);
                 return res.data;
             } catch (error) {
                 Swal.fire({
@@ -127,8 +127,8 @@ const PickUpParcelList_Merchant = () => {
                     {Array.isArray(RiderPickup) && RiderPickup.length > 0 ? (
                         RiderPickup.filter(
                             (item) =>
-                                !item.Tracking_Rider_Offline_Booking_Delivary_Update_Successful &&
-                                !item.Tracking_Rider_Offline_Booking_Delivary_Update_Returned
+                                !item.Tracking_Rider_Merchant_Delivary_Update_Successful &&
+                                !item.Tracking_Rider_Merchant_Delivary_Update_Returned
                         ).map((item, index) => (
                             <tr key={item._id} className="hover:bg-gray-100">
                                 <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
@@ -145,9 +145,9 @@ const PickUpParcelList_Merchant = () => {
                                 <td className="border border-gray-300 px-4 py-2 text-center">
                                    
                                     {
-                                        item?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || item?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned ?
+                                        item?.Tracking_Rider_Merchant_Delivary_Update_Successful || item?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned ?
                                         
-                                         <h1 className='font-bold text-green-600'>{item?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || item?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned}</h1>
+                                         <h1 className='font-bold text-green-600'>{item?.Tracking_Rider_Merchant_Delivary_Update_Successful || item?.Tracking_Rider_Merchant_Delivary_Update_Returned}</h1>
                                         :
                                         <div className='flex'>
                                         <button
