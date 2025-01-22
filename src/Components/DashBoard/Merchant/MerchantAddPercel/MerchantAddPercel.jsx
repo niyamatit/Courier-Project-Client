@@ -756,6 +756,7 @@ const incrementCnNumber = (cnNumber) => {
       Product_Remark: formData?.remark || "",
       CnNumber: formData.Merchant_CN_Number || "",
       Merchant_email: verifiedUser?.email || "",
+      Merchant_Name: verifiedUser?.name || "",
       Cod_Perchent: 1 || 0,
       Weight_Charge: ParcelweightCharge || 0,
       Cod_Charge: 0 || 0,
