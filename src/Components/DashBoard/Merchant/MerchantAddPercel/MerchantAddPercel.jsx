@@ -758,7 +758,7 @@ const incrementCnNumber = (cnNumber) => {
       Merchant_email: verifiedUser?.email || "",
       Merchant_Name: verifiedUser?.name || "",
       Cod_Perchent: 1 || 0,
-      Weight_Charge: ParcelweightCharge || 0,
+       Weight_Charge: ParcelweightCharge || 0,
       Cod_Charge: 0 || 0,
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
