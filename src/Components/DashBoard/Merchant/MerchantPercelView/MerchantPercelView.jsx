@@ -206,7 +206,7 @@ const MerchantParcelList = () => {
     </div>
     {/* 2nd Line */}
     {
-        selectedParcel?.Tracking_Booking_Branch_Select_MotherHub &&  <div className="relative ">
+        selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -214,13 +214,13 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Booking_Branch_Select_MotherHub ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_Booking_Branch_Select_MotherHub ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub ? '✓' : '-'}
                             </div>
                             <div>
-                                <h1 className="text-gray-700 font-semibold">Sent To MotherHub Branch ({selectedParcel?.Tracking_Booking_Branch_Select_MotherHub})</h1>
-                                <p className="text-gray-500 text-sm">Sent Time: {selectedParcel?.Tracking_Booking_Branch_Select_MotherHub_Date ? formatTime(booking.Tracking_Booking_Branch_Select_MotherHub_Date) : 'Not Available'}</p>
-                                <h1 className="text-gray-500 text-sm">Admin Note: {selectedParcel?.Tracking_Booking_Branch_Select_MotherHub_Note || "No Message"}</h1>
+                                <h1 className="text-gray-700 font-semibold">Sent To MotherHub Branch ({selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub})</h1>
+                                <p className="text-gray-500 text-sm">Sent Time: {selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub_Date ? formatTime(selectedParcel.Tracking_Booking_Merchant_Select_MotherHub_Date) : 'Not Available'}</p>
+                                <h1 className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub_Note || "No Message"}</h1>
                             </div>
                         </div>
                     </div>
@@ -231,7 +231,7 @@ const MerchantParcelList = () => {
    
     {/* 3rd Line */}
     {
-        selectedParcel?.Tracking_MotherHub_Branch_Received_Parcel &&  <div className="relative ">
+        selectedParcel?.Tracking_MotherHub_Branch_Received_Parcel_Merchant &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -239,12 +239,12 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_MotherHub_Branch_Received_Parcel ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_MotherHub_Branch_Received_Parcel ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_MotherHub_Branch_Received_Parcel_Merchant ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_MotherHub_Branch_Received_Parcel_Merchant ? '✓' : '-'}
                             </div>
-                            <div>
-                                <h1 className="text-gray-700 font-semibold">Parcel Received MotherHub Branch</h1>
-                                <p className="text-gray-500 text-sm">Received Time: {selectedParcel?.Tracking_MotherHub_Branch_Received_Parcel_Time ? formatTime(selectedParcel.Tracking_MotherHub_Branch_Received_Parcel_Time) : 'Not Available'}</p>
+                             <div>
+                                <h1 className="text-gray-700 font-semibold">Parcel Received MotherHub  Branch</h1>
+                                <p className="text-gray-500 text-sm">Received Time: {selectedParcel?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant ? formatTime(selectedParcel.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant) : 'Not Available'}</p>
                                
                             </div>
                         </div>
@@ -255,7 +255,7 @@ const MerchantParcelList = () => {
     }
     {/* 4th Line */}
     {
-        selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch &&  <div className="relative ">
+        selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -263,13 +263,13 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant ? '✓' : '-'}
                             </div>
                             <div>
-                                <h1 className="text-gray-700 font-semibold">Sent to Destination Branch ({selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch})</h1>
-                                <p className="text-gray-500 text-sm">Sent Time: {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date ? formatTime(selectedParcel.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date) : 'Not Available'}</p>
-                                <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note || 'Not Available'}</p>
+                                <h1 className="text-gray-700 font-semibold">Sent to Destination Branch ({selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant})</h1>
+                                 <p className="text-gray-500 text-sm">Sent Time: {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant ? formatTime(selectedParcel.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note_Merchant || 'Not Available'}</p>
                                
                             </div>
                         </div>
@@ -280,7 +280,7 @@ const MerchantParcelList = () => {
     }
      {/* 5th Line */}
      {
-        selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Offline &&  <div className="relative ">
+        selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Merchant &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -288,12 +288,12 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Offline ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Offline ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Merchant ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Merchant ? '✓' : '-'}
                             </div>
                             <div>
                                 <h1 className="text-gray-700 font-semibold">Parcel Received Destination  Branch</h1>
-                                <p className="text-gray-500 text-sm">Received Time: {selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Time_Offline ? formatTime(booking.Tracking_Destination_Branch_Received_Parcel_Time_Offline) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Received Time: {selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant ? formatTime(selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant) : 'Not Available'}</p>
                                
                             </div>
                         </div>
@@ -304,7 +304,7 @@ const MerchantParcelList = () => {
     }
     {/* 6th Line */}
     {
-        selectedParcel?.Tracking_Destination_Branch_Select_Rider_Offline &&  <div className="relative ">
+        selectedParcel?.Tracking_Destination_Branch_Select_Rider_Merchant &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -312,13 +312,13 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Destination_Branch_Select_Rider_Offline ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_Destination_Branch_Select_Rider_Offline ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Destination_Branch_Select_Rider_Merchant ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_Destination_Branch_Select_Rider_Merchant ? '✓' : '-'}
                             </div>
-                            <div>
-                                <h1 className="text-gray-700 font-semibold">Dest. Branch Select Rider ({selectedParcel?.Tracking_Destination_Branch_Select_Rider_Offline})</h1>
-                                <p className="text-gray-500 text-sm">Select Time: {selectedParcel?.Tracking_Destination_Branch_Select_Rider_Date_Offline ? formatTime(selectedParcel.Tracking_Destination_Branch_Select_Rider_Date_Offline) : 'Not Available'}</p>
-                                <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Destination_Branch_Note_Offline || 'Not Available'}</p>
+                              <div>
+                                <h1 className="text-gray-700 font-semibold">Dest. Branch Select Rider ({selectedParcel?.Tracking_Destination_Branch_Select_Rider_Merchant})</h1>
+                                <p className="text-gray-500 text-sm">Select Time: {selectedParcel?.Tracking_Destination_Branch_Select_Rider_Date_Merchant ? formatTime(selectedParcel.Tracking_Destination_Branch_Select_Rider_Date_Merchant) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Destination_Branch_Note_Merchant || 'Not Available'}</p>
                                
                             </div>
                         </div>
@@ -329,7 +329,7 @@ const MerchantParcelList = () => {
     }
     {/* 6th Line */}
     {
-        selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update &&  <div className="relative ">
+        selectedParcel?.Tracking_Rider_Merchant_Delivary_Update &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -337,21 +337,21 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Successful ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Successful ? '✓' : '-'}
                             </div>
                              <div>
-                                <h1 className="text-gray-700 font-semibold">{selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || selectedParcel?. Tracking_Rider_Offline_Booking_Delivary_Update_Returned}</ h1>
+                                <h1 className="text-gray-700 font-semibold">{selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Successful || selectedParcel?. Tracking_Rider_Merchant_Delivary_Update_Returned}</ h1>
                                 <p className="text-gray-500 text-sm">
-  {selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Time
-    ? `Delivery Time: ${formatTime(selectedParcel.Tracking_Rider_Offline_Booking_Delivary_Update_Time)}`
-    : selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time
-    ? `Returned Time: ${formatTime(selectedParcel.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time)}`
+  {selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Time
+    ? `Delivery Time: ${formatTime(selectedParcel.Tracking_Rider_Merchant_Delivary_Update_Time)}`
+    : selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Return_Time
+    ? `Returned Time: ${formatTime(selectedParcel.Tracking_Rider_Merchant_Delivary_Update_Return_Time)}`
     : 'Not Available'}
 </p>
 
 
-                                 <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Note || selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Note ||'Not Available'}</p>
+                                 <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Note || selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Return_Note ||'Not Available'}</p>
                                
                             </div>
                         </div>
