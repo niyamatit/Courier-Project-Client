@@ -330,7 +330,7 @@ const OnlineBooking_Merchant = () => {
             </div>
             <hr />
 
-            <form onSubmit={handleSubmit} ref={formRef}>
+             <form onSubmit={handleSubmit} ref={formRef}>
             <div className="form-control md:px-24  md:w-full">
             <label className="label">
                 <span className="label-text font-rancho text-xl">Select Merchant ID*</span>
