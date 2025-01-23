@@ -100,11 +100,12 @@ export const PackageDetails = ({ bookingInfo }) => (
                     condition+charge: {bookingInfo?.conditionCharge || 0}
                 </div>
                 <div>
-                    {
+                    {/* {
                         bookingInfo?.paymentOption === 'Cash'
                             ? <strong>Cash - {bookingInfo?.deliveryOption}</strong>
-                            : <strong>Payment - {bookingInfo?.paymentOption}</strong>
-                    }
+                            : <strong>Payment - {bookingInfo?.deliveryOption}</strong>
+                    } */}
+                   <strong>{`${bookingInfo?.paymentOption} - ${bookingInfo?.deliveryOption}`}</strong>
                 </div>
             </div>
             <p className='text-sm mt-2'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
