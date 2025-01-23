@@ -268,7 +268,7 @@ const MerchantParcelList = () => {
                             </div>
                             <div>
                                 <h1 className="text-gray-700 font-semibold">Sent to Destination Branch ({selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant})</h1>
-                                <p className="text-gray-500 text-sm">Sent Time: {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant ? formatTime(selectedParcel.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant) : 'Not Available'}</p>
+                                 <p className="text-gray-500 text-sm">Sent Time: {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant ? formatTime(selectedParcel.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant) : 'Not Available'}</p>
                                 <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note_Merchant || 'Not Available'}</p>
                                
                             </div>
