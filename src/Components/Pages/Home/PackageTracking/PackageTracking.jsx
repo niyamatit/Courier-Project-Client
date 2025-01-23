@@ -316,7 +316,7 @@ const PackageTracking = () => {
                                  {/* <p className="text-gray-500 text-sm">Note: {searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Note || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p> */}
                                
                             </div>
-                        </div>
+                         </div>
                     </div>
                 </div>
         </div>
