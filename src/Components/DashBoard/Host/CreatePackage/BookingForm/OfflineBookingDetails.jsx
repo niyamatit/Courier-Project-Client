@@ -94,11 +94,13 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
                     condition charge: {bookingInfo?.totalCharge}
                 </div>
                 <div>
-                    {
-                        bookingInfo?.paymentMethod === 'Cash'
-                            ? <strong>Payment - {bookingInfo?.paymentMethod }</strong>
-                            : <strong>Payment - {bookingInfo?.paymentMethod }</strong>
-                    }
+                <strong>{`${bookingInfo?.paymentMethod} - ${bookingInfo?.["H/D"] 
+    ? "Home Delivery" 
+    : bookingInfo?.["O/D"] 
+    ? "Office Delivery" :
+    bookingInfo?.Exchange 
+    ? "Exchange"
+    : "No Delivery Option Selected"}`}</strong>
                 </div>
             </div>
             <p className='text-xs mt-2'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
