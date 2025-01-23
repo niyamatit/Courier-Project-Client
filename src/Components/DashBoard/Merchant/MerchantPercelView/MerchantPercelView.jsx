@@ -304,7 +304,7 @@ const MerchantParcelList = () => {
     }
     {/* 6th Line */}
     {
-        selectedParcel?.Tracking_Destination_Branch_Select_Rider_Offline &&  <div className="relative ">
+        selectedParcel?.Tracking_Destination_Branch_Select_Rider_Merchant &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -312,13 +312,13 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Destination_Branch_Select_Rider_Offline ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_Destination_Branch_Select_Rider_Offline ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Destination_Branch_Select_Rider_Merchant ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_Destination_Branch_Select_Rider_Merchant ? '✓' : '-'}
                             </div>
                             <div>
-                                <h1 className="text-gray-700 font-semibold">Dest. Branch Select Rider ({selectedParcel?.Tracking_Destination_Branch_Select_Rider_Offline})</h1>
-                                <p className="text-gray-500 text-sm">Select Time: {selectedParcel?.Tracking_Destination_Branch_Select_Rider_Date_Offline ? formatTime(selectedParcel.Tracking_Destination_Branch_Select_Rider_Date_Offline) : 'Not Available'}</p>
-                                <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Destination_Branch_Note_Offline || 'Not Available'}</p>
+                                <h1 className="text-gray-700 font-semibold">Dest. Branch Select Rider ({selectedParcel?.Tracking_Destination_Branch_Select_Rider_Merchant})</h1>
+                                <p className="text-gray-500 text-sm">Select Time: {selectedParcel?.Tracking_Destination_Branch_Select_Rider_Date_Merchant ? formatTime(selectedParcel.Tracking_Destination_Branch_Select_Rider_Date_Merchant) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Destination_Branch_Note_Merchant || 'Not Available'}</p>
                                
                             </div>
                         </div>

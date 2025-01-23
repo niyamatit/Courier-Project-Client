@@ -255,12 +255,12 @@ const PackageTracking = () => {
     }
 
       {/* 6th Step: Branch Select Rider */}
-      {(searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline) && (
+      {(searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline || searchResult?.Tracking_Destination_Branch_Select_Rider_Merchant) && (
         <div className="relative">
           <div className="flex items-center space-x-4">
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                (searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline)
+                (searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline || searchResult?.Tracking_Destination_Branch_Select_Rider_Merchant)
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500"
               }`}
@@ -270,13 +270,13 @@ const PackageTracking = () => {
             <div>
               <h1 className="text-gray-700 font-semibold">
                 Branch Select Rider (
-                {searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline})
+                {searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline || searchResult?.Tracking_Destination_Branch_Select_Rider_Merchant})
               </h1>
               <p className="text-gray-500 text-sm">
                 Select Time:{" "}
-                {(searchResult?.Tracking_Destination_Branch_Select_Rider_Date || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Offline)
+                {(searchResult?.Tracking_Destination_Branch_Select_Rider_Date || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Offline || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Merchant)
                   ? formatTime(
-                      searchResult.Tracking_Destination_Branch_Select_Rider_Date || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Offline
+                      searchResult.Tracking_Destination_Branch_Select_Rider_Date || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Offline || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Merchant
                     )
                   : "Not Available"}
               </p>
