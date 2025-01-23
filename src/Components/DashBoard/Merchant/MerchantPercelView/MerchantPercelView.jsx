@@ -329,7 +329,7 @@ const MerchantParcelList = () => {
     }
     {/* 6th Line */}
     {
-        selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update &&  <div className="relative ">
+        selectedParcel?.Tracking_Rider_Merchant_Delivary_Update &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -337,21 +337,21 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Successful ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Successful ? '✓' : '-'}
                             </div>
                              <div>
-                                <h1 className="text-gray-700 font-semibold">{selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || selectedParcel?. Tracking_Rider_Offline_Booking_Delivary_Update_Returned}</ h1>
+                                <h1 className="text-gray-700 font-semibold">{selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Successful || selectedParcel?. Tracking_Rider_Merchant_Delivary_Update_Returned}</ h1>
                                 <p className="text-gray-500 text-sm">
-  {selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Time
-    ? `Delivery Time: ${formatTime(selectedParcel.Tracking_Rider_Offline_Booking_Delivary_Update_Time)}`
-    : selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time
-    ? `Returned Time: ${formatTime(selectedParcel.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time)}`
+  {selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Time
+    ? `Delivery Time: ${formatTime(selectedParcel.Tracking_Rider_Merchant_Delivary_Update_Time)}`
+    : selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Return_Time
+    ? `Returned Time: ${formatTime(selectedParcel.Tracking_Rider_Merchant_Delivary_Update_Return_Time)}`
     : 'Not Available'}
 </p>
 
 
-                                 <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Note || selectedParcel?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Note ||'Not Available'}</p>
+                                 <p className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Note || selectedParcel?.Tracking_Rider_Merchant_Delivary_Update_Return_Note ||'Not Available'}</p>
                                
                             </div>
                         </div>
