@@ -29,7 +29,7 @@ const numberToWords = (num) => {
     return num === 0 ? 'zero' : inWords(num);
 };
 
-const CreatePackage = () => {
+const OnlineBooking_Merchant = () => {
     const [packageTrackingNumber, setPackageTrackingNumber] = useState([]);
     const [bookingInfo, setBookingInfo] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -49,8 +49,15 @@ const CreatePackage = () => {
     const [allDistricts, setAllDistricts] = useState([]);
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
-
-    const [verifiedUser] = useUsersData()
+    const { data: users = [] } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+          const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+          return res.data;
+        }
+      })
+      const [verifiedUser] = useUsersData();
+    
     const queryClient = useQueryClient();
     // Amount 
     const { data: Branch_Balance = [] } = useQuery({
@@ -183,6 +190,12 @@ const CreatePackage = () => {
         fetchOnlineCnNumber();
     }, [])
 
+    const [selectedMerchant, setSelectedMerchant] = useState("");
+
+    const handleMerchantChange = (event) => {
+        setSelectedMerchant(event.target.value);
+        console.log("Selected Merchant ID:", event.target.value); 
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -196,6 +209,7 @@ const CreatePackage = () => {
         const form = e.target;
         const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
+        const Merchant_ID = form.merchant_ID.value;
         const recipientName = form.recipientName.value;
         const senderMobile = form.senderMobile.value;
         const sender_Full_Adress = form.senderFullAdress.value;
@@ -254,6 +268,7 @@ const CreatePackage = () => {
                 selectedArea,
                 amount,
                 wordAmount,
+                Merchant_ID,
                 booking: bookingTimestamp,
                 update,
                 conditionCharge: cod,
@@ -310,153 +325,192 @@ const CreatePackage = () => {
                 <img className="h-[50%]" src="https://t4.ftcdn.net/jpg/07/39/32/99/360_F_739329921_05Swu26SxilYCQOPqlWQ8WcPiw4gcm9S.jpg" alt="" />
             </div>
             <div>
-                <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Create Package</h1>
+                <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Merchant Online Booking</h1>
                 {/* <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1> */}
             </div>
             <hr />
 
-            <form onSubmit={handleSubmit} ref={formRef}>
-                <div className='md:flex md:px-24'>
+             <form onSubmit={handleSubmit} ref={formRef}>
+            <div className="form-control md:px-24  md:w-full">
+            <label className="label">
+                <span className="label-text font-rancho text-xl">Select Merchant ID*</span>
+            </label>
+            <select
+                className="select select-bordered"
+                name="merchant_ID"
+                required
+                value={selectedMerchant}
+                onChange={handleMerchantChange}
+            >
+                <option value="" disabled>
+                    Select Merchant ID
+                </option>
+                {users
+                    .filter((user) => user?.role === "merchant")
+                    .map((user) => (
+                        <option key={user._id} value={user?.email}>
+                            {`${user?.name || "No Name Found"} (Merchant ID: ${user?.merchantID})`}
+                        </option>
+                    ))}
+            </select>
+        </div>
 
-               
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Sender Name</span>
-                        </label>
-                        <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
-                    </div>
-                </div>
-                <div className="form-control md:w-full md:px-24 mt-1">
-                    <label className="label">
-                        <span className="label-text font-rancho text-xl">Sender Full Address</span>
-                    </label>
-                    <input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
-                </div>
+
+         {/* Rest Part */}
+                {
+                    selectedMerchant ? <>
+                    <div className='md:flex md:px-24'>
 
 
-                {/* Sender email and receiver contact number */}
-                <div className='md:flex md:px-24'>
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Product Details</span>
-                        </label>
-                        <input type="text" placeholder="Enter Product Details" className="input input-bordered" name='productDetails' required />
-                    </div>
-                    <div className="form-control md:ml-4 md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Product Quantity</span>
-                        </label>
-                        <input type="text" placeholder="Enter Product Quantity" className="input input-bordered" name='qty' required />
-                    </div>
-                </div>
-                {/* Product Details and quantity */}
-                <div className='md:flex gap-5 md:px-24'>
-                    <div className="form-control md:w-1/2">
-                        <label className="block text-gray-700 font-medium mb-1 text-xl mt-1 ml-1">
-                            Districts*
-                        </label>
-                        <select
-                            className={`select select-bordered w-full p-2 rounded-lg border`}
-                            onChange={(e) => setSelectedDistrict(e.target.value)}
-                            name="district"
-                        >
-                            <option value="">Select District</option>
-                            {allDistricts.map((district) => (
-                                <option key={district.id} value={district.id}>
-                                    {district.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="form-control md:w-1/2">
-                        <label className="block text-gray-700 font-medium mb-1 text-xl mt-1">
-                            Area*
-                        </label>
-                        <select className={`select select-bordered w-full p-2 rounded-lg border`}
-                            onChange={(e) => setSelectedArea(e.target.value)}
-                        >
-                            <option value="">Select Area</option>
-                            {filteredAreas.map((area) => (
-                                <option key={area.id} value={area.name}>
-                                    {area.name}
-                                </option>
-                            ))}
-                        </select>
 
-                    </div>
-                </div>
+                   
+<div className="form-control md:mr-4 md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Sender Mobile</span>
+    </label>
+    <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
+</div>
+<div className="form-control md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Sender Name</span>
+    </label>
+    <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
+</div>
+</div>
+<div className="form-control md:w-full md:px-24 mt-1">
+<label className="label">
+    <span className="label-text font-rancho text-xl">Sender Full Address</span>
+</label>
+<input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
+</div>
 
-                <div className='md:flex gap-5 md:px-24'>
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
-                        </label>
-                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile' required />
 
-                    </div>
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Receiver Name</span>
-                        </label>
-                        <input type="text" placeholder="Enter Recipient name" className="input input-bordered" name='recipientName' required />
-                    </div>
+{/* Sender email and receiver contact number */}
+<div className='md:flex md:px-24'>
+<div className="form-control md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Product Details</span>
+    </label>
+    <input type="text" placeholder="Enter Product Details" className="input input-bordered" name='productDetails' required />
+</div>
+<div className="form-control md:ml-4 md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Product Quantity</span>
+    </label>
+    <input type="text" placeholder="Enter Product Quantity" className="input input-bordered" name='qty' required />
+</div>
+</div>
+{/* Product Details and quantity */}
+<div className='md:flex gap-5 md:px-24'>
+<div className="form-control md:w-1/2">
+    <label className="block text-gray-700 font-medium mb-1 text-xl mt-1 ml-1">
+        Districts*
+    </label>
+    <select
+        className={`select select-bordered w-full p-2 rounded-lg border`}
+        onChange={(e) => setSelectedDistrict(e.target.value)}
+        name="district"
+    >
+        <option value="">Select District</option>
+        {allDistricts.map((district) => (
+            <option key={district.id} value={district.id}>
+                {district.name}
+            </option>
+        ))}
+    </select>
+</div>
+<div className="form-control md:w-1/2">
+    <label className="block text-gray-700 font-medium mb-1 text-xl mt-1">
+        Area*
+    </label>
+    <select className={`select select-bordered w-full p-2 rounded-lg border`}
+        onChange={(e) => setSelectedArea(e.target.value)}
+    >
+        <option value="">Select Area</option>
+        {filteredAreas.map((area) => (
+            <option key={area.id} value={area.name}>
+                {area.name}
+            </option>
+        ))}
+    </select>
 
-                </div>
-                <div className="form-control md:w-full md:px-24 mt-1">
-                    <label className="label">
-                        <span className="label-text font-rancho text-xl">Receiver Full Address</span>
-                    </label>
-                    <input type="text" placeholder="Enter Receiver Full Address" className="input input-bordered" name='ReceiverFullAdress' required />
-                </div>
-                <div className='md:flex md:px-24'>
-                    <div className="form-control md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Condition Amount</span>
-                        </label>
-                        <input
-                            value={condition}
-                            onChange={handleConditionChange}
-                            type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition' required />
-                    </div>
-                    <div className="form-control md:ml-4 md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Booking Amount</span>
-                        </label>
-                        <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' value={amount} onChange={handleAmountChange} required />
-                        {amountError && <p className="text-red-500">{amountError}</p>}
-                    </div>
-                </div>
-                <div className='md:flex md:px-24 mt-5 gap-5 mb-5'>
-                    <div className="form-control md:w-1/2">
-                        <select onChange={handleSelectChange} className="select select-bordered text-xl w-full ">
-                            <option disabled selected>Pick Up System</option>
-                            <option>Office Delivery</option>
-                            <option>Home Delivery</option>
-                        </select>
-                    </div>
-                    <div className="form-control md:w-1/2">
-                        <select onChange={handlePaymentOptionChange} className="select select-bordered text-xl w-full ">
-                            <option disabled selected>Payment Option</option>
-                            <option>Cash</option>
-                            <option>To Pay</option>
-                            <option>Credit</option>
-                        </select>
-                    </div>
-                </div>
+</div>
+</div>
 
-                <div className="flex md:px-24 mt-5 mb-5 justify-between">
-                    <div className=''>
-                        <p className="text-xl">Condition + charge : {cod || 0}</p>
-                    </div>
-                    <div>
-                        <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
-                    </div>
-                </div>
+<div className='md:flex gap-5 md:px-24'>
+<div className="form-control md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
+    </label>
+    <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile' required />
 
-                <div className="form-control md:px-24 w-full">
-                    <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />
-                    {isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
-                </div>
+</div>
+<div className="form-control md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Receiver Name</span>
+    </label>
+    <input type="text" placeholder="Enter Recipient name" className="input input-bordered" name='recipientName' required />
+</div>
+
+</div>
+<div className="form-control md:w-full md:px-24 mt-1">
+<label className="label">
+    <span className="label-text font-rancho text-xl">Receiver Full Address</span>
+</label>
+<input type="text" placeholder="Enter Receiver Full Address" className="input input-bordered" name='ReceiverFullAdress' required />
+</div>
+<div className='md:flex md:px-24'>
+<div className="form-control md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Condition Amount</span>
+    </label>
+    <input
+        value={condition}
+        onChange={handleConditionChange}
+        type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition' required />
+</div>
+<div className="form-control md:ml-4 md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Booking Amount</span>
+    </label>
+    <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' value={amount} onChange={handleAmountChange} required />
+    {amountError && <p className="text-red-500">{amountError}</p>}
+</div>
+</div>
+<div className='md:flex md:px-24 mt-5 gap-5 mb-5'>
+<div className="form-control md:w-1/2">
+    <select onChange={handleSelectChange} className="select select-bordered text-xl w-full ">
+        <option disabled selected>Pick Up System</option>
+        <option>Office Delivery</option>
+        <option>Home Delivery</option>
+    </select>
+</div>
+<div className="form-control md:w-1/2">
+    <select onChange={handlePaymentOptionChange} className="select select-bordered text-xl w-full ">
+        <option disabled selected>Payment Option</option>
+        <option>Cash</option>
+        <option>To Pay</option>
+        <option>Credit</option>
+    </select>
+</div>
+</div>
+
+<div className="flex md:px-24 mt-5 mb-5 justify-between">
+<div className=''>
+    <p className="text-xl">Condition + charge : {cod || 0}</p>
+</div>
+<div>
+    <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
+</div>
+</div>
+
+<div className="form-control md:px-24 w-full">
+<input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />
+{isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
+</div>
+                    </> :
+                    <h1 className="text-3xl text-red-600 text-center mt-20">Select Merchant ID First!!!!!</h1>
+                }
             </form>
 
             <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
@@ -467,4 +521,4 @@ const CreatePackage = () => {
     );
 };
 
-export default CreatePackage;
+export default OnlineBooking_Merchant;

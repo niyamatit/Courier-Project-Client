@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
 import { useState } from "react";
 import './HostMenu.css'
+import { MdStore } from 'react-icons/md';
+import { AiOutlineCalendar } from 'react-icons/ai';
 
 
 
@@ -265,6 +267,24 @@ const HostMenu = () => {
         label='Merchant List'
         address='merchant-list'
       />
+
+
+<div className="dropdown">
+        <div tabIndex={0} role="button" className="w-[200px] items-center flex gap-3  text-center m-1"><AiOutlineCalendar className="ml-3" /> Merchant Booking</div>
+        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          <li><MenuItem
+            icon={BsHouseAddFill}
+            label='Merchant Online Booking'
+            address='branch-booking-merchant'
+          /></li>
+          <li><MenuItem
+            icon={FaWpforms}
+            label='Offline Booking'
+            address='booking-form'
+          /></li>
+          
+        </ul>
+      </div>
     </>
   );
 };
