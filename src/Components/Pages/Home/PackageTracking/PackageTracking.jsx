@@ -96,7 +96,7 @@ const PackageTracking = () => {
         Tracking Updates
       </h3>
      {/* <p className="text-gray-600">Products: {searchResult?.productDetails || searchResult?.product}</p> */}
-     <p className="text-gray-600">Sender Name: {searchResult?.senderName || searchResult?.senderName || searchResult?.Merchant_Name || "N/A"}</p>
+      <p className="text-gray-600">Sender Name: {searchResult?.senderName || searchResult?.senderName || searchResult?.Merchant_Name || "N/A"}</p>
      <p className="text-gray-600">Receiver Name: {searchResult?.recipientName || searchResult?.receiverName || searchResult?.Customer_Name || "N/A"}</p>
      <p className="text-gray-600">Receiver Address: {searchResult?.selectedArea || searchResult?.receiveraddress || searchResult?.Customer_Area || "N/A"}</p>
     </div>
