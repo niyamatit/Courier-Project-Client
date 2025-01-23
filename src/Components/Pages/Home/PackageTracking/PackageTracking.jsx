@@ -196,12 +196,12 @@ const PackageTracking = () => {
       )}
 
       {/* 4th Step: Sent to Destination Branch */}
-      {(searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch)&& (
+      {(searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant)&& (
         <div className="relative">
           <div className="flex items-center space-x-4">
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch
+                searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500"
               }`}
@@ -214,9 +214,9 @@ const PackageTracking = () => {
               </h1>
               <p className="text-gray-500 text-sm">
                 Sent Time:{" "}
-                {searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date
+                {searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant
                   ? formatTime(
-                      searchResult.Tracking_MotherHub_Branch_Select_Dest_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date
+                      searchResult.Tracking_MotherHub_Branch_Select_Dest_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant
                     )
                   : "Not Available"}
               </p>
