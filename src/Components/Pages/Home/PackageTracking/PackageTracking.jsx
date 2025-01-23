@@ -96,9 +96,9 @@ const PackageTracking = () => {
         Tracking Updates
       </h3>
      {/* <p className="text-gray-600">Products: {searchResult?.productDetails || searchResult?.product}</p> */}
-     <p className="text-gray-600">Sender Name: {searchResult?.senderName || searchResult?.senderName}</p>
-     <p className="text-gray-600">Receiver Name: {searchResult?.recipientName || searchResult?.receiverName}</p>
-     <p className="text-gray-600">Receiver Address: {searchResult?.selectedArea || searchResult?.receiveraddress}</p>
+     <p className="text-gray-600">Sender Name: {searchResult?.senderName || searchResult?.senderName || searchResult?.Merchant_Name || "N/A"}</p>
+     <p className="text-gray-600">Receiver Name: {searchResult?.recipientName || searchResult?.receiverName || searchResult?.Customer_Name || "N/A"}</p>
+     <p className="text-gray-600">Receiver Address: {searchResult?.selectedArea || searchResult?.receiveraddress || searchResult?.Customer_Area || "N/A"}</p>
     </div>
 
     {/* Timeline Tracking */}
@@ -117,7 +117,7 @@ const PackageTracking = () => {
           </div>
           <div>
             <h1 className="text-gray-700 font-semibold">
-              Received By: {searchResult?.Branch_Name || "N/A"}
+              Received By: {searchResult?.Branch_Name || searchResult?.Merchant_Name || "N/A"}
             </h1>
             <p className="text-gray-500 text-sm">
               Branch Received Time:{" "}
@@ -130,12 +130,12 @@ const PackageTracking = () => {
       </div>
 
       {/* 2nd Step: Sent to MotherHub Branch */}
-      {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub) && (
+      {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub ||searchResult?.Tracking_Booking_Merchant_Select_MotherHub) && (
         <div className="relative">
           <div className="flex items-center space-x-4">
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub
+                searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub || searchResult?.Tracking_Booking_Merchant_Select_MotherHub
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500"
               }`}
@@ -149,9 +149,9 @@ const PackageTracking = () => {
               </h1>
               <p className="text-gray-500 text-sm">
                 Sent Time:{" "}
-                {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date) 
+                {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date) 
                   ? formatTime(
-                      searchResult.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date
+                      searchResult.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date
                     )
                   : "Not Available"}
               </p>

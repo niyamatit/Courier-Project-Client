@@ -206,7 +206,7 @@ const MerchantParcelList = () => {
     </div>
     {/* 2nd Line */}
     {
-        selectedParcel?.Tracking_Booking_Branch_Select_MotherHub &&  <div className="relative ">
+        selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -214,13 +214,13 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Booking_Branch_Select_MotherHub ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_Booking_Branch_Select_MotherHub ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub ? '✓' : '-'}
                             </div>
                             <div>
-                                <h1 className="text-gray-700 font-semibold">Sent To MotherHub Branch ({selectedParcel?.Tracking_Booking_Branch_Select_MotherHub})</h1>
-                                <p className="text-gray-500 text-sm">Sent Time: {selectedParcel?.Tracking_Booking_Branch_Select_MotherHub_Date ? formatTime(booking.Tracking_Booking_Branch_Select_MotherHub_Date) : 'Not Available'}</p>
-                                <h1 className="text-gray-500 text-sm">Admin Note: {selectedParcel?.Tracking_Booking_Branch_Select_MotherHub_Note || "No Message"}</h1>
+                                <h1 className="text-gray-700 font-semibold">Sent To MotherHub Branch ({selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub})</h1>
+                                <p className="text-gray-500 text-sm">Sent Time: {selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub_Date ? formatTime(selectedParcel.Tracking_Booking_Merchant_Select_MotherHub_Date) : 'Not Available'}</p>
+                                <h1 className="text-gray-500 text-sm">Note: {selectedParcel?.Tracking_Booking_Merchant_Select_MotherHub_Note || "No Message"}</h1>
                             </div>
                         </div>
                     </div>
