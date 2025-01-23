@@ -274,7 +274,7 @@ const HostMenu = () => {
         <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
           <li><MenuItem
             icon={BsHouseAddFill}
-            label='Online Booking'
+            label='Merchant Online Booking'
             address='branch-booking-merchant'
           /></li>
           <li><MenuItem
