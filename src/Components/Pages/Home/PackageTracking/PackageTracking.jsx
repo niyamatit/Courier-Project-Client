@@ -242,7 +242,7 @@ const PackageTracking = () => {
                             <div className={`flex items-center justify-center w-10 h-10 rounded-full ${(searchResult?.Tracking_Destination_Branch_Received_Parcel || searchResult?.Tracking_Destination_Branch_Received_Parcel_Offline || searchResult?.Tracking_Destination_Branch_Received_Parcel_Merchant) ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
                                 {(searchResult?.Tracking_Destination_Branch_Received_Parcel || searchResult?.Tracking_Destination_Branch_Received_Parcel_Offline || searchResult?.Tracking_Destination_Branch_Received_Parcel_Merchant) ? '✓' : '-'}
                             </div>
-                            <div>
+                             <div>
                                 <h1 className="text-gray-700 font-semibold">Parcel Received Destination  Branch</h1>
                                 <p className="text-gray-500 text-sm">Received Time: {(searchResult?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant) ? formatTime(searchResult.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant) : 'Not Available'}</p>
                                
