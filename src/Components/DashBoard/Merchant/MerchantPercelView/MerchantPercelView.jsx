@@ -280,7 +280,7 @@ const MerchantParcelList = () => {
     }
      {/* 5th Line */}
      {
-        selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Offline &&  <div className="relative ">
+        selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Merchant &&  <div className="relative ">
         
         <div className="space-y-6">
             {/* Tracking Timeline */}
@@ -288,12 +288,12 @@ const MerchantParcelList = () => {
                     
                     <div className="relative">
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Offline ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
-                                {selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Offline ? '✓' : '-'}
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Merchant ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-500'}`}>
+                                {selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Merchant ? '✓' : '-'}
                             </div>
                             <div>
                                 <h1 className="text-gray-700 font-semibold">Parcel Received Destination  Branch</h1>
-                                <p className="text-gray-500 text-sm">Received Time: {selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Time_Offline ? formatTime(booking.Tracking_Destination_Branch_Received_Parcel_Time_Offline) : 'Not Available'}</p>
+                                <p className="text-gray-500 text-sm">Received Time: {selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant ? formatTime(selectedParcel?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant) : 'Not Available'}</p>
                                
                             </div>
                         </div>
