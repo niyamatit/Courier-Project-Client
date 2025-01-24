@@ -279,8 +279,8 @@ const HostMenu = () => {
           /></li>
           <li><MenuItem
             icon={FaWpforms}
-            label='Offline Booking'
-            address='booking-form'
+            label='Merchant Offline Booking'
+            address='booking-form-merchant'
           /></li>
           
         </ul>

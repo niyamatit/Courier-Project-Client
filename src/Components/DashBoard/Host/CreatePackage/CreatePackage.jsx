@@ -298,6 +298,50 @@ const CreatePackage = () => {
         form.reset();
         setAmount('');
     };
+    const fetchUserData = async (senderMobile) => {
+        try {
+            const response = await axiosSecure.get(`packagfhguieormbncdmnn44ge/sender/${senderMobile}`);
+            if (response.data) {
+                const { senderName, sender_Full_Adress } = response.data;
+                formRef.current.senderName.value = senderName;
+                formRef.current.senderFullAdress.value = sender_Full_Adress;
+            } else {
+                toast.error("User not found!");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            toast.error("Failed to fetch user data.");
+        }
+    };
+    
+    const handleSenderMobileChange = (e) => {
+        const senderMobile = e.target.value;
+        if (senderMobile.length === 11) { 
+            fetchUserData(senderMobile);
+        }
+    };
+    const fetchUserDataReceiver = async (recipientMobile) => {
+        try {
+            const response = await axiosSecure.get(`/packagfhguieormbncdmnn44ge/sender/receiver/${recipientMobile}`);
+            if (response.data) {
+                const { recipientName, Receiver_Full_Adress } = response.data;
+                formRef.current.recipientName.value = recipientName;
+                formRef.current.ReceiverFullAdress.value = Receiver_Full_Adress;
+            } else {
+                toast.error("User not found!");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            toast.error("Failed to fetch user data.");
+        }
+    };
+    
+    const handleReceiverMobileChange = (e) => {
+        const recipientMobile = e.target.value;
+        if (recipientMobile.length === 11) { 
+            fetchUserDataReceiver(recipientMobile);
+        }
+    };
     
 
 
@@ -322,7 +366,9 @@ const CreatePackage = () => {
     <label className="label">
         <span className="label-text font-rancho text-xl">Sender Mobile</span>
     </label>
-    <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
+    <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile'
+    onChange={handleSenderMobileChange}
+    required />
 </div>
                     <div className="form-control md:w-1/2">
                         <label className="label">
@@ -396,7 +442,9 @@ const CreatePackage = () => {
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
                         </label>
-                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile' required />
+                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
+                        onChange={handleReceiverMobileChange}
+                        required />
 
                     </div>
                     <div className="form-control md:w-1/2">

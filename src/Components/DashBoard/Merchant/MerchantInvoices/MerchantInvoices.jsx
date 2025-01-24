@@ -10,7 +10,7 @@ const MerchantInvoices = () => {
   const { data: InvoiceData = [], isLoading } = useQuery({
     queryKey: ["InvoiceData", verifiedUser?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/parcel");
+      const res = await axiosSecure.get("/parcelhkdbjsbdjkshujsbh");
       return res.data;
     },
     enabled: !!verifiedUser?.email,
