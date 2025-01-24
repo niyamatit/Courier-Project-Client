@@ -34,6 +34,7 @@ const BookingForm_Merchant = () => {
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
   const [lot, setLot] = useState();
   const [PaymentOption , setSelectedPayment] = useState('');
+  const [Merchant , setMerchantID] = useState('');
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -236,7 +237,7 @@ const BookingForm_Merchant = () => {
         serviceCharge: data.serviceCharge,
         senderReceive: data.senderReceive,
         Date: new Date().toISOString().split('T')[0],
-        
+        Merchant_ID:data.Merchant_ID,
         Branch_Name:verifiedUser?.name,
         Branch_Number:verifiedUser?.Branch_Number,
         Branch_Address:verifiedUser?.Branch_Address,
@@ -392,7 +393,43 @@ const BookingForm_Merchant = () => {
         <h1 className="text-xl sm:text-xl md:text-xl font-bold mb-4 sm:mb-6 md:mb-6 text-blue-700">
          Merchant Offline Booking
         </h1>
-        <div className="grid lg:grid-cols-2 gap-2">
+
+
+        <Section additionalClasses="mt-4">
+             
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="label-text text-2xl ml-1 text-gray-500 font-semibold">
+                  Select Merchat ID*
+                </label>
+                <select
+                  {...register('Merchant_ID', { required: true })}
+                  className={`select select-bordered mt-2  bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${errors.Merchant_ID ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  required
+                  onChange={(e) => setMerchantID(e.target.value)}
+                >
+                  <option className="text-xl" value="123" disabled>Select Merchant ID</option>
+                  {users
+                    .filter((user) => user?.role === "merchant")
+                    .map((user) => (
+                        <option key={user._id} value={user?.email}>
+                            {`${user?.name || "No Name Found"} (Merchant ID: ${user?.merchantID})`}
+                        </option>
+                    ))}
+
+                </select>
+                {errors.Merchant_ID && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+            </Section>
+
+
+
+        {/* Rest Part */}
+       {
+        Merchant ? <>
+         <div className="grid lg:grid-cols-2 gap-2">
           <div>
             <Section>
               <div className="grid grid-cols-2 gap-2">
@@ -883,6 +920,10 @@ const BookingForm_Merchant = () => {
         <div className="flex gap-5 mt-2 justify-center">
           <button className="btn bg-[#E8F0FE]">Submit</button>
         </div>
+        </>
+        :
+        <h1 className="text-3xl text-red-600 text-center mt-20">Select Merchant ID First!!!!!</h1>
+       }
       </form>
       <OfflinePrintModal
         closeModal={closeModal}
