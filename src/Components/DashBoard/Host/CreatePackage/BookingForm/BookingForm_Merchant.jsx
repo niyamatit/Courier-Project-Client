@@ -246,7 +246,7 @@ const BookingForm_Merchant = () => {
       };
   
       // Submit booking information
-      const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
+      const ParcelProductDetails = await axiosSecure.post("/offlineMerchant", Bookinginfo);
   
       if (ParcelProductDetails.data.insertedId) {
         Swal.fire({
