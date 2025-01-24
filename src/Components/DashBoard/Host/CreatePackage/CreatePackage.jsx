@@ -320,6 +320,28 @@ const CreatePackage = () => {
             fetchUserData(senderMobile);
         }
     };
+    const fetchUserDataReceiver = async (recipientMobile) => {
+        try {
+            const response = await axiosSecure.get(`/packagfhguieormbncdmnn44ge/sender/receiver/${recipientMobile}`);
+            if (response.data) {
+                const { recipientName, Receiver_Full_Adress } = response.data;
+                formRef.current.recipientName.value = recipientName;
+                formRef.current.ReceiverFullAdress.value = Receiver_Full_Adress;
+            } else {
+                toast.error("User not found!");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            toast.error("Failed to fetch user data.");
+        }
+    };
+    
+    const handleReceiverMobileChange = (e) => {
+        const recipientMobile = e.target.value;
+        if (recipientMobile.length === 11) { 
+            fetchUserDataReceiver(recipientMobile);
+        }
+    };
     
 
 
@@ -420,7 +442,9 @@ const CreatePackage = () => {
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
                         </label>
-                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile' required />
+                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
+                        onChange={handleReceiverMobileChange}
+                        required />
 
                     </div>
                     <div className="form-control md:w-1/2">
