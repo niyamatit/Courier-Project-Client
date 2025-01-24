@@ -318,7 +318,12 @@ const CreatePackage = () => {
             <form onSubmit={handleSubmit} ref={formRef}>
                 <div className='md:flex md:px-24'>
 
-               
+                <div className="form-control md:mr-4 md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Sender Mobile</span>
+    </label>
+    <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
+</div>
                     <div className="form-control md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Sender Name</span>
