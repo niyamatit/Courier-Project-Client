@@ -203,6 +203,16 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "booking-form-merchant",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <BookingForm />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "apply-pending",
         element: (
           <PrivateRoute>
