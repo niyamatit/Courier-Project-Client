@@ -88,6 +88,7 @@ import PendingPacelList from "../Components/DashBoard/Host/PendingParcelList/Pen
 import Pending_Parcel_List_Merchant from "../Components/DashBoard/Host/PendingParcelList/Pending_Parcel_List_Merchant";
 import PickUpParcelList_Merchant from "../Components/DashBoard/Rider/PickUpParcelList_Merchant";
 import OnlineBooking_Merchant from "../Components/DashBoard/Host/CreatePackage/OnlineBooking_Merchant";
+import BookingForm_Merchant from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm_Merchant";
 
 
 
@@ -207,7 +208,7 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <HostRoute>
-              <BookingForm />
+             <BookingForm_Merchant/>
             </HostRoute>
           </PrivateRoute>
         ),
