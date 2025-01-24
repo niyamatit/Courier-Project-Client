@@ -258,7 +258,7 @@ const BookingForm_Merchant = () => {
         });
   
         // Increment the CN number
-        const response = await axiosSecure.put("/number");
+         const response = await axiosSecure.put("/number");
         setCnNumber(response.data.nextNumber);
         setBookingInfo(Bookinginfo);
       }
