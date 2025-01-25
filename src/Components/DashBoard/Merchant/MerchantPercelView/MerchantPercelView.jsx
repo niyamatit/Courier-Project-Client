@@ -4,7 +4,7 @@ import axiosSecure from '../../../../api/axiosSecure';
 import useUsersData from '../../../../hooks/useUsersData/useUsersData';
 
 const fetchParcels = async () => {
-    const response = await axiosSecure.get(`/merchantParceldhfdshffjkbjdfkjkbgdjk`);
+     const response = await axiosSecure.get(`/merchantParceldhfdshffjkbjdfkjkbgdjk`);
     return response.data;
   };
   const formatTime = (utcTime) => {
