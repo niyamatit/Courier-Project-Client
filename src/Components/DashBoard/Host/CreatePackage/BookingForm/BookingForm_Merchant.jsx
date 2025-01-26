@@ -407,8 +407,9 @@ const BookingForm_Merchant = () => {
                     }`}
                   required
                   onChange={(e) => setMerchantID(e.target.value)}
+                 
                 >
-                  <option className="text-xl" value="123" disabled>Select Merchant ID</option>
+                  <option className="text-xl" value="123"   disabled>Select Merchant ID</option>
                   {users
                     .filter((user) => user?.role === "merchant")
                     .map((user) => (

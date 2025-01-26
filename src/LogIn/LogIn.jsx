@@ -8,7 +8,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state?.from?.pathname || '/'; 
+  const from = location?.state?.from?.pathname || '/dashboard'; 
   
   // Handle form login
   const handleLogIn = async e => {
