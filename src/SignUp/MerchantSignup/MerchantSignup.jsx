@@ -699,6 +699,7 @@ const handleSignUp = async (data) => {
       role: 'merchant',
       imageUrl: imageData?.data?.display_url,
       merchantID,
+      Merchant_Balance: 0,
       info:obfuscatePassword(data.password),
       Merchant_District:formData?.district || "",
       Merchant_District_ID:selectedDistrict || "",

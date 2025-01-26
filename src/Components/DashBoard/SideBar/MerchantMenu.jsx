@@ -15,9 +15,10 @@ const MerchantMenu = () => {
   return (
     <>
       <div className="mb-10">
-        <p className="ml-5 -mt-5 font-semibold text-lg">{verifiedUser?.displayName}</p>
-        <p className="text-sm  ml-[30px] font-semibold">({verifiedUser?.email})</p>
-        <p className="text-sm  ml-[30px] font-semibold">Merchant ID- {verifiedUser?.merchantID}</p>
+        <p className="     font-semibold ml-5">{verifiedUser?.name} ({verifiedUser?.email})</p>
+        
+        <p className="text-sm  ml-[45px] font-semibold">Merchant ID- {verifiedUser?.merchantID}</p>
+        <p className="text-sm  ml-[45px] font-semibold">Merchant Balance : {verifiedUser?.Merchant_Balance}</p>
       </div>
       <MenuItem
         icon={IoHomeOutline}
