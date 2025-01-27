@@ -762,12 +762,15 @@ const incrementCnNumber = (cnNumber) => {
       Cod_Charge: parseFloat(codPercentage) || 0,
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
+      isProcessed:false,
+      Calculate_Charge_Merchant: parseFloat(finalCharge || 0) - parseFloat(formData?.productValue || 0),
       Merchant_Branch_Name: verifiedUser?.Merchant_Branch || "",
       Date: new Date() || ""
 
     }
     console.log("Parcel Information:", PercelInformation)
-
+    
+     
     const ParcelProductDetails = await axiosSecure.post("/Parcel", PercelInformation);
     console.log(ParcelProductDetails.data);
     if (ParcelProductDetails.data.insertedId) {
