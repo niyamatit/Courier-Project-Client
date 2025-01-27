@@ -59,9 +59,9 @@ const TableAdmin = ({ admin }) => {
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <p className="text-gray-900 whitespace-no-wrap">{admin.Admin_Address}</p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button className="text-blue-500 hover:underline">View</button>
-            </td>
+            </td> */}
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button
                     onClick={() => handleDelete(admin._id)}

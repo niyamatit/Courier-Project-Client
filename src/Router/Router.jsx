@@ -79,6 +79,7 @@ import AllBranchListsup from "../Components/DashBoard/SuperAdmin/AllBranchListsu
 import FormComponent from "../Components/DashBoard/SuperAdmin/FormComponent/FormComponent";
 import AllAdminList from "../Components/DashBoard/SuperAdmin/AllAdminList/AllAdminList";
 import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
+import SpoonserAdd from "../Components/DashBoard/Host/Spoonser/SpoonserAdd";
 
 
 
@@ -643,6 +644,10 @@ export const router = createBrowserRouter([
       {
         path: "branch-staff",
         element: <AddBaranchStaff></AddBaranchStaff>
+      },
+      {
+        path: "spoonser-add",
+        element: <SpoonserAdd></SpoonserAdd>
       },
       {
         path: "branch-add",
