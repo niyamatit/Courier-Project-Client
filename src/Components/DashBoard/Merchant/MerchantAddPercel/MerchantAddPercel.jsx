@@ -762,6 +762,8 @@ const incrementCnNumber = (cnNumber) => {
       Cod_Charge: parseFloat(codPercentage) || 0,
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
+      isProcessed:false,
+      Calculate_Charge_Merchant:parseFloat((parseFloat(finalCharge))-(parseFloat(formData?.productValue))),
       Merchant_Branch_Name: verifiedUser?.Merchant_Branch || "",
       Date: new Date() || ""
 
