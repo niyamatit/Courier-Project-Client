@@ -36,17 +36,18 @@ const MerchantMenu = () => {
         for (const merchant of users) {
           // Filter parcels for this merchant
           const merchantParcels = parcels.filter(
-            (parcel) => parcel.Merchant_email === merchant?.email
+            (parcel) => parcel.Merchant_email === merchant?.email && !parcel?.isProcessed
             
           );
+          if (merchantParcels.length === 0) continue;
           console.log("Email",merchantParcels)
           // Calculate the updated balance
           let balance = parseFloat(merchant?.Merchant_Balance || 0) ;
           merchantParcels.forEach((parcel) => {
             if (parcel.Tracking_Rider_Merchant_Delivary_Update_Successful) {
-              balance += parseFloat(parcel.Cod_Charge || 0) ; 
+              balance += parseFloat(parcel.Calculate_Charge_Merchant || 0) ; 
             } else {
-              balance -= parseFloat(parcel.Cod_Charge || 0) ; 
+              balance -= parseFloat(parcel.Calculate_Charge_Merchant || 0) ; 
             }
           });
 
