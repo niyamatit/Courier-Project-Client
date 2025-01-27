@@ -21,6 +21,10 @@ const AdminMenu = () => {
         label='Manage Users'
         address='manage-users' />
 
+      <MenuItem icon={FaUserCog}
+        label='spoonser'
+        address='spoonser-add' />
+
 
       <MenuItem icon={FaUserCog}
         label='All Merchant List'

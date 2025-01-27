@@ -79,6 +79,7 @@ import AllBranchListsup from "../Components/DashBoard/SuperAdmin/AllBranchListsu
 import FormComponent from "../Components/DashBoard/SuperAdmin/FormComponent/FormComponent";
 import AllAdminList from "../Components/DashBoard/SuperAdmin/AllAdminList/AllAdminList";
 import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
+import SpoonserAdd from "../Components/DashBoard/Host/Spoonser/SpoonserAdd";
 import SelectMotherHub_Offline from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Offline";
 import PendingPareclList_Offline from "../Components/DashBoard/Host/PendingParcelList/PendingPareclList_Offline";
 import PickupParcelList_Offline from "../Components/DashBoard/Rider/PickupParcelList_Offline";
@@ -188,7 +189,7 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <HostRoute>
-             <OnlineBooking_Merchant/>
+              <OnlineBooking_Merchant />
             </HostRoute>
           </PrivateRoute>
         ),
@@ -208,7 +209,7 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <HostRoute>
-             <BookingForm_Merchant/>
+              <BookingForm_Merchant />
             </HostRoute>
           </PrivateRoute>
         ),
@@ -433,7 +434,7 @@ export const router = createBrowserRouter([
         path: "delivery-complete-offline",
         element: (
           <PrivateRoute>
-            <DeliveryComplete_Offline/>
+            <DeliveryComplete_Offline />
           </PrivateRoute>
         ),
       },
@@ -506,7 +507,7 @@ export const router = createBrowserRouter([
         path: "pending-parcel-list-Merchant",
         element: <PrivateRoute>
           <HostRoute>
-            <Pending_Parcel_List_Merchant/>
+            <Pending_Parcel_List_Merchant />
           </HostRoute>
         </PrivateRoute>
       },
@@ -522,7 +523,7 @@ export const router = createBrowserRouter([
         path: "parcel-motherHub-Select-Offline",
         element: <PrivateRoute>
           <HostRoute>
-            <SelectMotherHub_Offline/>
+            <SelectMotherHub_Offline />
           </HostRoute>
         </PrivateRoute>
       },
@@ -530,7 +531,7 @@ export const router = createBrowserRouter([
         path: "parcel-motherHub-Select-Merchant",
         element: <PrivateRoute>
           <HostRoute>
-            <SelectMotherHub_Merchant/>
+            <SelectMotherHub_Merchant />
           </HostRoute>
         </PrivateRoute>
       },
@@ -669,7 +670,7 @@ export const router = createBrowserRouter([
         path: "pickup-list-Offline",
         element: (
           <PrivateRoute>
-            <PickupParcelList_Offline/>
+            <PickupParcelList_Offline />
           </PrivateRoute>
         ),
       },
@@ -677,7 +678,7 @@ export const router = createBrowserRouter([
         path: "pickup-list-Merchant",
         element: (
           <PrivateRoute>
-           <PickUpParcelList_Merchant/>
+            <PickUpParcelList_Merchant />
           </PrivateRoute>
         ),
       },
@@ -729,6 +730,10 @@ export const router = createBrowserRouter([
       {
         path: "branch-staff",
         element: <AddBaranchStaff></AddBaranchStaff>
+      },
+      {
+        path: "spoonser-add",
+        element: <SpoonserAdd></SpoonserAdd>
       },
       {
         path: "branch-add",

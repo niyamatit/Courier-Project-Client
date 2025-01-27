@@ -204,72 +204,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
-                  {/* Father and Mother Name */}
-                  {/* <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                Staff Father Name*
-                </label>
-                <input
-                  type="text"
-                  {...register('FatherName', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.FatherName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.FatherName && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Staff Mother Name*
-                </label>
-                <input
-                  type="text"
-                  {...register('MotherName', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.MotherName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.MotherName && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                Staff Date of Birth*
-                </label>
-                <input
-                  type="date"
-                  {...register('date_of_birth', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.date_of_birth ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.date_of_birth && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                Staff Married Status*
-                </label>
-                 <select
-                  {...register('married_status', { required: true })}
-                  className={`select select-bordered w-full p-2 rounded-lg border ${
-                    errors.married_status ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  
-                >
-                  <option value="">Married Status</option>
-                  <option value="Married">Married</option>
-                  <option value="Unmarried">Unmarried</option>
-                  
-                </select>
-                {errors.married_status && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div> */}
+
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
                       Branch Type*
@@ -291,27 +226,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
-                  {/* <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                Staff User ID*
-                </label>
-                 <select
-                  {...register('staff_User_ID', { required: true })}
-                  className={`select select-bordered w-full p-2 rounded-lg border ${
-                    errors.staff_User_ID ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  
-                >
-                  <option value="">Select a User ID</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Asst. Manager">Asst. Manager</option>
-                  
-                  
-                </select>
-                {errors.staff_User_ID && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div> */}
+
                   {/* Current Address */}
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
@@ -327,21 +242,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
-                  {/* <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                Staff Parmanent  Address*
-                </label>
-                <input
-                  type="text"
-                  {...register('YourParmanentAddress', { required: true })}
-                  className={`input input-bordered w-full p-2 rounded-lg border ${
-                    errors.YourParmanentAddress ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.YourParmanentAddress && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div> */}
+
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
                       Districts*
@@ -384,53 +285,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                     )}
                   </div>
                 </div>
-                {/* Your Image */}
-                {/* <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
-                  <label className="block text-gray-700 font-medium mb-1">
-                  Staff Image*
-                  </label>
-                  <input
-                    type="file"
-                    {...register("yourImage", { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${
-                      errors.yourImage ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.yourImage && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div> */}
-                {/* <div className="col-span-2">
-                  <label className="block text-gray-700 font-medium mb-1">
-                  Staff NID Front Image*
-                  </label>
-                  <input
-                    type="file"
-                    {...register("nidFrontImage", { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${
-                      errors.nidFrontImage ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.nidFrontImage && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div> */}
-                {/* NID Back Image */}
-                {/* <div className="col-span-2 my-2">
-                  <label className="block text-gray-700 font-medium mb-1">
-                  Staff NID Back Image*
-                  </label>
-                  <input required
-                    type="file"
-                    {...register("nidBackImage", { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${
-                      errors.nidBackImage ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.nidBackImage && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div> */}
+
 
                 <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
@@ -521,9 +376,6 @@ const deobfuscatePassword = (obfuscatedPassword) => {
         </form>
       </div>
     </div>
-
-
-
   );
 };
 

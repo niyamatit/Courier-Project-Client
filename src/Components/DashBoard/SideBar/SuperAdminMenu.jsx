@@ -19,7 +19,7 @@ const SuperAdminMenu = () => {
             />
             <MenuItem
                 icon={FaUser}
-                label='Hash Add'
+                label='Admin Add'
                 address='hash-add'
             />
             <MenuItem
