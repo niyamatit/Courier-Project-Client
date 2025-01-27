@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 
 
-const OnlineSchedule = () => {
+const SelectMotherHub_Merchant = () => {
   const [verifiedUser] = useUsersData();
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
@@ -26,14 +26,14 @@ const OnlineSchedule = () => {
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${verifiedUser?.email}`);
+       const res = await axiosSecure.get(`/Merchant/email/Branch/destination/mer/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/online/accept/parcel/${pkgId}`);
+      await axiosSecure.post(`/merchant/accept/parcel/destination/again/mer/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -60,10 +60,10 @@ const OnlineSchedule = () => {
     }
 
     try {
-       await axiosSecure.post(`/online/select-MotherHub/branch/${selectedPackage._id}`, {
-        Tracking_Admin_Select_Online_MotherHub_Branch_email: selectedBranch,
-        Tracking_Admin_Select_Online_MotherHub_Branch_Note: note,
-        Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date()
+       await axiosSecure.post(`/merchant/select-Destion/branch/again/mer/${selectedPackage._id}`, {
+          Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant: selectedBranch,
+        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note_Merchant: note,
+        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -83,7 +83,7 @@ const OnlineSchedule = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">All Online Parcels of {verifiedUser?.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">Select Destination Branch For Merchant Parcels of {verifiedUser?.name}</h1>
       {Array.isArray(Verify_Admin_MotherHub) && Verify_Admin_MotherHub.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
@@ -93,10 +93,11 @@ const OnlineSchedule = () => {
                 <th className="border border-blue-500 px-4 py-2">Date</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Name</th>
-                <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
+                {/* <th className="border border-blue-500 px-4 py-2">Sender Mobile</th> */}
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
                 <th className="border border-blue-500 px-4 py-2">CN Number</th>
+                <th className="border border-blue-500 px-4 py-2">Customer Area</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -105,16 +106,19 @@ const OnlineSchedule = () => {
                 <tr key={pkg._id} className="hover:bg-blue-100">
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
-                    {new Date(pkg.booking).toLocaleDateString()}
+                    {new Date(pkg.Date).toLocaleDateString()}
                   </td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.recipientName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderMobile}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.recipientMobile}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
+                  <td className="border border-blue-500 px-4 py-2">
+  {pkg?.Merchant_email} (Merchant)
+</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Name}</td>
+                  {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td> */}
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Contact_Number}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Product_Details}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Area}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                  {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
+                  {pkg?.Tracking_MotherHub_Branch_Received_Parcel_Merchant ? (
   <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
 ) : (
   <button
@@ -125,10 +129,10 @@ const OnlineSchedule = () => {
   </button>
 )}
 
-{pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
-  pkg?.Tracking_Admin_Select_Online_MotherHub_Branch_email ? (
+{pkg?.Tracking_MotherHub_Branch_Received_Parcel_Merchant ? (
+  pkg?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant ? (
     <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected 
+      Already Selected Dest. Branch
     </h1>
   ) : (
     <button
@@ -138,7 +142,7 @@ const OnlineSchedule = () => {
         setShowSelectBranchModal(true);
       }}
     >
-      Select MotherHub
+      Select Destination Branch
     </button>
   )
 ) : (
@@ -193,7 +197,7 @@ const OnlineSchedule = () => {
       {showSelectBranchModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Select MotherHub</h2>
+            <h2 className="text-2xl font-bold mb-4">Select Dest. Branch</h2>
             <div className="mb-4">
               
               <select
@@ -201,7 +205,7 @@ const OnlineSchedule = () => {
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="">Select MotherHub Branch</option>
+                <option value="">Select Dest. Branch</option>
                 {users
   .filter(
     (user) =>
@@ -242,4 +246,4 @@ const OnlineSchedule = () => {
   );
 };
 
-export default OnlineSchedule;
+export default SelectMotherHub_Merchant;

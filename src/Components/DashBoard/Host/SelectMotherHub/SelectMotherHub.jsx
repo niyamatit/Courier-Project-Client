@@ -14,7 +14,7 @@ const SelectMotherHub = () => {
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
       return res.data;
     }
   });
@@ -28,6 +28,8 @@ const SelectMotherHub = () => {
     },
   });
 
+  
+
   const handleAccept = async (pkgId) => {
     try {
       await axiosSecure.post(`/package/accept/${pkgId}`);
@@ -38,10 +40,10 @@ const SelectMotherHub = () => {
       });
       refetch();
     } catch (error) {
-      Swal.fire({
+        Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Failed to accept the package. Please try again.",
+           text: "Failed to accept the parcel. Please try again.",
       });
     }
   };
@@ -67,6 +69,7 @@ const SelectMotherHub = () => {
         title: "Branch Selected",
         text: "The destination branch has been successfully selected!",
       });
+      refetch();
       setShowSelectBranchModal(false);
     } catch (error) {
       Swal.fire({
@@ -92,6 +95,7 @@ const SelectMotherHub = () => {
                 <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
+                <th className="border border-blue-500 px-4 py-2">Dest. Branch</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -107,6 +111,7 @@ const SelectMotherHub = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.senderMobile}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.recipientMobile}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
+                  
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                     {pkg?.Tracking_MotherHub_Received_Parcel ? (
                       <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>

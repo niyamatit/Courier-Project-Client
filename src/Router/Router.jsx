@@ -80,6 +80,16 @@ import FormComponent from "../Components/DashBoard/SuperAdmin/FormComponent/Form
 import AllAdminList from "../Components/DashBoard/SuperAdmin/AllAdminList/AllAdminList";
 import SelectMotherHub from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub";
 import SpoonserAdd from "../Components/DashBoard/Host/Spoonser/SpoonserAdd";
+import SelectMotherHub_Offline from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Offline";
+import PendingPareclList_Offline from "../Components/DashBoard/Host/PendingParcelList/PendingPareclList_Offline";
+import PickupParcelList_Offline from "../Components/DashBoard/Rider/PickupParcelList_Offline";
+import DeliveryComplete_Offline from "../Components/DashBoard/Rider/DeliveryComplete_Offline";
+import SelectMotherHub_Merchant from "../Components/DashBoard/Host/SelectMotherHub/SelectMotherHub_Merchant";
+import PendingPacelList from "../Components/DashBoard/Host/PendingParcelList/PendingPacelList";
+import Pending_Parcel_List_Merchant from "../Components/DashBoard/Host/PendingParcelList/Pending_Parcel_List_Merchant";
+import PickUpParcelList_Merchant from "../Components/DashBoard/Rider/PickUpParcelList_Merchant";
+import OnlineBooking_Merchant from "../Components/DashBoard/Host/CreatePackage/OnlineBooking_Merchant";
+import BookingForm_Merchant from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm_Merchant";
 
 
 
@@ -175,11 +185,31 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "branch-booking-merchant",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <OnlineBooking_Merchant />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "booking-form",
         element: (
           <PrivateRoute>
             <HostRoute>
               <BookingForm />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "booking-form-merchant",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <BookingForm_Merchant />
             </HostRoute>
           </PrivateRoute>
         ),
@@ -401,6 +431,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "delivery-complete-offline",
+        element: (
+          <PrivateRoute>
+            <DeliveryComplete_Offline />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "return-parcel",
         element: (
           <PrivateRoute>
@@ -458,10 +496,42 @@ export const router = createBrowserRouter([
         </PrivateRoute>
       },
       {
+        path: "pending-parcel-list-Offline",
+        element: <PrivateRoute>
+          <HostRoute>
+            <PendingPareclList_Offline />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "pending-parcel-list-Merchant",
+        element: <PrivateRoute>
+          <HostRoute>
+            <Pending_Parcel_List_Merchant />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
         path: "parcel-admin-received",
         element: <PrivateRoute>
           <HostRoute>
             <SelectMotherHub />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "parcel-motherHub-Select-Offline",
+        element: <PrivateRoute>
+          <HostRoute>
+            <SelectMotherHub_Offline />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "parcel-motherHub-Select-Merchant",
+        element: <PrivateRoute>
+          <HostRoute>
+            <SelectMotherHub_Merchant />
           </HostRoute>
         </PrivateRoute>
       },
@@ -593,6 +663,22 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <PickupparcelList></PickupparcelList>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pickup-list-Offline",
+        element: (
+          <PrivateRoute>
+            <PickupParcelList_Offline />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pickup-list-Merchant",
+        element: (
+          <PrivateRoute>
+            <PickUpParcelList_Merchant />
           </PrivateRoute>
         ),
       },

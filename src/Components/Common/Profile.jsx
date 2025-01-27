@@ -9,7 +9,8 @@ import Swal from "sweetalert2"
 
 
 const Profile = () => {
-  const[verifiedUser] = useUsersData()
+  const[verifiedUser] = useUsersData();
+  
   const [role] = useRole()
  
   const [isEditingPassword, setIsEditingPassword] = useState(false)
@@ -18,6 +19,18 @@ const Profile = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [updatedPassword,setUpdatedPassword] = useState('')
+  // Function to obfuscate the password
+const obfuscatePassword = (password) => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+  let obfuscated = "";
+  for (let char of password) {
+    obfuscated += char; // Add the actual character
+    for (let i = 0; i < 20; i++) {
+      obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+    }
+  }
+  return obfuscated;
+};
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
       setPasswordError("New passwords do not match");
@@ -31,7 +44,27 @@ const Profile = () => {
         newPassword,
       });
 
-      setUpdatedPassword(newPassword);
+         setUpdatedPassword(newPassword);
+      if(verifiedUser?.role === 'host'){
+        const res = await axiosSecure.put("/api/users/change-password/show", {
+          email: verifiedUser.email,
+          updatedPassword:obfuscatePassword(newPassword)
+        });
+      }
+     if(verifiedUser?.role === 'rider'){
+      const resRIder = await axiosSecure.put("/api/users/change-password/show/rider", {
+        email: verifiedUser.email,
+        updatedPassword:obfuscatePassword(newPassword)
+      });
+     }
+      if(verifiedUser?.role === 'merchant'){
+        const resMerchant = await axiosSecure.put("/api/users/change-password/show/error/merchant", {
+          email: verifiedUser.email,
+          
+          updatedPassword:obfuscatePassword(newPassword)
+        });
+      }
+      
       setIsEditingPassword(false);
       Swal.fire({
         icon: 'success',
@@ -91,7 +124,7 @@ const Profile = () => {
       </h1>
     )} */}
               <p className='flex flex-col'>
-                Email
+                ID
                 <span className='font-bold text-black '>{verifiedUser?.email}</span>
               </p>
 
@@ -108,6 +141,7 @@ const Profile = () => {
                   >
                     Change Password
                   </button>
+                  
 
                   {/* Hover Window with Input Fields */}
                   {isEditingPassword && (

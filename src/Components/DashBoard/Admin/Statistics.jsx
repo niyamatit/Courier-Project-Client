@@ -27,11 +27,18 @@ const AdminStatistics = () => {
   const [todayNewParcelData, setTodayNewParcelData] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
+  const { data: users = [] } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+      return res.data;
+    }
+  })
   const [verifiedUser] = useUsersData();
   const { data: parcelDataus = [] } = useQuery({
     queryKey: ["parcelData", verifiedUser?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/package");
+      const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
       return res.data;
     },
     enabled: !!verifiedUser?.email,
@@ -39,7 +46,7 @@ const AdminStatistics = () => {
 
 
   useEffect(() => {
-    fetch('https://courier-server-rho.vercel.app/package')
+    fetch('https://courier-server-rho.vercel.app/packagfhguieormbncdmnn44ge')
       .then(res => res.json())
       .then(data => {
         // setHostData(data);
@@ -140,207 +147,207 @@ const AdminStatistics = () => {
           <StatisticsCard
             title="Total User"
             icon={<FaUserAlt />}
-            value={statData?.userCount}
+            value={statData?.userCount || 0}
             color="bg-[#F5FFFA]"
           />
           <StatisticsCard
             title="Total Online Bookings"
             icon={<FaUserAlt />}
-            value={statData?.bookingCount}
+            value={statData?.bookingCount || 0}
             color="bg-[#B0E0E6]"
           />
           {/* Total Rooms */}
           <StatisticsCard
             title="Total Offline Booking"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#FFD1DC]"
           />
           <StatisticsCard
             title="Total Package"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={statData?.packageCount || 0}
             color="bg-[#E6E6FA]"
           />
           <StatisticsCard
             title="Total Marchant"
             icon={<BsFillHouseDoorFill />}
-            value={totalMarchant?.length}
+            value={totalMarchant?.length || 0}
             color="bg-[#FFFACD]"
           />
           <StatisticsCard
             title="Total Marchant Booking"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#E0FFFF]"
           />
           <StatisticsCard
             title="Total Normal Customer Booking"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#F3E5F5]"
           />
           <StatisticsCard
             title="Total Rider"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#D5F3E5]"
           />
           <StatisticsCard
             title="Total Condition"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#F7E7CE]"
           />
           <StatisticsCard
             title="Total To Pay"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#F0FFF0]"
           />
           <StatisticsCard
             title="Total Cash Booking"
             icon={<FaUserAlt />}
-            value={statData?.userCount}
+            value={ 0}
             color="bg-[#F5FFFA]"
           />
           <StatisticsCard
             title="Total Credit Booking"
             icon={<FaUserAlt />}
-            value={statData?.bookingCount}
+            value={ 0}
             color="bg-[#B0E0E6]"
           />
           {/* Total Rooms */}
           <StatisticsCard
             title="Total Parcel Booking"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#FFD1DC]"
           />
           <StatisticsCard
             title="Total Marchant parcel"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#E6E6FA]"
           />
           <StatisticsCard
             title="Total online Branch Booking Percel"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#FFFACD]"
           />
           <StatisticsCard
             title="Total offline Branch Booking Percel"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#E0FFFF]"
           />
           <StatisticsCard
             title="Total Delivery Percel"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={ 0}
             color="bg-[#D7E3FC]"
           />
           <StatisticsCard
             title="Pending Parcel"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#FFF1F3]"
           />
           <StatisticsCard
             title="Total Exchange"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#F3E5AB]"
           />
           <StatisticsCard
             title="Total Branch"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#BCD4E6]"
           />
           <StatisticsCard
             title="Total Internation Booking"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#FFE5B4]"
           />
           <StatisticsCard
             title="Total Branch Recharge Request"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#DCD0FF]"
           />
           <StatisticsCard
             title="Total Branch Accepted Recharge Request"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={statData?.packageCount || 0}
             color="bg-[#FFFDD0]"
           />
           <StatisticsCard
             title="Total Branch Request Amount"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={statData?.packageCount || 0}
             color="bg-[#DFFFE2]"
           />
           <StatisticsCard
             title="Total Branch Given Amount"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={statData?.packageCount || 0}
             color="bg-[#EBD4EF]"
           />
           <StatisticsCard
             title="Total COD"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={statData?.packageCount || 0}
             color="bg-[#FADADD]"
           />
           <StatisticsCard
             title="Total Condition Pending"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={statData?.packageCount || 0}
             color="bg-[#FADADD]"
           />
           <StatisticsCard
             title="Total Condition Paid"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={statData?.packageCount || 0}
             color="bg-[#BCD4E6]"
           />
           <StatisticsCard
             title="Total CN Company"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={statData?.packageCount || 0}
             color="bg-[#FFE5B4]"
           />
           <StatisticsCard
             title="Total Admin"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#DCD0FF]"
           />
           <StatisticsCard
             title="Total Stape"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#FFFDD0]"
           />
           <StatisticsCard
             title="Total Manager"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#DFFFE2]"
           />
           <StatisticsCard
             title="Total IT-Department"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#EBD4EF]"
           />
           <StatisticsCard
             title="Total International Booking Parcel"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount}
+            value={0}
             color="bg-[#FADADD]"
           />
 
@@ -365,7 +372,7 @@ const AdminStatistics = () => {
           <StatisticsCard
             title="Total Hub Transfer Complete"
             icon={<FaTruckPickup />}
-            value="20"
+            value="0"
             color="bg-red-100"
           />
           <StatisticsCard

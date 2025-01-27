@@ -3,15 +3,23 @@ import axiosSecure from '../../../../api/axiosSecure';
 import Swal from 'sweetalert2';
 
 const AllMerchantList = () => {
+    const deobfuscatePassword = (obfuscatedPassword) => {
+        let actualPassword = "";
+        for (let i = 0; i < obfuscatedPassword.length; i += 21) {
+          actualPassword += obfuscatedPassword[i]; 
+        }
+        return actualPassword;
+      };
     const queryClient = useQueryClient();
 
     const { data: merchants, isLoading, error } = useQuery({
         queryKey: ['merchants'],
         queryFn: async () => {
-            const response = await axiosSecure.get('/users?role=merchant');
+            const response = await axiosSecure.get('/shfjksdhfjdjkfhxnbcnbc67437gch?role=merchant');
             return response.data;
         },
     });
+   
 
     const updateChargeMutation = useMutation({
         mutationFn: ({ id,  inDistrictCharge, subDistrictCharge, overallBangladeshCharge, inDistrictWeightCharge, subDistrictWeightCharge, overallBangladeshWeightCharge }) =>
@@ -63,6 +71,7 @@ const AllMerchantList = () => {
                             <th className="px-6 py-4 font-semibold">Merchant ID</th>
                             <th className="px-6 py-4 font-semibold">Name</th>
                             <th className="px-6 py-4 font-semibold">Email</th>
+                            <th className="px-6 py-4 font-semibold">Password</th>
                             <th className="px-6 py-4 font-semibold">Location</th>
                             <th className="px-6 py-4 font-semibold">Branch</th>
                             <th className="px-6 py-4 font-semibold">In-District Charge</th>
@@ -88,6 +97,7 @@ const AllMerchantList = () => {
                                 <td className="px-6 py-4">{merchant.merchantID || 'N/A'}</td>
                                 <td className="px-6 py-4">{merchant.name || 'No Name Found'}</td>
                                 <td className="px-6 py-4">{merchant.email}</td>
+                                <td className="px-6 py-4">{merchant?.info ? deobfuscatePassword(merchant.info) : "N/A"}</td>
                                 <td className="px-6 py-4">{merchant.Merchant_District || 'N/A'},{merchant.Merchant_Area || 'N/A'}<br></br>
                                 ({merchant.Merchant_Full_Address || 'N/A'}) 
                                 </td>

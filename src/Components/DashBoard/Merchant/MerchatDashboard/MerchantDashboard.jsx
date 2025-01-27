@@ -30,7 +30,7 @@ const MerchantDashboard = () => {
   const { data: parcelData = [] } = useQuery({
     queryKey: ["parcelData", verifiedUser?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/parcel");
+      const res = await axiosSecure.get("/parcelhkdbjsbdjkshujsbh");
       return res.data;
     },
     enabled: !!verifiedUser?.email,

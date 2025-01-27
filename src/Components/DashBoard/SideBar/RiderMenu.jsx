@@ -37,9 +37,12 @@ const RiderMenu = () => {
                 />
 
                 <ul tabIndex={0} className="text-gray-700 font-semibold dropdown-content menu  w-full">
-                    <li><Link to="pickup-list"><a>Pickup Parcel List</a></Link></li>
+                    <li><Link to="pickup-list"><a>Pickup Parcel List (Online)</a></Link></li>
+                    <li><Link to="pickup-list-Offline"><a>Pickup Parcel List (Offline)</a></Link></li>
+                    <li><Link to="pickup-list-Merchant"><a>Pickup Parcel List (Merchant)</a></Link></li>
                     <li><Link to="delivery-list"><a>Delivery Parcel List</a></Link></li>
-                    <li><Link to="delivery-complete"><a>Delivery Complete Parcel List</a></Link></li>
+                    <li><Link to="delivery-complete"><a>Delivery Complete Parcel List(Online)</a></Link></li>
+                    <li><Link to="delivery-complete-offline"><a>Delivery Complete Parcel List(Offline)</a></Link></li>
                     <li><Link to="return-parcel"><a>Return Parcel List</a></Link></li>
                 </ul>
             </div>

@@ -40,12 +40,12 @@ export const getParcel = async () => {
 };
 
 export const getPackage = async () => {
-    const { data } = await axiosSecure.get(`/package`);
+    const { data } = await axiosSecure.get(`/packagfhguieormbncdmnn44ge`);
     return data;
 };
 
 export const getAllPackage = async (email) => {
-    const { data } = await axiosSecure.get(`/package/${email}`);
+    const { data } = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${email}`);
     console.log("Fetching packages for email:", email);
     return data;
 };
@@ -60,7 +60,7 @@ export const updateBooking = async (updatedBooking) => {
 
 
 export const getOffline = async () => {
-    const { data } = await axiosSecure.get(`/offline`);
+    const { data } = await axiosSecure.get(`/offlinejjfjbvfbv44`);
     return data;
 };
 
@@ -79,7 +79,7 @@ export const updateOffline = async (updatedOffline) => {
 
 
 export const getBranch = async () => {
-    const { data } = await axiosSecure.get(`/branch`);
+    const { data } = await axiosSecure.get(`/vgfsdhfsdhhsxgcfbxcjkxnbnj454557`);
     return data;
 };
 

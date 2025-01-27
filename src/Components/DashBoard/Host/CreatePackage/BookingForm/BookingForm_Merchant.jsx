@@ -9,7 +9,7 @@ import OfflinePrintModal from "./OfflinePrintModal";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 
-const BookingForm = () => {
+const BookingForm_Merchant = () => {
   const {
     register,
     handleSubmit,
@@ -34,6 +34,7 @@ const BookingForm = () => {
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
   const [lot, setLot] = useState();
   const [PaymentOption , setSelectedPayment] = useState('');
+  const [Merchant , setMerchantID] = useState('');
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -236,7 +237,7 @@ const BookingForm = () => {
         serviceCharge: data.serviceCharge,
         senderReceive: data.senderReceive,
         Date: new Date().toISOString().split('T')[0],
-        
+        Merchant_ID:data.Merchant_ID,
         Branch_Name:verifiedUser?.name,
         Branch_Number:verifiedUser?.Branch_Number,
         Branch_Address:verifiedUser?.Branch_Address,
@@ -245,7 +246,7 @@ const BookingForm = () => {
       };
   
       // Submit booking information
-      const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
+      const ParcelProductDetails = await axiosSecure.post("/offlineMerchant", Bookinginfo);
   
       if (ParcelProductDetails.data.insertedId) {
         Swal.fire({
@@ -257,7 +258,7 @@ const BookingForm = () => {
         });
   
         // Increment the CN number
-        const response = await axiosSecure.put("/number");
+         const response = await axiosSecure.put("/number");
         setCnNumber(response.data.nextNumber);
         setBookingInfo(Bookinginfo);
       }
@@ -390,9 +391,46 @@ const BookingForm = () => {
         className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400"
       >
         <h1 className="text-xl sm:text-xl md:text-xl font-bold mb-4 sm:mb-6 md:mb-6 text-blue-700">
-         Offline Booking
+         Merchant Offline Booking
         </h1>
-        <div className="grid lg:grid-cols-2 gap-2">
+
+
+        <Section additionalClasses="mt-4">
+             
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="label-text text-2xl ml-1 text-gray-500 font-semibold">
+                  Select Merchat ID*
+                </label>
+                <select
+                  {...register('Merchant_ID', { required: true })}
+                  className={`select select-bordered mt-2  bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${errors.Merchant_ID ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  required
+                  onChange={(e) => setMerchantID(e.target.value)}
+                 
+                >
+                  <option className="text-xl" value="123"   disabled>Select Merchant ID</option>
+                  {users
+                    .filter((user) => user?.role === "merchant")
+                    .map((user) => (
+                        <option key={user._id} value={user?.email}>
+                            {`${user?.name || "No Name Found"} (Merchant ID: ${user?.merchantID})`}
+                        </option>
+                    ))}
+
+                </select>
+                {errors.Merchant_ID && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+            </Section>
+
+
+
+        {/* Rest Part */}
+       {
+        Merchant ? <>
+         <div className="grid lg:grid-cols-2 gap-2">
           <div>
             <Section>
               <div className="grid grid-cols-2 gap-2">
@@ -883,6 +921,10 @@ const BookingForm = () => {
         <div className="flex gap-5 mt-2 justify-center">
           <button className="btn bg-[#E8F0FE]">Submit</button>
         </div>
+        </>
+        :
+        <h1 className="text-3xl text-red-600 text-center mt-20">Select Merchant ID First!!!!!</h1>
+       }
       </form>
       <OfflinePrintModal
         closeModal={closeModal}
@@ -893,4 +935,4 @@ const BookingForm = () => {
   );
 };
 
-export default BookingForm;
+export default BookingForm_Merchant;

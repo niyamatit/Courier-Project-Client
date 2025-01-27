@@ -17,10 +17,10 @@ const BranchAdd = () => {
 
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/users");
-      return res.data;
-
+    queryFn: async() => {
+        const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+        return res.data;
+       
     }
 
   });
@@ -61,10 +61,32 @@ const BranchAdd = () => {
     }
   };
 
+
   const onSubmit = async (data) => {
     try {
       const districtName = getDistrictName(data.district);
       const formData = { ...data, district: districtName };
+// Function to obfuscate the password
+const obfuscatePassword = (password) => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+  let obfuscated = "";
+  for (let char of password) {
+    obfuscated += char; // Add the actual character
+    for (let i = 0; i < 20; i++) {
+      obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+    }
+  }
+  return obfuscated;
+};
+
+// Function to de-obfuscate the password
+const deobfuscatePassword = (obfuscatedPassword) => {
+  let actualPassword = "";
+  for (let i = 0; i < obfuscatedPassword.length; i += 21) {
+    actualPassword += obfuscatedPassword[i]; 
+  }
+  return actualPassword;
+};
 
 
 
@@ -77,8 +99,10 @@ const BranchAdd = () => {
         Branch_Area: formData?.area || "",
         Branch_type: formData?.branch_type || "",
         Branch_User_ID: formData?.Staff_User_ID || "",
-        Branch_Password: "",
+        
         email: formData?.Staff_User_ID || "",
+        
+        Branch_Password:obfuscatePassword(formData?.Staff_Password) ||   "",
         Under_Branch: formData?.under_branch || "",
         Date: new Date().toISOString().split('T')[0],
       };
@@ -322,13 +346,15 @@ const BranchAdd = () => {
                   </label>
                   <input
                     type="password"
-                    {...register('Staff_Password', { required: true })}
+                    {...register('Staff_Password', { required: true ,minLength: 8})}
                     className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
                       }`}
+                      
                   />
-                  {errors.Staff_Password && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
+                 
+                    {errors.Staff_Password?.type === 'minLength' && (
+    <span className="text-red-500">Password must be at least 8 characters long</span>
+  )}
                 </div>
               </div>
 

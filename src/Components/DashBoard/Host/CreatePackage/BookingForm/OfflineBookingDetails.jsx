@@ -11,16 +11,17 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
     <>
 
         <div className="invoice-container">
-        <p>Hotline: 01969905735</p>
-            <p className='text-xs'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
+       
+            
             <header className="header">
                 <div className="logo">
-                    <img className='h-[30px] w-[50px]' src={logoImg} alt="Niyamat Express" />
+                    <img className='h-[40px] w-[60px]' src={logoImg} alt="Niyamat Express" />
                 </div>
                 <div className="company-details flex gap-5">
                     <div >
-                        <h3 className='font-bold'>Niyamat Express</h3>
-                        <p className='text-left'>Chittagong Road, Narayanganj 1430</p>
+                        <h3 className='font-bold text-2xl text-gray-800 mr-3'>Niyamat Express</h3>
+                        <p className='text-center'>Hotline: 01969905735</p>
+                        <p className='text-center text-sm'>Chittagong Road, Narayanganj 1430</p>
                     </div>
                     <div className='justify-end text-sm'>
 
@@ -90,16 +91,19 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
                 </div>
 
                 <div className=''>
-                    condition charge: {bookingInfo?.serviceCharge}
+                    condition charge: {bookingInfo?.totalCharge}
                 </div>
                 <div>
-                    {
-                        bookingInfo?.paymentMethod === 'Cash'
-                            ? <strong>Payment - {bookingInfo?.paymentMethod }</strong>
-                            : <strong>Payment - {bookingInfo?.paymentMethod }</strong>
-                    }
+                <strong>{`${bookingInfo?.paymentMethod} - ${bookingInfo?.["H/D"] 
+    ? "Home Delivery" 
+    : bookingInfo?.["O/D"] 
+    ? "Office Delivery" :
+    bookingInfo?.Exchange 
+    ? "Exchange"
+    : "No Delivery Option Selected"}`}</strong>
                 </div>
             </div>
+            <p className='text-xs mt-2'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
         </div>
         <div className='flex justify-center items-center'>
             <PiScissorsLight className='w-5 h-5' />

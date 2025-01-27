@@ -80,8 +80,14 @@ import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 
 const TableBranch = ({ branch, onView, refetch }) => {
-
-    const handleDelete = async (id) => {
+    const deobfuscatePassword = (obfuscatedPassword) => {
+        let actualPassword = "";
+        for (let i = 0; i < obfuscatedPassword.length; i += 21) {
+          actualPassword += obfuscatedPassword[i]; 
+        }
+        return actualPassword;
+      };
+    const handleDelete = async (email) => {
         try {
             const result = await Swal.fire({
                 title: "Are you sure?",
@@ -93,8 +99,10 @@ const TableBranch = ({ branch, onView, refetch }) => {
             });
 
             if (result.isConfirmed) {
-                const response = await axiosSecure.delete(`/branch/${id}`);
-                console.log("Delete Response:", response.data);
+                const response = await axiosSecure.delete(`/branch/${email}`);
+               
+                const res = await axiosSecure.delete(`/users/branch/${email}`);
+               
 
                 if (response.data?.deletedCount > 0) {
                     refetch();
@@ -146,6 +154,9 @@ const TableBranch = ({ branch, onView, refetch }) => {
                 <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_type}</p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p className="text-gray-900 whitespace-no-wrap">{deobfuscatePassword(branch?.Branch_Password) || "N/A"}</p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button
                     onClick={() => onView(branch)}
                     className="text-blue-500 hover:underline"
@@ -155,7 +166,7 @@ const TableBranch = ({ branch, onView, refetch }) => {
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button
-                    onClick={() => handleDelete(branch._id)}
+                    onClick={() => handleDelete(branch?.email)}
                     aria-label="Delete branch"
                     className="btn btn-ghost btn-xs"
                 >
