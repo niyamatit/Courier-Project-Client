@@ -24,6 +24,10 @@ const AdminMenu = () => {
       <MenuItem icon={FaUserCog}
         label='spoonser'
         address='spoonser-add' />
+        
+      <MenuItem icon={FaUserCog}
+        label='Support Company Add'
+        address='company-add' />
 
 
       <MenuItem icon={FaUserCog}
