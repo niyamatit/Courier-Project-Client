@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const BranchAdd = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [SupportCompany, setSupportCompany] = useState("");
   // const [loading, setLoading] = useState(false);
   const [filteredAreas, setFilteredAreas] = useState([]);
 
@@ -19,6 +20,15 @@ const BranchAdd = () => {
     queryKey: ['users'],
     queryFn: async() => {
         const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+        return res.data;
+       
+    }
+
+  });
+  const { data: Company = [] } = useQuery({
+    queryKey: ['Company'],
+    queryFn: async() => {
+        const res = await axiosSecure.get("/Company");
         return res.data;
        
     }
@@ -99,7 +109,9 @@ const deobfuscatePassword = (obfuscatedPassword) => {
         Branch_Area: formData?.area || "",
         Branch_type: formData?.branch_type || "",
         Branch_User_ID: formData?.Staff_User_ID || "",
-        
+        Branch_Support_Company: formData?.supportCompany || "",
+        Reference: formData?.reference || "",
+         
         email: formData?.Staff_User_ID || "",
         
         Branch_Password:obfuscatePassword(formData?.Staff_Password) ||   "",
@@ -290,11 +302,11 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
-                      Branch commission*
+                      Branch commission
                     </label>
                     <input
                       type="text"
-                      {...register('branch_lav', { required: true })}
+                      {...register('branch_lav', { required: false })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.branch_lav ? 'border-red-500' : 'border-gray-300'
                         }`}
                     />
@@ -304,10 +316,10 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                   </div>
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
-                      Under Branch*
+                      Under Branch
                     </label>
                     <select
-                      {...register('under_branch', { required: true })}
+                      {...register('under_branch', { required: false })}
                       className={`select select-bordered w-full p-2 rounded-lg border ${errors.under_branch ? 'border-red-500' : 'border-gray-300'
                         }`}
 
@@ -326,7 +338,50 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                     )}
                   </div>
                 </div>
-                <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
+                {/* Support Company */}
+                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Reference / Special Introduction
+                    </label>
+                    <input
+                      type="text"
+                      {...register('reference', { required: false })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.reference ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                    />
+                    {errors.reference && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Support Company*
+                    </label>
+                    <select
+                      {...register('supportCompany', { required: true })}
+                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.supportCompany ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                      onChange={(e)=> setSupportCompany(e.target.value)}
+                    >
+                      <option value="hfjkdhjfhdjfj">Select Company</option>
+
+                      {
+                        Company.map(user => (
+                          <option key={user?._id} value={user?.Company_Name}>{user?.Company_Name}</option>
+                        ))
+                      }
+
+                    </select>
+                    {errors.staff_post && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+                </div>
+               {
+                SupportCompany === 'Test Company' && 
+                <div>
+               <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
                   <label className="block text-gray-700 font-medium mb-1">
                     Branch  User ID*
                   </label>
@@ -356,6 +411,8 @@ const deobfuscatePassword = (obfuscatedPassword) => {
     <span className="text-red-500">Password must be at least 8 characters long</span>
   )}
                 </div>
+               </div>
+               }
               </div>
 
               {/* Parcel Area */}
