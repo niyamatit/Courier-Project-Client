@@ -30,8 +30,9 @@ const SupportCompany = () => {
 
             // Construct the sponsor object
             const ApplySpoonser = {
-                Name: data.name || "",
-                Title: data.title || "",
+                Company_Name: data.CompanyName || "",
+                Company_Number: data.number || "",
+                Company_Office_Location: data.OfficeLocation || "",
                 Company_Logo: CompanyLogo?.data?.display_url || "",
                 Date: new Date()
             };
@@ -44,7 +45,7 @@ const SupportCompany = () => {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "Company Added Successfully",
+                    title: `${data?.CompanyName} Company Added Successfully`,
                     showConfirmButton: false,
                     timer: 1500,
                 });
@@ -86,10 +87,25 @@ const SupportCompany = () => {
                                     Write Company Information
                                 </h2>
                                 <div>
+                                    {/* Name */}
+                                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                                        <label className="block text-gray-700 font-medium mb-1">
+                                            Company Name<span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            {...register("CompanyName", { required: "CompanyName is required" })}
+                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.title ? "border-red-500" : "border-gray-300"
+                                                }`}
+                                        />
+                                        {errors.CompanyName && (
+                                            <span className="text-red-500">{errors.CompanyName.message}</span>
+                                        )}
+                                    </div>
                                     {/* Image Upload */}
                                     <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
                                         <label className="block text-gray-700 font-medium mb-1">
-                                            Company Logo*
+                                            Company Logo<span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="file"
@@ -102,36 +118,32 @@ const SupportCompany = () => {
                                         )}
                                     </div>
 
-                                    {/* Title */}
+                                    {/* Office Location */}
                                     <div className="col-span-2 md:col-span-2 lg:col-span-1">
                                         <label className="block text-gray-700 font-medium mb-1">
-                                            Title <span className="text-red-500">*</span>
+                                            Office Location <span className="text-green-500">(Optional)</span>
                                         </label>
                                         <input
                                             type="text"
-                                            {...register("title", { required: "Title is required" })}
-                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.title ? "border-red-500" : "border-gray-300"
+                                            {...register("OfficeLocation", { required:false })}
+                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.OfficeLocation ? "border-red-500" : "border-gray-300"
                                                 }`}
                                         />
-                                        {errors.title && (
-                                            <span className="text-red-500">{errors.title.message}</span>
-                                        )}
+                                       
                                     </div>
 
                                     {/* Name */}
                                     <div className="col-span-2 md:col-span-2 lg:col-span-1">
                                         <label className="block text-gray-700 font-medium mb-1">
-                                            Name <span className="text-red-500">*</span>
+                                            Number <span className="text-green-500">(Optional)</span>
                                         </label>
                                         <input
                                             type="text"
-                                            {...register("name", { required: "Name is required" })}
-                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.name ? "border-red-500" : "border-gray-300"
+                                            {...register("number", { required: false })}
+                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.number ? "border-red-500" : "border-gray-300"
                                                 }`}
                                         />
-                                        {errors.name && (
-                                            <span className="text-red-500">{errors.name.message}</span>
-                                        )}
+                                       
                                     </div>
                                 </div>
                             </div>
