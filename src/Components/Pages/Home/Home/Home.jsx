@@ -2,8 +2,8 @@ import Banner from "../Banner/Banner";
 import Deliver from "../Deliver/Deliver";
 import Offer from "../Offer/Offer";
 import OrderProcess from "../OrderProcess/OrderProcess";
+import SpoonserSlider from "../SpoonserSlider/SpoonserSlider";
 import WorkForce from "../WorkForce/WorkForce";
-
 
 
 const Home = () => {
@@ -12,6 +12,7 @@ const Home = () => {
             <Banner />
             <Offer />
             <WorkForce />
+            <SpoonserSlider></SpoonserSlider>
             <Deliver />
             <OrderProcess />
         </div>

@@ -11,6 +11,8 @@ const About = () => {
     // State to track how many reviews are visible
     const [visibleCount, setVisibleCount] = useState(2);
 
+    const approvedReviews = reviews?.filter(review => review?.isApproved)
+
     // Function to toggle visibility
     const toggleVisibility = () => {
         if (visibleCount === 2) {
@@ -60,6 +62,7 @@ const About = () => {
             const response = await axiosSecure.post('/rate', {
                 rating,
                 comment,
+                isApproved: false
             });
 
             if (response.status === 201) {
@@ -256,8 +259,8 @@ const About = () => {
                 <div className="mt-8">
                     <h3 className="text-2xl font-semibold mb-4 text-blue-600">What People Say</h3>
                     {reviews.length > 0 ? (
-                        Array.isArray(reviews) &&
-                        reviews
+                        Array.isArray(approvedReviews) &&
+                        approvedReviews
                             .slice(0, visibleCount) // Slice the reviews array based on visibleCount
                             .map((review, index) => (
                                 <div
