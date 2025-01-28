@@ -13,8 +13,7 @@ const SupportCompany = () => {
 
     const onSubmit = async (data) => {
         try {
-            // Ensure the image is available
-            if (!data.yourImage || data.yourImage.length === 0) {
+            if (!data.CompanyLogo || data.CompanyLogo.length === 0) {
                 Swal.fire({
                     position: "top-end",
                     icon: "error",
@@ -24,23 +23,19 @@ const SupportCompany = () => {
                 });
                 return;
             }
-
-            // Upload the image
+    
             const CompanyLogo = await imageUpload(data.CompanyLogo[0]);
-
-            // Construct the sponsor object
+    
             const ApplySpoonser = {
                 Company_Name: data.CompanyName || "",
                 Company_Number: data.number || "",
                 Company_Office_Location: data.OfficeLocation || "",
                 Company_Logo: CompanyLogo?.data?.display_url || "",
-                Date: new Date()
+                Date: new Date(),
             };
-
-            // Send data to the backend
+    
             const ApplySpoonserInfo = await axiosSecure.post("/supportCompany", ApplySpoonser);
-
-            // Show success message
+    
             if (ApplySpoonserInfo.data.insertedId) {
                 Swal.fire({
                     position: "top-end",
@@ -51,17 +46,15 @@ const SupportCompany = () => {
                 });
             }
         } catch (error) {
-            // Handle errors
             if (error.response && error.response.status === 400) {
                 Swal.fire({
                     position: "top-end",
                     icon: "error",
-                    title: "Already Added",
+                    title: "Company already exists",
                     showConfirmButton: false,
                     timer: 1500,
                 });
             } else {
-                console.error("Unexpected Error:", error);
                 Swal.fire({
                     position: "top-end",
                     icon: "error",
@@ -72,6 +65,7 @@ const SupportCompany = () => {
             }
         }
     };
+    
 
     return (
         <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
