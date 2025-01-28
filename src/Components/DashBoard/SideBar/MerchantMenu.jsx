@@ -15,14 +15,14 @@ import axiosSecure from "../../../api/axiosSecure";
 import { useEffect } from "react";
 const MerchantMenu = () => {
   const [verifiedUser] = useUsersData();
-  const { data: users = [] } = useQuery({
+  const { data: users = [],refetch: refetchUsers } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
       return res.data;
     }
   })
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [],refetch: refetchParcels } = useQuery({
     queryKey: ['parcels'],
     queryFn: async () => {
       const res = await axiosSecure.get("/parcelhkdbjsbdjkshujsbh");
@@ -49,6 +49,7 @@ const MerchantMenu = () => {
             } else {
               balance -= parseFloat(parcel.Calculate_Charge_Merchant || 0) ; 
             }
+            
           });
 
           
@@ -56,16 +57,19 @@ const MerchantMenu = () => {
             await axiosSecure.put(`/merchants/balance/mer/${merchant?.email}`, {
               balance,
             });
+            
             console.log(`Updated balance for ${balance} ${merchant.email}`);
           } catch (error) {
             console.error(`Failed to update balance for ${merchant.email}`, error);
           }
         }
+        refetchUsers();
+        refetchParcels();
       }
     };
 
     updateMerchantBalances();
-  }, [users, parcels]);
+  }, [users, parcels,]);
 
 
   return (
@@ -74,7 +78,7 @@ const MerchantMenu = () => {
         <p className="     font-semibold ml-5">{verifiedUser?.name} ({verifiedUser?.email})</p>
         
         <p className="text-sm  ml-[45px] font-semibold">Merchant ID- {verifiedUser?.merchantID}</p>
-        <p className="text-sm  ml-[45px] font-semibold">Merchant Balance : {verifiedUser?.Merchant_Balance}</p>
+        <p className="text-sm  ml-[45px] font-semibold">Merchant Balance : {verifiedUser?.Merchant_Balance/2}</p>
       </div>
       <MenuItem
         icon={IoHomeOutline}
