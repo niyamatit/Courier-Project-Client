@@ -90,6 +90,7 @@ import Pending_Parcel_List_Merchant from "../Components/DashBoard/Host/PendingPa
 import PickUpParcelList_Merchant from "../Components/DashBoard/Rider/PickUpParcelList_Merchant";
 import OnlineBooking_Merchant from "../Components/DashBoard/Host/CreatePackage/OnlineBooking_Merchant";
 import BookingForm_Merchant from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm_Merchant";
+import Coverage from "../Components/Pages/Home/Coverage/Coverage";
 import SupportCompany from "../Components/DashBoard/Admin/SupportCompany/SupportCompany";
 
 
@@ -119,6 +120,10 @@ export const router = createBrowserRouter([
       {
         path: "/online-tracking",
         element: <OnlineTracking />,
+      },
+      {
+        path: "/coverage",
+        element: <Coverage />,
       },
       {
         path: "/about",
@@ -738,7 +743,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "company-add",
-        element: <SupportCompany/>
+        element: <SupportCompany />
       },
       {
         path: "branch-add",
