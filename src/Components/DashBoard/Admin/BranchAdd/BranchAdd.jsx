@@ -111,7 +111,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
         Branch_User_ID: formData?.Staff_User_ID || "",
         Branch_Support_Company: formData?.supportCompany || "",
         Reference: formData?.reference || "",
-         
+        Branch_IP_Number:  formData?.IPNumber || "",
         email: formData?.Staff_User_ID || "",
         
         Branch_Password:obfuscatePassword(formData?.Staff_Password) ||   "",
@@ -204,7 +204,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                   </div>
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
-                      Branch Number*
+                      Branch Contact Number*
                     </label>
                     <input
                       type="text"
@@ -216,7 +216,21 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
-
+                  <div className="col-span-2 md:col-span-2 lg:col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Branch  IP Number
+                    </label>
+                    <input
+                      type="text"
+                      {...register('IPNumber', { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.IPNumber ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                    />
+                    {errors.IPNumber && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+          
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
                       Branch Type*
