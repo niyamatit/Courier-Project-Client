@@ -91,6 +91,7 @@ import PickUpParcelList_Merchant from "../Components/DashBoard/Rider/PickUpParce
 import OnlineBooking_Merchant from "../Components/DashBoard/Host/CreatePackage/OnlineBooking_Merchant";
 import BookingForm_Merchant from "../Components/DashBoard/Host/CreatePackage/BookingForm/BookingForm_Merchant";
 import Coverage from "../Components/Pages/Home/Coverage/Coverage";
+import SupportCompany from "../Components/DashBoard/Admin/SupportCompany/SupportCompany";
 
 
 
@@ -739,6 +740,10 @@ export const router = createBrowserRouter([
       {
         path: "spoonser-add",
         element: <SpoonserAdd></SpoonserAdd>
+      },
+      {
+        path: "company-add",
+        element: <SupportCompany />
       },
       {
         path: "branch-add",

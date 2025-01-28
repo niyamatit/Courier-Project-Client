@@ -8,7 +8,7 @@ export const ParcelProvider = ({ children }) => {
   const queryResponse = useQuery({
     queryKey: ["Parcels"],
     queryFn: async () => {
-      const res = await axios.get("https://courier-server-rho.vercel.app/parcel");
+      const res = await axios.get("http://localhost:5000/parcelhkdbjsbdjkshujsbh");
       return res?.data;
     },
   });
