@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import axiosSecure from "../../../../api/axiosSecure";
 import { imageUpload } from "../../../../api/utils";
 import Swal from "sweetalert2";
-
+import { FaCloudUploadAlt } from "react-icons/fa";
 const SupportCompany = () => {
     const {
         register,
@@ -68,88 +68,91 @@ const SupportCompany = () => {
     
 
     return (
-        <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
-            <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
-                <h1 className="text-2xl sm:text-3xl md:text-3xl font-bold mb-4 sm:mb-6 md:mb-6 text-center text-blue-700">
-                    Add Support Company
-                </h1>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 md:space-y-6">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 lg:gap-6">
-                        <div className="col-span-2 space-y-4 sm:space-y-6 md:space-y-6">
-                            <div className="bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
-                                <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
-                                    Write Company Information
-                                </h2>
-                                <div>
-                                    {/* Name */}
-                                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Company Name<span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            {...register("CompanyName", { required: "CompanyName is required" })}
-                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.title ? "border-red-500" : "border-gray-300"
-                                                }`}
-                                        />
-                                        {errors.CompanyName && (
-                                            <span className="text-red-500">{errors.CompanyName.message}</span>
-                                        )}
-                                    </div>
-                                    {/* Image Upload */}
-                                    <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Company Logo<span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="file"
-                                            {...register("CompanyLogo", { required: true })}
-                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.CompanyLogo ? "border-red-500" : "border-gray-300"
-                                                }`}
-                                        />
-                                        {errors.CompanyLogo && (
-                                            <span className="text-red-500">This field is required</span>
-                                        )}
-                                    </div>
+        <div className="min-h-screen bg-gray-50 border-2 flex items-center justify-center p-4">
+            <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <div className="mb-8 text-center">
+                    <h1 className="text-3xl font-bold text-blue-600 mb-2">Add Supporting Company</h1>
+                    <p className="text-gray-500">Please fill in the company details below</p>
+                </div>
 
-                                    {/* Office Location */}
-                                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Office Location <span className="text-green-500">(Optional)</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            {...register("OfficeLocation", { required:false })}
-                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.OfficeLocation ? "border-red-500" : "border-gray-300"
-                                                }`}
-                                        />
-                                       
-                                    </div>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    {/* Company Name */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Company Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            {...register("CompanyName", { required: "Company name is required" })}
+                            className={`w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${
+                                errors.CompanyName ? "border-red-500" : "border-gray-300"
+                            }`}
+                            placeholder="Enter company name"
+                        />
+                        {errors.CompanyName && (
+                            <p className="mt-1 text-sm text-red-600">{errors.CompanyName.message}</p>
+                        )}
+                    </div>
 
-                                    {/* Name */}
-                                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Number <span className="text-green-500">(Optional)</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            {...register("number", { required: false })}
-                                            className={`input input-bordered w-full p-2 rounded-lg border ${errors.number ? "border-red-500" : "border-gray-300"
-                                                }`}
-                                        />
-                                       
-                                    </div>
-                                </div>
+                    {/* Logo Upload */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Company Logo <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative group">
+                            <input
+                                type="file"
+                                {...register("CompanyLogo", { required: true })}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                accept="image/*"
+                            />
+                            <div className={`flex flex-col items-center justify-center px-6 py-8 border-2 border-dashed rounded-lg ${
+                                errors.CompanyLogo ? "border-red-500" : "border-gray-300 group-hover:border-blue-500"
+                            } transition-colors`}>
+                                <FaCloudUploadAlt className="w-12 h-12 text-gray-400 mb-3 group-hover:text-blue-500" />
+                                <p className="text-gray-500 text-center">
+                                    <span className="font-medium text-blue-600">Click to upload</span> or drag and drop
+                                </p>
+                                <p className="text-sm text-gray-400 mt-1">PNG, JPG up to 20MB</p>
                             </div>
                         </div>
+                        {errors.CompanyLogo && (
+                            <p className="mt-1 text-sm text-red-600">Company logo is required</p>
+                        )}
+                    </div>
+
+                    {/* Office Location */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Office Location
+                        </label>
+                        <input
+                            type="text"
+                            {...register("OfficeLocation")}
+                            className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                            placeholder="Enter office address"
+                        />
+                    </div>
+
+                    {/* Contact Number */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Contact Number
+                        </label>
+                        <input
+                            type="tel"
+                            {...register("number")}
+                            className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                            placeholder="Enter phone number"
+                        />
                     </div>
 
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="btn w-full hover:bg-blue-600 bg-blue-500 text-white py-2 px-4 rounded-lg"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
-                        Submit
+                        Add Company
                     </button>
                 </form>
             </div>
