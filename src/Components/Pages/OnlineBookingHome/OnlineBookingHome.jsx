@@ -1,13 +1,13 @@
+import { useRef, useEffect, useState } from "react";
 
-
-import { useEffect, useRef, useState } from "react";
-import useUsersData from "../../../hooks/useUsersData/useUsersData";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import axiosSecure from "../../../api/axiosSecure";
-import Swal from "sweetalert2";
-import { addPackage } from "../../../api/package";
 import toast from "react-hot-toast";
+
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Swal from "sweetalert2";
+import axiosSecure from "../../../api/axiosSecure";
 import PrintModal from "../../DashBoard/Host/CreatePackage/PrintModal";
+import { addPackage } from "../../../api/package";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
 
 
 
@@ -187,9 +187,14 @@ const OnlineBookingHome = () => {
 
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
-
+    
+        if (parseFloat(amount) < 80) {
+            setAmountError("Value must be greater than or equal to 80");
+            toast.error("Amount must be at least 80!");
+            return;
+        }
+    
         const form = e.target;
         const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
@@ -202,25 +207,44 @@ const OnlineBookingHome = () => {
         const qty = form.qty.value;
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
-        const bookingTimestamp = new Date().toISOString().split('T')[0];
+        const bookingTimestamp = new Date();
+    
         try {
-            // Safely calculate the current balance
-            // const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
-            // const CodAmount = parseFloat(amount || 0);
-
-            // const newBalance = CurrentBalance - CodAmount;
-
-
-            // Check for insufficient balance
-            // if (CodAmount > CurrentBalance) {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Insufficient Balance",
-            //         text: "You do not have enough balance to process this booking. Please recharge.",
-            //     });
-            //     return;
-            // }
-
+             if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Error",
+                      text: "Branch balance data is not available. Please reload the page.",
+                    });
+                    return;
+                  }
+            const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
+            const CodAmount = parseFloat(amount || 0);
+    
+            if (paymentOption === "Cash") {
+                const newBalance = CurrentBalance - CodAmount;
+    
+                if (CodAmount > CurrentBalance) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Insufficient Balance",
+                        text: "You do not have enough balance to process this booking. Please recharge.",
+                    });
+                    return;
+                }
+    
+                const updateBalanceResponse = await axiosSecure.put(
+                    `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
+                    { newBalance }
+                );
+    
+                if (updateBalanceResponse.status !== 200) {
+                    throw new Error("Failed to update branch balance.");
+                }
+    
+                queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
+            }
+    
             const packageData = {
                 packageTrackingNumber: CnNumber,
                 senderName,
@@ -242,61 +266,97 @@ const OnlineBookingHome = () => {
                 sender_Full_Adress,
                 CnNumber: CnNumber,
                 districtName: districtName,
-                email: verifiedUser?.email || 'User Online Booking',
-                User_Online_Booking_From_Home_Page:'User_Online_Booking_From_Home_Page'
+                email: verifiedUser?.email,
+                Branch_Name:verifiedUser?.name,
+                Branch_Number:verifiedUser?.Branch_Number,
+                Branch_Address:verifiedUser?.Branch_Address,
+                Branch_District_Name:verifiedUser?.Branch_District_Name,
+                Branch_Area:verifiedUser?.Branch_Area,
             };
-
+    
             setBookingInfo(packageData);
             setIsOpen(true);
-
+    
             const response = await addPackage(packageData);
-
+    
             if (response?.insertedId) {
-    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Parcel Added Successfully",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-
-                // const updateBalanceResponse = await axiosSecure.put(
-                //     `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
-                //     { newBalance }
-                // );
-
-
-                // if (updateBalanceResponse.status === 200) {
-                //     queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
-                
-                // } else {
-                //     throw new Error("Failed to update branch balance.");
-                // }
-                const response = await axiosSecure.put("/Online/CnNmber");
-                SetCnNumber(response.data.nextNumber);
+                const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
+                SetCnNumber(cnUpdateResponse.data.nextNumber);
+    
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Parcel Added Successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                toast.success("Package Added!");
             }
-
-            toast.success("Package Added!");
         } catch (error) {
             console.error("Error:", error.message);
             toast.error("An error occurred while creating the package.");
         }
-
+    
         form.reset();
         setAmount('');
     };
+    const fetchUserData = async (senderMobile) => {
+        try {
+            const response = await axiosSecure.get(`packagfhguieormbncdmnn44ge/sender/${senderMobile}`);
+            if (response.data) {
+                const { senderName, sender_Full_Adress } = response.data;
+                formRef.current.senderName.value = senderName;
+                formRef.current.senderFullAdress.value = sender_Full_Adress;
+            } else {
+                toast.error("User not found!");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            toast.error("Failed to fetch user data.");
+        }
+    };
+    
+    const handleSenderMobileChange = (e) => {
+        const senderMobile = e.target.value;
+        if (senderMobile.length === 11) { 
+            fetchUserData(senderMobile);
+        }
+    };
+    const fetchUserDataReceiver = async (recipientMobile) => {
+        try {
+            const response = await axiosSecure.get(`/packagfhguieormbncdmnn44ge/sender/receiver/${recipientMobile}`);
+            if (response.data) {
+                const { recipientName, Receiver_Full_Adress } = response.data;
+                formRef.current.recipientName.value = recipientName;
+                formRef.current.ReceiverFullAdress.value = Receiver_Full_Adress;
+            } else {
+                toast.error("User not found!");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            toast.error("Failed to fetch user data.");
+        }
+    };
+    
+    const handleReceiverMobileChange = (e) => {
+        const recipientMobile = e.target.value;
+        if (recipientMobile.length === 11) { 
+            fetchUserDataReceiver(recipientMobile);
+        }
+    };
+    
 
 
 
     const formRef = useRef();
 
     return (
-        <div className="mb-10">
-            <div className="flex justify-center">
+        <div>
+            <div className="flex justify-center ">
                 <img className="h-[50%]" src="https://t4.ftcdn.net/jpg/07/39/32/99/360_F_739329921_05Swu26SxilYCQOPqlWQ8WcPiw4gcm9S.jpg" alt="" />
             </div>
             <div>
-                <h1 className="text-3xl font-bold font-rancho text-secondary text-center mb-5">Online Booking</h1>
+                <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Online Booking Home</h1>
                 {/* <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1> */}
             </div>
             <hr />
@@ -304,12 +364,14 @@ const OnlineBookingHome = () => {
             <form onSubmit={handleSubmit} ref={formRef}>
                 <div className='md:flex md:px-24'>
 
-                    <div className="form-control md:mr-4 md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Sender Mobile</span>
-                        </label>
-                        <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile' required />
-                    </div>
+                <div className="form-control md:mr-4 md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Sender Mobile</span>
+    </label>
+    <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile'
+    onChange={handleSenderMobileChange}
+    required />
+</div>
                     <div className="form-control md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Sender Name</span>
@@ -382,7 +444,9 @@ const OnlineBookingHome = () => {
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
                         </label>
-                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile' required />
+                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
+                        onChange={handleReceiverMobileChange}
+                        required />
 
                     </div>
                     <div className="form-control md:w-1/2">
@@ -445,8 +509,8 @@ const OnlineBookingHome = () => {
                 </div>
 
                 <div className="form-control md:px-24 w-full">
-                    <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" />
-                    
+                    <input className='btn mt-3 w-full mx-auto border-2 mb-10 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />
+                    {isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
                 </div>
             </form>
 
