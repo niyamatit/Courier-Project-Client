@@ -66,7 +66,7 @@ const Coverage = () => {
                             <div
                                 className="absolute inset-0 bg-cover bg-center opacity-30"
                                 style={{
-                                    backgroundImage: "url('/src/assets/logo.png')",
+                                    backgroundImage: "url('/src/assets/text-logo.png')",
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
                                 }}
