@@ -222,7 +222,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                     </label>
                     <input
                       type="text"
-                      {...register('IPNumber', { required: true })}
+                      {...register('IPNumber', { required: false })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.IPNumber ? 'border-red-500' : 'border-gray-300'
                         }`}
                     />
