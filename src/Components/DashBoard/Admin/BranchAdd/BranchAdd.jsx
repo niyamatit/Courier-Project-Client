@@ -186,6 +186,47 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                 <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
                   Branch Information
                 </h2>
+                {/* Support Company */}
+                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4 mb-4">
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Reference / Special Introduction
+                    </label>
+                    <input
+                      type="text"
+                      {...register('reference', { required: false })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.reference ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                    />
+                    {errors.reference && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Support Company*
+                    </label>
+                    <select
+                      {...register('supportCompany', { required: true })}
+                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.supportCompany ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                      onChange={(e)=> setSupportCompany(e.target.value)}
+                    >
+                      <option value="hfjkdhjfhdjfj">Select Company</option>
+
+                      {
+                        Company.map(user => (
+                          <option key={user?._id} value={user?.Company_Name}>{user?.Company_Name}</option>
+                        ))
+                      }
+
+                    </select>
+                    {errors.staff_post && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+                </div>
+              
                 <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
 
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
@@ -202,21 +243,24 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Branch Contact Number*
-                    </label>
-                    <input
-                      type="text"
-                      {...register('contactNumber', { required: true })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                    />
-                    {errors.contactNumber && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-2">
+                  {
+                     SupportCompany === 'Niyamat Express' && <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                     <label className="block text-gray-700 font-medium mb-1">
+                       Branch Contact Number*
+                     </label>
+                     <input
+                       type="text"
+                       {...register('contactNumber', { required: true })}
+                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'
+                         }`}
+                     />
+                     {errors.contactNumber && (
+                       <span className="text-red-500">This field is required</span>
+                     )}
+                   </div>
+                  }
+                  {
+                    SupportCompany === 'Niyamat Express' && <div className="col-span-2 md:col-span-2 lg:col-span-2">
                     <label className="block text-gray-700 font-medium mb-1">
                       Branch  IP Number
                     </label>
@@ -230,28 +274,31 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
+                  }
           
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Branch Type*
-                    </label>
-                    <select
-                      {...register('branch_type', { required: true })}
-                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.branch_type ? 'border-red-500' : 'border-gray-300'
-                        }`}
+                 {
+                  SupportCompany === 'Niyamat Express' &&  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                  <label className="block text-gray-700 font-medium mb-1">
+                    Branch Type*
+                  </label>
+                  <select
+                    {...register('branch_type', { required: true })}
+                    className={`select select-bordered w-full p-2 rounded-lg border ${errors.branch_type ? 'border-red-500' : 'border-gray-300'
+                      }`}
 
-                    >
-                      <option value="">Select Type</option>
-                      <option value="Union">Union</option>
-                      <option value="Sub-district">Sub-district</option>
-                      <option value="District">District</option>
-                      <option value="Divisional">Divisional</option>
+                  >
+                    <option value="">Select Type</option>
+                    <option value="Union">Union</option>
+                    <option value="Sub-district">Sub-district</option>
+                    <option value="District">District</option>
+                    <option value="Divisional">Divisional</option>
 
-                    </select>
-                    {errors.staff_post && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
+                  </select>
+                  {errors.staff_post && (
+                    <span className="text-red-500">This field is required</span>
+                  )}
+                </div>
+                 }
 
                   {/* Current Address */}
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
@@ -313,7 +360,8 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                 </div>
 
 
-                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
+                {
+                  SupportCompany === 'Niyamat Express' && <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
                       Branch commission
@@ -352,48 +400,9 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                     )}
                   </div>
                 </div>
-                {/* Support Company */}
-                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Reference / Special Introduction
-                    </label>
-                    <input
-                      type="text"
-                      {...register('reference', { required: false })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.reference ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                    />
-                    {errors.reference && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Support Company*
-                    </label>
-                    <select
-                      {...register('supportCompany', { required: true })}
-                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.supportCompany ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                      onChange={(e)=> setSupportCompany(e.target.value)}
-                    >
-                      <option value="hfjkdhjfhdjfj">Select Company</option>
-
-                      {
-                        Company.map(user => (
-                          <option key={user?._id} value={user?.Company_Name}>{user?.Company_Name}</option>
-                        ))
-                      }
-
-                    </select>
-                    {errors.staff_post && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                </div>
-               {
-                SupportCompany === 'Test Company' && 
+                }
+                {
+                SupportCompany === 'Niyamat Express' && 
                 <div>
                <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
                   <label className="block text-gray-700 font-medium mb-1">
