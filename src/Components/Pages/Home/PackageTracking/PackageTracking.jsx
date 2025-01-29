@@ -52,7 +52,7 @@ const PackageTracking = () => {
         setSearchError(true);
       }
     } catch (error) {
-      console.error("Search error:", error);
+      // console.error("Search error:", error);
       setSearchResult(null);
       setSearchError(true);
     }
