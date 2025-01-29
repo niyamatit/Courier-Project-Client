@@ -62,6 +62,9 @@ const SupportCompany_List = () => {
                     <thead className="bg-blue-200">
                         <tr>
                         <th className="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                SL
+                            </th>
+                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                                 Date Added
                             </th>
                             <th className="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -83,8 +86,11 @@ const SupportCompany_List = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {SupportCompanyList.map((company) => (
+                        {SupportCompanyList.map((company,index) => (
                             <tr  key={company._id} className="hover:bg-gray-50 transition-colors">
+                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {index + 1}
+        </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {new Date(company.Date).toLocaleDateString('en-US', {
                                         year: 'numeric',
