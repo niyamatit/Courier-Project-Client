@@ -171,6 +171,8 @@ const AddBaranchStaff = () => {
     {"id":"77","district_id":"8","name":"Fatikchhari","bn_name":"ফটিকছড়ি","url":"fatikchhari.chittagong.gov.bd"},
     {"id":"78","district_id":"8","name":"Raozan","bn_name":"রাউজান","url":"raozan.chittagong.gov.bd"},
     {"id":"79","district_id":"8","name":"Karnafuli","bn_name":"কর্ণফুলী","url":"karnafuli.chittagong.gov.bd"},
+    {"id":"790","district_id":"8","name":"Kadamtali","bn_name":"কদমতলী","url":"Kadamtali.chittagong.gov.bd"},
+    {"id":"791","district_id":"8","name":"Agrabad Hub","bn_name":"আগ্রাবাদ","url":"Agrabad.chittagong.gov.bd"},
     {"id":"80","district_id":"9","name":"Coxsbazar Sadar","bn_name":"কক্সবাজার সদর","url":"sadar.coxsbazar.gov.bd"},
     {"id":"81","district_id":"9","name":"Chakaria","bn_name":"চকরিয়া","url":"chakaria.coxsbazar.gov.bd"},
     {"id":"82","district_id":"9","name":"Kutubdia","bn_name":"কুতুবদিয়া","url":"kutubdia.coxsbazar.gov.bd"},
