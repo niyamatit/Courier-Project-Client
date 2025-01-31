@@ -148,63 +148,63 @@ const MerchantDashboard = () => {
 
         <StatsCard
   title="Total Delivery Pending"
-  value={filteredPieData?.pendingDeliveries || 0} 
-  percentage={getPercentage(filteredPieData?.pendingDeliveries, filteredPieData?.parcelBooking)}
+  value={0} 
+  percentage={getPercentage(0)}
   icon={<FaClock />}
   color="bg-yellow-100"
   percentageColor="text-blue-600"
 />
         <StatsCard
           title="Today Delivered"
-          value={filteredPieData?.delivered || 0}
+          value={0}
           icon={<FaCheckCircle />}
           color="bg-green-100"
         />
         <StatsCard
           title="Today Cancelled"
-          value={filteredPieData?.cancelled || 0}
+          value={0}
           icon={<FaTimesCircle />}
           color="bg-red-100"
         />
          <StatsCard
           title="Payment Invoice"
-          value={`${financialStats.paymentInvoice.toFixed(2)} TK`}
+          value={0}
           icon={<FaMoneyBillWave />}
           color="bg-green-100"
         />
         <StatsCard
           title="Total Collected"
-          value={`${financialStats.totalCollected.toFixed(2)} TK`}
+          value={0}
           icon={<FaMoneyBillWave />}
           color="bg-blue-100"
         />
         <StatsCard
           title="Total Service Charge"
-          value={`${financialStats.totalServiceCharge.toFixed(2)} TK`}
+          value={0}
           icon={<FaMoneyBillWave />}
           color="bg-purple-100"
         />
         <StatsCard
           title="Total Paid"
-          value={`${financialStats.totalPaid.toFixed(2)} TK`}
+          value={0}
           icon={<FaMoneyBillWave />}
           color="bg-orange-100"
         />
         <StatsCard
           title="Unpaid Amount"
-          value={`${financialStats.unpaidAmount.toFixed(2)} TK`}
+          value={0}
           icon={<FaMoneyCheckAlt />}
           color="bg-red-100"
         />
         <StatsCard
           title="All Parcel COD"
-          value={`${financialStats.allParcelCOD.toFixed(2)} TK`}
+          value={0} 
           icon={<FaBoxOpen />}
           color="bg-blue-100"
         />
         <StatsCard
           title="Return Parcel COD"
-          value={`${financialStats.returnParcelCOD.toFixed(2)} TK`}
+          value={0} 
           icon={<FaUndo />}
           color="bg-red-100"
         />
@@ -212,6 +212,7 @@ const MerchantDashboard = () => {
 
       <div className="flex  gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
         <DeliveryCard title="Out for Delivery" items={DeliveryData.outForDelivery} />
+        {/* <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} /> */}
         <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} />
       </div>
       <div className="mb-8 border-[2px] hover:shadow-2xl rounded hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
