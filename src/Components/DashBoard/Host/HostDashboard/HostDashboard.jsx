@@ -205,7 +205,7 @@ const HostDashboard = () => {
                 <HostStatsCard
                     title="Total Hub Transfer Complete"
                     icon={<FaTruckPickup />}
-                    value="20"
+                    value="0"
                     color="bg-red-100"
                 />
                 <HostStatsCard
@@ -217,7 +217,7 @@ const HostDashboard = () => {
                 <HostStatsCard
                     title="Previous Pending Parcel"
                     icon={<FaTruckPickup />}
-                    value="20"
+                    value="0"
                     color="bg-orange-100"
                 />
                 <HostStatsCard
