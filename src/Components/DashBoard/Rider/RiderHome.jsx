@@ -33,7 +33,7 @@ const RiderHome = () => {
   } = useRiderHomeStats();
 
   if (isLoading) {
-    return <div>Loading...</div>; // Add a loading state if necessary
+    return <div>Loading...</div>; 
   }
 
   const infos = [
