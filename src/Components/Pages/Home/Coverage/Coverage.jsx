@@ -83,7 +83,7 @@ const Coverage = () => {
                                     <strong>Type:</strong> {branch?.Branch_type}
                                 </p>
                                 <p className="text-sm">
-                                    <strong>Bracnh Name:</strong> {branch?.Branch_Name}
+                                    <strong>Support Company Name:</strong> {branch?.Branch_Support_Company || 'N/A'}
                                 </p>
                                 <p className="text-sm">
                                     <strong>Address:</strong> {branch?.Branch_Address}
@@ -92,10 +92,10 @@ const Coverage = () => {
                                     <strong>Contact Number:</strong> {branch?.Branch_Number}
                                 </p>
                                 <p className="text-sm">
-                                    <strong>IP Number:</strong> {branch?.Branch_Number}
+                                    <strong>IP Number:</strong> {branch?.Branch_IP_Number || 'N/A'}
                                 </p>
                                 <p className="text-sm">
-                                    <strong>Reference:</strong> {branch?.Branch_Number}
+                                    <strong>Reference:</strong> {branch?.Reference || 'N/A'}
                                 </p>
                             </div>
                         </div>
