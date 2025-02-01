@@ -66,7 +66,7 @@ const Coverage = () => {
                             <div
                                 className="absolute inset-0 bg-cover bg-center opacity-30"
                                 style={{
-                                    backgroundImage: "url('/src/assets/text-logo.png')",
+                                    backgroundImage: "url('https://i.ibb.co.com/SD8pn0BD/text-logo.png')",
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
                                 }}
@@ -77,19 +77,19 @@ const Coverage = () => {
 
                             {/* Content */}
                             <div className="relative z-10 text-blue-950 text-center">
-                                <h2 className="text-xl font-bold mb-2">{branch?.Branch_Name}</h2>
+                                <h2 className="text-xl font-bold mb-2">{branch?.Branch_Name ||"N/A"}</h2>
 
                                 <p className="text-sm">
-                                    <strong>Type:</strong> {branch?.Branch_type}
+                                    <strong>Type:</strong> {branch?.Branch_type ||"N/A"}
                                 </p>
                                 <p className="text-sm">
                                     <strong>Support Company Name:</strong> {branch?.Branch_Support_Company || 'N/A'}
                                 </p>
                                 <p className="text-sm">
-                                    <strong>Address:</strong> {branch?.Branch_Address}
+                                    <strong>Address:</strong> {branch?.Branch_Address ||"N/A"}
                                 </p>
                                 <p className="text-sm">
-                                    <strong>Contact Number:</strong> {branch?.Branch_Number}
+                                    <strong>Contact Number:</strong> {branch?.Branch_Number ||"N/A"}
                                 </p>
                                 <p className="text-sm">
                                     <strong>IP Number:</strong> {branch?.Branch_IP_Number || 'N/A'}
