@@ -250,7 +250,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                      </label>
                      <input
                        type="text"
-                       {...register('contactNumber', { required: true })}
+                       {...register('contactNumber', { required: SupportCompany ? true : false})}
                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'
                          }`}
                      />
@@ -282,7 +282,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                     Branch Type*
                   </label>
                   <select
-                    {...register('branch_type', { required: true })}
+                    {...register('branch_type', { required: SupportCompany ? true : false })}
                     className={`select select-bordered w-full p-2 rounded-lg border ${errors.branch_type ? 'border-red-500' : 'border-gray-300'
                       }`}
 
@@ -339,10 +339,10 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                   </div>
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
-                      Area*
+                      Area
                     </label>
                     <select
-                      {...register('area', { required: true })}
+                      {...register('area', { required: false })}
                       className={`select select-bordered w-full p-2 rounded-lg border ${errors.area ? 'border-red-500' : 'border-gray-300'
                         }`}
                     >
@@ -410,7 +410,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                   </label>
                   <input
                     type="text"
-                    {...register('Staff_User_ID', { required: true })}
+                    {...register('Staff_User_ID', { required: SupportCompany ? true : false })}
                     className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
                       }`}
                   />
@@ -424,7 +424,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                   </label>
                   <input
                     type="password"
-                    {...register('Staff_Password', { required: true ,minLength: 8})}
+                    {...register('Staff_Password', { required: SupportCompany ? true : false })}
                     className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
                       }`}
                       
