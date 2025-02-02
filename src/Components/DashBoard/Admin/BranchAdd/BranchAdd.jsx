@@ -114,7 +114,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
         Branch_IP_Number:  formData?.IPNumber || "",
         email: formData?.Staff_User_ID || "",
         
-        Branch_Password:obfuscatePassword(formData?.Staff_Password) ||   "",
+        Branch_Password:obfuscatePassword(formData?.Staff_Password || "") ||   "",
         Under_Branch: formData?.under_branch || "",
         Date: new Date().toISOString().split('T')[0],
       };
@@ -145,7 +145,10 @@ const deobfuscatePassword = (obfuscatedPassword) => {
           Branch_Area: formData?.area || "",
         };
 
+       if(verifyBrnach)
+       {
         const response = await axiosSecure.post('/users/auth/register', BranchLogin);
+       }
 
       }
     } catch (error) {
@@ -170,7 +173,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
       }
     }
   };
-
+const verifyBrnach = SupportCompany === 'Niyamat Express';
 
 
   return (
@@ -244,13 +247,13 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                     )}
                   </div>
                   {
-                     SupportCompany === 'Niyamat Express' && <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                     verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-1">
                      <label className="block text-gray-700 font-medium mb-1">
                        Branch Contact Number*
                      </label>
                      <input
                        type="text"
-                       {...register('contactNumber', { required: SupportCompany ? true : false})}
+                       {...register('contactNumber', { required: verifyBrnach ? true : false})}
                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'
                          }`}
                      />
@@ -260,7 +263,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                    </div>
                   }
                   {
-                    SupportCompany === 'Niyamat Express' && <div className="col-span-2 md:col-span-2 lg:col-span-2">
+                    verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-2">
                     <label className="block text-gray-700 font-medium mb-1">
                       Branch  IP Number
                     </label>
@@ -277,12 +280,12 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                   }
           
                  {
-                  SupportCompany === 'Niyamat Express' &&  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                  verifyBrnach &&  <div className="col-span-2 md:col-span-2 lg:col-span-1">
                   <label className="block text-gray-700 font-medium mb-1">
                     Branch Type*
                   </label>
                   <select
-                    {...register('branch_type', { required: SupportCompany ? true : false })}
+                    {...register('branch_type', { required: verifyBrnach ? true : false })}
                     className={`select select-bordered w-full p-2 rounded-lg border ${errors.branch_type ? 'border-red-500' : 'border-gray-300'
                       }`}
 
@@ -361,7 +364,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
 
 
                 {
-                  SupportCompany === 'Niyamat Express' && <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
+                  verifyBrnach && <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
                       Branch commission
@@ -402,7 +405,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                 </div>
                 }
                 {
-                SupportCompany === 'Niyamat Express' && 
+                verifyBrnach && 
                 <div>
                <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
                   <label className="block text-gray-700 font-medium mb-1">
@@ -410,7 +413,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                   </label>
                   <input
                     type="text"
-                    {...register('Staff_User_ID', { required: SupportCompany ? true : false })}
+                    {...register('Staff_User_ID', { required: verifyBrnach ? true : false })}
                     className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
                       }`}
                   />
@@ -424,7 +427,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                   </label>
                   <input
                     type="password"
-                    {...register('Staff_Password', { required: SupportCompany ? true : false })}
+                    {...register('Staff_Password', { required: verifyBrnach ? true : false })}
                     className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
                       }`}
                       
