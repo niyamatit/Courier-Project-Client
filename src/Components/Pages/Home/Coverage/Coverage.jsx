@@ -3,9 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBranch } from "../../../../api/auth";
 import { useEffect, useState } from "react";
 
-
 const Coverage = () => {
-
     const {
         data: branches = [],
         isLoading,
