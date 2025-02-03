@@ -4,6 +4,7 @@ import { BsGraphUp } from 'react-icons/bs'
 import { MdBookOnline, MdMoney, MdPending, MdPersonAdd, MdRateReview } from 'react-icons/md'
 import { MdStore } from 'react-icons/md';
 import { BsBuilding } from "react-icons/bs";
+import { BsGrid } from "react-icons/bs";
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 const AdminMenu = () => {
   const [verifiedUser] = useUsersData();
@@ -37,6 +38,10 @@ const AdminMenu = () => {
       <MenuItem icon={BsBuilding}
         label='Support Company Add'
         address='company-add' />
+
+      <MenuItem icon={BsGrid}
+        label='Support Company List'
+        address='company-list' />
 
 
       <MenuItem icon={FaUserCog}

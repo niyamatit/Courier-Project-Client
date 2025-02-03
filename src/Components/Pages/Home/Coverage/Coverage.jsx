@@ -75,31 +75,64 @@ const Coverage = () => {
                                         backgroundPosition: "center",
                                     }}
                                 ></div>
+                                <div className="relative p-6 rounded-lg shadow-lg bg-white border border-gray-100 overflow-hidden">
+                                    {/* Background Image with Overlay */}
+                                    <div
+                                        className="absolute inset-0 bg-cover bg-center opacity-30"
+                                        style={{
+                                            backgroundImage: "url('https://i.ibb.co.com/SD8pn0BD/text-logo.png')",
+                                            backgroundSize: "cover",
+                                            backgroundPosition: "center",
+                                        }}
+                                    ></div>
 
-                                {/* Overlay for Contrast */}
-                                <div className="absolute inset-0 bg-slate-300 bg-opacity-65"></div>
+                                    {/* Overlay for Contrast */}
+                                    <div className="absolute inset-0 bg-slate-300 bg-opacity-65"></div>
 
-                                {/* Content */}
-                                <div className="relative z-10 text-blue-950 text-center">
-                                    <h2 className="text-xl font-bold mb-2">{branch?.Branch_Name}</h2>
+                                    {/* Content */}
+                                    <div className="relative z-10 text-blue-950 text-center">
+                                        <h2 className="text-xl font-bold mb-2">{branch?.Branch_Name}</h2>
+                                        {/* Content */}
+                                        <div className="relative z-10 text-blue-950 text-center">
+                                            <h2 className="text-xl font-bold mb-2">{branch?.Branch_Name || "N/A"}</h2>
 
+                                            <p className="text-sm">
+                                                <strong>Type:</strong> {branch?.Branch_type}
+                                            </p>
+                                            <p className="text-sm">
+                                                <strong>Bracnh Name:</strong> {branch?.Branch_Name}
+                                            </p>
+                                            <p className="text-sm">
+                                                <strong>Address:</strong> {branch?.Branch_Address}
+                                            </p>
+                                            <p className="text-sm">
+                                                <strong>Contact Number:</strong> {branch?.Branch_Number}
+                                            </p>
+                                            <p className="text-sm">
+                                                <strong>IP Number:</strong> {branch?.Branch_Number}
+                                            </p>
+                                            <p className="text-sm">
+                                                <strong>Reference:</strong> {branch?.Branch_Number}
+                                            </p>
+                                        </div>
+                                    </div>
                                     <p className="text-sm">
-                                        <strong>Type:</strong> {branch?.Branch_type}
+                                        <strong>Type:</strong> {branch?.Branch_type || "N/A"}
                                     </p>
                                     <p className="text-sm">
-                                        <strong>Bracnh Name:</strong> {branch?.Branch_Name}
+                                        <strong>Support Company Name:</strong> {branch?.Branch_Support_Company || 'N/A'}
                                     </p>
                                     <p className="text-sm">
-                                        <strong>Address:</strong> {branch?.Branch_Address}
+                                        <strong>Address:</strong> {branch?.Branch_Address || "N/A"}
                                     </p>
                                     <p className="text-sm">
-                                        <strong>Contact Number:</strong> {branch?.Branch_Number}
+                                        <strong>Contact Number:</strong> {branch?.Branch_Number || "N/A"}
                                     </p>
                                     <p className="text-sm">
-                                        <strong>IP Number:</strong> {branch?.Branch_Number}
+                                        <strong>IP Number:</strong> {branch?.Branch_IP_Number || 'N/A'}
                                     </p>
                                     <p className="text-sm">
-                                        <strong>Reference:</strong> {branch?.Branch_Number}
+                                        <strong>Reference:</strong> {branch?.Reference || 'N/A'}
                                     </p>
                                 </div>
                             </div>

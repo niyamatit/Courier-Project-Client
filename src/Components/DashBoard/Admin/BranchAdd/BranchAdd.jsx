@@ -114,6 +114,8 @@ const BranchAdd = () => {
         email: formData?.Staff_User_ID || "",
 
         Branch_Password: obfuscatePassword(formData?.Staff_Password) || "",
+
+        Branch_Password: obfuscatePassword(formData?.Staff_Password || "") || "",
         Under_Branch: formData?.under_branch || "",
         Date: new Date().toISOString().split('T')[0],
       };
@@ -144,7 +146,9 @@ const BranchAdd = () => {
           Branch_Area: formData?.area || "",
         };
 
-        const response = await axiosSecure.post('/users/auth/register', BranchLogin);
+        if (verifyBrnach) {
+          const response = await axiosSecure.post('/users/auth/register', BranchLogin);
+        }
 
       }
     } catch (error) {
@@ -169,7 +173,7 @@ const BranchAdd = () => {
       }
     }
   };
-
+  const verifyBrnach = SupportCompany === 'Niyamat Express';
 
 
   return (
@@ -185,6 +189,47 @@ const BranchAdd = () => {
                 <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-4 md:mb-6 text-blue-600">
                   Branch Information
                 </h2>
+                {/* Support Company */}
+                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4 mb-4">
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Reference / Special Introduction
+                    </label>
+                    <input
+                      type="text"
+                      {...register('reference', { required: false })}
+                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.reference ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                    />
+                    {errors.reference && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Support Company*
+                    </label>
+                    <select
+                      {...register('supportCompany', { required: true })}
+                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.supportCompany ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                      onChange={(e) => setSupportCompany(e.target.value)}
+                    >
+                      <option value="hfjkdhjfhdjfj">Select Company</option>
+
+                      {
+                        Company.map(user => (
+                          <option key={user?._id} value={user?.Company_Name}>{user?.Company_Name}</option>
+                        ))
+                      }
+
+                    </select>
+                    {errors.staff_post && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
 
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
@@ -201,56 +246,62 @@ const BranchAdd = () => {
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Branch Contact Number*
-                    </label>
-                    <input
-                      type="text"
-                      {...register('contactNumber', { required: true })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                    />
-                    {errors.contactNumber && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-2">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Branch  IP Number
-                    </label>
-                    <input
-                      type="text"
-                      {...register('IPNumber', { required: true })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.IPNumber ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                    />
-                    {errors.IPNumber && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
+                  {
+                    verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch Contact Number*
+                      </label>
+                      <input
+                        type="text"
+                        {...register('contactNumber', { required: verifyBrnach ? true : false })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {errors.contactNumber && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                  }
+                  {
+                    verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-2">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch  IP Number
+                      </label>
+                      <input
+                        type="text"
+                        {...register('IPNumber', { required: false })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.IPNumber ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {errors.IPNumber && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                  }
 
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Branch Type*
-                    </label>
-                    <select
-                      {...register('branch_type', { required: true })}
-                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.branch_type ? 'border-red-500' : 'border-gray-300'
-                        }`}
+                  {
+                    verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch Type*
+                      </label>
+                      <select
+                        {...register('branch_type', { required: verifyBrnach ? true : false })}
+                        className={`select select-bordered w-full p-2 rounded-lg border ${errors.branch_type ? 'border-red-500' : 'border-gray-300'
+                          }`}
 
-                    >
-                      <option value="">Select Type</option>
-                      <option value="Union">Union</option>
-                      <option value="Sub-district">Sub-district</option>
-                      <option value="District">District</option>
-                      <option value="Divisional">Divisional</option>
+                      >
+                        <option value="">Select Type</option>
+                        <option value="Union">Union</option>
+                        <option value="Sub-district">Sub-district</option>
+                        <option value="District">District</option>
+                        <option value="Divisional">Divisional</option>
 
-                    </select>
-                    {errors.staff_post && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
+                      </select>
+                      {errors.staff_post && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                  }
 
                   {/* Current Address */}
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
@@ -291,10 +342,10 @@ const BranchAdd = () => {
                   </div>
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
-                      Area*
+                      Area
                     </label>
                     <select
-                      {...register('area', { required: true })}
+                      {...register('area', { required: false })}
                       className={`select select-bordered w-full p-2 rounded-lg border ${errors.area ? 'border-red-500' : 'border-gray-300'
                         }`}
                     >
@@ -312,87 +363,49 @@ const BranchAdd = () => {
                 </div>
 
 
-                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Branch commission
-                    </label>
-                    <input
-                      type="text"
-                      {...register('branch_lav', { required: false })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.branch_lav ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                    />
-                    {errors.branch_lav && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Under Branch
-                    </label>
-                    <select
-                      {...register('under_branch', { required: false })}
-                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.under_branch ? 'border-red-500' : 'border-gray-300'
-                        }`}
-
-                    >
-                      <option value="hfjkdhjfhdjfj">Select Branch</option>
-
-                      {
-                        users.filter(user => user?.role === 'host').map(user => (
-                          <option key={user?._id} value={user?.name}>{user?.name}</option>
-                        ))
-                      }
-
-                    </select>
-                    {errors.staff_post && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                </div>
-                {/* Support Company */}
-                <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Reference / Special Introduction
-                    </label>
-                    <input
-                      type="text"
-                      {...register('reference', { required: false })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.reference ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                    />
-                    {errors.reference && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Support Company*
-                    </label>
-                    <select
-                      {...register('supportCompany', { required: true })}
-                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.supportCompany ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                      onChange={(e) => setSupportCompany(e.target.value)}
-                    >
-                      <option value="hfjkdhjfhdjfj">Select Company</option>
-
-                      {
-                        Company.map(user => (
-                          <option key={user?._id} value={user?.Company_Name}>{user?.Company_Name}</option>
-                        ))
-                      }
-
-                    </select>
-                    {errors.staff_post && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                </div>
                 {
-                  SupportCompany === 'Test Company' &&
+                  verifyBrnach && <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
+                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch commission
+                      </label>
+                      <input
+                        type="text"
+                        {...register('branch_lav', { required: false })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.branch_lav ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {errors.branch_lav && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Under Branch
+                      </label>
+                      <select
+                        {...register('under_branch', { required: false })}
+                        className={`select select-bordered w-full p-2 rounded-lg border ${errors.under_branch ? 'border-red-500' : 'border-gray-300'
+                          }`}
+
+                      >
+                        <option value="hfjkdhjfhdjfj">Select Branch</option>
+
+                        {
+                          users.filter(user => user?.role === 'host').map(user => (
+                            <option key={user?._id} value={user?.name}>{user?.name}</option>
+                          ))
+                        }
+
+                      </select>
+                      {errors.staff_post && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                  </div>
+                }
+                {
+                  verifyBrnach &&
                   <div>
                     <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
                       <label className="block text-gray-700 font-medium mb-1">
@@ -400,7 +413,7 @@ const BranchAdd = () => {
                       </label>
                       <input
                         type="text"
-                        {...register('Staff_User_ID', { required: true })}
+                        {...register('Staff_User_ID', { required: verifyBrnach ? true : false })}
                         className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
                           }`}
                       />
@@ -414,7 +427,7 @@ const BranchAdd = () => {
                       </label>
                       <input
                         type="password"
-                        {...register('Staff_Password', { required: true, minLength: 8 })}
+                        {...register('Staff_Password', { required: verifyBrnach ? true : false })}
                         className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
                           }`}
 
