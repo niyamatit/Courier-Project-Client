@@ -28,6 +28,7 @@ const HostDashboard = () => {
     const [filteredPieData, setFilteredPieData] = useState(null);
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
+    const todayDate = new Date().toISOString().split("T")[0];
 
     // useEffect(() => {
     //     getAdminStat().then(data => setStatData(data));
@@ -103,6 +104,37 @@ const HostDashboard = () => {
         },
         enabled: !!verifiedUser?.email,
     });
+
+    // --------------------------For Today Pickup Parcels-------------
+
+    const { data: Verify_Admin_MotherHub = [], } = useQuery({
+        queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
+        enabled: !!verifiedUser?.email,
+        queryFn: async () => {
+          const res = await axiosSecure.get(`/package/email/${verifiedUser?.email}`);
+          return Array.isArray(res.data) ? res.data : [res.data];
+        },
+      });
+
+      const todayParcelsdateOnline = Verify_Admin_MotherHub?.filter(parcel => {
+        const dateValue = parcel?.Tracking_Admin_Select_Online_MotherHub_Branch_Date;
+        
+        if (!dateValue) return false; // Skip if date is missing
+    
+        const parsedDate = new Date(dateValue);
+        
+        if (isNaN(parsedDate.getTime())) return false; // Skip if the date is invalid
+    
+        const parcelDate = parsedDate.toISOString().split("T")[0]; // Convert to YYYY-MM-DD
+    
+        return parcelDate === todayDate;
+    });
+      const Today_Total_OnlineParcel = todayParcelsdateOnline?.length
+
+
+
+
+    //   ---------------------------------------------------------------------------------
 
 
     useEffect(() => {
@@ -187,7 +219,7 @@ const HostDashboard = () => {
                 <HostStatsCard
                     title="Today Pickup Request"
                     icon={<FaTruckPickup />}
-                    value={pickupRequestData?.length}
+                    value={Today_Total_OnlineParcel || 0}
                     color="bg-blue-100"
                 />
                 <HostStatsCard
