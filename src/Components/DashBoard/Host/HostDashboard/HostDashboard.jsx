@@ -28,6 +28,7 @@ const HostDashboard = () => {
     const [filteredPieData, setFilteredPieData] = useState(null);
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
+    const todayDate = new Date().toISOString().split("T")[0];
 
     // useEffect(() => {
     //     getAdminStat().then(data => setStatData(data));
@@ -103,6 +104,32 @@ const HostDashboard = () => {
         },
         enabled: !!verifiedUser?.email,
     });
+
+    // --------------------------For Today Pickup Parcels-------------
+
+    const fetchParcels = (key, url, dateField) => {
+        const { data = [] } = useQuery({
+          queryKey: [key, verifiedUser?.email],
+          enabled: !!verifiedUser?.email,
+          queryFn: async () => {
+            const res = await axiosSecure.get(url);
+            return Array.isArray(res.data) ? res.data : [res.data];
+          },
+        });
+      
+        return data.filter(parcel => {
+          const parsedDate = parcel?.[dateField] ? new Date(parcel[dateField]) : null;
+          return parsedDate && !isNaN(parsedDate.getTime()) && parsedDate.toISOString().split("T")[0] === todayDate;
+        }).length;
+      };
+      
+      const Today_Total_OnlineParcel = fetchParcels("Verify_Admin_MotherHub", `/package/email/${verifiedUser?.email}`, "Tracking_Admin_Select_Online_MotherHub_Branch_Date");
+      const Today_Total_OfflineneParcel = fetchParcels("Verify_Admin_MotherHub_Offline", `/offline/email/Branch/destination/${verifiedUser?.email}`, "Tracking_Booking_Branch_Select_MotherHub_Date");
+      const Today_Total_Merchant_Parcel = fetchParcels("Verify_Admin_MotherHub_Merchant", `/Merchant/email/Branch/destination/mer/${verifiedUser?.email}`, "Tracking_Booking_Merchant_Select_MotherHub_Date");
+      
+      const Total_Today_Pickup_Parcel = Today_Total_Merchant_Parcel + Today_Total_OfflineneParcel + Today_Total_OnlineParcel;
+      
+    //   -----------------------------------------For Today Pickup Parcels End----------------
 
 
     useEffect(() => {
@@ -183,11 +210,11 @@ const HostDashboard = () => {
             </div>
 
 
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
                 <HostStatsCard
                     title="Today Pickup Request"
                     icon={<FaTruckPickup />}
-                    value={pickupRequestData?.length}
+                    value={Total_Today_Pickup_Parcel || 0}
                     color="bg-blue-100"
                 />
                 <HostStatsCard
