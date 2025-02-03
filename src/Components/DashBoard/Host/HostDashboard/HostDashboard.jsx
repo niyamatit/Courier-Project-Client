@@ -119,22 +119,72 @@ const HostDashboard = () => {
       const todayParcelsdateOnline = Verify_Admin_MotherHub?.filter(parcel => {
         const dateValue = parcel?.Tracking_Admin_Select_Online_MotherHub_Branch_Date;
         
-        if (!dateValue) return false; // Skip if date is missing
+        if (!dateValue) return false; 
     
         const parsedDate = new Date(dateValue);
         
-        if (isNaN(parsedDate.getTime())) return false; // Skip if the date is invalid
+        if (isNaN(parsedDate.getTime())) return false; 
     
-        const parcelDate = parsedDate.toISOString().split("T")[0]; // Convert to YYYY-MM-DD
+        const parcelDate = parsedDate.toISOString().split("T")[0]; 
     
         return parcelDate === todayDate;
     });
       const Today_Total_OnlineParcel = todayParcelsdateOnline?.length
 
+    //   For Offline
+    const { data: Verify_Admin_MotherHub_Offline = [],  } = useQuery({
+        queryKey: ["Verify_Admin_MotherHub_Offline", verifiedUser?.email],
+        enabled: !!verifiedUser?.email,
+        queryFn: async () => {
+          const res = await axiosSecure.get(`/offline/email/Branch/destination/${verifiedUser?.email}`);
+          return Array.isArray(res.data) ? res.data : [res.data];
+        },
+      });
+
+      const todayParcelsdateOffline = Verify_Admin_MotherHub_Offline?.filter(parcel => {
+        const dateValue = parcel?.Tracking_Booking_Branch_Select_MotherHub_Date;
+        
+        if (!dateValue) return false; 
+    
+        const parsedDate = new Date(dateValue);
+        
+        if (isNaN(parsedDate.getTime())) return false; 
+    
+        const parcelDate = parsedDate.toISOString().split("T")[0]; 
+    
+        return parcelDate === todayDate;
+    });
+      const Today_Total_OfflineneParcel = todayParcelsdateOffline?.length
 
 
+    //   For Merchant 
+    const { data: Verify_Admin_MotherHub_Merchant = [], refetch } = useQuery({
+        queryKey: ["Verify_Admin_MotherHub_Merchant", verifiedUser?.email],
+        enabled: !!verifiedUser?.email,
+        queryFn: async () => {
+           const res = await axiosSecure.get(`/Merchant/email/Branch/destination/mer/${verifiedUser?.email}`);
+          return Array.isArray(res.data) ? res.data : [res.data];
+        },
+      });
 
-    //   ---------------------------------------------------------------------------------
+      const todayParcelsdateMerchant = Verify_Admin_MotherHub_Merchant?.filter(parcel => {
+        const dateValue = parcel?.Tracking_Booking_Merchant_Select_MotherHub_Date;
+        
+        if (!dateValue) return false; 
+    
+        const parsedDate = new Date(dateValue);
+        
+        if (isNaN(parsedDate.getTime())) return false; 
+    
+        const parcelDate = parsedDate.toISOString().split("T")[0]; 
+    
+        return parcelDate === todayDate;
+    });
+      const Today_Total_Merchant_Parcel = todayParcelsdateMerchant?.length
+
+    const Total_Today_Pickup_Parcel = Today_Total_Merchant_Parcel + Today_Total_OfflineneParcel + Today_Total_OnlineParcel;
+
+    //   -----------------------------------------For Today Pickup Parcels End----------------
 
 
     useEffect(() => {
@@ -219,7 +269,7 @@ const HostDashboard = () => {
                 <HostStatsCard
                     title="Today Pickup Request"
                     icon={<FaTruckPickup />}
-                    value={Today_Total_OnlineParcel || 0}
+                    value={Total_Today_Pickup_Parcel || 0}
                     color="bg-blue-100"
                 />
                 <HostStatsCard
