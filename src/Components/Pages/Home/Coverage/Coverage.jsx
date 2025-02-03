@@ -42,7 +42,6 @@ const Coverage = () => {
                     </div>
                 </div>
             </div>
-
             {/* search input */}
             <div className="flex justify-center mb-6 px-4">
                 <input
