@@ -18,19 +18,19 @@ const BranchAdd = () => {
 
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
-    queryFn: async() => {
-        const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
-        return res.data;
-       
+    queryFn: async () => {
+      const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+      return res.data;
+
     }
 
   });
   const { data: Company = [] } = useQuery({
     queryKey: ['Company'],
-    queryFn: async() => {
-        const res = await axiosSecure.get("/Company");
-        return res.data;
-       
+    queryFn: async () => {
+      const res = await axiosSecure.get("/Company");
+      return res.data;
+
     }
 
   });
@@ -76,28 +76,27 @@ const BranchAdd = () => {
     try {
       const districtName = getDistrictName(data.district);
       const formData = { ...data, district: districtName };
-// Function to obfuscate the password
-const obfuscatePassword = (password) => {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
-  let obfuscated = "";
-  for (let char of password) {
-    obfuscated += char; // Add the actual character
-    for (let i = 0; i < 20; i++) {
-      obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
-    }
-  }
-  return obfuscated;
-};
+      // Function to obfuscate the password
+      const obfuscatePassword = (password) => {
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+        let obfuscated = "";
+        for (let char of password) {
+          obfuscated += char; // Add the actual character
+          for (let i = 0; i < 20; i++) {
+            obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+          }
+        }
+        return obfuscated;
+      };
 
-// Function to de-obfuscate the password
-const deobfuscatePassword = (obfuscatedPassword) => {
-  let actualPassword = "";
-  for (let i = 0; i < obfuscatedPassword.length; i += 21) {
-    actualPassword += obfuscatedPassword[i]; 
-  }
-  return actualPassword;
-};
-
+      // Function to de-obfuscate the password
+      const deobfuscatePassword = (obfuscatedPassword) => {
+        let actualPassword = "";
+        for (let i = 0; i < obfuscatedPassword.length; i += 21) {
+          actualPassword += obfuscatedPassword[i];
+        }
+        return actualPassword;
+      };
 
 
       const BranchInformation = {
@@ -111,10 +110,10 @@ const deobfuscatePassword = (obfuscatedPassword) => {
         Branch_User_ID: formData?.Staff_User_ID || "",
         Branch_Support_Company: formData?.supportCompany || "",
         Reference: formData?.reference || "",
-        Branch_IP_Number:  formData?.IPNumber || "",
+        Branch_IP_Number: formData?.IPNumber || "",
         email: formData?.Staff_User_ID || "",
-        
-        Branch_Password:obfuscatePassword(formData?.Staff_Password) ||   "",
+
+        Branch_Password: obfuscatePassword(formData?.Staff_Password) || "",
         Under_Branch: formData?.under_branch || "",
         Date: new Date().toISOString().split('T')[0],
       };
@@ -230,7 +229,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
-          
+
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
                       Branch Type*
@@ -376,7 +375,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                       {...register('supportCompany', { required: true })}
                       className={`select select-bordered w-full p-2 rounded-lg border ${errors.supportCompany ? 'border-red-500' : 'border-gray-300'
                         }`}
-                      onChange={(e)=> setSupportCompany(e.target.value)}
+                      onChange={(e) => setSupportCompany(e.target.value)}
                     >
                       <option value="hfjkdhjfhdjfj">Select Company</option>
 
@@ -392,41 +391,41 @@ const deobfuscatePassword = (obfuscatedPassword) => {
                     )}
                   </div>
                 </div>
-               {
-                SupportCompany === 'Test Company' && 
-                <div>
-               <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Branch  User ID*
-                  </label>
-                  <input
-                    type="text"
-                    {...register('Staff_User_ID', { required: true })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                  />
-                  {errors.Staff_User_ID && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
-                <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Branch  Password*
-                  </label>
-                  <input
-                    type="password"
-                    {...register('Staff_Password', { required: true ,minLength: 8})}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      
-                  />
-                 
-                    {errors.Staff_Password?.type === 'minLength' && (
-    <span className="text-red-500">Password must be at least 8 characters long</span>
-  )}
-                </div>
-               </div>
-               }
+                {
+                  SupportCompany === 'Test Company' &&
+                  <div>
+                    <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch  User ID*
+                      </label>
+                      <input
+                        type="text"
+                        {...register('Staff_User_ID', { required: true })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {errors.Staff_User_ID && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch  Password*
+                      </label>
+                      <input
+                        type="password"
+                        {...register('Staff_Password', { required: true, minLength: 8 })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
+                          }`}
+
+                      />
+
+                      {errors.Staff_Password?.type === 'minLength' && (
+                        <span className="text-red-500">Password must be at least 8 characters long</span>
+                      )}
+                    </div>
+                  </div>
+                }
               </div>
 
               {/* Parcel Area */}

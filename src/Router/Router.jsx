@@ -93,6 +93,7 @@ import BookingForm_Merchant from "../Components/DashBoard/Host/CreatePackage/Boo
 import Coverage from "../Components/Pages/Home/Coverage/Coverage";
 import SupportCompany from "../Components/DashBoard/Admin/SupportCompany/SupportCompany";
 import AllSpoonser from "../Components/DashBoard/Host/Spoonser/AllSpoonser";
+import AllReviews from "../Components/Pages/Home/Reviews/AllReviews";
 
 
 
@@ -737,6 +738,10 @@ export const router = createBrowserRouter([
       {
         path: "all-spoonser",
         element: <AllSpoonser></AllSpoonser>
+      },
+      {
+        path: 'all-reviews',
+        element: <AllReviews></AllReviews>
       },
       {
         path: "branch-staff",
