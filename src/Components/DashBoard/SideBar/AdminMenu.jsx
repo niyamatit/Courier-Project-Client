@@ -1,7 +1,7 @@
 import { FaUserAlt, FaUserCog } from 'react-icons/fa'
 import MenuItem from './MenuItem'
 import { BsGraphUp } from 'react-icons/bs'
-import { MdBookOnline, MdMoney, MdPending, MdPersonAdd } from 'react-icons/md'
+import { MdBookOnline, MdMoney, MdPending, MdPersonAdd, MdRateReview } from 'react-icons/md'
 import { MdStore } from 'react-icons/md';
 import { BsBuilding } from "react-icons/bs";
 import { BsGrid } from "react-icons/bs";
@@ -30,6 +30,10 @@ const AdminMenu = () => {
       <MenuItem icon={FaUserCog}
         label='AllSpoonser'
         address='all-spoonser' />
+
+      <MenuItem icon={MdRateReview}
+        label='All Reviews'
+        address='all-reviews' />
 
       <MenuItem icon={BsBuilding}
         label='Support Company Add'

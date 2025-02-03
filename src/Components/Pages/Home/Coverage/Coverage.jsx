@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getBranch } from "../../../../api/auth";
-
+import { useEffect, useState } from "react";
 
 const Coverage = () => {
     const {
@@ -12,10 +12,19 @@ const Coverage = () => {
         queryKey: ["branches"],
         queryFn: async () => await getBranch(),
     });
+    const [filterBranches, setFilterBranches] = useState([]);
+
+
+    const handleSearch = (query) => {
+        setFilterBranches(branches.filter(branch => branch?.Branch_Name?.toLowerCase()?.includes(query?.toLowerCase())))
+    }
+
+    useEffect(() => {
+        setFilterBranches(branches)
+    }, [branches])
 
     if (isLoading) return <p>Loading branches...</p>;
     if (error) return <p>Error fetching branches: {error.message}</p>;
-
     return (
         <div>
             <div>
@@ -33,8 +42,15 @@ const Coverage = () => {
                     </div>
                 </div>
             </div>
+            {/* search input */}
+            <div className="flex justify-center mb-6 px-4">
+                <input
+                    placeholder="Search by Branch Name"
+                    className="border border-gray-300 rounded-lg p-2 w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => handleSearch(e.target.value)} type="text" />
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-8 ml-4 mr-4">
-                {branches.map((branch) => (
+                {filterBranches.map((branch) => (
                     <div
                         key={branch?.id || branch?.Branch_Number}
                         className="bg-slate-400 rounded-lg shadow-md flex flex-col justify-between"
@@ -77,19 +93,19 @@ const Coverage = () => {
 
                             {/* Content */}
                             <div className="relative z-10 text-blue-950 text-center">
-                                <h2 className="text-xl font-bold mb-2">{branch?.Branch_Name ||"N/A"}</h2>
+                                <h2 className="text-xl font-bold mb-2">{branch?.Branch_Name || "N/A"}</h2>
 
                                 <p className="text-sm">
-                                    <strong>Type:</strong> {branch?.Branch_type ||"N/A"}
+                                    <strong>Type:</strong> {branch?.Branch_type || "N/A"}
                                 </p>
                                 <p className="text-sm">
                                     <strong>Support Company Name:</strong> {branch?.Branch_Support_Company || 'N/A'}
                                 </p>
                                 <p className="text-sm">
-                                    <strong>Address:</strong> {branch?.Branch_Address ||"N/A"}
+                                    <strong>Address:</strong> {branch?.Branch_Address || "N/A"}
                                 </p>
                                 <p className="text-sm">
-                                    <strong>Contact Number:</strong> {branch?.Branch_Number ||"N/A"}
+                                    <strong>Contact Number:</strong> {branch?.Branch_Number || "N/A"}
                                 </p>
                                 <p className="text-sm">
                                     <strong>IP Number:</strong> {branch?.Branch_IP_Number || 'N/A'}
