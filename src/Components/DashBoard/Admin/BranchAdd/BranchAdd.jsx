@@ -113,7 +113,7 @@ const BranchAdd = () => {
         Branch_IP_Number: formData?.IPNumber || "",
         email: formData?.Staff_User_ID || "",
 
-        Branch_Password: obfuscatePassword(formData?.Staff_Password) || "",
+        // Branch_Password: obfuscatePassword(formData?.Staff_Password) || "",
 
         Branch_Password: obfuscatePassword(formData?.Staff_Password || "") || "",
         Under_Branch: formData?.under_branch || "",
