@@ -979,7 +979,7 @@ const incrementCnNumber = (cnNumber) => {
                         }`}
                       onChange={(e) => setStore(e.target.value)}
                     >
-                      <option value="">Select Your Store*</option>
+                      <option value="" disabled selected>Select Your Store*</option>
                      
                       {shopDatassss.map((shop) => (
     <option key={shop._id} value={shop?.Store_Name}>
