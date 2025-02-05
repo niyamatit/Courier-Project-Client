@@ -132,6 +132,21 @@ const HostDashboard = () => {
     //   -----------------------------------------For Today Pickup Parcels End----------------
 
 
+
+    // ---------------------------------------For Today Pickup Done---------------------------
+
+    const Today_Total_Pickup_Done_OnlineParcel = fetchParcels("Verify_Admin_MotherHub", `/package/email/${verifiedUser?.email}`, "Tracking_Admin_Select_Online_MotherHub_Branch_Date");
+    const Today_Total_Pickup_Done_OfflineneParcel = fetchParcels("Verify_Admin_MotherHub_Offline", `/offline/email/Branch/destination/${verifiedUser?.email}`, "Tracking_Booking_Branch_Select_MotherHub_Date");
+    const Today_Total_Pickup_Done_Merchant_Parcel = fetchParcels("Verify_Admin_MotherHub_Merchant", `/Merchant/email/Branch/destination/mer/${verifiedUser?.email}`, "Tracking_Booking_Merchant_Select_MotherHub_Date");
+    
+    const Total_Today_Pickup_Done_Parcel = Today_Total_Pickup_Done_Merchant_Parcel + Today_Total_Pickup_Done_OfflineneParcel + Today_Total_Pickup_Done_OnlineParcel;
+
+
+
+
+     // ---------------------------------------For Today Pickup Done End---------------------------
+
+
     useEffect(() => {
         if (parcelData.length > 0) {
             const filteredData = parcelData.filter((item) => {
