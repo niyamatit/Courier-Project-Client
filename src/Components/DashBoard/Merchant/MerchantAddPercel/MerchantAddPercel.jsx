@@ -4,6 +4,7 @@ import "tailwindcss/tailwind.css";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import { useQuery } from "@tanstack/react-query";
 
 const MerchantAddParcel = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -846,6 +847,14 @@ const incrementCnNumber = (cnNumber) => {
   
   // const timePart = `${date.getHours()}`;
   // const MerchantCnNumber = datePart + timePart;
+  const { data: shopDatassss = []} = useQuery({
+    queryKey: ["shopDatassss", verifiedUser?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/store");
+      return res.data;
+    },
+    enabled: !!verifiedUser?.email,
+  });
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
       <div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
@@ -970,8 +979,13 @@ const incrementCnNumber = (cnNumber) => {
                         }`}
                       onChange={(e) => setStore(e.target.value)}
                     >
-                      <option value="">Select Your Store*</option>
-                      <option value="Niyamat Express">Niyamat Express</option>
+                      <option value="" disabled selected>Select Your Store*</option>
+                     
+                      {shopDatassss.map((shop) => (
+    <option key={shop._id} value={shop?.Store_Name}>
+      {shop?.Store_Name}
+    </option>
+  ))}
                     </select>
                     {errors.store && (
                       <span className="text-red-500">This field is required</span>
