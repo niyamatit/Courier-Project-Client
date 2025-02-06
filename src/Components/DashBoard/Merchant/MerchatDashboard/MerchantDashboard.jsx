@@ -35,7 +35,18 @@ const MerchantDashboard = () => {
     },
     enabled: !!verifiedUser?.email,
   });
+  const fetchParcels = async ({ queryKey }) => {
+    const [, merchant_email] = queryKey;
+    const response = await axiosSecure.get(`/parcels?merchant_email=${merchant_email}`);
+    return response.data;
+  };
+const { data: parcels = [], isLoading,refetch } = useQuery({
+    queryKey: ['parcels', verifiedUser?.email],
+    queryFn: fetchParcels,
+  });
 
+
+  // ----------For Today delivery-------------------------
   useEffect(() => {
     if (parcelData.length > 0) {
       const filteredData = parcelData.filter((item) => {
