@@ -724,18 +724,23 @@ const AddBaranchStaff = () => {
     }
 
   });
-  // const { data: usersess = [], isLoading, error } = useQuery({
-  //   queryKey: ['usersess'],
-  //   queryFn: async () => {
-  //     const res = await axiosSecure.get("/vgfsdhfsdhhsxgcfbxcjkxnbnj454557");
-  //     console.log("API Response:", res.data); // Log the API response
-  //     return res.data;
-  //   },
-  // });
+  const handleBranchChange = (e) => {
+    const selectedBranchName = e.target.value;
+    const user = usersess.find(user => user?.Branch_Name === selectedBranchName);
+    setSelectedUser(user);
+    console.log("Branch", user)
+    console.log("Branch1", user?.Branch_Name)
+  };
+
+  const deobfuscatePassword = (obfuscatedPassword) => {
+    let actualPassword = "";
+    for (let i = 0; i < obfuscatedPassword?.length; i += 21) {
+      actualPassword += obfuscatedPassword[i]; 
+    }
+    return actualPassword;
+  };
+
   
-
-  // console.log("Branches",usersess)
-
 
   const onSubmit = async (data) => {
     try {
@@ -771,9 +776,9 @@ const AddBaranchStaff = () => {
         Staff_Area: formData?.area || "",
         Staff_post: formData?.staff_post || "",
         Staff_Branch_Name: formData?.select_branch_name || "",
-        Staff_User_ID: formData?.Staff_User_ID || "",
+        Staff_User_ID: formData?.Staff_User_ID || selectedUser?.email ||"",
         Staff_Experience: formData?.Staff_Exp || "",
-        Staff_Password: obfuscatePassword(formData?.Staff_Password) || "",
+        Staff_Password: obfuscatePassword(formData?.Staff_Password) || obfuscatePassword(selectedUser?.Branch_Password) ||"",
         Staff_Image: yourImage?.data?.display_url || "",
         NID_Front_Image: nidFrontImage?.data?.display_url || "",
         NID_Back_Image: nidBackImage?.data?.display_url || "",
@@ -806,22 +811,7 @@ const AddBaranchStaff = () => {
     }
 
   };
-  const handleBranchChange = (e) => {
-    const selectedBranchName = e.target.value;
-    const user = usersess.find(user => user?.Branch_Name === selectedBranchName);
-    setSelectedUser(user);
-    console.log("Branch", user)
-    console.log("Branch1", user?.Branch_Name)
-  };
-
-  const deobfuscatePassword = (obfuscatedPassword) => {
-    let actualPassword = "";
-    for (let i = 0; i < obfuscatedPassword?.length; i += 21) {
-      actualPassword += obfuscatedPassword[i]; 
-    }
-    return actualPassword;
-  };
-
+  
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
