@@ -18,19 +18,19 @@ const BranchAdd = () => {
 
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
-    queryFn: async() => {
-        const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
-        return res.data;
-       
+    queryFn: async () => {
+      const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+      return res.data;
+
     }
 
   });
   const { data: Company = [] } = useQuery({
     queryKey: ['Company'],
-    queryFn: async() => {
-        const res = await axiosSecure.get("/Company");
-        return res.data;
-       
+    queryFn: async () => {
+      const res = await axiosSecure.get("/Company");
+      return res.data;
+
     }
 
   });
@@ -76,28 +76,27 @@ const BranchAdd = () => {
     try {
       const districtName = getDistrictName(data.district);
       const formData = { ...data, district: districtName };
-// Function to obfuscate the password
-const obfuscatePassword = (password) => {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
-  let obfuscated = "";
-  for (let char of password) {
-    obfuscated += char; // Add the actual character
-    for (let i = 0; i < 20; i++) {
-      obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
-    }
-  }
-  return obfuscated;
-};
+      // Function to obfuscate the password
+      const obfuscatePassword = (password) => {
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+        let obfuscated = "";
+        for (let char of password) {
+          obfuscated += char; // Add the actual character
+          for (let i = 0; i < 20; i++) {
+            obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+          }
+        }
+        return obfuscated;
+      };
 
-// Function to de-obfuscate the password
-const deobfuscatePassword = (obfuscatedPassword) => {
-  let actualPassword = "";
-  for (let i = 0; i < obfuscatedPassword.length; i += 21) {
-    actualPassword += obfuscatedPassword[i]; 
-  }
-  return actualPassword;
-};
-
+      // Function to de-obfuscate the password
+      const deobfuscatePassword = (obfuscatedPassword) => {
+        let actualPassword = "";
+        for (let i = 0; i < obfuscatedPassword.length; i += 21) {
+          actualPassword += obfuscatedPassword[i];
+        }
+        return actualPassword;
+      };
 
 
       const BranchInformation = {
@@ -111,10 +110,12 @@ const deobfuscatePassword = (obfuscatedPassword) => {
         Branch_User_ID: formData?.Staff_User_ID || "",
         Branch_Support_Company: formData?.supportCompany || "",
         Reference: formData?.reference || "",
-        Branch_IP_Number:  formData?.IPNumber || "",
+        Branch_IP_Number: formData?.IPNumber || "",
         email: formData?.Staff_User_ID || "",
-        
-        Branch_Password:obfuscatePassword(formData?.Staff_Password || "") ||   "",
+
+        // Branch_Password: obfuscatePassword(formData?.Staff_Password) || "",
+
+        Branch_Password: obfuscatePassword(formData?.Staff_Password || "") || "",
         Under_Branch: formData?.under_branch || "",
         Date: new Date().toISOString().split('T')[0],
       };
@@ -145,10 +146,9 @@ const deobfuscatePassword = (obfuscatedPassword) => {
           Branch_Area: formData?.area || "",
         };
 
-       if(verifyBrnach)
-       {
-        const response = await axiosSecure.post('/users/auth/register', BranchLogin);
-       }
+        if (verifyBrnach) {
+          const response = await axiosSecure.post('/users/auth/register', BranchLogin);
+        }
 
       }
     } catch (error) {
@@ -173,7 +173,7 @@ const deobfuscatePassword = (obfuscatedPassword) => {
       }
     }
   };
-const verifyBrnach = SupportCompany === 'Niyamat Express';
+  const verifyBrnach = SupportCompany === 'Niyamat Express';
 
 
   return (
@@ -213,7 +213,7 @@ const verifyBrnach = SupportCompany === 'Niyamat Express';
                       {...register('supportCompany', { required: true })}
                       className={`select select-bordered w-full p-2 rounded-lg border ${errors.supportCompany ? 'border-red-500' : 'border-gray-300'
                         }`}
-                      onChange={(e)=> setSupportCompany(e.target.value)}
+                      onChange={(e) => setSupportCompany(e.target.value)}
                     >
                       <option value="hfjkdhjfhdjfj">Select Company</option>
 
@@ -229,7 +229,7 @@ const verifyBrnach = SupportCompany === 'Niyamat Express';
                     )}
                   </div>
                 </div>
-              
+
                 <div className="grid grid-cols-1 sm:grid-cols-2  gap-4">
 
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
@@ -247,61 +247,61 @@ const verifyBrnach = SupportCompany === 'Niyamat Express';
                     )}
                   </div>
                   {
-                     verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                     <label className="block text-gray-700 font-medium mb-1">
-                       Branch Contact Number*
-                     </label>
-                     <input
-                       type="text"
-                       {...register('contactNumber', { required: verifyBrnach ? true : false})}
-                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'
-                         }`}
-                     />
-                     {errors.contactNumber && (
-                       <span className="text-red-500">This field is required</span>
-                     )}
-                   </div>
+                    verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch Contact Number*
+                      </label>
+                      <input
+                        type="text"
+                        {...register('contactNumber', { required: verifyBrnach ? true : false })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {errors.contactNumber && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
                   }
                   {
                     verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-2">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Branch  IP Number
-                    </label>
-                    <input
-                      type="text"
-                      {...register('IPNumber', { required: false })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.IPNumber ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                    />
-                    {errors.IPNumber && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch  IP Number
+                      </label>
+                      <input
+                        type="text"
+                        {...register('IPNumber', { required: false })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.IPNumber ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {errors.IPNumber && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
                   }
-          
-                 {
-                  verifyBrnach &&  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Branch Type*
-                  </label>
-                  <select
-                    {...register('branch_type', { required: verifyBrnach ? true : false })}
-                    className={`select select-bordered w-full p-2 rounded-lg border ${errors.branch_type ? 'border-red-500' : 'border-gray-300'
-                      }`}
 
-                  >
-                    <option value="">Select Type</option>
-                    <option value="Union">Union</option>
-                    <option value="Sub-district">Sub-district</option>
-                    <option value="District">District</option>
-                    <option value="Divisional">Divisional</option>
+                  {
+                    verifyBrnach && <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch Type*
+                      </label>
+                      <select
+                        {...register('branch_type', { required: verifyBrnach ? true : false })}
+                        className={`select select-bordered w-full p-2 rounded-lg border ${errors.branch_type ? 'border-red-500' : 'border-gray-300'
+                          }`}
 
-                  </select>
-                  {errors.staff_post && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
-                 }
+                      >
+                        <option value="">Select Type</option>
+                        <option value="Union">Union</option>
+                        <option value="Sub-district">Sub-district</option>
+                        <option value="District">District</option>
+                        <option value="Divisional">Divisional</option>
+
+                      </select>
+                      {errors.staff_post && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                  }
 
                   {/* Current Address */}
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
@@ -365,80 +365,80 @@ const verifyBrnach = SupportCompany === 'Niyamat Express';
 
                 {
                   verifyBrnach && <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-4">
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Branch commission
-                    </label>
-                    <input
-                      type="text"
-                      {...register('branch_lav', { required: false })}
-                      className={`input input-bordered w-full p-2 rounded-lg border ${errors.branch_lav ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                    />
-                    {errors.branch_lav && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
+                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch commission
+                      </label>
+                      <input
+                        type="text"
+                        {...register('branch_lav', { required: false })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.branch_lav ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {errors.branch_lav && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Under Branch
+                      </label>
+                      <select
+                        {...register('under_branch', { required: false })}
+                        className={`select select-bordered w-full p-2 rounded-lg border ${errors.under_branch ? 'border-red-500' : 'border-gray-300'
+                          }`}
+
+                      >
+                        <option value="hfjkdhjfhdjfj">Select Branch</option>
+
+                        {
+                          users.filter(user => user?.role === 'host').map(user => (
+                            <option key={user?._id} value={user?.name}>{user?.name}</option>
+                          ))
+                        }
+
+                      </select>
+                      {errors.staff_post && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Under Branch
-                    </label>
-                    <select
-                      {...register('under_branch', { required: false })}
-                      className={`select select-bordered w-full p-2 rounded-lg border ${errors.under_branch ? 'border-red-500' : 'border-gray-300'
-                        }`}
-
-                    >
-                      <option value="hfjkdhjfhdjfj">Select Branch</option>
-
-                      {
-                        users.filter(user => user?.role === 'host').map(user => (
-                          <option key={user?._id} value={user?.name}>{user?.name}</option>
-                        ))
-                      }
-
-                    </select>
-                    {errors.staff_post && (
-                      <span className="text-red-500">This field is required</span>
-                    )}
-                  </div>
-                </div>
                 }
                 {
-                verifyBrnach && 
-                <div>
-               <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Branch  User ID*
-                  </label>
-                  <input
-                    type="text"
-                    {...register('Staff_User_ID', { required: verifyBrnach ? true : false })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                  />
-                  {errors.Staff_User_ID && (
-                    <span className="text-red-500">This field is required</span>
-                  )}
-                </div>
-                <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Branch  Password*
-                  </label>
-                  <input
-                    type="password"
-                    {...register('Staff_Password', { required: verifyBrnach ? true : false })}
-                    className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      
-                  />
-                 
-                    {errors.Staff_Password?.type === 'minLength' && (
-    <span className="text-red-500">Password must be at least 8 characters long</span>
-  )}
-                </div>
-               </div>
-               }
+                  verifyBrnach &&
+                  <div>
+                    <div className="col-span-2 md:col-span-2 lg:col-span-1 my-2">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch  User ID*
+                      </label>
+                      <input
+                        type="text"
+                        {...register('Staff_User_ID', { required: verifyBrnach ? true : false })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                      />
+                      {errors.Staff_User_ID && (
+                        <span className="text-red-500">This field is required</span>
+                      )}
+                    </div>
+                    <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Branch  Password*
+                      </label>
+                      <input
+                        type="password"
+                        {...register('Staff_Password', { required: verifyBrnach ? true : false })}
+                        className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
+                          }`}
+
+                      />
+
+                      {errors.Staff_Password?.type === 'minLength' && (
+                        <span className="text-red-500">Password must be at least 8 characters long</span>
+                      )}
+                    </div>
+                  </div>
+                }
               </div>
 
               {/* Parcel Area */}
