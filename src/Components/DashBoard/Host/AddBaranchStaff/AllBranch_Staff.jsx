@@ -1,13 +1,14 @@
 import axiosSecure from "../../../../api/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import Modal from "./Modal"; 
+import Modal from "../../Admin/ApplyPending/Modal";
+
 
 const AllBranch_Staff = () => {
-  const { data: pendings = [], isLoading } = useQuery({
-    queryKey: ["pendings"],
+  const { data: branchStaffs = [], isLoading } = useQuery({
+    queryKey: ["branchStaffs"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/hdfjkshfjjkcxcbmbxbcb1");
+      const res = await axiosSecure.get("/staffkdgfdjhksgfjhkdjkjkfhfjk");
       return res.data;
     },
   });
@@ -25,7 +26,7 @@ const AllBranch_Staff = () => {
       </h1>
       {isLoading ? (
         <p className="text-center text-gray-600">Loading...</p>
-      ) : pendings.length === 0 ? (
+      ) : branchStaffs.length === 0 ? (
         <p className="text-center text-gray-600">No pending applications.</p>
       ) : (
         <div className="overflow-x-auto">
@@ -47,7 +48,7 @@ const AllBranch_Staff = () => {
               </tr>
             </thead>
             <tbody>
-              {pendings.map((pending, index) => (
+              {branchStaffs.map((pending, index) => (
                 <tr
                   key={pending._id}
                   className={index % 2 === 0 ? "bg-blue-50" : "bg-white"}
