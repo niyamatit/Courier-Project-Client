@@ -769,7 +769,7 @@ return (
     <div className="flex flex-col w-full max-w-2xl p-10 rounded-lg bg-white shadow-2xl text-gray-900">
       <div className="mb-10 text-center">
         <h1 className="text-4xl font-bold text-blue-700">Merchant Signup</h1>
-        <p className="text-sm text-gray-500">Welcome to Niyamat Courier</p>
+        <p className="text-sm text-gray-500">Welcome to Niyamat Express</p>
       </div>
       <form onSubmit={handleSubmit(handleSignUp)} className="space-y-6">
         <div className="space-y-4">
