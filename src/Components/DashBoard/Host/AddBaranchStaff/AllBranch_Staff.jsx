@@ -14,7 +14,14 @@ const AllBranch_Staff = () => {
   });
 
   const [selectedDetails, setSelectedDetails] = useState(null);
-
+  const deobfuscatePassword = (obfuscatedPassword) => {
+    let actualPassword = "";
+    for (let i = 0; i < obfuscatedPassword.length; i += 21) {
+      actualPassword += obfuscatedPassword[i]; 
+    }
+    return actualPassword;
+  };
+  
   const handleViewDetails = (details) => {
     setSelectedDetails(details);
   };
@@ -27,7 +34,7 @@ const AllBranch_Staff = () => {
       {isLoading ? (
         <p className="text-center text-gray-600">Loading...</p>
       ) : branchStaffs.length === 0 ? (
-        <p className="text-center text-gray-600">No pending applications.</p>
+        <p className="text-center text-gray-600">No Staff added....</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="table-auto w-full border-collapse border border-blue-300">
@@ -63,14 +70,14 @@ const AllBranch_Staff = () => {
             className="w-12 h-12 rounded-full object-cover"
           /></td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Staff_Name}</td>
-                  <td className="border border-blue-300 px-4 py-2">{pending.Company_Name}</td>
-                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Contact_Number}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Staff_Branch_Name}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Staff_Contact_Number}</td>
                   {/* <td className="border border-blue-300 px-4 py-2">{pending.Customer_Email}</td> */}
-                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_District_Name}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Staff_District_Name}</td>
                   {/* <td className="border border-blue-300 px-4 py-2">{pending.Role}</td> */}
-                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
-                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
-                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Staff_post}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Staff_User_ID}</td>
+                  <td className="border border-blue-300 px-4 py-2">{deobfuscatePassword(pending.Staff_Password)}</td>
                   <td className="border border-blue-300 px-4 py-2">
                     <button
                       onClick={() => handleViewDetails(pending)}

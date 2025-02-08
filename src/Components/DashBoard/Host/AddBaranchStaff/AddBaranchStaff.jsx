@@ -18,6 +18,7 @@ const AddBaranchStaff = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     // control,
     formState: { errors },
   } = useForm();
@@ -745,7 +746,9 @@ const AddBaranchStaff = () => {
 
   const onSubmit = async (data) => {
     try {
+
       setLoading(true);
+      
       const districtName = getDistrictName(data.district);
       const formData = { ...data, district: districtName };
       const obfuscatePassword = (password) => {
@@ -778,9 +781,9 @@ const AddBaranchStaff = () => {
         Staff_Area: formData?.area || "",
         Staff_post: formData?.staff_post || "",
         Staff_Branch_Name: formData?.select_branch_name || "",
-        Staff_User_ID: formData?.Staff_User_ID || selectedUser?.email ||"",
+        Staff_User_ID: selectedUser?.email || formData?.Staff_User_ID || "",
         Staff_Experience: formData?.Staff_Exp || "",
-        Staff_Password: obfuscatePassword(formData?.Staff_Password) || obfuscatePassword(selectedUser?.Branch_Password) ||"",
+        Staff_Password: selectedUser?.Branch_Password || formData?.Staff_Password|| "",
         Staff_Image: yourImage?.data?.display_url || "",
         NID_Front_Image: nidFrontImage?.data?.display_url || "",
         NID_Back_Image: nidBackImage?.data?.display_url || "",
@@ -810,16 +813,19 @@ const AddBaranchStaff = () => {
       } else {
         console.error("Unexpected Error:", error);
       }
-    } finally {
-      setLoading(false); 
-    }
+    } 
 
   };
-  
+  useEffect(() => {
+    if (selectedUser) {
+      setValue("Staff_User_ID", selectedUser?.email || "");
+      setValue("Staff_Password", deobfuscatePassword(selectedUser?.Branch_Password) || "");
+    }
+  }, [selectedUser, setValue]);
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
-      {loading && (
+      {isLoading && (
         <div className="absolute inset-0  flex flex-col items-center justify-center z-50">
           <svg
             className="animate-spin h-16 w-16 text-blue-600"
@@ -845,7 +851,7 @@ const AddBaranchStaff = () => {
         </div>
       )}
       {
-        !loading && (<div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
+        !isLoading && (<div className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400">
           <h1 className="text-2xl sm:text-3xl md:text-3xl font-bold mb-4 sm:mb-6 md:mb-6 text-center text-blue-700">
             Add Staff
           </h1>
@@ -1131,7 +1137,7 @@ const AddBaranchStaff = () => {
                       {...register('Staff_User_ID', { required: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
                         }`}
-                      value={selectedUser?.email || 'No User ID Found'}
+                      value={selectedUser?.email}
                       readOnly
                     />
                     {errors.Staff_User_ID && <span className="text-red-500">This field is required</span>}
@@ -1144,7 +1150,7 @@ const AddBaranchStaff = () => {
                       {...register('Staff_Password', { required: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
                         }`}
-                      value={deobfuscatePassword(selectedUser?.Branch_Password) || 'No Password Found'}
+                      value={deobfuscatePassword(selectedUser?.Branch_Password)}
                       readOnly
                     />
                     {errors.Staff_Password && <span className="text-red-500">This field is required</span>}
