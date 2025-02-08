@@ -46,7 +46,24 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
   });
 
 
-  // ----------For Today delivery-------------------------
+  // --------------------------------------For Today delivery-------------------------
+    
+  const fetchMerchantParcels = (key,url,dataField)=>{
+
+    const{ data = []} = useQuery({
+      queryKey:[key, verifiedUser?.email],
+      enabled: !!verifiedUser?.email,
+      queryFn: async () =>{
+        const res = axiosSecure.get(url);
+        return Array.isArray(res.data) ? res.data : [res.data]
+      }
+    }) 
+
+  }
+
+
+
+
   useEffect(() => {
     if (parcelData.length > 0) {
       const filteredData = parcelData.filter((item) => {
