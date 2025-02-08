@@ -741,6 +741,17 @@ const AddBaranchStaff = () => {
     try {
       const districtName = getDistrictName(data.district);
       const formData = { ...data, district: districtName };
+      const obfuscatePassword = (password) => {
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+        let obfuscated = "";
+        for (let char of password) {
+          obfuscated += char; // Add the actual character
+          for (let i = 0; i < 20; i++) {
+            obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); 
+          }
+        }
+        return obfuscated;
+      };
 
       const yourImage = await imageUpload(data.yourImage[0]);
       const nidFrontImage = await imageUpload(data.nidFrontImage[0]);
@@ -762,7 +773,7 @@ const AddBaranchStaff = () => {
         Staff_Branch_Name: formData?.select_branch_name || "",
         Staff_User_ID: formData?.Staff_User_ID || "",
         Staff_Experience: formData?.Staff_Exp || "",
-        Staff_Password: formData?.Staff_Password || "",
+        Staff_Password: obfuscatePassword(formData?.Staff_Password) || "",
         Staff_Image: yourImage?.data?.display_url || "",
         NID_Front_Image: nidFrontImage?.data?.display_url || "",
         NID_Back_Image: nidBackImage?.data?.display_url || "",
