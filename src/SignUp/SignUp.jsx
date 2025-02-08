@@ -72,7 +72,7 @@ const handleSignUp = async e => {
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
         <div className="mb-8 text-center">
           <h1 className="my-3 text-4xl font-bold">Sign Up</h1>
-          <p className="text-sm text-gray-400">Welcome to Niyamat Courier</p>
+          <p className="text-sm text-gray-400">Welcome to Niyamat Express</p>
         </div>
         <form onSubmit={handleSignUp} className="space-y-6">
           <div className="space-y-4">
