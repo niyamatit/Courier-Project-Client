@@ -1,10 +1,11 @@
-import { FaUserAlt, FaUserCog } from 'react-icons/fa'
+import { FaUserAlt, FaUserCog,FaUser } from 'react-icons/fa'
 import MenuItem from './MenuItem'
 import { BsGraphUp } from 'react-icons/bs'
 import { MdBookOnline, MdMoney, MdPending, MdPersonAdd } from 'react-icons/md'
 import { MdStore } from 'react-icons/md';
 import { BsBuilding } from "react-icons/bs";
 import { BsGrid } from "react-icons/bs";
+
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 const AdminMenu = () => {
   const [verifiedUser] = useUsersData();
@@ -59,6 +60,11 @@ const AdminMenu = () => {
         icon={MdPersonAdd}
         label='Add Branch Staff'
         address='branch-staff'
+      />
+      <MenuItem
+        icon={FaUser}
+        label='All Branch Staff List'
+        address='branch-staff-list'
       />
       <MenuItem
         icon={MdPending}

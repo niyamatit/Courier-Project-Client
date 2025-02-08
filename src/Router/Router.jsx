@@ -94,6 +94,7 @@ import Coverage from "../Components/Pages/Home/Coverage/Coverage";
 import SupportCompany from "../Components/DashBoard/Admin/SupportCompany/SupportCompany";
 import AllSpoonser from "../Components/DashBoard/Host/Spoonser/AllSpoonser";
 import SupportCompany_List from "../Components/DashBoard/Admin/SupportCompany/SupportCompany_List";
+import AllBranch_Staff from "../Components/DashBoard/Host/AddBaranchStaff/AllBranch_Staff";
 
 
 
@@ -742,6 +743,10 @@ export const router = createBrowserRouter([
       {
         path: "branch-staff",
         element: <AddBaranchStaff></AddBaranchStaff>
+      },
+      {
+        path: "branch-staff-list",
+        element: <AllBranch_Staff/>
       },
       {
         path: "spoonser-add",
