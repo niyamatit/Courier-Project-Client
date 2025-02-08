@@ -22,7 +22,7 @@ const AllBranch_Staff = () => {
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold font-rancho text-center text-blue-600 mb-4">
-        Apply Pending
+        All Staff List
       </h1>
       {isLoading ? (
         <p className="text-center text-gray-600">Loading...</p>
@@ -34,15 +34,17 @@ const AllBranch_Staff = () => {
             <thead className="bg-blue-500 text-white">
               <tr>
                 <th className="border border-blue-300 px-4 py-2">SL</th>
-                <th className="border border-blue-300 px-4 py-2">Apply Date</th>
+                <th className="border border-blue-300 px-4 py-2">Date</th>
                 <th className="border border-blue-300 px-4 py-2">Image</th>
-                <th className="border border-blue-300 px-4 py-2">Customer Name</th>
-                <th className="border border-blue-300 px-4 py-2">Company Name</th>
+                <th className="border border-blue-300 px-4 py-2">Staff Name</th>
+                <th className="border border-blue-300 px-4 py-2">Staff Branch Name</th>
                 <th className="border border-blue-300 px-4 py-2">Contact</th>
                 {/* <th className="border border-blue-300 px-4 py-2">Email</th> */}
                 <th className="border border-blue-300 px-4 py-2">District</th>
                 {/* <th className="border border-blue-300 px-4 py-2">Role</th> */}
-                <th className="border border-blue-300 px-4 py-2">Apply For</th>
+                <th className="border border-blue-300 px-4 py-2">Staff Post</th>
+                <th className="border border-blue-300 px-4 py-2">Staff User ID</th>
+                <th className="border border-blue-300 px-4 py-2">Staff Login Password</th>
                 
                 <th className="border border-blue-300 px-4 py-2">Actions</th>
               </tr>
@@ -56,16 +58,18 @@ const AllBranch_Staff = () => {
                   <td className="border border-blue-300 px-4 py-2">{index + 1}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Date}</td>
                   <td className="border border-blue-300 px-4 py-2"><img
-            src={pending.Customer_Image}
-            alt="Customer Image"
+            src={pending.Staff_Image}
+            alt="Staff Image"
             className="w-12 h-12 rounded-full object-cover"
           /></td>
-                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Name}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Staff_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Company_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Contact_Number}</td>
                   {/* <td className="border border-blue-300 px-4 py-2">{pending.Customer_Email}</td> */}
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_District_Name}</td>
                   {/* <td className="border border-blue-300 px-4 py-2">{pending.Role}</td> */}
+                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
+                  <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
                   <td className="border border-blue-300 px-4 py-2">
                     <button
