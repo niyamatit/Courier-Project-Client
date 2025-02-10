@@ -47,6 +47,75 @@ const PendingPareclList_Offline = () => {
     }
   };
 
+  const handleDelivery = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/offline/accept/destination/delivery/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Deliveried",
+        text: "The parcel has been successfully Deliveried!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Deliveried the package. Please try again.",
+      });
+    }
+  };
+  const handleHold = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/offline/accept/destination/delivery/hold/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Holded",
+        text: "The parcel has been  Holded!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Holded the package. Please try again.",
+      });
+    }
+  };
+  const handlReturn = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/offline/accept/destination/delivery/hold/return/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Returned",
+        text: "The parcel has been  Returned!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Returned the package. Please try again.",
+      });
+    }
+  };
+  const handlExchange = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/offline/accept/destination/delivery/hold/return/Exchange/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Exchanged",
+        text: "The parcel has been  Exchanged!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Exchanged the package. Please try again.",
+      });
+    }
+  };
+
   const handleSelectBranch = async () => {
     if (!selectedBranch || !note) {
       Swal.fire({
@@ -54,13 +123,14 @@ const PendingPareclList_Offline = () => {
         title: "Incomplete Information",
         text: "Please fill in both the branch and the note!",
       });
-      return;
+                  return;
     }
 
     try {
       await axiosSecure.post(`/offline/select-Des/branch/rider/${selectedPackage._id}`, {
         Tracking_Destination_Branch_Select_Rider_Offline: selectedBranch,
         Tracking_Destination_Branch_Note_Offline: note,
+        done:"done",
         Tracking_Destination_Branch_Select_Rider_Date_Offline: new Date()
       });
       Swal.fire({
@@ -120,11 +190,61 @@ const PendingPareclList_Offline = () => {
     Accept
   </button>
 )}
+ {
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Delivery_Parcel) &&
+                      (pkg?.Tracking_Destination_Branch_Delivery_Parcel ? (
+                        <h1 className="text-green-500 border p-1 border-green-500">Deliveried</h1>
+                      ) : (
+                        <button
+                          className="bg-green-500 text-white px-2 py-1 rounded"
+                          onClick={() => handleDelivery(pkg._id)}
+                        >
+                          Delivery
+                        </button>
+                      ))
+                    }
 
-{pkg?.Tracking_Destination_Branch_Received_Parcel_Offline ? (
+                    {
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Hold_Parcel) && (pkg?.Tracking_Destination_Branch_Hold_Parcel ? (
+                        <h1 className="text-yellow-500 border p-1 border-green-500">Holded</h1>
+                      ) : (
+                        <button
+                          className="bg-yellow-500 text-white px-2 py-1 rounded"
+                          onClick={() => handleHold(pkg._id)}
+                        >
+                          Hold
+                        </button>
+                      ))
+                    }
+                    {
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Returned_Parcel) && (pkg?.Tracking_Destination_Branch_Returned_Parcel ? (
+                        <h1 className="text-red-500 border p-1 border-green-500">Returned</h1>
+                      ) : (
+                        <button
+                          className="bg-red-500 text-white px-2 py-1 rounded"
+                          onClick={() => handlReturn(pkg._id)}
+                        >
+                          Return
+                        </button>
+                      ))
+                    }
+                   {
+                    (!pkg?.done || pkg?.Tracking_Destination_Branch_Exchanged_Parcel) &&  (pkg?.Tracking_Destination_Branch_Exchanged_Parcel ? (
+                      <h1 className="text-yellow-500 border p-1 border-green-500">Exchanged</h1>
+                    ) : (
+                      <button
+                        className="bg-yellow-500 text-white px-2 py-1 rounded"
+                        onClick={() => handlExchange(pkg._id)}
+                      >
+                        Exchange
+                      </button>
+                    ))
+                   }
+
+{(!pkg?.done || pkg?.Tracking_Destination_Branch_Received_Parcel_Offline) ? (
   pkg?.Tracking_Destination_Branch_Select_Rider_Offline ? (
     <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected Rider
+       Rider Selected
     </h1>
   ) : (
     <button

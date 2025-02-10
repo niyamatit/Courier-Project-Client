@@ -192,7 +192,7 @@ const PendingPacelList = () => {
                       </button>
                     )}
                     {
-                      !pkg?.done || pkg?.Tracking_Destination_Branch_Delivery_Parcel &&
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Delivery_Parcel) &&
                       (pkg?.Tracking_Destination_Branch_Delivery_Parcel ? (
                         <h1 className="text-green-500 border p-1 border-green-500">Deliveried</h1>
                       ) : (
@@ -206,7 +206,7 @@ const PendingPacelList = () => {
                     }
 
                     {
-                      !pkg?.done || pkg?.Tracking_Destination_Branch_Hold_Parcel && (pkg?.Tracking_Destination_Branch_Hold_Parcel ? (
+                     ( !pkg?.done || pkg?.Tracking_Destination_Branch_Hold_Parcel) && (pkg?.Tracking_Destination_Branch_Hold_Parcel ? (
                         <h1 className="text-yellow-500 border p-1 border-green-500">Holded</h1>
                       ) : (
                         <button
@@ -218,7 +218,7 @@ const PendingPacelList = () => {
                       ))
                     }
                     {
-                      !pkg?.done || pkg?.Tracking_Destination_Branch_Returned_Parcel && (pkg?.Tracking_Destination_Branch_Returned_Parcel ? (
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Returned_Parcel) && (pkg?.Tracking_Destination_Branch_Returned_Parcel ? (
                         <h1 className="text-red-500 border p-1 border-green-500">Returned</h1>
                       ) : (
                         <button
@@ -230,7 +230,7 @@ const PendingPacelList = () => {
                       ))
                     }
                    {
-                    !pkg?.done || pkg?.Tracking_Destination_Branch_Exchanged_Parcel &&  (pkg?.Tracking_Destination_Branch_Exchanged_Parcel ? (
+                    (!pkg?.done || pkg?.Tracking_Destination_Branch_Exchanged_Parcel) &&  (pkg?.Tracking_Destination_Branch_Exchanged_Parcel ? (
                       <h1 className="text-yellow-500 border p-1 border-green-500">Exchanged</h1>
                     ) : (
                       <button
@@ -242,7 +242,7 @@ const PendingPacelList = () => {
                     ))
                    }
                     {
-                      !pkg?.done && (pkg?.Tracking_Destination_Branch_Select_Rider ? (
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Select_Rider) && (pkg?.Tracking_Destination_Branch_Select_Rider ? (
                         <h1 className="text-green-500 border p-1 border-green-500">
                           Already Selected Rider
                         </h1>
