@@ -46,7 +46,7 @@ const PendingPacelList = () => {
       });
     }
   };
-  const handleDelivery = async (pkgId) => {
+   const handleDelivery = async (pkgId) => {
     try {
       await axiosSecure.post(`/package/accept/destination/delivery/${pkgId}`);
       Swal.fire({
