@@ -63,6 +63,23 @@ const PendingPacelList = () => {
       });
     }
   };
+  const handleHold = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/package/accept/destination/delivery/hold/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Holded",
+        text: "The parcel has been successfully Holded!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Holded the package. Please try again.",
+      });
+    }
+  };
 
   const handleSelectBranch = async () => {
     if (!selectedBranch || !note) {
@@ -78,7 +95,7 @@ const PendingPacelList = () => {
       await axiosSecure.post(`/package/select-rider/rider/${selectedPackage._id}`, {
         Tracking_Destination_Branch_Select_Rider: selectedBranch,
         Tracking_Destination_Branch_Note: note,
-        
+        done:"done",
         Tracking_Destination_Branch_Select_Rider_Date: new Date()
       });
       Swal.fire({
@@ -140,26 +157,32 @@ const PendingPacelList = () => {
                         Accept
                       </button>
                     )}
-                    {pkg?.Tracking_Destination_Branch_Received ? (
-                      <h1 className="text-green-500 border p-1 border-green-500">Deliveried</h1>
-                    ) : (
-                      <button
-                        className="bg-green-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleDelivery(pkg._id)}
-                      >
-                        Delivery
-                      </button>
-                    )}
-                    {pkg?.Tracking_Destination_Branch_Received ? (
-                      <h1 className="text-yellow-500 border p-1 border-green-500">Holded</h1>
-                    ) : (
-                      <button
-                        className="bg-yellow-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleAccept(pkg._id)}
-                      >
-                        Hold
-                      </button>
-                    )}
+                    {
+                      !pkg?.done &&
+                      (pkg?.Tracking_Destination_Branch_Delivery_Parcel ? (
+                        <h1 className="text-green-500 border p-1 border-green-500">Deliveried</h1>
+                      ) : (
+                        <button
+                          className="bg-green-500 text-white px-2 py-1 rounded"
+                          onClick={() => handleDelivery(pkg._id)}
+                        >
+                          Delivery
+                        </button>
+                      ))
+                    }
+
+                    {
+                      !pkg?.done && (pkg?.Tracking_Destination_Branch_Received ? (
+                        <h1 className="text-yellow-500 border p-1 border-green-500">Holded</h1>
+                      ) : (
+                        <button
+                          className="bg-yellow-500 text-white px-2 py-1 rounded"
+                          onClick={() => handleHold(pkg._id)}
+                        >
+                          Hold
+                        </button>
+                      ))
+                    }
                     {pkg?.Tracking_Destination_Branch_Received ? (
                       <h1 className="text-red-500 border p-1 border-green-500">Returned</h1>
                     ) : (
