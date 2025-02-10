@@ -1,103 +1,3 @@
-// import { useQuery } from "@tanstack/react-query";
-// import { getAllPackage } from "../../../../api/auth";
-// import TableRow from "../Pickup Parcel/TableRow";
-// import useUsersData from "../../../../hooks/useUsersData/useUsersData";
-
-
-
-
-// const PendingParcelList = () => {
-
-//     const[verifiedUser] = useUsersData()
-
-//     const { data: packages = [], refetch } = useQuery({
-//     queryKey: ['packages', verifiedUser?.email], // Query key includes user email
-//     queryFn: () => getAllPackage(verifiedUser?.email), // Function to fetch packages
-//     enabled: !!verifiedUser?.email, // Only run when email is available
-// });
-
-//     const PendingParcelList1 = packages.filter(user => user?.update === 'Processing');
-
-//     return (
-//         <>
-//             <h1 className="text-2xl font-bold font-rancho text-center text-secondary">Pickup Parcel</h1>
-//             <div className='container mx-auto px-4 sm:px-8'>
-
-//                 <div className='py-8'>
-//                     <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
-//                         <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
-//                             <table className='min-w-full leading-normal'>
-//                                 <thead>
-//                                     <tr className="text-lg font-rancho">
-//                                         <th
-//                                             scope='col'
-//                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-//                                         >
-//                                             Sender Name
-//                                         </th>
-//                                         <th
-//                                             scope='col'
-//                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-//                                         >
-//                                             Receiver Name
-//                                         </th>
-//                                         <th
-//                                             scope='col'
-//                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-//                                         >
-//                                             Booking Date
-//                                         </th>
-//                                         <th
-//                                             scope='col'
-//                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-//                                         >
-//                                             Product Details
-//                                         </th>
-
-//                                         <th
-//                                             scope='col'
-//                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-//                                         >
-//                                             Receiver Contact No
-//                                         </th>
-//                                         <th
-//                                             scope='col'
-//                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-//                                         >
-//                                             Note
-//                                         </th>
-//                                         <th
-//                                             scope='col'
-//                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-//                                         >
-//                                             Update
-//                                         </th>
-//                                     </tr>
-//                                 </thead>
-//                                 <tbody>
-//                                     {/* User data table row */}
-//                                     {PendingParcelList1 &&
-//                                         PendingParcelList1.map(pack => (
-//                                             <TableRow
-//                                                 key={pack._id}
-//                                                 pack={pack}
-//                                                 refetch={refetch}
-//                                             />
-//                                         ))}
-
-//                                 </tbody>
-//                             </table>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-//         </>
-//     );
-// };
-
-// export default PendingParcelList; 
-
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -146,6 +46,74 @@ const PendingPacelList = () => {
       });
     }
   };
+   const handleDelivery = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/package/accept/destination/delivery/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Deliveried",
+        text: "The parcel has been successfully Deliveried!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Deliveried the package. Please try again.",
+      });
+    }
+  };
+  const handleHold = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/package/accept/destination/delivery/hold/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Holded",
+        text: "The parcel has been  Holded!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Holded the package. Please try again.",
+      });
+    }
+  };
+  const handlReturn = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/package/accept/destination/delivery/hold/return/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Returned",
+        text: "The parcel has been  Returned!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Returned the package. Please try again.",
+      });
+    }
+  };
+  const handlExchange = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/package/accept/destination/delivery/hold/return/Exchange/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Exchanged",
+        text: "The parcel has been  Exchanged!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Exchanged the package. Please try again.",
+      });
+    }
+  };
 
   const handleSelectBranch = async () => {
     if (!selectedBranch || !note) {
@@ -161,6 +129,7 @@ const PendingPacelList = () => {
       await axiosSecure.post(`/package/select-rider/rider/${selectedPackage._id}`, {
         Tracking_Destination_Branch_Select_Rider: selectedBranch,
         Tracking_Destination_Branch_Note: note,
+        done:"done",
         Tracking_Destination_Branch_Select_Rider_Date: new Date()
       });
       Swal.fire({
@@ -191,9 +160,10 @@ const PendingPacelList = () => {
                 <th className="border border-blue-500 px-4 py-2">Date</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Name</th>
-                <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
+                {/* <th className="border border-blue-500 px-4 py-2">Sender Mobile</th> */}
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
+                <th className="border border-blue-500 px-4 py-2">CN Number</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -206,9 +176,10 @@ const PendingPacelList = () => {
                   </td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.recipientName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderMobile}</td>
+                  {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderMobile}</td> */}
                   <td className="border border-blue-500 px-4 py-2">{pkg.recipientMobile}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                     {pkg?.Tracking_Destination_Branch_Received_Parcel ? (
                       <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
@@ -220,21 +191,73 @@ const PendingPacelList = () => {
                         Accept
                       </button>
                     )}
-                    {pkg?.Tracking_Destination_Branch_Select_Rider ? (
-                      <h1 className="text-green-500 border p-1 border-green-500">
-                        Already Selected Rider
-                      </h1>
+                    {
+                      !pkg?.done || pkg?.Tracking_Destination_Branch_Delivery_Parcel &&
+                      (pkg?.Tracking_Destination_Branch_Delivery_Parcel ? (
+                        <h1 className="text-green-500 border p-1 border-green-500">Deliveried</h1>
+                      ) : (
+                        <button
+                          className="bg-green-500 text-white px-2 py-1 rounded"
+                          onClick={() => handleDelivery(pkg._id)}
+                        >
+                          Delivery
+                        </button>
+                      ))
+                    }
+
+                    {
+                      !pkg?.done || pkg?.Tracking_Destination_Branch_Hold_Parcel && (pkg?.Tracking_Destination_Branch_Hold_Parcel ? (
+                        <h1 className="text-yellow-500 border p-1 border-green-500">Holded</h1>
+                      ) : (
+                        <button
+                          className="bg-yellow-500 text-white px-2 py-1 rounded"
+                          onClick={() => handleHold(pkg._id)}
+                        >
+                          Hold
+                        </button>
+                      ))
+                    }
+                    {
+                      !pkg?.done || pkg?.Tracking_Destination_Branch_Returned_Parcel && (pkg?.Tracking_Destination_Branch_Returned_Parcel ? (
+                        <h1 className="text-red-500 border p-1 border-green-500">Returned</h1>
+                      ) : (
+                        <button
+                          className="bg-red-500 text-white px-2 py-1 rounded"
+                          onClick={() => handlReturn(pkg._id)}
+                        >
+                          Return
+                        </button>
+                      ))
+                    }
+                   {
+                    !pkg?.done || pkg?.Tracking_Destination_Branch_Exchanged_Parcel &&  (pkg?.Tracking_Destination_Branch_Exchanged_Parcel ? (
+                      <h1 className="text-yellow-500 border p-1 border-green-500">Exchanged</h1>
                     ) : (
                       <button
-                        className="bg-blue-500 text-white px-2 py-1 rounded"
-                        onClick={() => {
-                          setSelectedPackage(pkg);
-                          setShowSelectBranchModal(true);
-                        }}
+                        className="bg-yellow-500 text-white px-2 py-1 rounded"
+                        onClick={() => handlExchange(pkg._id)}
                       >
-                        Select Rider
+                        Exchange
                       </button>
-                    )}
+                    ))
+                   }
+                    {
+                      !pkg?.done && (pkg?.Tracking_Destination_Branch_Select_Rider ? (
+                        <h1 className="text-green-500 border p-1 border-green-500">
+                          Already Selected Rider
+                        </h1>
+                      ) : (
+                        <button
+                          className="bg-blue-500 text-white px-2 py-1 rounded"
+                          onClick={() => {
+                            setSelectedPackage(pkg);
+                            setShowSelectBranchModal(true);
+                          }}
+                        >
+                          Select Rider
+                        </button>
+                      ))
+                    }
                     <button
                       className="bg-gray-500 text-white px-2 py-1 rounded"
                       onClick={() => {
