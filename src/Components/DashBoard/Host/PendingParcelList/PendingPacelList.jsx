@@ -97,6 +97,23 @@ const PendingPacelList = () => {
       });
     }
   };
+  const handlExchange = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/package/accept/destination/delivery/hold/return/Exchange/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Exchanged",
+        text: "The parcel has been  Exchanged!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Exchanged the package. Please try again.",
+      });
+    }
+  };
 
   const handleSelectBranch = async () => {
     if (!selectedBranch || !note) {
@@ -206,37 +223,41 @@ const PendingPacelList = () => {
                       ) : (
                         <button
                           className="bg-red-500 text-white px-2 py-1 rounded"
-                          onClick={() => handleAccept(pkg._id)}
+                          onClick={() => handlReturn(pkg._id)}
                         >
                           Return
                         </button>
                       ))
                     }
-                    {pkg?.Tracking_Destination_Branch_Received ? (
+                   {
+                    !pkg?.done &&  (pkg?.Tracking_Destination_Branch_Received ? (
                       <h1 className="text-yellow-500 border p-1 border-green-500">Exchanged</h1>
                     ) : (
                       <button
                         className="bg-yellow-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleAccept(pkg._id)}
+                        onClick={() => handlExchange(pkg._id)}
                       >
                         Exchange
                       </button>
-                    )}
-                    {pkg?.Tracking_Destination_Branch_Select_Rider ? (
-                      <h1 className="text-green-500 border p-1 border-green-500">
-                        Already Selected Rider
-                      </h1>
-                    ) : (
-                      <button
-                        className="bg-blue-500 text-white px-2 py-1 rounded"
-                        onClick={() => {
-                          setSelectedPackage(pkg);
-                          setShowSelectBranchModal(true);
-                        }}
-                      >
-                        Select Rider
-                      </button>
-                    )}
+                    ))
+                   }
+                    {
+                      !pkg?.done && (pkg?.Tracking_Destination_Branch_Select_Rider ? (
+                        <h1 className="text-green-500 border p-1 border-green-500">
+                          Already Selected Rider
+                        </h1>
+                      ) : (
+                        <button
+                          className="bg-blue-500 text-white px-2 py-1 rounded"
+                          onClick={() => {
+                            setSelectedPackage(pkg);
+                            setShowSelectBranchModal(true);
+                          }}
+                        >
+                          Select Rider
+                        </button>
+                      ))
+                    }
                     <button
                       className="bg-gray-500 text-white px-2 py-1 rounded"
                       onClick={() => {
