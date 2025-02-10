@@ -123,7 +123,7 @@ const PendingPareclList_Offline = () => {
         title: "Incomplete Information",
         text: "Please fill in both the branch and the note!",
       });
-      return;
+       return;
     }
 
     try {
