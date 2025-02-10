@@ -46,6 +46,23 @@ const PendingPacelList = () => {
       });
     }
   };
+  const handleDelivery = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/package/accept/destination/delivery/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Deliveried",
+        text: "The parcel has been successfully Deliveried!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Deliveried the package. Please try again.",
+      });
+    }
+  };
 
   const handleSelectBranch = async () => {
     if (!selectedBranch || !note) {
@@ -61,6 +78,7 @@ const PendingPacelList = () => {
       await axiosSecure.post(`/package/select-rider/rider/${selectedPackage._id}`, {
         Tracking_Destination_Branch_Select_Rider: selectedBranch,
         Tracking_Destination_Branch_Note: note,
+        
         Tracking_Destination_Branch_Select_Rider_Date: new Date()
       });
       Swal.fire({
@@ -127,7 +145,7 @@ const PendingPacelList = () => {
                     ) : (
                       <button
                         className="bg-green-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleAccept(pkg._id)}
+                        onClick={() => handleDelivery(pkg._id)}
                       >
                         Delivery
                       </button>
