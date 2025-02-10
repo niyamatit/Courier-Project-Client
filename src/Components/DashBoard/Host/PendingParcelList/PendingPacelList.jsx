@@ -69,7 +69,7 @@ const PendingPacelList = () => {
       Swal.fire({
         icon: "success",
         title: "Parcel Holded",
-        text: "The parcel has been successfully Holded!",
+        text: "The parcel has been  Holded!",
       });
       refetch();
     } catch (error) {
@@ -77,6 +77,23 @@ const PendingPacelList = () => {
         icon: "error",
         title: "Error",
         text: "Failed to Holded the package. Please try again.",
+      });
+    }
+  };
+  const handlReturn = async (pkgId) => {
+    try {
+      await axiosSecure.post(`/package/accept/destination/delivery/hold/return/${pkgId}`);
+      Swal.fire({
+        icon: "success",
+        title: "Parcel Returned",
+        text: "The parcel has been  Returned!",
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to Returned the package. Please try again.",
       });
     }
   };
@@ -183,16 +200,18 @@ const PendingPacelList = () => {
                         </button>
                       ))
                     }
-                    {pkg?.Tracking_Destination_Branch_Received ? (
-                      <h1 className="text-red-500 border p-1 border-green-500">Returned</h1>
-                    ) : (
-                      <button
-                        className="bg-red-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleAccept(pkg._id)}
-                      >
-                        Return
-                      </button>
-                    )}
+                    {
+                      !pkg?.done && (pkg?.Tracking_Destination_Branch_Received ? (
+                        <h1 className="text-red-500 border p-1 border-green-500">Returned</h1>
+                      ) : (
+                        <button
+                          className="bg-red-500 text-white px-2 py-1 rounded"
+                          onClick={() => handleAccept(pkg._id)}
+                        >
+                          Return
+                        </button>
+                      ))
+                    }
                     {pkg?.Tracking_Destination_Branch_Received ? (
                       <h1 className="text-yellow-500 border p-1 border-green-500">Exchanged</h1>
                     ) : (
