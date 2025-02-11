@@ -12,8 +12,8 @@ const PickUpParcelList_Merchant = () => {
     const queryClient = useQueryClient();
     const [verifiedUser] = useUsersData();
 
-    const { data: RiderPickup = [] } = useQuery({
-        queryKey: ['RiderPickup', verifiedUser?.email],
+    const { data: RiderPickupMerchant = [] } = useQuery({
+        queryKey: ['RiderPickupMerchant', verifiedUser?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/rider/email/rider/parcel/merchant/mer/hello/${verifiedUser?.email}`);
             return Array.isArray(res.data) ? res.data : [res.data];
@@ -43,7 +43,7 @@ const PickUpParcelList_Merchant = () => {
                 title: 'Success',
                 text: 'Parcel updated successfully!',
             });
-            queryClient.invalidateQueries(['RiderPickup', verifiedUser?.email]);
+            queryClient.invalidateQueries(['RiderPickupMerchant', verifiedUser?.email]);
             closeModal();
         },
         onError: () => {
@@ -107,7 +107,7 @@ const PickUpParcelList_Merchant = () => {
 
     return (
         <div className="p-4">
-            <h1 className="text-xl font-bold mb-4 text-center">Pickup Parcel List Offline</h1>
+            <h1 className="text-xl font-bold mb-4 text-center">Pickup Parcel List Merchant</h1>
             <table className="table-auto w-full border-collapse border border-gray-300 shadow-lg">
                 <thead>
                     <tr className="bg-blue-600">
@@ -124,8 +124,8 @@ const PickUpParcelList_Merchant = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(RiderPickup) && RiderPickup.length > 0 ? (
-                        RiderPickup.filter(
+                    {Array.isArray(RiderPickupMerchant) && RiderPickupMerchant.length > 0 ? (
+                        RiderPickupMerchant.filter(
                             (item) =>
                                 !item.Tracking_Rider_Merchant_Delivary_Update_Successful &&
                                 !item.Tracking_Rider_Merchant_Delivary_Update_Returned

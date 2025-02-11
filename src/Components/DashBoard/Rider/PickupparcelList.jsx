@@ -12,8 +12,8 @@ const PickupparcelList = () => {
   const queryClient = useQueryClient();
   const [verifiedUser] = useUsersData();
 
-  const { data: RiderPickup = [] } = useQuery({
-    queryKey: ['RiderPickup', verifiedUser?.email],
+  const { data: RiderPickupOnline = [] } = useQuery({
+    queryKey: ['RiderPickupOnline', verifiedUser?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/rider/email/rider/parcel/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
@@ -43,7 +43,7 @@ const mutation = useMutation({
       title: 'Success',
       text: 'Parcel updated successfully!',
     });
-    queryClient.invalidateQueries(['RiderPickup', verifiedUser?.email]); 
+    queryClient.invalidateQueries(['RiderPickupOnline', verifiedUser?.email]); 
     closeModal();
   },
   onError: () => {
@@ -124,11 +124,13 @@ const handleSubmit = () => {
           </tr>
         </thead>
         <tbody>
-  {Array.isArray(RiderPickup) && RiderPickup.length > 0 ? (
-    RiderPickup.filter(
+  {Array.isArray(RiderPickupOnline) && RiderPickupOnline.length > 0 ? (
+    RiderPickupOnline.filter(
       (item) =>
         !item.Tracking_Rider_Online_Booking_Delivary_Update_Successful &&
-        !item.Tracking_Rider_Online_Booking_Delivary_Update_Returned
+        !item.Tracking_Rider_Online_Booking_Delivary_Update_Returned &&
+        !item?.Tracking_Rider_Online_Booking_Delivary_Update_Hold &&
+        !item?.Tracking_Rider_Online_Booking_Delivary_Update_Exchange
     ).map((item, index) => (
       <tr key={item._id} className="hover:bg-gray-100">
         <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
@@ -141,7 +143,7 @@ const handleSubmit = () => {
         <td className="border border-gray-300 px-4 py-2 text-center">{item.conditionCharge}</td>
         <td className="border border-gray-300 px-4 py-2 text-center">{item.update}</td>
         <td className="border border-gray-300 px-4 py-2 text-center">
-          <div className='flex'>
+          <div className='flex gap-1'>
           <button
             onClick={() => handleActionClick('Successful', item)}
             className="bg-green-500 text-white px-3 py-1 rounded mr-2"
@@ -154,6 +156,8 @@ const handleSubmit = () => {
           >
             Return
           </button>
+          <button onClick={() => handleActionClick('Hold', item)} className="bg-yellow-500 text-white px-3 py-1 rounded">Hold</button>
+          <button onClick={() => handleActionClick('Exchange', item)} className="bg-purple-500 text-white px-3 py-1 rounded">Exchange</button>
           </div>
         </td>
       </tr>

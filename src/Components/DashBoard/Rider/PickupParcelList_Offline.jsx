@@ -128,7 +128,9 @@ const PickupParcelList_Offline = () => {
                         RiderPickup.filter(
                             (item) =>
                                 !item.Tracking_Rider_Offline_Booking_Delivary_Update_Successful &&
-                                !item.Tracking_Rider_Offline_Booking_Delivary_Update_Returned
+                                !item.Tracking_Rider_Offline_Booking_Delivary_Update_Returned &&
+                                !item?.Tracking_Rider_Offline_Booking_Delivary_Update_Hold && 
+                                !item?.Tracking_Rider_Offline_Booking_Delivary_Update_Exchange
                         ).map((item, index) => (
                             <tr key={item._id} className="hover:bg-gray-100">
                                 <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
@@ -147,7 +149,7 @@ const PickupParcelList_Offline = () => {
                                         
                                          <h1 className='font-bold text-green-600'>{item?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || item?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned}</h1>
                                         :
-                                        <div className='flex'>
+                                        <div className='flex gap-1'>
                                         <button
                                             onClick={() => handleActionClick('Successful', item)}
                                             className="bg-green-500 text-white px-3 py-1 rounded mr-2"
@@ -160,6 +162,8 @@ const PickupParcelList_Offline = () => {
                                         >
                                             Return
                                         </button>
+                                        <button onClick={() => handleActionClick('Hold', item)} className="bg-yellow-500 text-white px-3 py-1 rounded">Hold</button>
+                    <button onClick={() => handleActionClick('Exchange', item)} className="bg-purple-500 text-white px-3 py-1 rounded">Exchange</button>
                                     </div>
                                     }
                                 </td>

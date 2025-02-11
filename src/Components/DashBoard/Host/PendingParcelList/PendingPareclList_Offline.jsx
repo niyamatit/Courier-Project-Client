@@ -191,8 +191,8 @@ const PendingPareclList_Offline = () => {
   </button>
 )}
  {
-                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Delivery_Parcel) &&
-                      (pkg?.Tracking_Destination_Branch_Delivery_Parcel ? (
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Delivery_Parcel_Offline) &&
+                      (pkg?.Tracking_Destination_Branch_Delivery_Parcel_Offline ? (
                         <h1 className="text-green-500 border p-1 border-green-500">Deliveried</h1>
                       ) : (
                         <button
@@ -205,7 +205,7 @@ const PendingPareclList_Offline = () => {
                     }
 
                     {
-                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Hold_Parcel) && (pkg?.Tracking_Destination_Branch_Hold_Parcel ? (
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Hold_Parcel_Offline) && (pkg?.Tracking_Destination_Branch_Hold_Parcel_Offline ? (
                         <h1 className="text-yellow-500 border p-1 border-green-500">Holded</h1>
                       ) : (
                         <button
@@ -217,7 +217,7 @@ const PendingPareclList_Offline = () => {
                       ))
                     }
                     {
-                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Returned_Parcel) && (pkg?.Tracking_Destination_Branch_Returned_Parcel ? (
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Returned_Parcel_Offline) && (pkg?.Tracking_Destination_Branch_Returned_Parcel_Offline ? (
                         <h1 className="text-red-500 border p-1 border-green-500">Returned</h1>
                       ) : (
                         <button
@@ -229,7 +229,7 @@ const PendingPareclList_Offline = () => {
                       ))
                     }
                    {
-                    (!pkg?.done || pkg?.Tracking_Destination_Branch_Exchanged_Parcel) &&  (pkg?.Tracking_Destination_Branch_Exchanged_Parcel ? (
+                    (!pkg?.done || pkg?.Tracking_Destination_Branch_Exchanged_Parcel_Offline) &&  (pkg?.Tracking_Destination_Branch_Exchanged_Parcel_Offline ? (
                       <h1 className="text-yellow-500 border p-1 border-green-500">Exchanged</h1>
                     ) : (
                       <button
