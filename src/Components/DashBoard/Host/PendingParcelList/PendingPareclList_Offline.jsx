@@ -25,7 +25,7 @@ const PendingPareclList_Offline = () => {
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/offline/email/Branch/destination/again/${verifiedUser?.email}`);
-      return Array.isArray(res.data) ? res.data : [res.data];
+       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
 
