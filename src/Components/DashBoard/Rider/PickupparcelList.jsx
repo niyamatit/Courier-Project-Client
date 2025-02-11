@@ -12,8 +12,8 @@ const PickupparcelList = () => {
   const queryClient = useQueryClient();
   const [verifiedUser] = useUsersData();
 
-  const { data: RiderPickup = [] } = useQuery({
-    queryKey: ['RiderPickup', verifiedUser?.email],
+  const { data: RiderPickupOnline = [] } = useQuery({
+    queryKey: ['RiderPickupOnline', verifiedUser?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/rider/email/rider/parcel/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
@@ -43,7 +43,7 @@ const mutation = useMutation({
       title: 'Success',
       text: 'Parcel updated successfully!',
     });
-    queryClient.invalidateQueries(['RiderPickup', verifiedUser?.email]); 
+    queryClient.invalidateQueries(['RiderPickupOnline', verifiedUser?.email]); 
     closeModal();
   },
   onError: () => {
@@ -124,8 +124,8 @@ const handleSubmit = () => {
           </tr>
         </thead>
         <tbody>
-  {Array.isArray(RiderPickup) && RiderPickup.length > 0 ? (
-    RiderPickup.filter(
+  {Array.isArray(RiderPickupOnline) && RiderPickupOnline.length > 0 ? (
+    RiderPickupOnline.filter(
       (item) =>
         !item.Tracking_Rider_Online_Booking_Delivary_Update_Successful &&
         !item.Tracking_Rider_Online_Booking_Delivary_Update_Returned
