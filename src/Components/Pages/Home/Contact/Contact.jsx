@@ -126,15 +126,13 @@ const Contact = () => {
         </form>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116859.81515520204!2d90.30665368768476!3d23.75204248045586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b783beb16f73%3A0x89452a685b92ff93!2sNiyamat%20IT%20-%20Build%20Up%20Your%20Career!5e0!3m2!1sen!2sbd!4v1719467357108!5m2!1sen!2sbd"
-        width="600"
-        height="530"
+      
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3653.436643342995!2d90.49983891136998!3d23.696096378618645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b7797dd95deb%3A0x8eb89c09da3e3eb6!2sNiyamat%20Express!5e0!3m2!1sen!2sbd!4v1739373983598!5m2!1sen!2sbd" width="800"
+        height="630"
         style={{ border: 0 }}
         allowFullScreen=""
         loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-      ></iframe>
+        referrerPolicy="no-referrer-when-downgrade"></iframe>
     </div>
       </div>
     </div>
