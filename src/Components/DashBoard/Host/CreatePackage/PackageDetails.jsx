@@ -11,7 +11,7 @@ export const PackageDetails = ({ bookingInfo }) => (
 
     <>
 
-        <div className="invoice-container">
+        <div className="invoice-container ">
             
             <header className="header">
                 <div className="logo">
@@ -33,28 +33,18 @@ export const PackageDetails = ({ bookingInfo }) => (
             <div className="booking-details ">
                 <div className='flex'>
                     <div>
-                        <Barcode className="ml-7 h-[50px] w-[200px]" value={bookingInfo?.CnNumber} />
-                        <p>{bookingInfo?.CnNumber}</p>
-                        <QRCode className="h-[50px]" value={bookingInfo?.CnNumber} />
+                        <Barcode className="ml-7 h-[35px] w-[200px] mt-[1px]" value={bookingInfo?.CnNumber} />
+                        <p className='text-[10px] ml-5'>{bookingInfo?.CnNumber}</p>
+                        
 
                     </div>
-                    {/* <div>
-                         <strong>Booking: </strong>{bookingInfo?.origin}
-                    </div> */}
-                    <div>
-                    <strong>Booking Date: </strong>
-{new Intl.DateTimeFormat('en-US', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-}).format(new Date(bookingInfo?.booking))}
-
+                    
+                    
+                    <div className='flex'>
+                        <p className='font-bold text-sm'>Destination:</p> <h className='font-bold text-sm'> {bookingInfo?.selectedArea}</h>
                     </div>
-                    <div>
-                        <p className='font-bold'>Destination: {bookingInfo?.selectedArea}</p>
+                    <div className='mt-1'>
+                    <QRCode className="h-[40px]" value={bookingInfo?.CnNumber} />
                     </div>
                 </div>
 
@@ -64,14 +54,14 @@ export const PackageDetails = ({ bookingInfo }) => (
             <div className="contact-details">
 
                 <div className="sender-details">
-                    <h3 className='text-bold'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
-                    <p><strong>Contact:{bookingInfo?.senderMobile} </strong></p>
-                    {/* <p><strong>Address: </strong>{bookingInfo?.origin}</p> */}
+                    <h3 className='text-bold text-xs'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
+                    <p className='text-xs'> <strong>Contact:{bookingInfo?.senderMobile} </strong></p>
+                    <p className='text-xs'><strong>Address: </strong>{bookingInfo?.sender_Full_Adress}</p>
                 </div>
                 <div className="receiver-details">
-                    <h3 className='text-bold'><strong>Receiver:{bookingInfo?.recipientName}</strong></h3>
-                    <p><strong>Contact: {bookingInfo?.recipientMobile}</strong></p>
-                    <p><strong>Address: {bookingInfo?.selectedArea}</strong></p>
+                    <h3 className='text-bold text-xs'><strong>Receiver:{bookingInfo?.recipientName}</strong></h3>
+                    <p className='text-xs'><strong>Contact: {bookingInfo?.recipientMobile}</strong></p>
+                    <p className='text-xs'><strong>Address: {bookingInfo?.Receiver_Full_Adress}</strong></p>
                 </div>
             </div>
 
@@ -89,14 +79,12 @@ export const PackageDetails = ({ bookingInfo }) => (
             </div>
 
             <div className="footer flex justify-around">
-                <div>
-                    <strong>In word: </strong>{bookingInfo?.wordAmount}
+                <div className='flex'>
+                    <strong>In word: </strong><p>{bookingInfo?.wordAmount}</p>
                 </div>
-                <div>
-                    {/* <strong>Booking Officer: </strong>SEL00063 */}
-                </div>
+               
 
-                <div className='mt-5'>
+                <div className=''>
                     condition+charge: {bookingInfo?.conditionCharge || 0}
                 </div>
                 <div>
@@ -105,14 +93,27 @@ export const PackageDetails = ({ bookingInfo }) => (
                             ? <strong>Cash - {bookingInfo?.deliveryOption}</strong>
                             : <strong>Payment - {bookingInfo?.deliveryOption}</strong>
                     } */}
-                   <strong>{`${bookingInfo?.paymentOption} - ${bookingInfo?.deliveryOption}`}</strong>
+                   <strong className='text-sm'>{`${bookingInfo?.paymentOption} - ${bookingInfo?.deliveryOption}`}</strong>
+                   <div>
+                    <strong className='text-xs'>Booking Date: </strong>
+{new Intl.DateTimeFormat('en-US', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+}).format(new Date(bookingInfo?.booking))}
+
+                    </div>
                 </div>
             </div>
-            <p className='text-sm mt-2'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
+            
+            <p className='text-xs mt-1'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
         </div>
        
         <div className='flex justify-center items-center'>
-            <PiScissorsLight className='w-5 h-5' />
+            <PiScissorsLight className='w-5 h-3' />
             <p>-----------------------------------------</p>
         </div>
     </>
