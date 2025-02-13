@@ -58,14 +58,14 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
             <div className="contact-details">
 
                 <div className="sender-details">
-                    <h3 className='text-bold'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
-                    <p><strong>Contact:{bookingInfo?.senderContactNo} </strong></p>
-                    <p><strong>Address: </strong>{bookingInfo?.address}</p>
+                    <h3 className='text-bold text-sm'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
+                    <p  className='text-bold text-sm'><strong>Contact:{bookingInfo?.senderContactNo} </strong></p>
+                    <p  className='text-bold text-sm'><strong>Address: </strong>{bookingInfo?.address}</p>
                 </div>
                 <div className="receiver-details">
-                    <h3 className='text-bold'><strong>Receiver:{bookingInfo?.receiverName}</strong></h3>
-                    <p><strong>Contact: {bookingInfo?.receiverContactNo}</strong></p>
-                    <p><strong>Address: {bookingInfo?.receiveraddress}</strong></p>
+                    <h3 className='text-bold text-sm'><strong>Receiver:{bookingInfo?.receiverName}</strong></h3>
+                    <p  className='text-bold text-sm'><strong>Contact: {bookingInfo?.receiverContactNo}</strong></p>
+                    <p  className='text-bold text-sm'><strong>Address: {bookingInfo?.receiveraddress}</strong></p>
                 </div>
             </div>
 
