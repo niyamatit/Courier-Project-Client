@@ -11,7 +11,7 @@ export const PackageDetails = ({ bookingInfo }) => (
 
     <>
 
-        <div className="invoice-container ">
+        <div className="invoice-container max-w-[800px]">
             
             <header className="header">
                 <div className="logo">
