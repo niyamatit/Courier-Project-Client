@@ -23,7 +23,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                         <p className='text-center text-sm'>Chittagong Road, Narayanganj 1430</p>
                     </div>
                     <div className='justify-end text-sm'>
-                        <p>https://niyamatexpress.com/</p>
+                        <p>web:https://niyamatexpress.com/</p>
                         <p>email:support@niyamatexpress.com</p>
                         <p>Hotline: 01969905735</p>
                     </div>
@@ -40,8 +40,8 @@ export const PackageDetails = ({ bookingInfo }) => (
                     </div>
                     
                     
-                    <div className='flex'>
-                        <p className='font-bold text-sm'>Destination:</p> <h className='font-bold text-sm'> {bookingInfo?.selectedArea}</h>
+                    <div className='flex gap-1'>
+                        <p className='font-bold text-sm'>Destination: </p>  <h className='font-bold text-sm'>  {bookingInfo?.selectedArea}</h>
                     </div>
                     <div className='mt-1'>
                     <QRCode className="h-[40px]" value={bookingInfo?.CnNumber} />

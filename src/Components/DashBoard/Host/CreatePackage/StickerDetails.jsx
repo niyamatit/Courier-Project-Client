@@ -64,9 +64,9 @@ const StickerDetails = ({ bookingInfo }) => {
 
             {/* Package Info */}
             <div className="mt-2 border-t pt-2">
-                <p className="text-xs text-gray-700"><strong>Product:</strong> {bookingInfo?.productDetails}</p>
+                 <p className="text-xs text-gray-700"><strong>Product:</strong> {bookingInfo?.productDetails}</p>
                 <p className="text-xs text-gray-700"><strong>Condition Charge:</strong> {bookingInfo?.conditionCharge} BDT</p>
-                <p className="text-xs text-gray-700"><strong>Total Amount:</strong> {bookingInfo?.amount} BDT ({bookingInfo?.wordAmount})</p>
+                {/* <p className="text-xs text-gray-700"><strong>Total Amount:</strong> {bookingInfo?.amount} BDT ({bookingInfo?.wordAmount})</p> */}
             </div>
 
             {/* QR Code Section */}
