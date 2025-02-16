@@ -24,7 +24,7 @@ const StickerDetails = ({ bookingInfo }) => {
                     alt="Logo"
                     className="h-10 mx-auto mb-2"
                 />
-                <h1 className="text-xl font-bold text-gray-800">Niyamat Express</h1>
+                <h1 className="text-3xl font-bold text-gray-800">Niyamat Express</h1>
                 <p className="text-xs text-gray-500">Head Office: Chittagong Road, Narayanganj 1430</p>
             </div>
 
