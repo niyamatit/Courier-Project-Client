@@ -203,6 +203,7 @@ const CreatePackage = () => {
         const recipientMobile = form.recipientMobile.value;
         const productDetails = form.productDetails.value;
         const qty = form.qty.value;
+        const weight_kg = parseFloat(form.selectedKg.value) || "";
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
         const bookingTimestamp = new Date();
@@ -251,6 +252,7 @@ const CreatePackage = () => {
                 recipientMobile,
                 productDetails,
                 qty,
+                weight_kg,
                 selectedArea,
                 amount,
                 wordAmount,
@@ -377,11 +379,28 @@ const CreatePackage = () => {
                         <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
                     </div>
                 </div>
-                <div className="form-control md:w-full md:px-24 mt-1">
+                <div className="md:flex gap-5 md:px-24">
+                <div className="form-control md:w-1/2  mt-1">
                     <label className="label">
                         <span className="label-text font-rancho text-xl">Sender Full Address</span>
                     </label>
                     <input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
+                </div>
+                <div className="form-control md:w-1/2 mt-1">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Select Kg*</span>
+    </label>
+    <select className="select select-bordered" name="selectedKg" required>
+        {[...Array(100)].map((_, index) => {
+            const weight = (index + 1) * 0.5;
+            return (
+                <option key={weight} value={weight}>
+                    {weight} kg
+                </option>
+            );
+        })}
+    </select>
+</div>
                 </div>
 
 
