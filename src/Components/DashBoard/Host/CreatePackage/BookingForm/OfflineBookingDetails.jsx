@@ -18,14 +18,14 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
                     <img className='h-[40px] w-[60px]' src={logoImg} alt="Niyamat Express" />
                 </div>
                 <div className="company-details flex gap-5">
-                    <div >
-                        <h3 className='font-bold text-2xl text-gray-800 mr-3'>Niyamat Express</h3>
-                        <p className='text-center'>Hotline: 01969905735</p>
+                    <div className='text-center margin'>
+                        <h3 className='font-bold text-3xl text-gray-800 mr-3 '>Niyamat Express</h3>
+                        <p className='text-center '>Hotline: 01969905735</p>
                         <p className='text-center text-sm'>Chittagong Road, Narayanganj 1430</p>
                     </div>
-                    <div className='justify-end text-sm'>
+                    <div className='justify-end text-sm mt-10'>
 
-                        <p>https://niyamatexpress.com/</p>
+                        <p>web:https://niyamatexpress.com/</p>
                         <p>email:support@niyamatexpress.com</p>
                     </div>
                 </div>
