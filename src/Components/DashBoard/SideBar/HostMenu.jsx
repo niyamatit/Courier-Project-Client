@@ -60,6 +60,12 @@ const HostMenu = () => {
         )}
       </div>
 
+      
+      <MenuItem
+        icon={IoHome}
+        label='Verify Staff'
+        address='verify-staff'
+      />
       <MenuItem
         icon={IoHome}
         label='Dashboard'
