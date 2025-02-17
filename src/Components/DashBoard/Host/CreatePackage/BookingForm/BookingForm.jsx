@@ -155,7 +155,14 @@ const BookingForm = () => {
   };
   
 
-
+  const getDeviceInfo = () => {
+    return {
+      os: navigator.userAgent.includes("Windows") ? "Windows 10" : "Unknown OS",
+      platform: navigator.platform,
+      userAgent: navigator.userAgent,
+    };
+  };
+  
 
   const onSubmit = async (data) => {
     try {
@@ -197,10 +204,14 @@ const BookingForm = () => {
         // Invalidate cache to reflect updated balance
         queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
       }
-  
+      const deviceInfo = getDeviceInfo();
       // Build the booking info payload
       data.CnNumber = cnNumber;
       const Bookinginfo = {
+        deviceOS: deviceInfo.os,
+  devicePlatform: deviceInfo.platform,
+  deviceUserAgent: deviceInfo.userAgent,
+
         senderName: data.senderName || senderInfo.name,
         address: data.address || senderInfo.address,
         receiverName: data.receiverName || receiverInfo.ReceiverName,
