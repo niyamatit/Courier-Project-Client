@@ -1,6 +1,6 @@
 
 
-const verifyStaff = () => {
+const VerifyStaff = () => {
     return (
         <div>
             <h1>Verify Staff</h1>
@@ -8,4 +8,4 @@ const verifyStaff = () => {
     );
 };
 
-export default verifyStaff;
+export default VerifyStaff;

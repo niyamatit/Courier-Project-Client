@@ -96,6 +96,7 @@ import AllSpoonser from "../Components/DashBoard/Host/Spoonser/AllSpoonser";
 import SupportCompany_List from "../Components/DashBoard/Admin/SupportCompany/SupportCompany_List";
 import AllBranch_Staff from "../Components/DashBoard/Host/AddBaranchStaff/AllBranch_Staff";
 import AllReviews from "../Components/Pages/Home/Reviews/AllReviews";
+import VerifyStaff from "../Components/DashBoard/Host/AddBaranchStaff/verifyStaff";
 
 
 
@@ -271,6 +272,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <PickupParcel />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "verify-staff",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <VerifyStaff/>
             </HostRoute>
           </PrivateRoute>
         ),

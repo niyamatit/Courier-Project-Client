@@ -781,9 +781,9 @@ const AddBaranchStaff = () => {
         Staff_Area: formData?.area || "",
         Staff_post: formData?.staff_post || "",
         Staff_Branch_Name: formData?.select_branch_name || "",
-        Staff_User_ID: selectedUser?.email || formData?.Staff_User_ID || "",
+        Staff_User_ID: formData?.Staff_User_ID || "",
         Staff_Experience: formData?.Staff_Exp || "",
-        Staff_Password: selectedUser?.Branch_Password || formData?.Staff_Password|| "",
+        Staff_Password:obfuscatePassword( formData?.Staff_Password) || "",
         Staff_Image: yourImage?.data?.display_url || "",
         NID_Front_Image: nidFrontImage?.data?.display_url || "",
         NID_Back_Image: nidBackImage?.data?.display_url || "",
@@ -1137,8 +1137,8 @@ const AddBaranchStaff = () => {
                       {...register('Staff_User_ID', { required: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_User_ID ? 'border-red-500' : 'border-gray-300'
                         }`}
-                      value={selectedUser?.email}
-                      readOnly
+                     
+                      
                     />
                     {errors.Staff_User_ID && <span className="text-red-500">This field is required</span>}
                   </div>
@@ -1150,8 +1150,8 @@ const AddBaranchStaff = () => {
                       {...register('Staff_Password', { required: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.Staff_Password ? 'border-red-500' : 'border-gray-300'
                         }`}
-                      value={deobfuscatePassword(selectedUser?.Branch_Password)}
-                      readOnly
+                     
+                      
                     />
                     {errors.Staff_Password && <span className="text-red-500">This field is required</span>}
                   </div>
