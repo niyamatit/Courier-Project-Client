@@ -101,6 +101,7 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
     bookingInfo?.Exchange 
     ? "Exchange"
     : "No Delivery Option Selected"}`}</strong>
+              <p className='text-sm'>Staff Name : {bookingInfo?.Booking_Staff_Name}</p>
                 </div>
             </div>
             <p className='text-xs mt-2'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
