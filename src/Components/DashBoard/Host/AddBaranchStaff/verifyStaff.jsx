@@ -1,7 +1,7 @@
 import { TbFidgetSpinner } from "react-icons/tb";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiLock, FiMail } from 'react-icons/fi';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
 
 const VerifyStaff = () => {
@@ -11,12 +11,18 @@ const VerifyStaff = () => {
   const [verifiedStaff] = UseStaffVerify();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (verifiedStaff) {
+      navigate("dashboard/branch-booking"); 
+    }
+  }, [verifiedStaff, navigate]);
+
   const handleLogIn = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
     setSuccess('');
-    
+
     const form = e.target;
     const StaffEmail = form.email.value;
     const StaffPassword = form.password.value;
@@ -24,16 +30,12 @@ const VerifyStaff = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Save to localStorage
+
+      // Save credentials to localStorage
       localStorage.setItem("StaffEmail", StaffEmail);
       localStorage.setItem("StaffPassword", StaffPassword);
-      if(verifiedStaff){
-        navigate("/dashboard/branch-booking")
-      
-      }
-      
-      // Add your redirection logic here
+
+      setSuccess("Verification successful!");
     } catch (err) {
       setError('Invalid credentials. Please try again.');
     } finally {
@@ -45,7 +47,7 @@ const VerifyStaff = () => {
     <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50'>
       <div className='relative w-full max-w-md px-6 py-8 bg-white rounded-2xl shadow-xl backdrop-blur-lg border border-opacity-20 border-gray-200'>
         <div className='absolute inset-0 bg-gradient-to-br from-white to-blue-50 rounded-2xl opacity-30' />
-        
+
         <div className='relative z-10 text-center'>
           <div className='mb-8 space-y-2'>
             <h1 className='text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'>
@@ -86,7 +88,6 @@ const VerifyStaff = () => {
                     className='w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none'
                   />
                 </div>
-                
               </div>
             </div>
 
@@ -101,7 +102,7 @@ const VerifyStaff = () => {
                   Verifying...
                 </span>
               ) : (
-                'Verify Identity'
+                "Verify"
               )}
             </button>
           </form>
