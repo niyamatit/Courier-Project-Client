@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import OfflinePrintModal from "./OfflinePrintModal";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
+import UseStaffVerify from "../../../../../hooks/UseStaffVerify/UseStaffVerify";
 
 const BookingForm_Merchant = () => {
   const {
@@ -49,7 +50,7 @@ const BookingForm_Merchant = () => {
     setIsOpen(false);
   };
   const queryClient = useQueryClient();
-
+  const [verifiedStaff] = UseStaffVerify();
 
 
 
@@ -229,7 +230,10 @@ const BookingForm_Merchant = () => {
         "H/D":data.hd,
         "Exchange":data.exchange,
         "O/D":data.od,
-
+        Booking_Staff_Name:verifiedStaff?.Staff_Name,
+        Booking_Staff_ID:verifiedStaff?.Staff_User_ID,
+        Booking_Staff_Post:verifiedStaff?.Staff_post,
+        Booking_Staff_Number:verifiedStaff?.Staff_Contact_Number,
         totalCharge: data.totalCharge || totalCharge,
         hdCharge: data.hdCharge,
         othCharge: data.othCharge,
