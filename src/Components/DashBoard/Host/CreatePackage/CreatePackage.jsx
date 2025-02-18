@@ -6,6 +6,7 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../../api/axiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
 
 
 
@@ -42,7 +43,7 @@ const CreatePackage = () => {
     const [balance, setBalance] = useState(20000); // Initial branch balance
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
     const [CnNumber, SetCnNumber] = useState("");
-
+    const [verifiedStaff] = UseStaffVerify();
 
     const [selectedDistrict, setSelectedDistrict] = useState("");
     const [filteredAreas, setFilteredAreas] = useState([]);
@@ -272,6 +273,10 @@ const CreatePackage = () => {
                 Branch_Address:verifiedUser?.Branch_Address,
                 Branch_District_Name:verifiedUser?.Branch_District_Name,
                 Branch_Area:verifiedUser?.Branch_Area,
+                Booking_Staff_Name:verifiedStaff?.Staff_Name,
+        Booking_Staff_ID:verifiedStaff?.Staff_User_ID,
+        Booking_Staff_Post:verifiedStaff?.Staff_post,
+        Booking_Staff_Number:verifiedStaff?.Staff_Contact_Number,
             };
     
             setBookingInfo(packageData);
