@@ -1,55 +1,123 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { TbFidgetSpinner } from "react-icons/tb";
+import { useState } from 'react';
+import { FiLock, FiMail } from 'react-icons/fi';
 
+const VerifyStaff = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-const VerifyStaff = ({ onVerification }) => {
-    const [verificationError, setVerificationError] = useState('');
-    const { register, handleSubmit, formState: { errors } } = useForm();
-
+  const handleLogIn = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    setSuccess('');
     
-    // const handleVerification = ({ userId, password }) => {
-    //     if (userId === staffData.Staff_User_ID && password === staffData.Staff_Password) {
-    //       setVerificationError('');
-    //       onVerification(staffData); // Return full staff data on match
-    //     } else {
-    //       setVerificationError('Invalid credentials');
-    //     }
-    //   };
-    return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow-md">
-      <h2 className="text-xl font-bold mb-4">Staff Verification</h2>
-      <form onSubmit={handleSubmit()} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">User ID</label>
-          <input
-            type="text"
-            {...register('userId', { required: 'User ID is required' })}
-            className="w-full px-3 py-2 border rounded"
-          />
-          {errors.userId && <span className="text-red-500 text-sm">{errors.userId.message}</span>}
+    const form = e.target;
+    const StaffEmail = form.email.value;
+    const StaffPassword = form.password.value;
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Save to localStorage
+      localStorage.setItem("StaffEmail", StaffEmail);
+      localStorage.setItem("StaffPassword", StaffPassword);
+      
+      setSuccess('Verification successful! Redirecting...');
+      // Add your redirection logic here
+    } catch (err) {
+      setError('Invalid credentials. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50'>
+      <div className='relative w-full max-w-md px-6 py-8 bg-white rounded-2xl shadow-xl backdrop-blur-lg border border-opacity-20 border-gray-200'>
+        <div className='absolute inset-0 bg-gradient-to-br from-white to-blue-50 rounded-2xl opacity-30' />
+        
+        <div className='relative z-10 text-center'>
+          <div className='mb-8 space-y-2'>
+            <h1 className='text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'>
+              Staff Verification
+            </h1>
+            <p className='text-gray-500 text-sm'>
+              Confirm your identity to access branch features
+            </p>
+          </div>
+
+          <form onSubmit={handleLogIn} className='space-y-6'>
+            <div className='space-y-4'>
+              <div className='relative'>
+                <label htmlFor='email' className='sr-only'>Your UserID*</label>
+                <div className='relative'>
+                  <FiMail className='absolute top-3.5 left-3 text-gray-400' size={20} />
+                  <input
+                    type='text'
+                    name='email'
+                    id='email'
+                    required
+                    placeholder='Enter Your User ID'
+                    className='w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none'
+                  />
+                </div>
+              </div>
+
+              <div className='relative'>
+                <label htmlFor='password' className='sr-only'>Password</label>
+                <div className='relative'>
+                  <FiLock className='absolute top-3.5 left-3 text-gray-400' size={20} />
+                  <input
+                    type='password'
+                    name='password'
+                    id='password'
+                    required
+                    placeholder='Enter your password'
+                    className='w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none'
+                  />
+                </div>
+                
+              </div>
+            </div>
+
+            <button
+              type='submit'
+              disabled={isLoading}
+              className='w-full py-3.5 px-6 rounded-lg bg-gradient-to-l from-blue-600 to-indigo-600 text-white font-medium hover:opacity-90 transition-opacity disabled:opacity-70 disabled:cursor-not-allowed'
+            >
+              {isLoading ? (
+                <span className='flex items-center justify-center gap-2'>
+                  <TbFidgetSpinner className='animate-spin' size={20} />
+                  Verifying...
+                </span>
+              ) : (
+                'Verify Identity'
+              )}
+            </button>
+          </form>
+
+          {error && (
+            <div className='mt-6 p-3 bg-red-50 text-red-700 rounded-lg animate-fade-in'>
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div className='mt-6 p-3 bg-green-50 text-green-700 rounded-lg animate-fade-in'>
+              {success}
+            </div>
+          )}
+
+          <div className='mt-6 text-center text-sm text-gray-500'>
+            <p>Need help? Contact support@gmail.com</p>
+          </div>
         </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input
-            type="password"
-            {...register('password', { required: 'Password is required' })}
-            className="w-full px-3 py-2 border rounded"
-          />
-          {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
-        </div>
-
-        {verificationError && <p className="text-red-500 text-sm">{verificationError}</p>}
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-        >
-          Verify Identity
-        </button>
-      </form>
+      </div>
     </div>
-    );
+  );
 };
 
 export default VerifyStaff;
