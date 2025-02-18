@@ -1,11 +1,14 @@
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useState } from 'react';
 import { FiLock, FiMail } from 'react-icons/fi';
+import { useLocation } from "react-router-dom";
 
 const VerifyStaff = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const location = useLocation();
+    const from = location?.state?.from?.pathname || '/dashboard'; 
 
   const handleLogIn = async (e) => {
     e.preventDefault();
@@ -25,7 +28,7 @@ const VerifyStaff = () => {
       localStorage.setItem("StaffEmail", StaffEmail);
       localStorage.setItem("StaffPassword", StaffPassword);
       
-      setSuccess('Verification successful! Redirecting...');
+      
       // Add your redirection logic here
     } catch (err) {
       setError('Invalid credentials. Please try again.');
