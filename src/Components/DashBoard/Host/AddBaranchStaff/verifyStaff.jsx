@@ -8,20 +8,25 @@ const VerifyStaff = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loginAttempted, setLoginAttempted] = useState(false);
   const [verifiedStaff] = UseStaffVerify();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (verifiedStaff) {
-      navigate("dashboard/branch-booking"); 
+    if (verifiedStaff && loginAttempted) {
+      navigate("/dashboard/branch-booking"); 
+      setSuccess("Verification successful!");
+    } else if (!verifiedStaff && loginAttempted) {
+      setError("Staff verification failed. Please check your credentials.");
     }
-  }, [verifiedStaff, navigate]);
+  }, [verifiedStaff, loginAttempted, navigate]);
 
   const handleLogIn = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
     setSuccess('');
+    setLoginAttempted(true);
 
     const form = e.target;
     const StaffEmail = form.email.value;
@@ -35,7 +40,7 @@ const VerifyStaff = () => {
       localStorage.setItem("StaffEmail", StaffEmail);
       localStorage.setItem("StaffPassword", StaffPassword);
 
-      setSuccess("Verification successful!");
+      
     } catch (err) {
       setError('Invalid credentials. Please try again.');
     } finally {
