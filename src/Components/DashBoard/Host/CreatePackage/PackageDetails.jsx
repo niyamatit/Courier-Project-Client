@@ -104,7 +104,7 @@ export const PackageDetails = ({ bookingInfo }) => (
     minute: 'numeric',
     hour12: true,
 }).format(new Date(bookingInfo?.booking))}
-
+ <p className='text-xs'>Staff Name: {bookingInfo?.Booking_Staff_Name}</p>
                     </div>
                 </div>
             </div>
