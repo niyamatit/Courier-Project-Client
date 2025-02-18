@@ -12,7 +12,15 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
 
         <div className="invoice-container">
        
-            
+        <div 
+        className="absolute inset-0 bg-center bg-repeat-y bg-contain"
+        style={{ 
+            backgroundImage: `url("https://i.ibb.co/1Y3XRyg1/UNITY.png")`, 
+            opacity: 0.1,
+            backgroundSize: "50%",
+            zIndex: -1
+        }}
+    ></div>
             <header className="header">
                 <div className="logo">
                     <img className='h-[40px] w-[60px]' src={logoImg} alt="Niyamat Express" />
