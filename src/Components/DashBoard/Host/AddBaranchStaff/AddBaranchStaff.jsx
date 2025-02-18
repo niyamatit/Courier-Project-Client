@@ -783,7 +783,7 @@ const AddBaranchStaff = () => {
         Staff_Branch_Name: formData?.select_branch_name || "",
         Staff_User_ID: formData?.Staff_User_ID || "",
         Staff_Experience: formData?.Staff_Exp || "",
-        Staff_Password:obfuscatePassword( formData?.Staff_Password) || "",
+        Staff_Password: obfuscatePassword(formData?.Staff_Password) || "",
         Staff_Image: yourImage?.data?.display_url || "",
         NID_Front_Image: nidFrontImage?.data?.display_url || "",
         NID_Back_Image: nidBackImage?.data?.display_url || "",
@@ -816,12 +816,7 @@ const AddBaranchStaff = () => {
     } 
 
   };
-  useEffect(() => {
-    if (selectedUser) {
-      setValue("Staff_User_ID", selectedUser?.email || "");
-      setValue("Staff_Password", deobfuscatePassword(selectedUser?.Branch_Password) || "");
-    }
-  }, [selectedUser, setValue]);
+  
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -1059,7 +1054,7 @@ const AddBaranchStaff = () => {
                         <option value="123">Select Branch</option>
                         {
                           users.filter(user => user?.role === 'host').map(user => (
-                            <option key={user._id} value={user?.name}>
+                            <option key={user._id} value={user?.email}>
                               {user?.name || "No Name Found"}
                             </option>
                           ))
