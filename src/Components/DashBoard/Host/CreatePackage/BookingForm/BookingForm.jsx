@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import OfflinePrintModal from "./OfflinePrintModal";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
+import UseStaffVerify from "../../../../../hooks/UseStaffVerify/UseStaffVerify";
 
 const BookingForm = () => {
   const {
@@ -43,7 +44,7 @@ const BookingForm = () => {
     ReceiverName: "",
     ReceiverAddress: "",
   });
-
+  const [verifiedStaff] = UseStaffVerify();
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -155,13 +156,7 @@ const BookingForm = () => {
   };
   
 
-  const getDeviceInfo = () => {
-    return {
-      os: navigator.userAgent.includes("Windows") ? "Windows 10" : "Unknown OS",
-      platform: navigator.platform,
-      userAgent: navigator.userAgent,
-    };
-  };
+  
   
 
   const onSubmit = async (data) => {
@@ -204,13 +199,11 @@ const BookingForm = () => {
         // Invalidate cache to reflect updated balance
         queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
       }
-      const deviceInfo = getDeviceInfo();
+      
       // Build the booking info payload
       data.CnNumber = cnNumber;
       const Bookinginfo = {
-        deviceOS: deviceInfo.os,
-  devicePlatform: deviceInfo.platform,
-  deviceUserAgent: deviceInfo.userAgent,
+        
 
         senderName: data.senderName || senderInfo.name,
         address: data.address || senderInfo.address,
@@ -218,6 +211,10 @@ const BookingForm = () => {
         receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
         Destbranch: data.branch,
         email: verifiedUser?.email,
+        Booking_Staff_Name:verifiedStaff?.Staff_Name,
+        Booking_Staff_ID:verifiedStaff?.Staff_User_ID,
+        Booking_Staff_Post:verifiedStaff?.Staff_post,
+        Booking_Staff_Number:verifiedStaff?.Staff_Contact_Number,
         customerCode: data.customerCode,
         counter: data.counter,
         customerName: data.customerName,
