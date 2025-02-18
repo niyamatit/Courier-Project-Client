@@ -1,0 +1,9 @@
+.invoice-container {
+    position: relative;
+    background-image: url('https://i.ibb.co.com/1Y3XRyg1/UNITY.png'); /* Adjust path as needed */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps it stable */
+    opacity: 0.1; /* Adjust transparency */
+}

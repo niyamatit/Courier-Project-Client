@@ -11,7 +11,17 @@ export const PackageDetails = ({ bookingInfo }) => (
 
     <>
 
-        <div className="invoice-container max-w-[800px]">
+        <div className="invoice-container max-w-[800px]"
+        >
+             <div 
+        className="absolute inset-0 bg-center bg-repeat-y bg-contain"
+        style={{ 
+            backgroundImage: `url("https://i.ibb.co/1Y3XRyg1/UNITY.png")`, 
+            opacity: 0.1,
+            backgroundSize: "50%",
+            zIndex: -1
+        }}
+    ></div>
             
             <header className="header">
                 <div className="logo">
