@@ -230,7 +230,7 @@ const BookingForm_Merchant = () => {
         "H/D":data.hd,
         "Exchange":data.exchange,
         "O/D":data.od,
-        Booking_Staff_Name:verifiedStaff?.Staff_Name,
+         Booking_Staff_Name:verifiedStaff?.Staff_Name,
         Booking_Staff_ID:verifiedStaff?.Staff_User_ID,
         Booking_Staff_Post:verifiedStaff?.Staff_post,
         Booking_Staff_Number:verifiedStaff?.Staff_Contact_Number,
