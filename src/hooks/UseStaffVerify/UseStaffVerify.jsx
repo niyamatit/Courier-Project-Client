@@ -28,7 +28,7 @@ const UseStaffVerify = () => {
         staff?.Staff_Branch_Name === verifiedUser?.email &&
         staff?.Staff_User_ID === StaffUserID &&
         deobfuscatePassword(staff?.Staff_Password) === StaffPassword)
-    console.log("All Verified user ",verifiedStaff)
+    
     
 
 
