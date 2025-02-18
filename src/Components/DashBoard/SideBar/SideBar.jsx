@@ -42,7 +42,9 @@ const Sidebar = () => {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        localStorage.removeItem('email');
+         localStorage.removeItem('email');
+        localStorage.removeItem('StaffEmail');
+        localStorage.removeItem('StaffPassword');
 
 
         navigate('/login');

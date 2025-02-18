@@ -12,6 +12,7 @@ import { useState } from "react";
 import './HostMenu.css'
 import { MdStore } from 'react-icons/md';
 import { AiOutlineCalendar } from 'react-icons/ai';
+import UseStaffVerify from "../../../hooks/UseStaffVerify/UseStaffVerify";
 
 
 
@@ -35,6 +36,7 @@ const HostMenu = () => {
   };
 
   const [verifiedUser] = useUsersData();
+  const [verifiedStaff] = UseStaffVerify();
   const { data: Branch_Balance = [] } = useQuery({
     queryKey: ["Branch_Balance", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
@@ -60,7 +62,23 @@ const HostMenu = () => {
         )}
       </div>
 
-      <MenuItem
+      
+      {
+        !verifiedStaff &&
+        (
+          <>
+          <MenuItem
+        icon={IoHome}
+        label='Verify Staff'
+        address='verify-staff'
+      />
+          </>
+        ) 
+      }
+     {
+      verifiedStaff && (
+        <>
+         <MenuItem
         icon={IoHome}
         label='Dashboard'
         address='host-dashboard'
@@ -251,11 +269,7 @@ const HostMenu = () => {
         label='Pending Payment'
         address='pending-payment'
       />
-      {/* <MenuItem
-        icon={MdPersonAdd}
-        label='Add Staff'
-        address='branch-staff'
-      /> */}
+     
       <MenuItem
         icon={FaBiking}
         label='Rider List'
@@ -285,6 +299,9 @@ const HostMenu = () => {
           
         </ul>
       </div>
+        </>
+      )
+     }
     </>
   );
 };
