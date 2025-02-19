@@ -44,6 +44,7 @@ const CreatePackage = () => {
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
     const [CnNumber, SetCnNumber] = useState("");
     const [verifiedStaff] = UseStaffVerify();
+    const [weightCharge, setWeightCharge] = useState(0);
     const [weight, setWeight] = useState("");
     
     const handleChange = (e) => {
@@ -135,7 +136,8 @@ const CreatePackage = () => {
         if (condition && parseInt(condition) !== 0) {
             const conditionValue = parseInt(condition);
             let calculatedCod = 0;
-    
+            let calculatedWeightCharge = 0;
+
             // Original condition-based calculation
             if (conditionValue <= 1000) {
                 calculatedCod = conditionValue + 20;
@@ -146,29 +148,30 @@ const CreatePackage = () => {
                 const extraCod = Extra1000 * 10;
                 calculatedCod = conditionValue + first1000Cod + extraCod;
             }
-    
-            // Add weight charge if Home Delivery is selected
-            if (deliveryOption === 'Home Delivery') {
-                const weightValue = parseFloat(weight) || 0;
-                if (weightValue > 0) {
-                    let weightCharge = 0;
+
+            // Calculate weight charge based on delivery option
+            const weightValue = parseFloat(weight) || 0;
+            if (weightValue > 0) {
+                if (deliveryOption === 'Home Delivery') {
                     if (weightValue <= 1) {
-                        weightCharge = 150;
+                        calculatedWeightCharge = 150;
                     } else {
                         const remainingWeight = weightValue - 1;
                         const remainingCeil = Math.ceil(remainingWeight);
-                        weightCharge = 150 + (remainingCeil * 30);
+                        calculatedWeightCharge = 150 + (remainingCeil * 30);
                     }
-                    calculatedCod += weightCharge;
+                } else if (deliveryOption === 'Office Delivery') {
+                    calculatedWeightCharge = Math.ceil(weightValue) * 20;
                 }
             }
-    
-            
-            setCod(calculatedCod);
+
+            setWeightCharge(calculatedWeightCharge);
+            setCod(calculatedCod + calculatedWeightCharge);
         } else {
             setCod(null);
+            setWeightCharge(0);
         }
-    }, [condition, deliveryOption, weight]);
+    }, [condition, deliveryOption, weight]); 
 
     const update = 'Processing';
 
@@ -567,7 +570,9 @@ const CreatePackage = () => {
 
                 <div className="flex md:px-24 mt-5 mb-5 justify-between">
                     <div className=''>
-                        <p className="text-xl">Condition + charge : {cod || 0}</p>
+                    <p className="text-xl">
+            Condition + Charge + Weight Charge ({weightCharge} TK) = Total COD: {cod || 0} TK
+        </p>
                     </div>
                     <div>
                         <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
