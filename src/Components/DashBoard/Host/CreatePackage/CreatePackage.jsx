@@ -44,7 +44,14 @@ const CreatePackage = () => {
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
     const [CnNumber, SetCnNumber] = useState("");
     const [verifiedStaff] = UseStaffVerify();
-
+    const [weight, setWeight] = useState("");
+    
+    const handleChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*\.?\d*$/.test(value)) { 
+            setWeight(value);
+        }
+    };
     const [selectedDistrict, setSelectedDistrict] = useState("");
     const [filteredAreas, setFilteredAreas] = useState([]);
     const [allDistricts, setAllDistricts] = useState([]);
@@ -102,29 +109,66 @@ const CreatePackage = () => {
         });
     }, []);
 
+    // useEffect(() => {
+    //     if (condition && parseInt(condition) !== 0) {
+    //         const conditionValue = parseInt(condition);
+    //         let calculatedCod = 0;
+
+    //         if (conditionValue <= 1000) {
+    //             calculatedCod = conditionValue + 20;
+    //         } else {
+    //             const first1000Cod = 20;
+    //             const remaining = conditionValue - 1000;
+
+
+    //             const Extra1000 = Math.ceil(remaining / 1000);
+    //             const extraCod = Extra1000 * 10;
+    //             calculatedCod = conditionValue + first1000Cod + extraCod;
+    //         }
+
+    //         setCod(calculatedCod);
+    //     } else {
+    //         setCod(null);
+    //     }
+    // }, [condition]);
     useEffect(() => {
         if (condition && parseInt(condition) !== 0) {
             const conditionValue = parseInt(condition);
             let calculatedCod = 0;
-
+    
+            // Original condition-based calculation
             if (conditionValue <= 1000) {
                 calculatedCod = conditionValue + 20;
             } else {
                 const first1000Cod = 20;
                 const remaining = conditionValue - 1000;
-
-
                 const Extra1000 = Math.ceil(remaining / 1000);
                 const extraCod = Extra1000 * 10;
                 calculatedCod = conditionValue + first1000Cod + extraCod;
             }
-
+    
+            // Add weight charge if Home Delivery is selected
+            if (deliveryOption === 'Home Delivery') {
+                const weightValue = parseFloat(weight) || 0;
+                if (weightValue > 0) {
+                    let weightCharge = 0;
+                    if (weightValue <= 1) {
+                        weightCharge = 150;
+                    } else {
+                        const remainingWeight = weightValue - 1;
+                        const remainingCeil = Math.ceil(remainingWeight);
+                        weightCharge = 150 + (remainingCeil * 30);
+                    }
+                    calculatedCod += weightCharge;
+                }
+            }
+    
+            
             setCod(calculatedCod);
         } else {
             setCod(null);
         }
-    }, [condition]);
-
+    }, [condition, deliveryOption, weight]);
 
     const update = 'Processing';
 
@@ -141,7 +185,7 @@ const CreatePackage = () => {
         setCondition(e.target.value);
     };
 
-
+    
     useEffect(() => {
         fetch('/districts.json')
             .then(res => res.json())
@@ -259,6 +303,7 @@ const CreatePackage = () => {
                 wordAmount,
                 booking: bookingTimestamp,
                 update,
+                District_ID:selectedDistrict,
                 conditionCharge: cod,
                 deliveryOption,
                 paymentOption,
@@ -392,20 +437,19 @@ const CreatePackage = () => {
                     <input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
                 </div>
                 <div className="form-control md:w-1/2 mt-1">
-    <label className="label">
-        <span className="label-text font-rancho text-xl">Select Kg*</span>
-    </label>
-    <select className="select select-bordered" name="selectedKg" required>
-        {[...Array(100)].map((_, index) => {
-            const weight = (index + 1) * 0.5;
-            return (
-                <option key={weight} value={weight}>
-                    {weight} kg
-                </option>
-            );
-        })}
-    </select>
-</div>
+            <label className="label">
+                <span className="label-text font-rancho text-xl">Enter Kg*</span>
+            </label>
+            <input
+                type="text"
+                className="input input-bordered"
+                name="weight"
+                value={weight}
+                onChange={handleChange}
+                required
+                placeholder="Enter weight in kg"
+            />
+        </div>
                 </div>
 
 
