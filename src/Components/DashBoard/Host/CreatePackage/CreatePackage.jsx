@@ -236,8 +236,8 @@ const CreatePackage = () => {
         e.preventDefault();
     
         if (parseFloat(amount) < 100) {
-            setAmountError("Value must be greater than or equal to 80");
-            toast.error("Amount must be at least 80!");
+            setAmountError("Value must be greater than or equal to 100");
+            toast.error("Amount must be at least 100!");
             return;
         }
     
