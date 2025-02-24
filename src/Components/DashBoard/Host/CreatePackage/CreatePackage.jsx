@@ -251,7 +251,7 @@ const CreatePackage = () => {
         const recipientMobile = form.recipientMobile.value;
         const productDetails = form.productDetails.value;
         const qty = form.qty.value;
-        const weight_kg = parseFloat(form.selectedKg.value) || "";
+        const weight_kg = parseFloat(form.weight.value) || "";
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
         const bookingTimestamp = new Date();
