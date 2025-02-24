@@ -248,6 +248,7 @@ const CreatePackage = () => {
         const senderMobile = form.senderMobile.value;
         const sender_Full_Adress = form.senderFullAdress.value;
         const Receiver_Full_Adress = form.ReceiverFullAdress.value;
+        const Division_Name = form.division.value;
         const recipientMobile = form.recipientMobile.value;
         const productDetails = form.productDetails.value;
         const qty = form.qty.value;
@@ -300,6 +301,7 @@ const CreatePackage = () => {
                 recipientMobile,
                 productDetails,
                 qty,
+                Division_Name,
                 weight_kg,
                 selectedArea,
                 amount,
@@ -526,12 +528,32 @@ const CreatePackage = () => {
                     </div>
 
                 </div>
-                <div className="form-control md:w-full md:px-24 mt-1">
+               <div className="md:flex md:px-24 gap-5">
+               <div className="form-control md:w-full  mt-1">
                     <label className="label">
                         <span className="label-text font-rancho text-xl">Receiver Full Address</span>
                     </label>
                     <input type="text" placeholder="Enter Receiver Full Address" className="input input-bordered" name='ReceiverFullAdress' required />
                 </div>
+                <div className="form-control md:w-full mt-1">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Select Division</span>
+    </label>
+    <select className="select select-bordered" name="division" required>
+        <option value="" disabled selected>Select a Division</option>
+        <option value="Barisal">Barisal</option>
+        <option value="Chattogram">Chattogram</option>
+        <option value="Dhaka">Dhaka</option>
+        <option value="Khulna">Khulna</option>
+        <option value="Mymensingh">Mymensingh</option>
+        <option value="Rajshahi">Rajshahi</option>
+        <option value="Rangpur">Rangpur</option>
+        <option value="Sylhet">Sylhet</option>
+        <option value="own">Own Division</option>
+    </select>
+</div>
+
+               </div>
                 <div className='md:flex md:px-24'>
                     <div className="form-control md:w-1/2">
                         <label className="label">
