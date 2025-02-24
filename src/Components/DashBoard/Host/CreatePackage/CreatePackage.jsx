@@ -537,7 +537,7 @@ const CreatePackage = () => {
                 </div>
                 <div className="form-control md:w-full mt-1">
     <label className="label">
-        <span className="label-text font-rancho text-xl">Select Division</span>
+        <span className="label-text font-rancho text-xl">Select Division*</span>
     </label>
     <select className="select select-bordered" name="division" required>
         <option value="" disabled selected>Select a Division</option>
@@ -549,7 +549,7 @@ const CreatePackage = () => {
         <option value="Rajshahi">Rajshahi</option>
         <option value="Rangpur">Rangpur</option>
         <option value="Sylhet">Sylhet</option>
-        <option value="own">Own Division</option>
+        {/* <option value="own">Own Division</option> */}
     </select>
 </div>
 

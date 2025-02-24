@@ -83,6 +83,12 @@ export const getBranch = async () => {
     return data;
 };
 
+export const UpdateDivisionCharge = async (id , divisionCharge) =>{
+
+    const {data} = await axiosSecure.patch(`branch/division-update-charge/${id}`,{divisionCharge});
+    return data;
+}
+
 
 export const getAllBranch = async (email) => {
     const { data } = await axiosSecure.get(`/branch/${email}`);
