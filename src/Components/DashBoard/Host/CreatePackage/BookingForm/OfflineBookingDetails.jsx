@@ -15,7 +15,7 @@ export const OfflineBookingDetails = ({ bookingInfo }) => (
         <div 
         className="absolute inset-0 bg-center bg-repeat-y bg-contain"
         style={{ 
-            backgroundImage: `url("https://i.ibb.co/1Y3XRyg1/UNITY.png")`, 
+            backgroundImage: `url("https://i.ibb.co.com/SD8pn0BD/text-logo.png")`, 
             opacity: 0.1,
             backgroundSize: "50%",
             zIndex: -1
