@@ -132,46 +132,54 @@ const CreatePackage = () => {
     //         setCod(null);
     //     }
     // }, [condition]);
+    const [conditionCharge, setConditionCharge] = useState(0);
+
+    // Calculate condition charge based on condition value
     useEffect(() => {
-        if (condition && parseInt(condition) !== 0) {
-            const conditionValue = parseInt(condition);
-            let calculatedCod = 0;
-            let calculatedWeightCharge = 0;
-
-            // Original condition-based calculation
+        const conditionValue = parseInt(condition) || 0;
+        let calculatedConditionCharge = 0;
+    
+        if (conditionValue > 0) {
             if (conditionValue <= 1000) {
-                calculatedCod = conditionValue + 20;
+                calculatedConditionCharge = 20;
             } else {
-                const first1000Cod = 20;
                 const remaining = conditionValue - 1000;
-                const Extra1000 = Math.ceil(remaining / 1000);
-                const extraCod = Extra1000 * 10;
-                calculatedCod = conditionValue + first1000Cod + extraCod;
+                const extraChunks = Math.ceil(remaining / 1000);
+                calculatedConditionCharge = 20 + (extraChunks * 10);
             }
-
-            // Calculate weight charge based on delivery option
-            const weightValue = parseFloat(weight) || 0;
-            if (weightValue > 0) {
-                if (deliveryOption === 'Home Delivery') {
-                    if (weightValue <= 1) {
-                        calculatedWeightCharge = 150;
-                    } else {
-                        const remainingWeight = weightValue - 1;
-                        const remainingCeil = Math.ceil(remainingWeight);
-                        calculatedWeightCharge = 150 + (remainingCeil * 30);
-                    }
-                } else if (deliveryOption === 'Office Delivery') {
-                    calculatedWeightCharge = Math.ceil(weightValue) * 20;
-                }
-            }
-
-            setWeightCharge(calculatedWeightCharge);
-            setCod(calculatedCod + calculatedWeightCharge);
-        } else {
-            setCod(null);
-            setWeightCharge(0);
         }
-    }, [condition, deliveryOption, weight]); 
+    
+        setConditionCharge(calculatedConditionCharge);
+    }, [condition]);
+    
+    // Calculate weight charge based on delivery option and weight
+    useEffect(() => {
+        const weightValue = parseFloat(weight) || 0;
+        let calculatedWeightCharge = 0;
+    
+        if (weightValue > 0) {
+            if (deliveryOption === 'Home Delivery') {
+                if (weightValue <= 1) {
+                    calculatedWeightCharge = 150;
+                } else {
+                    const remainingWeight = weightValue - 1;
+                    const remainingCeil = Math.ceil(remainingWeight);
+                    calculatedWeightCharge = 150 + (remainingCeil * 30);
+                }
+            } else if (deliveryOption === 'Office Delivery') {
+                calculatedWeightCharge = Math.ceil(weightValue) * 20;
+            }
+        }
+    
+        setWeightCharge(calculatedWeightCharge);
+    }, [deliveryOption, weight]);
+    
+    // Calculate total COD
+    useEffect(() => {
+        const conditionValue = parseInt(condition) || 0;
+        const totalCod = conditionValue + conditionCharge + weightCharge;
+        setCod(totalCod);
+    }, [condition, conditionCharge, weightCharge]);
 
     const update = 'Processing';
 
@@ -568,7 +576,7 @@ const CreatePackage = () => {
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Booking Amount</span>
                         </label>
-                        <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' value={amount} onChange={handleAmountChange} required />
+                        <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' value={weightCharge} onChange={handleAmountChange} required />
                         {amountError && <p className="text-red-500">{amountError}</p>}
                     </div>
                 </div>
