@@ -46,7 +46,12 @@ const CreatePackage = () => {
     const [verifiedStaff] = UseStaffVerify();
     const [weightCharge, setWeightCharge] = useState(0);
     const [weight, setWeight] = useState("");
-    
+    const [selectedDivision, setSelectedDivision] = useState('');
+
+// Add this handler function with your other handlers
+const handleDivisionChange = (e) => {
+    setSelectedDivision(e.target.value);
+};
     const handleChange = (e) => {
         const value = e.target.value;
         if (/^\d*\.?\d*$/.test(value)) { 
@@ -132,46 +137,77 @@ const CreatePackage = () => {
     //         setCod(null);
     //     }
     // }, [condition]);
+    const [conditionCharge, setConditionCharge] = useState(0);
+
+    // Calculate condition charge based on condition value
     useEffect(() => {
-        if (condition && parseInt(condition) !== 0) {
-            const conditionValue = parseInt(condition);
-            let calculatedCod = 0;
-            let calculatedWeightCharge = 0;
-
-            // Original condition-based calculation
+        const conditionValue = parseInt(condition) || 0;
+        let calculatedConditionCharge = 0;
+    
+        if (conditionValue > 0) {
             if (conditionValue <= 1000) {
-                calculatedCod = conditionValue + 20;
+                calculatedConditionCharge = 20;
             } else {
-                const first1000Cod = 20;
                 const remaining = conditionValue - 1000;
-                const Extra1000 = Math.ceil(remaining / 1000);
-                const extraCod = Extra1000 * 10;
-                calculatedCod = conditionValue + first1000Cod + extraCod;
+                const extraChunks = Math.ceil(remaining / 1000);
+                calculatedConditionCharge = 20 + (extraChunks * 10);
             }
-
-            // Calculate weight charge based on delivery option
-            const weightValue = parseFloat(weight) || 0;
-            if (weightValue > 0) {
-                if (deliveryOption === 'Home Delivery') {
-                    if (weightValue <= 1) {
-                        calculatedWeightCharge = 150;
-                    } else {
-                        const remainingWeight = weightValue - 1;
-                        const remainingCeil = Math.ceil(remainingWeight);
-                        calculatedWeightCharge = 150 + (remainingCeil * 30);
-                    }
-                } else if (deliveryOption === 'Office Delivery') {
-                    calculatedWeightCharge = Math.ceil(weightValue) * 20;
-                }
-            }
-
-            setWeightCharge(calculatedWeightCharge);
-            setCod(calculatedCod + calculatedWeightCharge);
-        } else {
-            setCod(null);
-            setWeightCharge(0);
         }
-    }, [condition, deliveryOption, weight]); 
+    
+        setConditionCharge(calculatedConditionCharge);
+    }, [condition]);
+    
+    // Calculate weight charge based on delivery option and weight
+    useEffect(() => {
+        const weightValue = parseFloat(weight) || 0;
+        let calculatedWeightCharge = 0;
+        
+        if (weightValue > 0) {
+            // Define division-based rates
+            const divisionRates = {
+                'Barisal': { home: 60, office: 45 },
+                'Chattogram': { home: 50, office: 50 },
+                'Dhaka': { home: 30, office: 20 },
+                'Rangpur': { home: 30, office: 25 },
+                'Rajshahi': { home: 20, office: 15 },
+                'default': { home: 20, office: 20 }
+            };
+    
+            // Get rate for selected division or default
+            const rate = divisionRates[selectedDivision] || divisionRates.default;
+    
+            if (deliveryOption === 'Home Delivery') {
+                if (weightValue <= 1) {
+                    calculatedWeightCharge = 150;
+                } else {
+                    const remainingWeight = weightValue - 1;
+                    const remainingCeil = Math.ceil(remainingWeight);
+                    calculatedWeightCharge = 150 + (remainingCeil * rate.home);
+                }
+            } 
+            else if (deliveryOption === 'Office Delivery') {
+                calculatedWeightCharge = Math.ceil(weightValue) * rate.office;
+            }
+        }
+    
+        setWeightCharge(calculatedWeightCharge);
+    }, [deliveryOption, weight, selectedDivision]);
+    /* 
+     <option value="Barisal">Barisal</option>
+        <option value="Chattogram">Chattogram</option>
+        <option value="Dhaka">Dhaka</option>
+        <option value="Khulna">Khulna</option>
+        <option value="Mymensingh">Mymensingh</option>
+        <option value="Rajshahi">Rajshahi</option>
+        <option value="Rangpur">Rangpur</option>
+        <option value="Sylhet">Sylhet</option>
+    */
+    // Calculate total COD
+    useEffect(() => {
+        const conditionValue = parseInt(condition) || 0;
+        const totalCod = conditionValue + conditionCharge + weightCharge;
+        setCod(totalCod);
+    }, [condition, conditionCharge, weightCharge]);
 
     const update = 'Processing';
 
@@ -248,6 +284,7 @@ const CreatePackage = () => {
         const senderMobile = form.senderMobile.value;
         const sender_Full_Adress = form.senderFullAdress.value;
         const Receiver_Full_Adress = form.ReceiverFullAdress.value;
+        const Division_Name = form.division.value;
         const recipientMobile = form.recipientMobile.value;
         const productDetails = form.productDetails.value;
         const qty = form.qty.value;
@@ -300,6 +337,7 @@ const CreatePackage = () => {
                 recipientMobile,
                 productDetails,
                 qty,
+                Division_Name,
                 weight_kg,
                 selectedArea,
                 amount,
@@ -526,12 +564,34 @@ const CreatePackage = () => {
                     </div>
 
                 </div>
-                <div className="form-control md:w-full md:px-24 mt-1">
+               <div className="md:flex md:px-24 gap-5">
+               <div className="form-control md:w-full  mt-1">
                     <label className="label">
                         <span className="label-text font-rancho text-xl">Receiver Full Address</span>
                     </label>
                     <input type="text" placeholder="Enter Receiver Full Address" className="input input-bordered" name='ReceiverFullAdress' required />
                 </div>
+                <div className="form-control md:w-full mt-1">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Select Division*</span>
+    </label>
+    <select className="select select-bordered" name="division"
+    onChange={handleDivisionChange} 
+    required>
+        <option value="" disabled selected>Select a Division</option>
+        <option value="Barisal">Barisal</option>
+        <option value="Chattogram">Chattogram</option>
+        <option value="Dhaka">Dhaka</option>
+        <option value="Khulna">Khulna</option>
+        <option value="Mymensingh">Mymensingh</option>
+        <option value="Rajshahi">Rajshahi</option>
+        <option value="Rangpur">Rangpur</option>
+        <option value="Sylhet">Sylhet</option>
+        {/* <option value="own">Own Division</option> */}
+    </select>
+</div>
+
+               </div>
                 <div className='md:flex md:px-24'>
                     <div className="form-control md:w-1/2">
                         <label className="label">
@@ -546,7 +606,7 @@ const CreatePackage = () => {
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Booking Amount</span>
                         </label>
-                        <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' value={amount} onChange={handleAmountChange} required />
+                        <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' value={weightCharge} onChange={handleAmountChange} required />
                         {amountError && <p className="text-red-500">{amountError}</p>}
                     </div>
                 </div>
