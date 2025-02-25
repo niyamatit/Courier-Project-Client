@@ -46,7 +46,12 @@ const CreatePackage = () => {
     const [verifiedStaff] = UseStaffVerify();
     const [weightCharge, setWeightCharge] = useState(0);
     const [weight, setWeight] = useState("");
-    
+    const [selectedDivision, setSelectedDivision] = useState('');
+
+// Add this handler function with your other handlers
+const handleDivisionChange = (e) => {
+    setSelectedDivision(e.target.value);
+};
     const handleChange = (e) => {
         const value = e.target.value;
         if (/^\d*\.?\d*$/.test(value)) { 
@@ -156,24 +161,47 @@ const CreatePackage = () => {
     useEffect(() => {
         const weightValue = parseFloat(weight) || 0;
         let calculatedWeightCharge = 0;
-    
+        
         if (weightValue > 0) {
+            // Define division-based rates
+            const divisionRates = {
+                'Barisal': { home: 60, office: 45 },
+                'Chattogram': { home: 50, office: 50 },
+                'Dhaka': { home: 30, office: 20 },
+                'Rangpur': { home: 30, office: 25 },
+                'Rajshahi': { home: 20, office: 15 },
+                'default': { home: 20, office: 20 }
+            };
+    
+            // Get rate for selected division or default
+            const rate = divisionRates[selectedDivision] || divisionRates.default;
+    
             if (deliveryOption === 'Home Delivery') {
                 if (weightValue <= 1) {
                     calculatedWeightCharge = 150;
                 } else {
                     const remainingWeight = weightValue - 1;
                     const remainingCeil = Math.ceil(remainingWeight);
-                    calculatedWeightCharge = 150 + (remainingCeil * 30);
+                    calculatedWeightCharge = 150 + (remainingCeil * rate.home);
                 }
-            } else if (deliveryOption === 'Office Delivery') {
-                calculatedWeightCharge = Math.ceil(weightValue) * 20;
+            } 
+            else if (deliveryOption === 'Office Delivery') {
+                calculatedWeightCharge = Math.ceil(weightValue) * rate.office;
             }
         }
     
         setWeightCharge(calculatedWeightCharge);
-    }, [deliveryOption, weight]);
-    
+    }, [deliveryOption, weight, selectedDivision]);
+    /* 
+     <option value="Barisal">Barisal</option>
+        <option value="Chattogram">Chattogram</option>
+        <option value="Dhaka">Dhaka</option>
+        <option value="Khulna">Khulna</option>
+        <option value="Mymensingh">Mymensingh</option>
+        <option value="Rajshahi">Rajshahi</option>
+        <option value="Rangpur">Rangpur</option>
+        <option value="Sylhet">Sylhet</option>
+    */
     // Calculate total COD
     useEffect(() => {
         const conditionValue = parseInt(condition) || 0;
@@ -547,7 +575,9 @@ const CreatePackage = () => {
     <label className="label">
         <span className="label-text font-rancho text-xl">Select Division*</span>
     </label>
-    <select className="select select-bordered" name="division" required>
+    <select className="select select-bordered" name="division"
+    onChange={handleDivisionChange} 
+    required>
         <option value="" disabled selected>Select a Division</option>
         <option value="Barisal">Barisal</option>
         <option value="Chattogram">Chattogram</option>
