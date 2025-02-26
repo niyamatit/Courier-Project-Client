@@ -25,7 +25,7 @@ export const PackageDetails = ({ bookingInfo }) => (
             
             <header className="header">
                 <div className="logo">
-                    <img className='h-[40px] w-[60px]' src={logoImg} alt="Niyamat Express" />
+                    <img className='h-[100px] w-[80px]' src={logoImg} alt="Niyamat Express" />
                 </div>
                 <div className="company-details flex gap-5">
                     <div>
@@ -35,7 +35,8 @@ export const PackageDetails = ({ bookingInfo }) => (
                     <div className='justify-end text-sm'>
                         <p>web:https://niyamatexpress.com/</p>
                         <p>email:support@niyamatexpress.com</p>
-                        <p>Hotline: 01969905735</p>
+                        <p>Tel - 09697687401, 09638840680
+                        </p>
                     </div>
                 </div>
             </header>
@@ -63,12 +64,12 @@ export const PackageDetails = ({ bookingInfo }) => (
 
             <div className="contact-details">
 
-                <div className="sender-details">
+                <div className="sender-details text-left ml-20">
                     <h3 className='text-bold text-xs'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
                     <p className='text-xs'> <strong>Contact:{bookingInfo?.senderMobile} </strong></p>
                     <p className='text-xs'><strong>Address: </strong>{bookingInfo?.sender_Full_Adress}</p>
                 </div>
-                <div className="receiver-details">
+                <div className="receiver-details text-left">
                     <h3 className='text-bold text-xs'><strong>Receiver:{bookingInfo?.recipientName}</strong></h3>
                     <p className='text-xs'><strong>Contact: {bookingInfo?.recipientMobile}</strong></p>
                     <p className='text-xs'><strong>Address: {bookingInfo?.Receiver_Full_Adress}</strong></p>
@@ -114,7 +115,7 @@ export const PackageDetails = ({ bookingInfo }) => (
     minute: 'numeric',
     hour12: true,
 }).format(new Date(bookingInfo?.booking))}
- <p className='text-xs'>Staff Name: {bookingInfo?.Booking_Staff_Name}</p>
+ <p className='text-xs'>Booking by: {bookingInfo?.Booking_Staff_Name}</p>
                     </div>
                 </div>
             </div>
