@@ -626,7 +626,7 @@ const handleDivisionChange = (e) => {
                         {amountError && <p className="text-red-500">{amountError}</p>}
                     </div>
                 </div>
-                <div className='md:flex md:px-24 mt-5 gap-5 mb-5'>
+                <div className='md:flex md:px-24 mt-5 gap-5 mb-2'>
                     <div className="form-control md:w-1/2">
                         <select onChange={handleSelectChange} className="select select-bordered text-xl w-full ">
                             <option disabled selected>Pick Up System</option>
@@ -643,11 +643,28 @@ const handleDivisionChange = (e) => {
                         </select>
                     </div>
                 </div>
-                <div className="form-control md:full md:px-24">
+                <div className="md:flex gap-5 md:px-24">
+                <div className="form-control md:w-1/2 ">
                     <label className="label">
                         <span className="label-text font-rancho text-xl">Post Code*</span>
                     </label>
                     <input type="text" placeholder="Enter Post or Union Code" className="input input-bordered" name='postCode' required />
+                </div>
+                <div className="form-control md:w-1/2">
+                <label className="label">
+                        <span className="label-text font-rancho text-xl">Select Department*</span>
+                    </label>
+                        <select onChange={handlePaymentOptionChange} className="select select-bordered text-xl w-full ">
+                            <option disabled selected>Select Department</option>
+                            <option value="Document">Document</option>
+                            <option value="Parcel">Parcel</option>
+                            <option value="Food item">Food item</option>
+                            <option value="Mobile">Mobile</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Home/Office Accessories">Home/Office Accessories</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div className="flex md:px-24 mt-5 mb-5 justify-between">
