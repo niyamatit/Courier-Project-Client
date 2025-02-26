@@ -14,14 +14,14 @@ export const PackageDetails = ({ bookingInfo }) => (
         <div className="invoice-container max-w-[800px]"
         >
              <div 
-        className="absolute inset-0 bg-center bg-repeat-y bg-contain"
-        style={{ 
-            backgroundImage: `url("https://i.ibb.co.com/SD8pn0BD/text-logo.png")`, 
-            opacity: 0.1,
-            backgroundSize: "50%",
-            zIndex: -1
-        }}
-    ></div>
+    className="absolute inset-0 bg-center bg-repeat-y"
+    style={{ 
+        backgroundImage: `url("https://i.ibb.co.com/SD8pn0BD/text-logo.png")`, 
+        opacity: 0.1,
+        backgroundSize: "90% auto",  // Adjust size as needed
+        zIndex: -1
+    }}
+></div>
             
             <header className="header">
                 <div className="logo">
