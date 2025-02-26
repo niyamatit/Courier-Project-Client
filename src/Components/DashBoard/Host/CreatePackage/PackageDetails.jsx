@@ -18,7 +18,7 @@ export const PackageDetails = ({ bookingInfo }) => (
     style={{ 
         backgroundImage: `url("https://i.ibb.co.com/SD8pn0BD/text-logo.png")`, 
         opacity: 0.1,
-        backgroundSize: "90% auto",  // Adjust size as needed
+        backgroundSize: "90% auto",  
         zIndex: -1
     }}
 ></div>

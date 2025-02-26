@@ -280,6 +280,7 @@ const handleDivisionChange = (e) => {
         const qty = form.qty.value;
         const weight_kg = parseFloat(form.weight.value) || "";
         const condition = form.condition.value;
+        const Post_Code = form.postCode.value;
         const wordAmount = numberToWords(parseInt(cod));
         const bookingTimestamp = new Date();
     
@@ -328,6 +329,7 @@ const handleDivisionChange = (e) => {
                 productDetails,
                 qty,
                 weight_kg,
+                Post_Code,
                 selectedArea,
                 amount:weightCharge,
                 wordAmount,
@@ -641,6 +643,12 @@ const handleDivisionChange = (e) => {
                         </select>
                     </div>
                 </div>
+                <div className="form-control md:full md:px-24">
+                    <label className="label">
+                        <span className="label-text font-rancho text-xl">Post Code*</span>
+                    </label>
+                    <input type="text" placeholder="Enter Post or Union Code" className="input input-bordered" name='postCode' required />
+                </div>
 
                 <div className="flex md:px-24 mt-5 mb-5 justify-between">
                     <div className=''>
@@ -657,6 +665,7 @@ const handleDivisionChange = (e) => {
                     <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />
                     {isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
                 </div>
+                
             </form>
 
             <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
