@@ -466,7 +466,7 @@ const handleDivisionChange = (e) => {
                     </label>
                     <input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
                 </div>
-                <div className="form-control md:w-1/2 mt-1">
+                {/* <div className="form-control md:w-1/2 mt-1">
             <label className="label">
                 <span className="label-text font-rancho text-xl">Enter Kg*</span>
             </label>
@@ -479,7 +479,16 @@ const handleDivisionChange = (e) => {
                 required
                 placeholder="Enter weight in kg"
             />
-        </div>
+        </div> */}
+        <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Condition Amount</span>
+                        </label>
+                        <input
+                            value={condition}
+                            onChange={handleConditionChange}
+                            type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition' required />
+                    </div>
                 </div>
 
 
@@ -584,7 +593,7 @@ const handleDivisionChange = (e) => {
 </div>
                 </div>
                 <div className='md:flex md:px-24'>
-                    <div className="form-control md:w-1/2">
+                    {/* <div className="form-control md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Condition Amount</span>
                         </label>
@@ -592,7 +601,21 @@ const handleDivisionChange = (e) => {
                             value={condition}
                             onChange={handleConditionChange}
                             type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition' required />
-                    </div>
+                    </div> */}
+                    <div className="form-control md:w-1/2 mt-1">
+            <label className="label">
+                <span className="label-text font-rancho text-xl">Enter Kg*</span>
+            </label>
+            <input
+                type="text"
+                className="input input-bordered"
+                name="weight"
+                value={weight}
+                onChange={handleChange}
+                required
+                placeholder="Enter weight in kg"
+            />
+        </div>
                     <div className="form-control md:ml-4 md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Booking Amount</span>
