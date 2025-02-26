@@ -14,31 +14,35 @@ export const PackageDetails = ({ bookingInfo }) => (
         <div className="invoice-container max-w-[800px]"
         >
              <div 
-        className="absolute inset-0 bg-center bg-repeat-y bg-contain"
-        style={{ 
-            backgroundImage: `url("https://i.ibb.co.com/SD8pn0BD/text-logo.png")`, 
-            opacity: 0.1,
-            backgroundSize: "50%",
-            zIndex: -1
-        }}
-    ></div>
+    className="absolute inset-0 bg-center bg-repeat-y"
+    style={{ 
+        backgroundImage: `url("https://i.ibb.co.com/SD8pn0BD/text-logo.png")`, 
+        opacity: 0.1,
+        backgroundSize: "90% auto",  
+        zIndex: -1
+    }}
+></div>
             
             <header className="header">
                 <div className="logo">
                     <img className='h-[100px] w-[80px]' src={logoImg} alt="Niyamat Express" />
                 </div>
-                <div className="company-details flex gap-5">
+                <div className="company-details flex justify-center mr-10 ">
                     <div>
                         <h3 className='text-2xl font-bold text-gray-800 mr-3'>Niyamat Express</h3>
                         <p className='text-center text-sm'>Chittagong Road, Narayanganj 1430</p>
                     </div>
-                    <div className='justify-end text-sm'>
+                    <div className='justify-center text-sm'>
                         <p>web:https://niyamatexpress.com/</p>
                         <p>email:support@niyamatexpress.com</p>
                         <p>Tel - 09697687401, 09638840680
                         </p>
                     </div>
+                    {/* <div className="logo border flex-1">
+                    <img className='h-[70px] w-[80px]' src={logoImg} alt="Niyamat Express" />
+                </div> */}
                 </div>
+                
             </header>
 
             <div className="booking-details ">
@@ -85,7 +89,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                 <div className="table-row">
                     <div className="table-cell">{bookingInfo?.qty}</div>
                     <div className="table-cell">{bookingInfo?.productDetails}</div>
-                    <div className="table-cell">{bookingInfo?.amount}</div>
+                    <div className="table-cell">{bookingInfo?.amount} ({(bookingInfo?.weight_kg)} kg)</div>
                 </div>
             </div>
 

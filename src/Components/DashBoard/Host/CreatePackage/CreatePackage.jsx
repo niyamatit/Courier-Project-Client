@@ -280,6 +280,7 @@ const handleDivisionChange = (e) => {
         const qty = form.qty.value;
         const weight_kg = parseFloat(form.weight.value) || "";
         const condition = form.condition.value;
+        const Post_Code = form.postCode.value;
         const wordAmount = numberToWords(parseInt(cod));
         const bookingTimestamp = new Date();
     
@@ -328,6 +329,7 @@ const handleDivisionChange = (e) => {
                 productDetails,
                 qty,
                 weight_kg,
+                Post_Code,
                 selectedArea,
                 amount:weightCharge,
                 wordAmount,
@@ -466,7 +468,7 @@ const handleDivisionChange = (e) => {
                     </label>
                     <input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
                 </div>
-                <div className="form-control md:w-1/2 mt-1">
+                {/* <div className="form-control md:w-1/2 mt-1">
             <label className="label">
                 <span className="label-text font-rancho text-xl">Enter Kg*</span>
             </label>
@@ -479,7 +481,16 @@ const handleDivisionChange = (e) => {
                 required
                 placeholder="Enter weight in kg"
             />
-        </div>
+        </div> */}
+        <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Condition Amount</span>
+                        </label>
+                        <input
+                            value={condition}
+                            onChange={handleConditionChange}
+                            type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition' required />
+                    </div>
                 </div>
 
 
@@ -584,7 +595,7 @@ const handleDivisionChange = (e) => {
 </div>
                 </div>
                 <div className='md:flex md:px-24'>
-                    <div className="form-control md:w-1/2">
+                    {/* <div className="form-control md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Condition Amount</span>
                         </label>
@@ -592,7 +603,21 @@ const handleDivisionChange = (e) => {
                             value={condition}
                             onChange={handleConditionChange}
                             type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition' required />
-                    </div>
+                    </div> */}
+                    <div className="form-control md:w-1/2 mt-1">
+            <label className="label">
+                <span className="label-text font-rancho text-xl">Enter Kg*</span>
+            </label>
+            <input
+                type="text"
+                className="input input-bordered"
+                name="weight"
+                value={weight}
+                onChange={handleChange}
+                required
+                placeholder="Enter weight in kg"
+            />
+        </div>
                     <div className="form-control md:ml-4 md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Booking Amount</span>
@@ -601,7 +626,7 @@ const handleDivisionChange = (e) => {
                         {amountError && <p className="text-red-500">{amountError}</p>}
                     </div>
                 </div>
-                <div className='md:flex md:px-24 mt-5 gap-5 mb-5'>
+                <div className='md:flex md:px-24 mt-5 gap-5 mb-2'>
                     <div className="form-control md:w-1/2">
                         <select onChange={handleSelectChange} className="select select-bordered text-xl w-full ">
                             <option disabled selected>Pick Up System</option>
@@ -615,6 +640,29 @@ const handleDivisionChange = (e) => {
                             <option>Cash</option>
                             <option>To Pay</option>
                             <option>Credit</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="md:flex gap-5 md:px-24">
+                <div className="form-control md:w-1/2 ">
+                    <label className="label">
+                        <span className="label-text font-rancho text-xl">Post Code*</span>
+                    </label>
+                    <input type="text" placeholder="Enter Post or Union Code" className="input input-bordered" name='postCode' required />
+                </div>
+                <div className="form-control md:w-1/2">
+                <label className="label">
+                        <span className="label-text font-rancho text-xl">Select Department*</span>
+                    </label>
+                        <select onChange={handlePaymentOptionChange} className="select select-bordered text-xl w-full ">
+                            <option disabled selected>Select Department</option>
+                            <option value="Document">Document</option>
+                            <option value="Parcel">Parcel</option>
+                            <option value="Food item">Food item</option>
+                            <option value="Mobile">Mobile</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Home/Office Accessories">Home/Office Accessories</option>
                         </select>
                     </div>
                 </div>
@@ -634,6 +682,7 @@ const handleDivisionChange = (e) => {
                     <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />
                     {isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
                 </div>
+                
             </form>
 
             <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
