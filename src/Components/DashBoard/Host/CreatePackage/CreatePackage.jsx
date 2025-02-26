@@ -165,11 +165,11 @@ const handleDivisionChange = (e) => {
         if (weightValue > 0) {
             // Define division-based rates
             const divisionRates = {
-                'Barisal': { home: 60, office: 45 },
+                'Barisal': { home: 45, office: 45 },
                 'Chattogram': { home: 50, office: 50 },
-                'Dhaka': { home: 30, office: 20 },
-                'Rangpur': { home: 30, office: 25 },
-                'Rajshahi': { home: 20, office: 15 },
+                'Dhaka': { home: 20, office: 20 },
+                'Rangpur': { home: 25, office: 25 },
+                'Rajshahi': { home: 15, office: 15 },
                 'default': { home: 20, office: 20 }
             };
     
@@ -192,22 +192,13 @@ const handleDivisionChange = (e) => {
     
         setWeightCharge(calculatedWeightCharge);
     }, [deliveryOption, weight, selectedDivision]);
-    /* 
-     <option value="Barisal">Barisal</option>
-        <option value="Chattogram">Chattogram</option>
-        <option value="Dhaka">Dhaka</option>
-        <option value="Khulna">Khulna</option>
-        <option value="Mymensingh">Mymensingh</option>
-        <option value="Rajshahi">Rajshahi</option>
-        <option value="Rangpur">Rangpur</option>
-        <option value="Sylhet">Sylhet</option>
-    */
+    
     // Calculate total COD
     useEffect(() => {
         const conditionValue = parseInt(condition) || 0;
         const totalCod = conditionValue + conditionCharge + weightCharge;
         setCod(totalCod);
-    }, [condition, conditionCharge, weightCharge]);
+    }, [condition, conditionCharge, weightCharge]) 
 
     const update = 'Processing';
 
@@ -271,7 +262,7 @@ const handleDivisionChange = (e) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (parseFloat(amount) < 100) {
+        if (parseFloat(weightCharge) < 100) {
             setAmountError("Value must be greater than or equal to 100");
             toast.error("Amount must be at least 100!");
             return;
@@ -284,13 +275,12 @@ const handleDivisionChange = (e) => {
         const senderMobile = form.senderMobile.value;
         const sender_Full_Adress = form.senderFullAdress.value;
         const Receiver_Full_Adress = form.ReceiverFullAdress.value;
-        const Division_Name = form.division.value;
         const recipientMobile = form.recipientMobile.value;
         const productDetails = form.productDetails.value;
         const qty = form.qty.value;
         const weight_kg = parseFloat(form.weight.value) || "";
         const condition = form.condition.value;
-        const wordAmount = numberToWords(parseInt(amount));
+        const wordAmount = numberToWords(parseInt(cod));
         const bookingTimestamp = new Date();
     
         try {
@@ -303,7 +293,7 @@ const handleDivisionChange = (e) => {
                     return;
                   }
             const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
-            const CodAmount = parseFloat(amount || 0);
+            const CodAmount = parseFloat(weightCharge || 0);
     
             if (paymentOption === "Cash") {
                 const newBalance = CurrentBalance - CodAmount;
@@ -337,10 +327,9 @@ const handleDivisionChange = (e) => {
                 recipientMobile,
                 productDetails,
                 qty,
-                Division_Name,
                 weight_kg,
                 selectedArea,
-                amount,
+                amount:weightCharge,
                 wordAmount,
                 booking: bookingTimestamp,
                 update,
@@ -564,8 +553,8 @@ const handleDivisionChange = (e) => {
                     </div>
 
                 </div>
-               <div className="md:flex md:px-24 gap-5">
-               <div className="form-control md:w-full  mt-1">
+                <div className="md:flex md:px-24 gap-5">
+                <div className="form-control md:w-full  mt-1">
                     <label className="label">
                         <span className="label-text font-rancho text-xl">Receiver Full Address</span>
                     </label>
@@ -575,10 +564,14 @@ const handleDivisionChange = (e) => {
     <label className="label">
         <span className="label-text font-rancho text-xl">Select Division*</span>
     </label>
-    <select className="select select-bordered" name="division"
-    onChange={handleDivisionChange} 
-    required>
-        <option value="" disabled selected>Select a Division</option>
+    <select 
+        className="select select-bordered" 
+        name="division" 
+        value={selectedDivision}
+        onChange={handleDivisionChange} 
+        required
+    >
+        <option value="" disabled>Select a Division</option>
         <option value="Barisal">Barisal</option>
         <option value="Chattogram">Chattogram</option>
         <option value="Dhaka">Dhaka</option>
@@ -587,11 +580,9 @@ const handleDivisionChange = (e) => {
         <option value="Rajshahi">Rajshahi</option>
         <option value="Rangpur">Rangpur</option>
         <option value="Sylhet">Sylhet</option>
-        {/* <option value="own">Own Division</option> */}
     </select>
 </div>
-
-               </div>
+                </div>
                 <div className='md:flex md:px-24'>
                     <div className="form-control md:w-1/2">
                         <label className="label">
