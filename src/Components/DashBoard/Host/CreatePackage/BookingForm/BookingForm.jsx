@@ -460,7 +460,7 @@ const BookingForm = () => {
                 errors={errors}
                 label="Name"
                 placeholder="sender name"
-                defaultValue={senderInfo.name}
+                 defaultValue={senderInfo.name}
               />
               <InputField
                 watchValues={watchValues}
