@@ -97,6 +97,7 @@ import SupportCompany_List from "../Components/DashBoard/Admin/SupportCompany/Su
 import AllBranch_Staff from "../Components/DashBoard/Host/AddBaranchStaff/AllBranch_Staff";
 import AllReviews from "../Components/Pages/Home/Reviews/AllReviews";
 import VerifyStaff from "../Components/DashBoard/Host/AddBaranchStaff/verifyStaff";
+import InterNational_Booking_Branch from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch";
 
 
 
@@ -237,11 +238,11 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "demo-pack",
+        path: "international-booking",
         element: (
           <PrivateRoute>
             <HostRoute>
-              <DemoPackage />
+              <InterNational_Booking_Branch/>
             </HostRoute>
           </PrivateRoute>
         ),

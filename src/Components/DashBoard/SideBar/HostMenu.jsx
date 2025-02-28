@@ -184,7 +184,7 @@ const HostMenu = () => {
       <MenuItem
         icon={BsHouseAddFill}
         label='International Booking'
-        address='demo-pack'
+        address='international-booking'
       />
 
 
