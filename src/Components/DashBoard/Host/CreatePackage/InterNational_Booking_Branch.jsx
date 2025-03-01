@@ -1,7 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-
+import {
+  CitySelect,
+  CountrySelect,
+  StateSelect,
+} from "react-country-state-city";
+import "react-country-state-city/dist/react-country-state-city.css";
 
 import SelectField from "./BookingForm/SelectField";
 import InputField from "./BookingForm/InputField";
@@ -22,7 +27,8 @@ const InterNational_Booking_Branch = () => {
     formState: { errors },
   } = useForm();
   const watchValues = watch();
-
+  const [countryId, setCountryId] = useState(null);
+  const [stateId, setStateId] = useState(null);
   const [cnNumber, setCnNumber] = useState("");
   const [codCharge, setCodCharge] = useState(0);
   const [serviceCharge, setServiceCharge] = useState(0);
@@ -208,8 +214,13 @@ const InterNational_Booking_Branch = () => {
       const Bookinginfo = {
         
 
-        senderName: data.senderName || senderInfo.name,
-        address: data.address || senderInfo.address,
+        Customer_Name_Int: data.CustomerNameInt || senderInfo.name,
+        Customer_address_Int: data.Customeraddress || senderInfo.address,
+        Customer_Country_Name: data?.country?.name || "",
+        Customer_Country_Currency: data?.country?.currency_name || "",
+        Customer_Country_Capital_Name: data?.country?.capital || "",
+        Customer_State: data?.state?.name || "",
+        Customer_City: data?.city?.name || "",
         receiverName: data.receiverName || receiverInfo.ReceiverName,
         receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
         Destbranch: data.branch,
@@ -221,7 +232,7 @@ const InterNational_Booking_Branch = () => {
         customerCode: data.customerCode,
         counter: data.counter,
         customerName: data.customerName,
-        senderContactNo: data.senderContactNo,
+        Customer_Contact_Number_Int: data.CustomerContactNo,
         reference: data.reference,
         receiverContactNo: data.receiverContactNo,
         CnNumber: data.CnNumber,
@@ -400,7 +411,7 @@ const InterNational_Booking_Branch = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-6xl w-full mx-auto shadow-lg p-4 sm:p-6 md:p-6 bg-white rounded-lg border-[2px] border-blue-400"
       >
-        <h1 className="text-xl sm:text-xl md:text-xl font-bold mb-4 sm:mb-6 md:mb-6 text-blue-700">
+        <h1 className="text-xl sm:text-xl md:text-3xl text-center font-bold mb-4 sm:mb-6 md:mb-6 text-blue-700">
          International Booking
         </h1>
         <div className="grid lg:grid-cols-2 gap-2">
@@ -408,15 +419,15 @@ const InterNational_Booking_Branch = () => {
             
 
             {/* Sender Information Section */}
-            <Section title="Sender Information" additionalClasses="mt-6 mb-4">
+            <Section title="Customer Information" additionalClasses="mt-6 mb-4">
               <InputField
                 watchValues={watchValues}
                 register={register}
-                name={"senderContactNo"}
+                name={"CustomerContactNo"}
                 registerOptions={{ required: true }}
                 errors={errors}
                 label="Contact No."
-                placeholder="sender contact no."
+                placeholder="Customer contact no."
                 required
                 onChange={(e) => setSenderContactNo(e.target.value)}
                 type="number"
@@ -426,29 +437,87 @@ const InterNational_Booking_Branch = () => {
               <InputField
                 watchValues={watchValues}
                 register={register}
-                name={"senderName"}
+                name={"CustomerNameInt"}
                 registerOptions={{ required: senderInfo.name ? false : true }}
                 errors={errors}
-                label="Name"
-                placeholder="sender name"
+                label="Customer Name"
+                placeholder="Enter Customer Name"
                  defaultValue={senderInfo.name}
               />
               <InputField
                 watchValues={watchValues}
                 register={register}
-                name="address"
+                name="Customeraddress"
                 registerOptions={{ required: !senderInfo.address }}
 
                 errors={errors}
-                label="Address"
-                placeholder="Sender Address"
+                label="Customer Full Address"
+                placeholder="Enter Customer Full Address"
                 defaultValue={senderInfo.address || ""}
                 required={!!senderInfo.address}
               />
+              {/* Country Plugin */}
+              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+  <label className="label-text block text-gray-500 font-semibold mt-2 mb-1">
+    Country*
+  </label>
+  <CountrySelect
+    onChange={(value) => {
+      setCountryId(value?.id);
+      setValue("country", value);
+    }}
+    className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+      errors.country ? "border-red-500" : "border-gray-300"
+    }`}
+    placeHolder="Select Country"
+  />
+  {errors.country && (
+    <span className="text-red-500">This field is required</span>
+  )}
+</div>
+
+<div className="col-span-2 md:col-span-2 lg:col-span-1">
+  <label className="mt-2 label-text block text-gray-500 font-semibold mb-1">
+    State*
+  </label>
+  <StateSelect
+    countryid={countryId}
+    onChange={(value) => {
+      setStateId(value?.id);
+      setValue("state", value);
+    }}
+    className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+      errors.state ? "border-red-500" : "border-gray-300"
+    }`}
+    placeHolder="Select State"
+  />
+  {errors.state && (
+    <span className="text-red-500">This field is required</span>
+  )}
+</div>
+
+<div className="col-span-2">
+  <label className="mt-2 label-text block text-gray-500 font-semibold mb-1">
+    City*
+  </label>
+  <CitySelect
+    countryid={countryId}
+    stateid={stateId}
+    onChange={(value) => {
+      setValue("city", value);
+    }}
+    className="select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black"
+    placeHolder="Select City"
+  />
+  {errors.city && (
+    <span className="text-red-500">This field is required</span>
+  )}
+</div>
+
             </Section>
 
             {/* Reference Section */}
-            <Section>
+            {/* <Section>
               <InputField
                 watchValues={watchValues}
                 register={register}
@@ -479,18 +548,9 @@ const InterNational_Booking_Branch = () => {
   <h2 className="text-blue-800 font-semibold text-xl">O/D</h2>
 </div>
 
-            </Section>
-            <Section additionalClasses="mt-4">
-              {/* <InputField
-                watchValues={watchValues}
-                register={register}
-                name={"branch"}
-                registerOptions={{ required: true }}
-                errors={errors}
-                label="Dest. Branch"
-                placeholder=""
-                required
-              /> */}
+            </Section> */}
+            {/* <Section additionalClasses="mt-4">
+              
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="label-text ml-1 text-gray-500 font-semibold">
                   Select Dest. Branch*
@@ -515,10 +575,10 @@ const InterNational_Booking_Branch = () => {
                   <span className="text-red-500">This field is required</span>
                 )}
               </div>
-            </Section>
+            </Section> */}
 
-            {/* Receiver Information Section */}
-            <Section title="Receiver Information" additionalClasses="mt-6">
+            {/* Sender Information Section */}
+            <Section title="Sender Information" additionalClasses="mt-6">
               <InputField
                 watchValues={watchValues}
                 register={register}
