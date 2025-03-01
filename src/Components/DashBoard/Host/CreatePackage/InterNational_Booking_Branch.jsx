@@ -457,7 +457,7 @@ const InterNational_Booking_Branch = () => {
                 required={!!senderInfo.address}
               />
               {/* Country Plugin */}
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
+               <div className="col-span-2 md:col-span-2 lg:col-span-1">
   <label className="label-text block text-gray-500 font-semibold mt-2 mb-1">
     Country*
   </label>
