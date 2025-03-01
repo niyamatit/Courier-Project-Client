@@ -17,6 +17,7 @@ import Section from "./BookingForm/Section";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
 import OfflinePrintModal from "./BookingForm/OfflinePrintModal";
+import InterNationalPrintModal_Branch from "./InterNationalPrintModal_Branch";
 
 const InterNational_Booking_Branch = () => {
   const {
@@ -941,7 +942,7 @@ const InterNational_Booking_Branch = () => {
           <button className="btn bg-[#E8F0FE]">Submit</button>
         </div>
       </form>
-      <OfflinePrintModal
+      <InterNationalPrintModal_Branch
         closeModal={closeModal}
         isOpen={isOpen}
         bookingInfo={bookingInfo}
