@@ -95,9 +95,9 @@ const InterNational_Booking_Branch = () => {
       try {
         const response = await axiosSecure.get('/number');
 
-        if (response.data && response.data?.length > 0 && response.data[0].CnNumber) {
+        if (response.data && response.data?.length > 0 && response.data[0].Branch_Int_Booking_Cn_Number) {
           // Access the first item in the array and set the CnNumber
-          setCnNumber(response.data[0].CnNumber);
+          setCnNumber(response.data[0].Branch_Int_Booking_Cn_Number);
         } else {
           console.error("CN Number not found in the response:", response.data);
         }
@@ -277,7 +277,7 @@ const InterNational_Booking_Branch = () => {
       };
   
       // Submit booking information
-      const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
+      const ParcelProductDetails = await axiosSecure.post("/int", Bookinginfo);
   
       if (ParcelProductDetails.data.insertedId) {
         Swal.fire({
@@ -289,7 +289,7 @@ const InterNational_Booking_Branch = () => {
         });
   
         // Increment the CN number
-        const response = await axiosSecure.put("/number");
+        const response = await axiosSecure.put("/Branch/Int/CnNmber");
         setCnNumber(response.data.nextNumber);
         setBookingInfo(Bookinginfo);
       }
@@ -302,7 +302,7 @@ const InterNational_Booking_Branch = () => {
       });
     }
   
-    setIsOpen(true); // Open the modal after successful submission
+    setIsOpen(true); 
   };
   
 
