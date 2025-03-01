@@ -221,8 +221,11 @@ const InterNational_Booking_Branch = () => {
         Customer_Country_Capital_Name: data?.country?.capital || "",
         Customer_State: data?.state?.name || "",
         Customer_City: data?.city?.name || "",
-        receiverName: data.receiverName || receiverInfo.ReceiverName,
-        receiveraddress: data.receiveraddress || receiverInfo.ReceiverAddress,
+        Sender_Contact_Number_Int: data.SenderContactINT || "",
+        Sender_NID_Int: data.Sender_NID_INT || "",
+        Sender_Purpose_Int: data.Sender_Purpose || "",
+        Sender_Name_Int: data.Sender_Name_Int || receiverInfo.ReceiverName,
+        Sender_Address_Int: data.Senderaddress_Int || receiverInfo.ReceiverAddress,
         Destbranch: data.branch,
         email: verifiedUser?.email,
         Booking_Staff_Name:verifiedStaff?.Staff_Name,
@@ -582,37 +585,61 @@ const InterNational_Booking_Branch = () => {
               <InputField
                 watchValues={watchValues}
                 register={register}
-                name={"receiverContactNo"}
+                name={"SenderContactINT"}
                 registerOptions={{ required: true }}
                 errors={errors}
-                label="Contact No."
-                placeholder="receiver contact no."
+                label="Sender Contact Number"
+                placeholder="Enter Sender Contact Number"
                 onChange={(e) => setReceiverContactNo(e.target.value)}
                 type="number"
               />
               <InputField
                 watchValues={watchValues}
                 register={register}
-                name={"receiverName"}
+                name={"Sender_Name_Int"}
                 registerOptions={{
                   required: receiverInfo.ReceiverName ? false : true,
                 }}
                 errors={errors}
-                label="Name"
-                placeholder="receiver name"
+                label="Sender Name"
+                placeholder="Enter Sender Name"
                 defaultValue={receiverInfo.ReceiverName}
               />
               <InputField
                 watchValues={watchValues}
                 register={register}
-                name={"receiveraddress"}
+                name={"Senderaddress_Int"}
                 registerOptions={{
                   required: receiverInfo.ReceiverAddress ? false : true,
                 }}
                 errors={errors}
-                label="Address"
-                placeholder="receiver address"
+                label="Sender Address"
+                placeholder="Enter Sender Address"
                 defaultValue={receiverInfo.ReceiverAddress}
+              />
+              <InputField
+                watchValues={watchValues}
+                register={register}
+                name={"Sender_NID_INT"}
+                registerOptions={{
+                  required:  true,
+                }}
+                errors={errors}
+                label="Sender NID Number"
+                placeholder="Enter Sender NID Number"
+                // defaultValue={receiverInfo.ReceiverAddress}
+              />
+              <InputField
+                watchValues={watchValues}
+                register={register}
+                name={"Sender_Purpose"}
+                registerOptions={{
+                  required: false,
+                }}
+                errors={errors}
+                label="Sender Purpose (Optional)"
+                placeholder="Enter Sender Purpose"
+                // defaultValue={receiverInfo.ReceiverAddress}
               />
             </Section>
           </div>
