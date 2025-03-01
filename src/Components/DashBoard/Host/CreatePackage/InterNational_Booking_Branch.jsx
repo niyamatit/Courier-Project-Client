@@ -230,6 +230,7 @@ const InterNational_Booking_Branch = () => {
         Sender_Name_Int: data.Sender_Name_Int || receiverInfo.ReceiverName,
         Sender_Address_Int: data.Senderaddress_Int || receiverInfo.ReceiverAddress,
         Destbranch: data.branch,
+        Tax_Number_Int:data?.TaxNumber || "",
         email: verifiedUser?.email,
         Booking_Staff_Name:verifiedStaff?.Staff_Name,
         Booking_Staff_ID:verifiedStaff?.Staff_User_ID,
@@ -242,34 +243,29 @@ const InterNational_Booking_Branch = () => {
         Product_Value: parseFloat(data?.productValue) || "",
         Product_Details: data?.productDetails || "",
         Product_Remark: data?.remark || "",
-        customerCode: data.customerCode,
-        counter: data.counter,
-        customerName: data.customerName,
-        Customer_Contact_Number_Int: data.CustomerContactNo,
-        reference: data.reference,
-        receiverContactNo: data.receiverContactNo,
+        Cod_Perchent: 0 || "",
+        Weight_Charge: 0 || "",
+        Cod_Charge: 0 || "",
+        Delivary_Charge: 70 || "",
+        Total_Charge: 100 || "",
+       
+        International_Parcel_Branch: "International_Branch",
+        
+        
+        Customer_Contact_Number_Int: data.CustomerContactNo || "",
+        
+       
         CnNumber: data.CnNumber,
-        bookingDate: data.bookingDate,
-        bookingBranch: data.bookingBranch,
-        department: data.department,
-        inputUser: data.inputUser,
-        serviceType: data.serviceType,
-        paymentMethod: data.paymentMethod,
-        product: data.product,
-        lot: data.lot,
-        qty: data.qty,
-        unit: data.unit,
-        rate: data.rate,
-        "H/D":data.hd,
-        "Exchange":data.exchange,
-        "O/D":data.od,
+        bookingDate: data.bookingDate || "",
+        bookingBranch: data.bookingBranch || "",
+        department: data.department || "",
+        inputUser: data.inputUser || "",
+        serviceType: data.serviceType || "",
+        paymentMethod: data.paymentMethod || "",
+        product: data.product || "",
+       
 
-        totalCharge: data.totalCharge || totalCharge,
-        hdCharge: data.hdCharge,
-        othCharge: data.othCharge,
-        receiverPay: data.receiverPay,
-        serviceCharge: data.serviceCharge,
-        senderReceive: data.senderReceive,
+       
         Date: new Date().toISOString().split('T')[0],
         
         Branch_Name:verifiedUser?.name,
@@ -819,7 +815,7 @@ const InterNational_Booking_Branch = () => {
                     )}
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-gray-700 font-medium mb-1">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
                       Tax Number(Optional)
                     </label>
                     <input
@@ -859,136 +855,57 @@ const InterNational_Booking_Branch = () => {
               </div>
               </div>
             </Section>
-            {/* Product Section */}
-            <Section title="Product" additionalClasses="mt-4">
-              <div className="grid grid-cols-4 gap-2">
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"product"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Product"
-                  placeholder="product"
-                  required
-                  className="col-span-3"
-                />
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"lot"}
-                  registerOptions={{ required: false }}
-                  errors={errors}
-                  label="LOT"
-                  placeholder="lot"
 
-                  readOnly
-                  value={quantity
-
-                  }
-                  type="number"
-
-                />
+            {/* Parcel Charge Section */}
+            <Section title="Parcel Charge" additionalClasses="mt-4">
+            <div className="bg-[#E8F0FE] text-black p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
+              
+              <div className="space-y-2 md:space-y-4">
+                <div className="flex justify-between"></div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Weight Package</span>
+                  <span className="text-gray-500">
+                    {WeightPackage || "Not Confirm"} kg
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Service Type</span>
+                  <span className="text-gray-500">
+                    {ServiceType || "Not Confirm"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Item Type</span>
+                  <span className="text-gray-500">
+                    {ItemType || "Not Confirm"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Collection Amount</span>
+                  <span className="text-gray-500">0.00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Cod Percent</span>
+                  <span className="text-gray-500">0 %</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Weight Charge</span>
+                  <span className="text-gray-500">0.00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Cod Charge</span>
+                  <span className="text-gray-500">0.00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Delivery Charge</span>
+                  <span className="text-gray-500">0.00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Total Charge</span>
+                  <span className="text-gray-500">0.00</span>
+                </div>
               </div>
-              <div className="grid grid-cols-3 gap-1">
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"qty"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Qty"
-                  placeholder="quantity"
-                  required
-
-
-                  type="number"
-                  onChange={(e) => {
-                    setQuantity(e.target.value);
-                    setIsManuallyEditing(false);
-                  }}
-                />
-                <SelectField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"unit"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Unit"
-                  placeholder="unit"
-                  required
-                  options={["Kg", "PCS", "Carton", "BOSTA"]}
-                />
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"rate"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Rate"
-                  placeholder="rate"
-                  required
-                  type="number"
-                  onChange={(e) => {
-                    setRate(e.target.value);
-                    setIsManuallyEditing(false);
-                  }}
-
-                />
-                
-               
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"hdCharge"}
-                  registerOptions={{ required: false }}
-                  errors={errors}
-                  label="H/D Charge"
-                  placeholder="Home Delivery Charge"
-                  type="number"
-                  onChange={(e) => {
-                    setHDCharge(e.target.value);
-                    
-                  }}
-
-                />
-                <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"othCharge"}
-                  registerOptions={{ required: false }}
-                  errors={errors}
-                  label="Oth. Charge"
-                  placeholder="Other Charge"
-                  type="number"
-                  onChange={(e) => {
-                    setOthCharge(e.target.value);
-                    
-                  }}
-
-                />
-                 <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"TotalCharge"}
-                  registerOptions={{
-                    required: "This field is required",
-                    validate: {
-                      minValue: (value) => value >= 80 || "pay cannot be less than 80",
-                    },
-                  }}
-                  errors={errors}
-                  label="Total Charge"
-                  placeholder="total charge"
-                  required
-                  type="number"
-                  value={totalCharge}
-                  onChange={(e) => {
-                    setTotalCharge(e.target.value);
-                    setIsManuallyEditing(true);
-                  }}
-                />
-              </div>
+            </div>
             </Section>
             {/* COD Section */}
            
