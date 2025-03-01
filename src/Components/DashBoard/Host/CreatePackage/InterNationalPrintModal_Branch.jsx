@@ -4,6 +4,7 @@ import { Fragment, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { OfflineBookingDetails } from "./OfflineBookingDetails";
 import OfflineSticker from "../OfflineSticker";
+import { InterNationalBookingDetails_Branch } from "./InterNationalBookingDetails_Branch";
 
 
 const InterNationalPrintModal_Branch = ({ closeModal, isOpen, bookingInfo }) => {
@@ -54,9 +55,9 @@ const InterNationalPrintModal_Branch = ({ closeModal, isOpen, bookingInfo }) => 
                   Print Details
                 </Dialog.Title>
                 <div ref={packageRef} className="mt-2 text-center">
-                  <OfflineBookingDetails bookingInfo={bookingInfo} />
-                  <OfflineBookingDetails bookingInfo={bookingInfo} />
-                  <OfflineBookingDetails bookingInfo={bookingInfo} />
+                  <InterNationalBookingDetails_Branch bookingInfo={bookingInfo} />
+                  <InterNationalBookingDetails_Branch bookingInfo={bookingInfo} />
+                  <InterNationalBookingDetails_Branch bookingInfo={bookingInfo} />
                 </div>
 
                 <div ref={stickerRef} className="mt-2 text-center">

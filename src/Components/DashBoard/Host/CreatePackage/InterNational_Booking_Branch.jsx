@@ -16,7 +16,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Section from "./BookingForm/Section";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
-import OfflinePrintModal from "./BookingForm/OfflinePrintModal";
+
 import InterNationalPrintModal_Branch from "./InterNationalPrintModal_Branch";
 
 const InterNational_Booking_Branch = () => {
