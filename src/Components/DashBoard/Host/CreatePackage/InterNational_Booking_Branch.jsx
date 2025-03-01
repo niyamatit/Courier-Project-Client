@@ -243,6 +243,7 @@ const InterNational_Booking_Branch = () => {
         Service_Type: data?.serviceType || "",
         Item_Type: data?.itemType || "",
         Product_Value: parseFloat(data?.productValue) || "",
+        Product_Quantity: parseFloat(data?.productQuantity) || "",
         Product_Details: data?.productDetails || "",
         Product_Remark: data?.remark || "",
         Cod_Perchent: 0 || "",
@@ -834,6 +835,15 @@ const InterNational_Booking_Branch = () => {
                         This field is required
                       </span>
                     )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
+                      Quantity*
+                    </label>
+                    <textarea
+                      {...register("productQuantity", { required: true })}
+                      className="textarea textarea-bordered w-full p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                    />
                   </div>
                   <div className="col-span-2">
                     <label className="label-text text-gray-500 font-semibold mb-1">
