@@ -869,83 +869,76 @@ const InterNational_Booking_Branch = () => {
             </Section>
 
             {/* Parcel Charge Section */}
-            <Section title="Parcel Charge" additionalClasses="mt-4">
-            <div className="bg-[#E8F0FE] text-black p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
-              
-              <div className="space-y-2 md:space-y-4">
-                <div className="flex justify-between"></div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Weight Package</span>
-                  <span className="text-gray-500">
-                    {WeightPackage || "Not Confirm"} kg
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Service Type</span>
-                  <span className="text-gray-500">
-                    {ServiceType || "Not Confirm"}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Item Type</span>
-                  <span className="text-gray-500">
-                    {ItemType || "Not Confirm"}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Collection Amount</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Cod Percent</span>
-                  <span className="text-gray-500">0 %</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Weight Charge</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Cod Charge</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Delivery Charge</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
-                <div className="flex justify-between items-center">
-  <span className="text-gray-700">Total Charge</span>
-  <div className="flex items-center gap-2">
-    {isManualTotal ? (
-      <input
-        type="number"
-        value={totalCharge}
-        onChange={(e) => {
-          setIsManuallyEditing(true);
-          setTotalCharge(parseFloat(e.target.value) || 0);
-        }}
-        className="w-24 px-2 py-1 border rounded"
-      />
-    ) : (
-      <span className="text-gray-500">{totalCharge.toFixed(2)}</span>
-    )}
-    <button
-      type="button"
-      onClick={() => setIsManualTotal(!isManualTotal)}
-      className="text-blue-500 text-sm hover:underline"
-    >
-      {isManualTotal ? 'Lock' : 'Edit'}
-    </button>
-  </div>
-</div>
-              </div>
-            </div>
-            </Section>
+            
+
             {/* COD Section */}
            
 
             
           </div>
         </div>
+        {/* Parcel Charge Section */}
+<Section title="Parcel Charge" additionalClasses="mt-4">
+  <div className="bg-[#E8F0FE] text-black p-4 rounded-lg shadow-md w-full">
+    <div className="grid grid-cols-2 gap-y-3 text-sm md:text-base">
+      {/* Rows */}
+      <div className="text-gray-700">Weight Package</div>
+      <div className="text-gray-500 text-right">{WeightPackage || "Not Confirm"} kg</div>
+
+      <div className="text-gray-700">Service Type</div>
+      <div className="text-gray-500 text-right">{ServiceType || "Not Confirm"}</div>
+
+      <div className="text-gray-700">Item Type</div>
+      <div className="text-gray-500 text-right">{ItemType || "Not Confirm"}</div>
+
+      <div className="text-gray-700">Collection Amount</div>
+      <div className="text-gray-500 text-right">0.00</div>
+
+      <div className="text-gray-700">Cod Percent</div>
+      <div className="text-gray-500 text-right">0 %</div>
+
+      <div className="text-gray-700">Weight Charge</div>
+      <div className="text-gray-500 text-right">0.00</div>
+
+      <div className="text-gray-700">Cod Charge</div>
+      <div className="text-gray-500 text-right">0.00</div>
+
+      <div className="text-gray-700">Delivery Charge</div>
+      <div className="text-gray-500 text-right">0.00</div>
+
+      {/* Total Charge Row */}
+      <div className="col-span-2 border-t pt-3 mt-2">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-700 font-semibold">Total Charge</span>
+          <div className="flex items-center gap-2">
+            {isManualTotal ? (
+              <input
+                type="number"
+                value={totalCharge}
+                onChange={(e) => {
+                  setIsManuallyEditing(true);
+                  setTotalCharge(parseFloat(e.target.value) || 0);
+                }}
+                className="w-24 px-2 py-1 border rounded text-right"
+              />
+            ) : (
+              <span className="text-gray-500 font-semibold">
+                {totalCharge.toFixed(2)}
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsManualTotal(!isManualTotal)}
+              className="text-blue-500 text-sm hover:underline"
+            >
+              {isManualTotal ? "Lock" : "Edit"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>
 
         {/* Submit Button */}
         <div className="flex gap-5 mt-2 justify-center">
