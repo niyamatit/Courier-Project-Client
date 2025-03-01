@@ -232,6 +232,7 @@ const InterNational_Booking_Branch = () => {
         Sender_Name_Int: data.Sender_Name_Int || receiverInfo.ReceiverName,
         Sender_Address_Int: data.Senderaddress_Int || receiverInfo.ReceiverAddress,
         Destbranch: data.branch,
+        Additional_Info: data.addition_info,
         Tax_Number_Int:data?.TaxNumber || "",
         email: verifiedUser?.email,
         Booking_Staff_Name:verifiedStaff?.Staff_Name,
@@ -856,11 +857,20 @@ const InterNational_Booking_Branch = () => {
                   </div>
                   <div className="col-span-2">
                     <label className="label-text text-gray-500 font-semibold mb-1">
+                      Additional Information (Optional)
+                    </label>
+                    <textarea
+                      {...register("addition_info")}
+                      className="textarea textarea-bordered w-full p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
                       Remark
                     </label>
                     <textarea
                       {...register("remark")}
-                      className="textarea textarea-bordered w-full p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                      className="textarea textarea-bordered w-full h-[26px] p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
                     />
                   </div>
                 </div>
@@ -942,7 +952,7 @@ const InterNational_Booking_Branch = () => {
 
         {/* Submit Button */}
         <div className="flex gap-5 mt-2 justify-center">
-          <button className="btn bg-[#E8F0FE]">Submit</button>
+          <button className="btn bg-[#E8F0FE] w-1/2 hover:bg-blue-300">Submit</button>
         </div>
       </form>
       <InterNationalPrintModal_Branch
