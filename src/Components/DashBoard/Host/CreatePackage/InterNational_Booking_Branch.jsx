@@ -58,7 +58,10 @@ const InterNational_Booking_Branch = () => {
     setIsOpen(false);
   };
   const queryClient = useQueryClient();
+  const [WeightPackage, setWeightPackage] = useState("");
 
+  const [ServiceType, setServiceType] = useState("");
+  const [ItemType, setItemType] = useState("");
 
 
 
@@ -232,6 +235,13 @@ const InterNational_Booking_Branch = () => {
         Booking_Staff_ID:verifiedStaff?.Staff_User_ID,
         Booking_Staff_Post:verifiedStaff?.Staff_post,
         Booking_Staff_Number:verifiedStaff?.Staff_Contact_Number,
+        Parcel_Weight: parseFloat(data?.weightPackage) || "",
+        Total_Collection_Amount: parseFloat(data?.totalAmount) || "",
+        Service_Type: data?.serviceType || "",
+        Item_Type: data?.itemType || "",
+        Product_Value: parseFloat(data?.productValue) || "",
+        Product_Details: data?.productDetails || "",
+        Product_Remark: data?.remark || "",
         customerCode: data.customerCode,
         counter: data.counter,
         customerName: data.customerName,
@@ -645,8 +655,8 @@ const InterNational_Booking_Branch = () => {
           </div>
 
           <div>
-            {/* Booking Information Section */}
-            <Section title="Booking Information">
+            {/* Parcel Information Section */}
+            <Section title="Parcel Information">
 
               <div className="grid grid-cols-2 gap-2">
                 <InputField
@@ -690,69 +700,163 @@ const InterNational_Booking_Branch = () => {
                 value={verifiedUser?.name || "No Branch Name Found"}
                 readOnly
               />
-              <div className="grid grid-cols-2 gap-1">
-                {/* <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"department"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Department"
-                  placeholder="Department name"
-                  required
-                /> */}
-                <SelectField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"department"}
-                  registerOptions={{ required: false }}
-                  errors={errors}
-                  label="Select Department"
-                  options={["Document", "Parcel", "Food item", "Mobile/Laptop", "Electrical", "Home/Office Accessories"]}
-                />
-                {/* <InputField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"inputUser"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Input User"
-                  placeholder="Input user"
-                  required
-                /> */}
-                <SelectField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"inputUser"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Input User"
-                  options={["New Customer", "Customer", "Merchant", "Corporate"]}
-                />
-                <SelectField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"serviceType"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Service Type"
-                  options={["Regular delivery", "Express delivery"]}
-                />
-                {/* Payment Method Dropdown */}
-                <SelectField
-                  watchValues={watchValues}
-                  register={register}
-                  name={"paymentMethod"}
-                  registerOptions={{ required: true }}
-                  errors={errors}
-                  label="Payment Method"
-                  options={["Cash", "To Pay", "Credit"]}
-                  onChange={(e) => {
-                    // console.log("Selected value:", e.target.value); // Debugging log
-                    setSelectedPayment(e.target.value);
-                  }}
-                  required
-                />
+              <div className="">
+               {/* Parcel Area */}
+              <div className="">
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="label-text text-gray-500 font-semibold mt-2 mb-1">
+                      Weight Package*
+                    </label>
+
+                    <select
+                      {...register("weightPackage", { required: true })}
+                      className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+                        errors.weightPackage
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                      onChange={(e) => setWeightPackage(e.target.value)}
+                    >
+                      <option value="">Select Weight Package</option>
+                      <option value="0.5">0.5kg</option>
+                      <option value="1">1 kg</option>
+                      <option value="2">2 kg</option>
+                      <option value="3">3 kg</option>
+                      <option value="4">4 kg</option>
+                    </select>
+                    {errors.weightPackage && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
+                      Total Collection Amount*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("totalAmount", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+                        errors.totalAmount
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.totalAmount && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
+                      Service Type*
+                    </label>
+                    <select
+                      {...register("serviceType", { required: true })}
+                      className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+                        errors.serviceType
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                      onChange={(e) => setServiceType(e.target.value)}
+                    >
+                      <option value="">Select Service</option>
+                      <option value="Ship Delivery">Ship Delivery</option>
+                      <option value="Air Delivery">Air Delivery</option>
+                    </select>
+                    {errors.serviceType && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
+                      Item Type*
+                    </label>
+                    <select
+                      {...register("itemType", { required: true })}
+                      className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+                        errors.itemType ? "border-red-500" : "border-gray-300"
+                      }`}
+                      onChange={(e) => setItemType(e.target.value)}
+                    >
+                      <option value="">Select Item Type</option>
+                      <option value="Parcel">Parcel</option>
+                      <option value="Documents">Documents</option>
+                      <option value="Fragile">Fragile</option>
+                      <option value="Medicine">Medicine</option>
+                      <option value="Food">Food</option>
+                      <option value="Device">Device</option>
+                    </select>
+                    {errors.itemType && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
+                      Product Value*
+                    </label>
+                    <input
+                      type="text"
+                      {...register("productValue", { required: true })}
+                      className={`input input-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+                        errors.productValue
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.productValue && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Tax Number(Optional)
+                    </label>
+                    <input
+                      type="text"
+                      {...register("TaxNumber")}
+                      className={`input input-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+                        errors.TaxNumber
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors.TaxNumber && (
+                      <span className="text-red-500">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
+                      Product Details*
+                    </label>
+                    <textarea
+                      {...register("productDetails", { required: true })}
+                      className="textarea textarea-bordered w-full p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
+                      Remark
+                    </label>
+                    <textarea
+                      {...register("remark")}
+                      className="textarea textarea-bordered w-full p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                    />
+                  </div>
+                </div>
+              </div>
               </div>
             </Section>
             {/* Product Section */}
