@@ -4,7 +4,7 @@ import Barcode from 'react-barcode';
 import './CourierSlip.css';
 import { PiScissorsLight } from 'react-icons/pi';
 // import QRCode from 'react-qr-code';
-import logoImg from '../../../../../assets/nexp-update.png'
+import logoImg from '../../../../../src/assets/nexp-update.png'
 export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
     
 
@@ -55,9 +55,9 @@ export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
                     <div>
                         <strong>Booking Date: </strong>{bookingInfo?.bookingDate}
                     </div>
-                    <div>
+                    {/* <div>
                         <p className='font-bold'>Destination: {bookingInfo?.branch}</p>
-                    </div>
+                    </div> */}
                 </div>
 
             </div>
@@ -66,27 +66,27 @@ export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
             <div className="contact-details">
 
                 <div className="sender-details">
-                    <h3 className='text-bold text-sm'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
-                    <p  className='text-bold text-sm'><strong>Contact:{bookingInfo?.senderContactNo} </strong></p>
-                    <p  className='text-bold text-sm'><strong>Address: </strong>{bookingInfo?.address}</p>
+                    <h3 className='text-bold text-sm'><strong>Sender: {bookingInfo?.Sender_Name_Int}</strong></h3>
+                    <p  className='text-bold text-sm'><strong>Contact:{bookingInfo?.Sender_Contact_Number_Int} </strong></p>
+                    <p  className='text-bold text-sm'><strong>Address: </strong>{bookingInfo?.Sender_Address_Int}</p>
                 </div>
                 <div className="receiver-details">
-                    <h3 className='text-bold text-sm'><strong>Receiver:{bookingInfo?.receiverName}</strong></h3>
-                    <p  className='text-bold text-sm'><strong>Contact: {bookingInfo?.receiverContactNo}</strong></p>
-                    <p  className='text-bold text-sm'><strong>Address: {bookingInfo?.receiveraddress}</strong></p>
+                    <h3 className='text-bold text-sm'><strong>Receiver:{bookingInfo?.Customer_Name_Int}</strong></h3>
+                    <p  className='text-bold text-sm'><strong>Contact: {bookingInfo?.Customer_Contact_Number_Int}</strong></p>
+                    <p  className='text-bold text-sm'><strong>Address: {bookingInfo?.Customer_address_Int}</strong></p>
                 </div>
             </div>
 
             <div className="table">
                 <div className="table-row bg-blue-600 text-white">
-                    <div className="table-cell">Qty</div>
+                    <div className="table-cell">Weight</div>
                     <div className="table-cell">Details</div>
                     <div className="table-cell">Amount</div>
                 </div>
                 <div className="table-row">
-                    <div className="table-cell">{bookingInfo?.qty}</div>
-                    <div className="table-cell">{bookingInfo?.product}</div>
-                    <div className="table-cell">{bookingInfo?.totalCharge}</div>
+                    <div className="table-cell">{bookingInfo?.Parcel_Weight}</div>
+                    <div className="table-cell">{bookingInfo?.Product_Details}</div>
+                    <div className="table-cell">{bookingInfo?.Total_Charge}</div>
                 </div>
             </div>
 
@@ -99,20 +99,21 @@ export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
                 </div>
 
                 <div className=''>
-                    condition charge: {bookingInfo?.totalCharge}
+                    Total charge: {bookingInfo?.Total_Charge}
                 </div>
                 <div>
-                <strong>{`${bookingInfo?.paymentMethod} - ${bookingInfo?.["H/D"] 
+                <strong>{`${bookingInfo?.serviceType}`}</strong>
+                {/* <strong>{`${bookingInfo?.serviceType} - ${bookingInfo?.["H/D"] 
     ? "Home Delivery" 
     : bookingInfo?.["O/D"] 
     ? "Office Delivery" :
     bookingInfo?.Exchange 
     ? "Exchange"
-    : "No Delivery Option Selected"}`}</strong>
-              <p className='text-sm'>Staff Name : {bookingInfo?.Booking_Staff_Name}</p>
+    : "No Delivery Option Selected"}`}</strong> */}
+              <p className='text-sm'>Booking By : {bookingInfo?.Booking_Staff_Name}</p>
                 </div>
             </div>
-            <p className='text-xs mt-2'>সরকার ঘোষিত অবৈধ এবং নিষিদ্ধ পণ্য বুকিং এর ক্ষেত্রে কোম্পানি দায়ী থাকবে নাহ</p>
+            <p className='text-xs mt-2'>Company shall not be responsible for booking illegal and prohibited products declared by the government</p>
         </div>
         <div className='flex justify-center items-center'>
             <PiScissorsLight className='w-5 h-5' />

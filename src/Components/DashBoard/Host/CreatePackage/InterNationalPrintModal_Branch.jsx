@@ -3,8 +3,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
-import OfflineSticker from "../OfflineSticker";
+
 import { InterNationalBookingDetails_Branch } from "./InterNationalBookingDetails_Branch";
+import InterNationalBookingSticker_Branch from "./InterNationalBookingSticker_Branch";
 
 
 const InterNationalPrintModal_Branch = ({ closeModal, isOpen, bookingInfo }) => {
@@ -62,7 +63,7 @@ const InterNationalPrintModal_Branch = ({ closeModal, isOpen, bookingInfo }) => 
 
                 <div ref={stickerRef} className="mt-2 text-center">
                   {Array.from({ length: bookingInfo?.lot || 1 }).map((_, index) => (
-                    <OfflineSticker key={index} bookingInfo={bookingInfo} />
+                    <InterNationalBookingSticker_Branch key={index} bookingInfo={bookingInfo} />
                   ))}
 
                 </div>
