@@ -2,7 +2,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import { OfflineBookingDetails } from "./OfflineBookingDetails";
+
 import OfflineSticker from "../OfflineSticker";
 import { InterNationalBookingDetails_Branch } from "./InterNationalBookingDetails_Branch";
 
