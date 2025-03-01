@@ -44,6 +44,7 @@ const InterNational_Booking_Branch = () => {
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
   const [lot, setLot] = useState();
   const [PaymentOption , setSelectedPayment] = useState('');
+  const [isManualTotal, setIsManualTotal] = useState(false);
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -247,7 +248,7 @@ const InterNational_Booking_Branch = () => {
         Weight_Charge: 0 || "",
         Cod_Charge: 0 || "",
         Delivary_Charge: 70 || "",
-        Total_Charge: 100 || "",
+        Total_Charge: totalCharge || "",
        
         International_Parcel_Branch: "International_Branch",
         
@@ -900,10 +901,31 @@ const InterNational_Booking_Branch = () => {
                   <span className="text-gray-700">Delivery Charge</span>
                   <span className="text-gray-500">0.00</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Total Charge</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
+                <div className="flex justify-between items-center">
+  <span className="text-gray-700">Total Charge</span>
+  <div className="flex items-center gap-2">
+    {isManualTotal ? (
+      <input
+        type="number"
+        value={totalCharge}
+        onChange={(e) => {
+          setIsManuallyEditing(true);
+          setTotalCharge(parseFloat(e.target.value) || 0);
+        }}
+        className="w-24 px-2 py-1 border rounded"
+      />
+    ) : (
+      <span className="text-gray-500">{totalCharge.toFixed(2)}</span>
+    )}
+    <button
+      type="button"
+      onClick={() => setIsManualTotal(!isManualTotal)}
+      className="text-blue-500 text-sm hover:underline"
+    >
+      {isManualTotal ? 'Lock' : 'Edit'}
+    </button>
+  </div>
+</div>
               </div>
             </div>
             </Section>
