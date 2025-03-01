@@ -13,14 +13,14 @@ export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
         <div className="invoice-container">
        
         <div 
-        className="absolute inset-0 bg-center bg-repeat-y bg-contain"
-        style={{ 
-            backgroundImage: `url("https://i.ibb.co.com/SD8pn0BD/text-logo.png")`, 
-            opacity: 0.1,
-            backgroundSize: "50%",
-            zIndex: -1
-        }}
-    ></div>
+    className="absolute inset-0 bg-center bg-repeat-y"
+    style={{ 
+        backgroundImage: `url("https://i.ibb.co.com/SD8pn0BD/text-logo.png")`, 
+        opacity: 0.1,
+        backgroundSize: "90% auto",  
+        zIndex: -1
+    }}
+></div>
             <header className="header">
                 <div className="logo">
                     <img className='h-[40px] w-[60px]' src={logoImg} alt="Niyamat Express" />
@@ -84,7 +84,7 @@ export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
                     <div className="table-cell">Amount</div>
                 </div>
                 <div className="table-row">
-                    <div className="table-cell">{bookingInfo?.Parcel_Weight}</div>
+                    <div className="table-cell">{bookingInfo?.Parcel_Weight} kg</div>
                     <div className="table-cell">{bookingInfo?.Product_Details}</div>
                     <div className="table-cell">{bookingInfo?.Total_Charge}</div>
                 </div>
