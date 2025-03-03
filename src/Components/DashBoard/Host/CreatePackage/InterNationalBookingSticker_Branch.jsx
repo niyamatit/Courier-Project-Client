@@ -57,7 +57,7 @@ const StickerDetails = ({ bookingInfo }) => {
                     <strong>Payment:</strong> Cash
                 </p>
                 <p className="text-xs text-gray-700">
-                    <strong>Booking Date:</strong> {bookingInfo?.Date}
+                     <strong>Booking Date:</strong> {bookingInfo?.Date}
                 </p>
                 {/* <p className='font-bold text-[14px] mt-4'>{bookingInfo?.sender_Full_Adress} to {bookingInfo?.selectedArea}</p> */}
             </div>
