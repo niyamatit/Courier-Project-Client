@@ -22,7 +22,7 @@ const StickerDetails = ({ bookingInfo }) => {
                 <img
                     src="https://i.ibb.co/LCJvnRB/logo.png"
                     alt="Logo"
-                    className="h-10 mx-auto mb-2"
+                    className="h-20 mx-auto mb-2"
                 />
                 <h1 className="text-3xl font-bold text-gray-800">Niyamat Express</h1>
                 <p className="text-xs text-gray-500">Head Office: Chittagong Road, Narayanganj 1430</p>
@@ -31,7 +31,7 @@ const StickerDetails = ({ bookingInfo }) => {
             {/* Barcode Section */}
             <div className="my-2 text-center">
                 <Barcode className="h-[40px] w-full" value={bookingInfo?.CnNumber} />
-                <p className="text-xs text-gray-600 mt-1">{bookingInfo?.CnNumber}/{bookingInfo?.qty}</p>
+                <p className="text-xs text-gray-600 mt-1">{bookingInfo?.CnNumber}</p>
             </div>
 
             {/* Sender & Receiver Information */}
@@ -45,27 +45,27 @@ const StickerDetails = ({ bookingInfo }) => {
 
                 {/* Receiver Info */}
                 <div className="">
-                    <p><strong>Receiver:</strong> {bookingInfo?.recipientName}</p>
+                    <p><strong>Receiver:</strong> {bookingInfo?.Customer_Name_Int}</p>
                     {/* <p><strong>Contact:</strong> {bookingInfo?.recipientMobile}</p> */}
-                    <p><strong>Address:</strong> {bookingInfo?.Receiver_Full_Adress}</p>
+                    <p><strong>Address:</strong> {bookingInfo?.Customer_address_Int}</p>
                 </div>
             </div>
 
             {/* Booking Info */}
             <div className="mt-2">
                 <p className="text-xs text-gray-700">
-                    <strong>Payment:</strong> {bookingInfo?.paymentOption} - {bookingInfo?.deliveryOption}
+                    <strong>Payment:</strong> Cash
                 </p>
                 <p className="text-xs text-gray-700">
-                    <strong>Booking Date:</strong> {formattedBookingTime}
+                     <strong>Booking Date:</strong> {bookingInfo?.Date}
                 </p>
-                <p className='font-bold text-[14px] mt-4'>{bookingInfo?.sender_Full_Adress} to {bookingInfo?.selectedArea}</p>
+                {/* <p className='font-bold text-[14px] mt-4'>{bookingInfo?.sender_Full_Adress} to {bookingInfo?.selectedArea}</p> */}
             </div>
 
             {/* Package Info */}
             <div className="mt-2 border-t pt-2">
-                 <p className="text-xs text-gray-700"><strong>Product:</strong> {bookingInfo?.productDetails}</p>
-                <p className="text-xs text-gray-700"><strong>Condition Charge:</strong> {bookingInfo?.conditionCharge} BDT</p>
+                 <p className="text-xs text-gray-700"><strong>Product:</strong> {bookingInfo?.Product_Details} ({bookingInfo?.Item_Type})</p>
+                <p className="text-xs text-gray-700"><strong>Condition Charge:</strong> {bookingInfo?.Total_Charge} BDT</p>
                 {/* <p className="text-xs text-gray-700"><strong>Total Amount:</strong> {bookingInfo?.amount} BDT ({bookingInfo?.wordAmount})</p> */}
             </div>
 

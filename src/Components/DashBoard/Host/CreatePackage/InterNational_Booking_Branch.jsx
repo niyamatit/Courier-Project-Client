@@ -232,6 +232,7 @@ const InterNational_Booking_Branch = () => {
         Sender_Name_Int: data.Sender_Name_Int || receiverInfo.ReceiverName,
         Sender_Address_Int: data.Senderaddress_Int || receiverInfo.ReceiverAddress,
         Destbranch: data.branch,
+        Additional_Info: data.addition_info,
         Tax_Number_Int:data?.TaxNumber || "",
         email: verifiedUser?.email,
         Booking_Staff_Name:verifiedStaff?.Staff_Name,
@@ -243,6 +244,7 @@ const InterNational_Booking_Branch = () => {
         Service_Type: data?.serviceType || "",
         Item_Type: data?.itemType || "",
         Product_Value: parseFloat(data?.productValue) || "",
+        Product_Quantity: parseFloat(data?.productQuantity) || "",
         Product_Details: data?.productDetails || "",
         Product_Remark: data?.remark || "",
         Cod_Perchent: 0 || "",
@@ -837,6 +839,15 @@ const InterNational_Booking_Branch = () => {
                   </div>
                   <div className="col-span-2">
                     <label className="label-text text-gray-500 font-semibold mb-1">
+                      Quantity*
+                    </label>
+                    <textarea
+                      {...register("productQuantity", { required: true })}
+                      className="textarea textarea-bordered w-full p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
                       Product Details*
                     </label>
                     <textarea
@@ -846,11 +857,20 @@ const InterNational_Booking_Branch = () => {
                   </div>
                   <div className="col-span-2">
                     <label className="label-text text-gray-500 font-semibold mb-1">
+                      Additional Information (Optional)
+                    </label>
+                    <textarea
+                      {...register("addition_info")}
+                      className="textarea textarea-bordered w-full p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <label className="label-text text-gray-500 font-semibold mb-1">
                       Remark
                     </label>
                     <textarea
                       {...register("remark")}
-                      className="textarea textarea-bordered w-full p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                      className="textarea textarea-bordered w-full h-[26px] p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
                     />
                   </div>
                 </div>
@@ -859,87 +879,80 @@ const InterNational_Booking_Branch = () => {
             </Section>
 
             {/* Parcel Charge Section */}
-            <Section title="Parcel Charge" additionalClasses="mt-4">
-            <div className="bg-[#E8F0FE] text-black p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
-              
-              <div className="space-y-2 md:space-y-4">
-                <div className="flex justify-between"></div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Weight Package</span>
-                  <span className="text-gray-500">
-                    {WeightPackage || "Not Confirm"} kg
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Service Type</span>
-                  <span className="text-gray-500">
-                    {ServiceType || "Not Confirm"}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Item Type</span>
-                  <span className="text-gray-500">
-                    {ItemType || "Not Confirm"}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Collection Amount</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Cod Percent</span>
-                  <span className="text-gray-500">0 %</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Weight Charge</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Cod Charge</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Delivery Charge</span>
-                  <span className="text-gray-500">0.00</span>
-                </div>
-                <div className="flex justify-between items-center">
-  <span className="text-gray-700">Total Charge</span>
-  <div className="flex items-center gap-2">
-    {isManualTotal ? (
-      <input
-        type="number"
-        value={totalCharge}
-        onChange={(e) => {
-          setIsManuallyEditing(true);
-          setTotalCharge(parseFloat(e.target.value) || 0);
-        }}
-        className="w-24 px-2 py-1 border rounded"
-      />
-    ) : (
-      <span className="text-gray-500">{totalCharge.toFixed(2)}</span>
-    )}
-    <button
-      type="button"
-      onClick={() => setIsManualTotal(!isManualTotal)}
-      className="text-blue-500 text-sm hover:underline"
-    >
-      {isManualTotal ? 'Lock' : 'Edit'}
-    </button>
-  </div>
-</div>
-              </div>
-            </div>
-            </Section>
+            
+
             {/* COD Section */}
            
 
             
           </div>
         </div>
+        {/* Parcel Charge Section */}
+<Section title="Parcel Charge" additionalClasses="mt-4">
+  <div className="bg-[#E8F0FE] text-black p-4 rounded-lg shadow-md w-full">
+    <div className="grid grid-cols-2 gap-y-3 text-sm md:text-base">
+      {/* Rows */}
+      <div className="text-gray-700">Weight Package</div>
+      <div className="text-gray-500 text-right">{WeightPackage || "Not Confirm"} kg</div>
+
+      <div className="text-gray-700">Service Type</div>
+      <div className="text-gray-500 text-right">{ServiceType || "Not Confirm"}</div>
+
+      <div className="text-gray-700">Item Type</div>
+      <div className="text-gray-500 text-right">{ItemType || "Not Confirm"}</div>
+
+      <div className="text-gray-700">Collection Amount</div>
+      <div className="text-gray-500 text-right">0.00</div>
+
+      <div className="text-gray-700">Cod Percent</div>
+      <div className="text-gray-500 text-right">0 %</div>
+
+      <div className="text-gray-700">Weight Charge</div>
+      <div className="text-gray-500 text-right">0.00</div>
+
+      <div className="text-gray-700">Cod Charge</div>
+      <div className="text-gray-500 text-right">0.00</div>
+
+      <div className="text-gray-700">Delivery Charge</div>
+      <div className="text-gray-500 text-right">0.00</div>
+
+      {/* Total Charge Row */}
+      <div className="col-span-2 border-t pt-3 mt-2">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-700 font-semibold">Total Charge</span>
+          <div className="flex items-center gap-2">
+            {isManualTotal ? (
+              <input
+                type="number"
+                value={totalCharge}
+                onChange={(e) => {
+                  setIsManuallyEditing(true);
+                  setTotalCharge(parseFloat(e.target.value) || 0);
+                }}
+                className="w-24 px-2 py-1 border rounded text-right"
+              />
+            ) : (
+              <span className="text-gray-500 font-semibold">
+                {totalCharge.toFixed(2)}
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsManualTotal(!isManualTotal)}
+              className="text-blue-500 text-sm hover:underline"
+            >
+              {isManualTotal ? "Lock" : "Edit"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>
 
         {/* Submit Button */}
         <div className="flex gap-5 mt-2 justify-center">
-          <button className="btn bg-[#E8F0FE]">Submit</button>
+          <button className="btn bg-[#E8F0FE] w-1/2 hover:bg-blue-300">Submit</button>
         </div>
       </form>
       <InterNationalPrintModal_Branch
