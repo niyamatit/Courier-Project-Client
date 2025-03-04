@@ -30,8 +30,8 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500
         });
-        localStorage.setItem("email",email)
-        
+         localStorage.setItem("email",email)
+         
         navigate(from, { replace: true });
       } else {
         Swal.fire({
