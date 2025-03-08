@@ -196,9 +196,9 @@ const handleDivisionChange = (e) => {
     // Calculate total COD
     useEffect(() => {
         const conditionValue = parseInt(condition) || 0;
-        const totalCod = conditionValue + conditionCharge + weightCharge;
+        const totalCod = conditionValue + conditionCharge;
         setCod(totalCod);
-    }, [condition, conditionCharge, weightCharge]) 
+    }, [condition, conditionCharge]) 
 
     const update = 'Processing';
 
@@ -670,7 +670,7 @@ const handleDivisionChange = (e) => {
                 <div className="flex md:px-24 mt-5 mb-5 justify-between">
                     <div className=''>
                     <p className="text-xl">
-            Condition + Charge + Weight Charge ({weightCharge} TK) = Total COD: {cod || 0} TK
+            Condition + Charge  = Total COD: {cod || 0} TK
         </p>
                     </div>
                     <div>
