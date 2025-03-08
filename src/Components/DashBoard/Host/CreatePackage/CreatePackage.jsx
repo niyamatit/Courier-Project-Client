@@ -47,7 +47,29 @@ const CreatePackage = () => {
     const [weightCharge, setWeightCharge] = useState(0);
     const [weight, setWeight] = useState("");
     const [selectedDivision, setSelectedDivision] = useState('');
-
+    
+    const [userModified, setUserModified] = useState(false);
+    
+    // Update weightCharge effect
+    useEffect(() => {
+        // ... existing weight charge calculation ...
+        if (!userModified) {
+            setAmount(weightCharge);
+        }
+    }, [weightCharge, userModified]);
+    
+    // Amount handler
+    const handleAmountChange = (e) => {
+        const value = e.target.value;
+        setUserModified(true);
+        
+        if (/^\d*$/.test(value)) {
+            setAmount(value);
+            setAmountError(value >= 100 ? '' : 'Amount must be ≥100 TK');
+        } else {
+            setAmountError('Numbers only');
+        }
+    };
 // Add this handler function with your other handlers
 const handleDivisionChange = (e) => {
     setSelectedDivision(e.target.value);
@@ -202,15 +224,15 @@ const handleDivisionChange = (e) => {
 
     const update = 'Processing';
 
-    const handleAmountChange = (e) => {
-        const value = e.target.value;
-        if (/^\d*$/.test(value)) {
-            setAmount(value);
-            setAmountError('');
-        } else {
-            setAmountError('Please enter a valid number');
-        }
-    };
+    // const handleAmountChange = (e) => {
+    //     const value = e.target.value;
+    //     if (/^\d*$/.test(value)) {
+    //         setAmount(value);
+    //         setAmountError('');
+    //     } else {
+    //         setAmountError('Please enter a valid number');
+    //     }
+    // };
     const handleConditionChange = (e) => {
         setCondition(e.target.value);
     };
@@ -618,13 +640,27 @@ const handleDivisionChange = (e) => {
                 placeholder="Enter weight in kg"
             />
         </div>
-                    <div className="form-control md:ml-4 md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Booking Amount</span>
-                        </label>
-                        <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' value={weightCharge} onChange={handleAmountChange} required />
-                        {amountError && <p className="text-red-500">{amountError}</p>}
-                    </div>
+        <div className="form-control md:ml-4 md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Booking Amount (TK)</span>
+    </label>
+    <input 
+        type="number" 
+        placeholder="Enter Amount" 
+        className="input input-bordered" 
+        name='amount' 
+        value={amount || weightCharge} 
+        onChange={handleAmountChange}
+        min="100"
+        required 
+    />
+    {amountError && (
+        <p className="text-red-500 mt-1">{amountError}</p>
+    )}
+    {!amountError && amount < 100 && (
+        <p className="text-yellow-500 mt-1">Minimum amount: 100 TK</p>
+    )}
+</div>
                 </div>
                 <div className='md:flex md:px-24 mt-5 gap-5 mb-2'>
                     <div className="form-control md:w-1/2">
