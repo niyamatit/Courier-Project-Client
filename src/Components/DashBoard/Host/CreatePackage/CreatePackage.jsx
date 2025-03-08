@@ -512,7 +512,7 @@ const handleDivisionChange = (e) => {
                         <input
                             value={condition}
                             onChange={handleConditionChange}
-                            type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition' required />
+                            type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition'  />
                     </div>
                 </div>
 
