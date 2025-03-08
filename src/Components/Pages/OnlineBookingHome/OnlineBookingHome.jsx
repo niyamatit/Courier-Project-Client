@@ -2,12 +2,15 @@ import { useRef, useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
 
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import axiosSecure from "../../../api/axiosSecure";
-import PrintModal from "../../DashBoard/Host/CreatePackage/PrintModal";
-import { addPackage } from "../../../api/package";
+import UseStaffVerify from "../../../hooks/UseStaffVerify/UseStaffVerify";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
+import axiosSecure from "../../../api/axiosSecure";
+import { addPackage } from "../../../api/package";
+import PrintModal from "../../DashBoard/Host/CreatePackage/PrintModal";
+
 
 
 
@@ -44,8 +47,43 @@ const OnlineBookingHome = () => {
     const [balance, setBalance] = useState(20000); // Initial branch balance
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
     const [CnNumber, SetCnNumber] = useState("");
-
-
+    const [verifiedStaff] = UseStaffVerify();
+    const [weightCharge, setWeightCharge] = useState(0);
+    const [weight, setWeight] = useState("");
+    const [selectedDivision, setSelectedDivision] = useState('');
+    
+    const [userModified, setUserModified] = useState(false);
+    
+    // Update weightCharge effect
+    useEffect(() => {
+        // ... existing weight charge calculation ...
+        if (!userModified) {
+            setAmount(weightCharge);
+        }
+    }, [weightCharge, userModified]);
+    
+    // Amount handler
+    const handleAmountChange = (e) => {
+        const value = e.target.value;
+        setUserModified(true);
+        
+        if (/^\d*$/.test(value)) {
+            setAmount(value);
+            setAmountError(value >= 100 ? '' : 'Amount must be ≥100 TK');
+        } else {
+            setAmountError('Numbers only');
+        }
+    };
+// Add this handler function with your other handlers
+const handleDivisionChange = (e) => {
+    setSelectedDivision(e.target.value);
+};
+    const handleChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*\.?\d*$/.test(value)) { 
+            setWeight(value);
+        }
+    };
     const [selectedDistrict, setSelectedDistrict] = useState("");
     const [filteredAreas, setFilteredAreas] = useState([]);
     const [allDistricts, setAllDistricts] = useState([]);
@@ -103,46 +141,107 @@ const OnlineBookingHome = () => {
         });
     }, []);
 
+    // useEffect(() => {
+    //     if (condition && parseInt(condition) !== 0) {
+    //         const conditionValue = parseInt(condition);
+    //         let calculatedCod = 0;
+
+    //         if (conditionValue <= 1000) {
+    //             calculatedCod = conditionValue + 20;
+    //         } else {
+    //             const first1000Cod = 20;
+    //             const remaining = conditionValue - 1000;
+
+
+    //             const Extra1000 = Math.ceil(remaining / 1000);
+    //             const extraCod = Extra1000 * 10;
+    //             calculatedCod = conditionValue + first1000Cod + extraCod;
+    //         }
+
+    //         setCod(calculatedCod);
+    //     } else {
+    //         setCod(null);
+    //     }
+    // }, [condition]);
+    const [conditionCharge, setConditionCharge] = useState(0);
+
+    // Calculate condition charge based on condition value
     useEffect(() => {
-        if (condition && parseInt(condition) !== 0) {
-            const conditionValue = parseInt(condition);
-            let calculatedCod = 0;
-
+        const conditionValue = parseInt(condition) || 0;
+        let calculatedConditionCharge = 0;
+    
+        if (conditionValue > 0) {
             if (conditionValue <= 1000) {
-                calculatedCod = conditionValue + 20;
+                calculatedConditionCharge = 20;
             } else {
-                const first1000Cod = 20;
                 const remaining = conditionValue - 1000;
-
-
-                const Extra1000 = Math.ceil(remaining / 1000);
-                const extraCod = Extra1000 * 10;
-                calculatedCod = conditionValue + first1000Cod + extraCod;
+                const extraChunks = Math.ceil(remaining / 1000);
+                calculatedConditionCharge = 20 + (extraChunks * 10);
             }
-
-            setCod(calculatedCod);
-        } else {
-            setCod(null);
         }
+    
+        setConditionCharge(calculatedConditionCharge);
     }, [condition]);
-
+    
+    // Calculate weight charge based on delivery option and weight
+    useEffect(() => {
+        const weightValue = parseFloat(weight) || 0;
+        let calculatedWeightCharge = 0;
+        
+        if (weightValue > 0) {
+            // Define division-based rates
+            const divisionRates = {
+                'Barisal': { home: 45, office: 45 },
+                'Chattogram': { home: 50, office: 50 },
+                'Dhaka': { home: 20, office: 20 },
+                'Rangpur': { home: 25, office: 25 },
+                'Rajshahi': { home: 15, office: 15 },
+                'default': { home: 20, office: 20 }
+            };
+    
+            // Get rate for selected division or default
+            const rate = divisionRates[selectedDivision] || divisionRates.default;
+    
+            if (deliveryOption === 'Home Delivery') {
+                if (weightValue <= 1) {
+                    calculatedWeightCharge = 150;
+                } else {
+                    const remainingWeight = weightValue - 1;
+                    const remainingCeil = Math.ceil(remainingWeight);
+                    calculatedWeightCharge = 150 + (remainingCeil * rate.home);
+                }
+            } 
+            else if (deliveryOption === 'Office Delivery') {
+                calculatedWeightCharge = Math.ceil(weightValue) * rate.office;
+            }
+        }
+    
+        setWeightCharge(calculatedWeightCharge);
+    }, [deliveryOption, weight, selectedDivision]);
+    
+    // Calculate total COD
+    useEffect(() => {
+        const conditionValue = parseInt(condition) || 0;
+        const totalCod = conditionValue + conditionCharge;
+        setCod(totalCod);
+    }, [condition, conditionCharge]) 
 
     const update = 'Processing';
 
-    const handleAmountChange = (e) => {
-        const value = e.target.value;
-        if (/^\d*$/.test(value)) {
-            setAmount(value);
-            setAmountError('');
-        } else {
-            setAmountError('Please enter a valid number');
-        }
-    };
+    // const handleAmountChange = (e) => {
+    //     const value = e.target.value;
+    //     if (/^\d*$/.test(value)) {
+    //         setAmount(value);
+    //         setAmountError('');
+    //     } else {
+    //         setAmountError('Please enter a valid number');
+    //     }
+    // };
     const handleConditionChange = (e) => {
         setCondition(e.target.value);
     };
 
-
+    
     useEffect(() => {
         fetch('/districts.json')
             .then(res => res.json())
@@ -189,9 +288,9 @@ const OnlineBookingHome = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (parseFloat(amount) < 80) {
-            setAmountError("Value must be greater than or equal to 80");
-            toast.error("Amount must be at least 80!");
+        if (parseFloat(amount) < 100) {
+            setAmountError("Value must be greater than or equal to 100");
+            toast.error("Amount must be at least 100!");
             return;
         }
     
@@ -205,45 +304,18 @@ const OnlineBookingHome = () => {
         const recipientMobile = form.recipientMobile.value;
         const productDetails = form.productDetails.value;
         const qty = form.qty.value;
+        const weight_kg = parseFloat(form.weight.value) || "";
         const condition = form.condition.value;
-        const wordAmount = numberToWords(parseInt(amount));
+        const Post_Code = form.postCode.value;
+        const wordAmount = numberToWords(parseInt(cod));
         const bookingTimestamp = new Date();
+        const BookingAmoutEdit = form.amount.value;
     
         try {
-             if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
-                    Swal.fire({
-                      icon: "error",
-                      title: "Error",
-                      text: "Branch balance data is not available. Please reload the page.",
-                    });
-                    return;
-                  }
-            const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
-            const CodAmount = parseFloat(amount || 0);
+             
+            
     
-            if (paymentOption === "Cash") {
-                const newBalance = CurrentBalance - CodAmount;
-    
-                if (CodAmount > CurrentBalance) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Insufficient Balance",
-                        text: "You do not have enough balance to process this booking. Please recharge.",
-                    });
-                    return;
-                }
-    
-                const updateBalanceResponse = await axiosSecure.put(
-                    `/update-branch-balance/taka/poisa/${verifiedUser?.email}`,
-                    { newBalance }
-                );
-    
-                if (updateBalanceResponse.status !== 200) {
-                    throw new Error("Failed to update branch balance.");
-                }
-    
-                queryClient.invalidateQueries(["Branch_Balance", verifiedUser?.email]);
-            }
+            
     
             const packageData = {
                 packageTrackingNumber: CnNumber,
@@ -253,11 +325,14 @@ const OnlineBookingHome = () => {
                 recipientMobile,
                 productDetails,
                 qty,
+                weight_kg,
+                Post_Code,
                 selectedArea,
-                amount,
+                amount:amount,
                 wordAmount,
                 booking: bookingTimestamp,
                 update,
+                District_ID:selectedDistrict,
                 conditionCharge: cod,
                 deliveryOption,
                 paymentOption,
@@ -266,12 +341,16 @@ const OnlineBookingHome = () => {
                 sender_Full_Adress,
                 CnNumber: CnNumber,
                 districtName: districtName,
-                email: verifiedUser?.email,
-                Branch_Name:verifiedUser?.name,
-                Branch_Number:verifiedUser?.Branch_Number,
-                Branch_Address:verifiedUser?.Branch_Address,
-                Branch_District_Name:verifiedUser?.Branch_District_Name,
-                Branch_Area:verifiedUser?.Branch_Area,
+                email: verifiedUser?.email || "Booking_By_User",
+                Branch_Name:verifiedUser?.name || '',
+                Branch_Number:verifiedUser?.Branch_Number || '',
+                Branch_Address:verifiedUser?.Branch_Address || '',
+                Branch_District_Name:verifiedUser?.Branch_District_Name || '',
+                Branch_Area:verifiedUser?.Branch_Area || '',
+                Booking_Staff_Name:verifiedStaff?.Staff_Name || '',
+        Booking_Staff_ID:verifiedStaff?.Staff_User_ID || '',
+        Booking_Staff_Post:verifiedStaff?.Staff_post || '',
+        Booking_Staff_Number:verifiedStaff?.Staff_Contact_Number || '',
             };
     
             setBookingInfo(packageData);
@@ -352,11 +431,11 @@ const OnlineBookingHome = () => {
 
     return (
         <div>
-            <div className="flex justify-center ">
+            <div className="flex justify-center">
                 <img className="h-[50%]" src="https://t4.ftcdn.net/jpg/07/39/32/99/360_F_739329921_05Swu26SxilYCQOPqlWQ8WcPiw4gcm9S.jpg" alt="" />
             </div>
             <div>
-                <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Online Booking Home</h1>
+                <h1 className="text-3xl font-bold font-rancho text-secondary text-center mb-5">Online Booking Home</h1>
                 {/* <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1> */}
             </div>
             <hr />
@@ -379,11 +458,36 @@ const OnlineBookingHome = () => {
                         <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
                     </div>
                 </div>
-                <div className="form-control md:w-full md:px-24 mt-1">
+                <div className="md:flex gap-5 md:px-24">
+                <div className="form-control md:w-1/2  mt-1">
                     <label className="label">
                         <span className="label-text font-rancho text-xl">Sender Full Address</span>
                     </label>
                     <input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
+                </div>
+                {/* <div className="form-control md:w-1/2 mt-1">
+            <label className="label">
+                <span className="label-text font-rancho text-xl">Enter Kg*</span>
+            </label>
+            <input
+                type="text"
+                className="input input-bordered"
+                name="weight"
+                value={weight}
+                onChange={handleChange}
+                required
+                placeholder="Enter weight in kg"
+            />
+        </div> */}
+        <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Condition Amount</span>
+                        </label>
+                        <input
+                            value={condition}
+                            onChange={handleConditionChange}
+                            type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition'  />
+                    </div>
                 </div>
 
 
@@ -457,14 +561,38 @@ const OnlineBookingHome = () => {
                     </div>
 
                 </div>
-                <div className="form-control md:w-full md:px-24 mt-1">
+                <div className="md:flex md:px-24 gap-5">
+                <div className="form-control md:w-full  mt-1">
                     <label className="label">
                         <span className="label-text font-rancho text-xl">Receiver Full Address</span>
                     </label>
                     <input type="text" placeholder="Enter Receiver Full Address" className="input input-bordered" name='ReceiverFullAdress' required />
                 </div>
+                <div className="form-control md:w-full mt-1">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Select Division*</span>
+    </label>
+    <select 
+        className="select select-bordered" 
+        name="division" 
+        value={selectedDivision}
+        onChange={handleDivisionChange} 
+        required
+    >
+        <option value="" disabled>Select a Division</option>
+        <option value="Barisal">Barisal</option>
+        <option value="Chattogram">Chattogram</option>
+        <option value="Dhaka">Dhaka</option>
+        <option value="Khulna">Khulna</option>
+        <option value="Mymensingh">Mymensingh</option>
+        <option value="Rajshahi">Rajshahi</option>
+        <option value="Rangpur">Rangpur</option>
+        <option value="Sylhet">Sylhet</option>
+    </select>
+</div>
+                </div>
                 <div className='md:flex md:px-24'>
-                    <div className="form-control md:w-1/2">
+                    {/* <div className="form-control md:w-1/2">
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Condition Amount</span>
                         </label>
@@ -472,16 +600,44 @@ const OnlineBookingHome = () => {
                             value={condition}
                             onChange={handleConditionChange}
                             type="text" placeholder="Enter Condition Amount" className="input input-bordered" name='condition' required />
-                    </div>
-                    <div className="form-control md:ml-4 md:w-1/2">
-                        <label className="label">
-                            <span className="label-text font-rancho text-xl">Booking Amount</span>
-                        </label>
-                        <input type="text" placeholder="Enter Amount" className="input input-bordered" name='amount' value={amount} onChange={handleAmountChange} required />
-                        {amountError && <p className="text-red-500">{amountError}</p>}
-                    </div>
+                    </div> */}
+                    <div className="form-control md:w-1/2 mt-1">
+            <label className="label">
+                <span className="label-text font-rancho text-xl">Enter Kg*</span>
+            </label>
+            <input
+                type="text"
+                className="input input-bordered"
+                name="weight"
+                value={weight}
+                onChange={handleChange}
+                required
+                placeholder="Enter weight in kg"
+            />
+        </div>
+        <div className="form-control md:ml-4 md:w-1/2">
+    <label className="label">
+        <span className="label-text font-rancho text-xl">Booking Amount (TK)</span>
+    </label>
+    <input 
+        type="number" 
+        placeholder="Enter Amount" 
+        className="input input-bordered" 
+        name='amount' 
+        value={amount || weightCharge} 
+        onChange={handleAmountChange}
+        min="100"
+        required 
+    />
+    {amountError && (
+        <p className="text-red-500 mt-1">{amountError}</p>
+    )}
+    {!amountError && amount < 100 && (
+        <p className="text-yellow-500 mt-1">Minimum amount: 100 TK</p>
+    )}
+</div>
                 </div>
-                <div className='md:flex md:px-24 mt-5 gap-5 mb-5'>
+                <div className='md:flex md:px-24 mt-5 gap-5 mb-2'>
                     <div className="form-control md:w-1/2">
                         <select onChange={handleSelectChange} className="select select-bordered text-xl w-full ">
                             <option disabled selected>Pick Up System</option>
@@ -498,20 +654,46 @@ const OnlineBookingHome = () => {
                         </select>
                     </div>
                 </div>
+                <div className="md:flex gap-5 md:px-24">
+                <div className="form-control md:w-1/2 ">
+                    <label className="label">
+                        <span className="label-text font-rancho text-xl">Post Code*</span>
+                    </label>
+                    <input type="text" placeholder="Enter Post or Union Code" className="input input-bordered" name='postCode' required />
+                </div>
+                <div className="form-control md:w-1/2">
+                <label className="label">
+                        <span className="label-text font-rancho text-xl">Select Department*</span>
+                    </label>
+                        <select onChange={handlePaymentOptionChange} className="select select-bordered text-xl w-full ">
+                            <option disabled selected>Select Department</option>
+                            <option value="Document">Document</option>
+                            <option value="Parcel">Parcel</option>
+                            <option value="Food item">Food item</option>
+                            <option value="Mobile">Mobile</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Home/Office Accessories">Home/Office Accessories</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div className="flex md:px-24 mt-5 mb-5 justify-between">
                     <div className=''>
-                        <p className="text-xl">Condition + charge : {cod || 0}</p>
+                    <p className="text-xl">
+            Condition + Charge  = Total COD: {cod || 0} TK
+        </p>
                     </div>
                     <div>
                         <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
                     </div>
                 </div>
 
-                <div className="form-control md:px-24 w-full">
-                    <input className='btn mt-3 w-full mx-auto border-2 mb-10 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />
-                    {isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
+                <div className="form-control md:px-24 w-full mb-10">
+                    <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now"  />
+                    
                 </div>
+                
             </form>
 
             <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
