@@ -353,7 +353,7 @@ const handleDivisionChange = (e) => {
                 weight_kg,
                 Post_Code,
                 selectedArea,
-                amount:weightCharge,
+                amount:weightCharge || amount,
                 wordAmount,
                 booking: bookingTimestamp,
                 update,
