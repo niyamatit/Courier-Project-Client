@@ -284,7 +284,7 @@ const handleDivisionChange = (e) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (parseFloat(weightCharge) < 100) {
+        if (parseFloat(amount) < 100) {
             setAmountError("Value must be greater than or equal to 100");
             toast.error("Amount must be at least 100!");
             return;
@@ -305,6 +305,7 @@ const handleDivisionChange = (e) => {
         const Post_Code = form.postCode.value;
         const wordAmount = numberToWords(parseInt(cod));
         const bookingTimestamp = new Date();
+        const BookingAmoutEdit = form.amount.value;
     
         try {
              if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
@@ -353,7 +354,7 @@ const handleDivisionChange = (e) => {
                 weight_kg,
                 Post_Code,
                 selectedArea,
-                amount:weightCharge || amount,
+                amount:amount,
                 wordAmount,
                 booking: bookingTimestamp,
                 update,
