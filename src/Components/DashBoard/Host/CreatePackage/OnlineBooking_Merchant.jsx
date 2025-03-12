@@ -44,7 +44,8 @@ const OnlineBooking_Merchant = () => {
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
     const [CnNumber, SetCnNumber] = useState("");
     const [verifiedStaff] = UseStaffVerify();
-
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedDistrict, setSelectedDistrict] = useState("");
     const [filteredAreas, setFilteredAreas] = useState([]);
     const [allDistricts, setAllDistricts] = useState([]);
@@ -380,29 +381,49 @@ const OnlineBooking_Merchant = () => {
             <hr />
 
              <form onSubmit={handleSubmit} ref={formRef}>
-            <div className="form-control md:px-24  md:w-full">
-            <label className="label">
-                <span className="label-text font-rancho text-xl">Select Merchant ID*</span>
-            </label>
-            <select
-                className="select select-bordered"
-                name="merchant_ID"
-                required
-                value={selectedMerchant}
-                onChange={handleMerchantChange}
+             <div className="form-control md:px-24 md:w-full">
+  <label className="label">
+    <span className="label-text font-rancho text-xl">Select Merchant ID*</span>
+  </label>
+  
+  <div className="relative">
+    <input
+      type="text"
+      placeholder="Search merchant..."
+      className="input input-bordered w-full"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      onClick={() => setIsDropdownOpen(true)}
+    />
+    
+    {isDropdownOpen && (
+      <div className="absolute top-14 left-0 right-0 z-10 bg-white border rounded-lg shadow-lg max-h-60 overflow-auto">
+        {users
+          .filter((user) => {
+            const searchTerm = searchQuery.toLowerCase();
+            return (
+              user?.role === "merchant" &&
+              (user?.name?.toLowerCase().includes(searchTerm) ||
+               user?.merchantID?.toLowerCase().includes(searchTerm))
+            );
+          })
+          .map((user) => (
+            <div
+              key={user._id}
+              className="p-3 hover:bg-gray-100 cursor-pointer"
+              onClick={() => {
+                handleMerchantChange({ target: { value: user?.email } });
+                setSearchQuery(`${user?.name} (Merchant ID: ${user?.merchantID})`);
+                setIsDropdownOpen(false);
+              }}
             >
-                <option value="" disabled>
-                    Select Merchant ID
-                </option>
-                {users
-                    .filter((user) => user?.role === "merchant")
-                    .map((user) => (
-                        <option key={user._id} value={user?.email}>
-                            {`${user?.name || "No Name Found"} (Merchant ID: ${user?.merchantID})`}
-                        </option>
-                    ))}
-            </select>
-        </div>
+              {`${user?.name || "No Name Found"} (Merchant ID: ${user?.merchantID})`}
+            </div>
+          ))}
+      </div>
+    )}
+  </div>
+</div>
 
 
          {/* Rest Part */}
