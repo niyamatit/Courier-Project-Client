@@ -157,6 +157,15 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
         <StatsCard
+          title="Total Booking"
+          value={parcels?.length || 0}
+          // percentage={getPercentage(filteredPieData?.delivered, filteredPieData?.parcelBooking)}
+          icon={<FaCheckCircle />}
+          color="bg-blue-100"
+          percentageColor="text-green-600"
+          iconColor="text-green-400"
+        />
+        {/* <StatsCard
           title="Total Delivered"
           value={filteredPieData?.delivered || 0}
           percentage={getPercentage(filteredPieData?.delivered, filteredPieData?.parcelBooking)}
@@ -164,7 +173,7 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
           color="bg-blue-100"
           percentageColor="text-green-600"
           iconColor="text-green-400"
-        />
+        /> */}
         <StatsCard
   title="Total Returned"
   value={filteredPieData?.returned || 0} 
