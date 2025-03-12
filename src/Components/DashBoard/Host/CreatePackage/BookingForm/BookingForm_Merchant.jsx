@@ -52,7 +52,8 @@ const BookingForm_Merchant = () => {
   const queryClient = useQueryClient();
   const [verifiedStaff] = UseStaffVerify();
 
-
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (!isManuallyEditing) {
@@ -400,34 +401,61 @@ const BookingForm_Merchant = () => {
 
 
         <Section additionalClasses="mt-4">
-             
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="label-text text-2xl ml-1 text-gray-500 font-semibold">
-                  Select Merchat ID*
-                </label>
-                <select
-                  {...register('Merchant_ID', { required: true })}
-                  className={`select select-bordered mt-2  bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${errors.Merchant_ID ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  required
-                  onChange={(e) => setMerchantID(e.target.value)}
-                 
-                >
-                  <option className="text-xl" value="123"   disabled>Select Merchant ID</option>
-                  {users
-                    .filter((user) => user?.role === "merchant")
-                    .map((user) => (
-                        <option key={user._id} value={user?.email}>
-                            {`${user?.name || "No Name Found"} (Merchant ID: ${user?.merchantID})`}
-                        </option>
-                    ))}
-
-                </select>
-                {errors.Merchant_ID && (
-                  <span className="text-red-500">This field is required</span>
-                )}
+  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+    <label className="label-text text-2xl ml-1 text-gray-500 font-semibold">
+      Select Merchant ID*
+    </label>
+    
+    {/* Hidden input for react-hook-form registration */}
+    <input type="hidden" {...register('Merchant_ID', { required: true })} />
+    
+    <div className="relative">
+      <input
+        type="text"
+        placeholder="Search merchant..."
+        className={`select select-bordered mt-2 bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${
+          errors.Merchant_ID ? 'border-red-500' : 'border-gray-300'
+        }`}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onClick={() => setIsDropdownOpen(true)}
+      />
+      
+      {isDropdownOpen && (
+        <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-auto">
+          {users
+            .filter((user) => {
+              const searchTerm = searchQuery.toLowerCase();
+              return (
+                user?.role === "merchant" &&
+                (user?.name?.toLowerCase().includes(searchTerm) ||
+                 user?.merchantID?.toLowerCase().includes(searchTerm))
+              );
+            })
+            .map((user) => (
+              <div
+                key={user._id}
+                className="p-3 hover:bg-gray-100 cursor-pointer text-xl"
+                onClick={() => {
+                  setMerchantID(user?.email);
+                  setSearchQuery(`${user?.name || "No Name Found"} (Merchant ID: ${user?.merchantID})`);
+                  setIsDropdownOpen(false);
+                  // Set value for form validation
+                  setValue('Merchant_ID', user?.email);
+                }}
+              >
+                {`${user?.name || "No Name Found"} (Merchant ID: ${user?.merchantID})`}
               </div>
-            </Section>
+            ))}
+        </div>
+      )}
+    </div>
+    
+    {errors.Merchant_ID && (
+      <span className="text-red-500">This field is required</span>
+    )}
+  </div>
+</Section>
 
 
 
