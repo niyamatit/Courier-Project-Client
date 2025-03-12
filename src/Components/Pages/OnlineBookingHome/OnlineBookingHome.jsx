@@ -611,6 +611,7 @@ const handleDivisionChange = (e) => {
                 name="weight"
                 value={weight}
                 onChange={handleChange}
+                
                 required
                 placeholder="Enter weight in kg"
             />
@@ -628,6 +629,7 @@ const handleDivisionChange = (e) => {
         onChange={handleAmountChange}
         min="100"
         required 
+        readOnly
     />
     {amountError && (
         <p className="text-red-500 mt-1">{amountError}</p>
