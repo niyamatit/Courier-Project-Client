@@ -122,6 +122,11 @@ const MerchantMenu = () => {
         label='My Parcel List'
         address='/dashboard/MerchantParcelList'
       />
+      <MenuItem
+        icon={RiBox3Line}
+        label='My Parcel List (Online)'
+        address='/dashboard/MerchantParcelList'
+      />
 
       {/* <MenuItem
         icon={FaClipboardList}
