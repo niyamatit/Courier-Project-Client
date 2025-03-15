@@ -211,7 +211,7 @@ const OnlineBooking_Merchant = () => {
         const form = e.target;
         const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
-        const Merchant_ID = form.merchant_ID.value;
+        const Merchant_ID = selectedMerchant;
         const recipientName = form.recipientName.value;
         const senderMobile = form.senderMobile.value;
         const sender_Full_Adress = form.senderFullAdress.value;
@@ -295,8 +295,8 @@ const OnlineBooking_Merchant = () => {
     
             setBookingInfo(packageData);
             setIsOpen(true);
-    
-            const response = await addMerchantPackage(packageData);
+            
+            const response = await addPackage(packageData);
     
             if (response?.insertedId) {
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
@@ -436,24 +436,24 @@ const OnlineBooking_Merchant = () => {
                    
 <div className="form-control md:mr-4 md:w-1/2">
     <label className="label">
-        <span className="label-text font-rancho text-xl">Sender Mobile</span>
+        <span className="label-text font-rancho text-xl">Sender Mobile(Optional)</span>
     </label>
     <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile'
     onChange={handleSenderMobileChange}
-    required />
+     />
 </div>
 <div className="form-control md:w-1/2">
     <label className="label">
-        <span className="label-text font-rancho text-xl">Sender Name</span>
+        <span className="label-text font-rancho text-xl">Sender Name(Optional)</span>
     </label>
-    <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' required />
+    <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName'  />
 </div>
 </div>
 <div className="form-control md:w-full md:px-24 mt-1">
 <label className="label">
-    <span className="label-text font-rancho text-xl">Sender Full Address</span>
+    <span className="label-text font-rancho text-xl">Sender Full Address(Optional)</span>
 </label>
-<input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress' required />
+<input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress'  />
 </div>
 
 

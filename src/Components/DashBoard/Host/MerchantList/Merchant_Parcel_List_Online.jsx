@@ -1,13 +1,15 @@
 
 
 import Swal from "sweetalert2";
-import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../../api/axiosSecure";
 
 
-const OnlineSchedule = () => {
+
+const Merchant_Parcel_List_Online = () => {
   const [verifiedUser] = useUsersData();
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
@@ -26,7 +28,7 @@ const OnlineSchedule = () => {
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${verifiedUser?.email}`);
+      const res = await axiosSecure.get(`/merchanthfjsdhfjshdf/hello/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
@@ -83,7 +85,7 @@ const OnlineSchedule = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">All Online Parcels of {verifiedUser?.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">All Online Parcels of {verifiedUser?.name}(Branch Booking)</h1>
       {Array.isArray(Verify_Admin_MotherHub) && Verify_Admin_MotherHub.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
@@ -91,6 +93,7 @@ const OnlineSchedule = () => {
               <tr>
                 <th className="border border-blue-500 px-4 py-2">SL</th>
                 <th className="border border-blue-500 px-4 py-2">Date</th>
+                <th className="border border-blue-500 px-4 py-2">Booking Branch Name</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Name</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
@@ -102,11 +105,12 @@ const OnlineSchedule = () => {
             </thead>
             <tbody>
               {Verify_Admin_MotherHub.map((pkg, idx) => (
-                <tr key={pkg._id} className={`hover:bg-blue-100 ${ pkg.Merchant_ID ? 'bg-green-100' : ''}`}>
+                <tr key={pkg._id} className={`hover:bg-blue-100`}>
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
                     {new Date(pkg.booking).toLocaleDateString()}
                   </td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Branch_Name} ({pkg?.Branch_Number})</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.recipientName}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.senderMobile}</td>
@@ -114,7 +118,7 @@ const OnlineSchedule = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                  {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
+                  {/* {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
   <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
 ) : (
   <button
@@ -123,9 +127,9 @@ const OnlineSchedule = () => {
   >
     Accept
   </button>
-)}
+)} */}
 
-{pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
+{/* {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
   pkg?.Tracking_Admin_Select_Online_MotherHub_Branch_email ? (
     <h1 className="text-green-500 border p-1 border-green-500">
       Already Selected 
@@ -145,7 +149,7 @@ const OnlineSchedule = () => {
   <button className="bg-gray-500 text-white px-2 py-1 rounded">
     Accept First
   </button>
-)}
+)} */}
 
 <button
   className="bg-gray-500 text-white px-2 py-1 rounded"
@@ -242,4 +246,4 @@ const OnlineSchedule = () => {
   );
 };
 
-export default OnlineSchedule;
+export default Merchant_Parcel_List_Online;
