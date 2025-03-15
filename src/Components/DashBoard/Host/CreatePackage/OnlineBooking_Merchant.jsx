@@ -296,7 +296,7 @@ const OnlineBooking_Merchant = () => {
             setBookingInfo(packageData);
             setIsOpen(true);
             
-            const response = await addMerchantPackage(packageData);
+            const response = await addPackage(packageData);
     
             if (response?.insertedId) {
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
