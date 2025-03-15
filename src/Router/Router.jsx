@@ -98,6 +98,7 @@ import AllBranch_Staff from "../Components/DashBoard/Host/AddBaranchStaff/AllBra
 import AllReviews from "../Components/Pages/Home/Reviews/AllReviews";
 import VerifyStaff from "../Components/DashBoard/Host/AddBaranchStaff/verifyStaff";
 import InterNational_Booking_Branch from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch";
+import Merchant_Parcel_List_Online from "../Components/DashBoard/Host/MerchantList/Merchant_Parcel_List_Online";
 
 
 
@@ -404,6 +405,10 @@ export const router = createBrowserRouter([
       {
         path: "MerchantParcelList",
         element: <MerchantParcelList />,
+      },
+      {
+        path: "Parcel_Online",
+        element: <Merchant_Parcel_List_Online/>,
       },
       {
         path: "CreateStore",
