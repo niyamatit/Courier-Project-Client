@@ -91,7 +91,7 @@ const OnlineSchedule = () => {
               <tr>
                 <th className="border border-blue-500 px-4 py-2">SL</th>
                 <th className="border border-blue-500 px-4 py-2">Date</th>
-                <th className="border border-blue-500 px-4 py-2">Sender Name/Merchant ID</th>
+                <th className="border border-blue-500 px-4 py-2">Sender Name</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Name</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
