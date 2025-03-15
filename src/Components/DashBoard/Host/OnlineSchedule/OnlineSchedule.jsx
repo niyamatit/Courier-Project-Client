@@ -102,7 +102,7 @@ const OnlineSchedule = () => {
             </thead>
             <tbody>
               {Verify_Admin_MotherHub.map((pkg, idx) => (
-                <tr key={pkg._id} className="hover:bg-blue-100">
+                <tr key={pkg._id} className={`hover:bg-blue-100 ${ pkg.Merchant_ID ? 'bg-green-100' : ''}`}>
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
                     {new Date(pkg.booking).toLocaleDateString()}
