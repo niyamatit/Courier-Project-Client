@@ -211,7 +211,7 @@ const OnlineBooking_Merchant = () => {
         const form = e.target;
         const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
-        const Merchant_ID = form.merchant_ID.value;
+        const Merchant_ID = selectedMerchant;
         const recipientName = form.recipientName.value;
         const senderMobile = form.senderMobile.value;
         const sender_Full_Adress = form.senderFullAdress.value;
@@ -295,7 +295,7 @@ const OnlineBooking_Merchant = () => {
     
             setBookingInfo(packageData);
             setIsOpen(true);
-    
+            
             const response = await addMerchantPackage(packageData);
     
             if (response?.insertedId) {
