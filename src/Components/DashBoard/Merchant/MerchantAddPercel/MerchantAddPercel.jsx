@@ -5,6 +5,7 @@ import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import { useQuery } from "@tanstack/react-query";
+import Merchant_Print_Modal from "./Merchant_Print_Modal";
 
 const MerchantAddParcel = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -14,7 +15,9 @@ const MerchantAddParcel = () => {
   const [ServiceType, setServiceType] = useState("");
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [ItemType, setItemType] = useState('');
+  const [bookingInfo, setBookingInfo] = useState(null);
   const [store, setStore] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [contactNumber, setContactNumber] = useState('');
   const [customerInfo, setCustomerInfo] = useState({
     name: '',
@@ -23,6 +26,9 @@ const MerchantAddParcel = () => {
   });
   const [collected, setCollected] = useState("");
   const [verifiedUser] = useUsersData();
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   const {
     register,
     handleSubmit,
@@ -789,7 +795,7 @@ const incrementCnNumber = (cnNumber) => {
       Date: new Date() || ""
 
     }
-    console.log("Parcel Information:", PercelInformation)
+    // console.log("Parcel Information:", PercelInformation)
     
      
     const ParcelProductDetails = await axiosSecure.post("/Parcel", PercelInformation);
@@ -802,13 +808,14 @@ const incrementCnNumber = (cnNumber) => {
         showConfirmButton: false,
         timer: 1500,
       });
+      setIsOpen(true);
       // const nextCnNumber = incrementCnNumber(MerchantCnNumber);
       // setMerchantCnNumber(nextCnNumber);
       const response = await axiosSecure.put('/merchant_cn_number');
         setMerchantCnNumber(response.data.nextNumber);
     }
-
-
+    setBookingInfo(PercelInformation)
+    setIsOpen(true);
   };
 
   useEffect(() => {
@@ -1214,7 +1221,13 @@ const incrementCnNumber = (cnNumber) => {
             </button>
           </div>
         </form>
+        
       </div>
+      <Merchant_Print_Modal
+        closeModal={closeModal}
+        isOpen={isOpen}
+        bookingInfo={bookingInfo}
+      />
     </div>
 
 

@@ -2,9 +2,9 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import { OfflineBookingDetails } from "./OfflineBookingDetails";
-import OfflineSticker from "../OfflineSticker";
-import Merchant_Booking_details from "./Merchant_Booking_details";
+import { Merchant_Booking_details } from "./Merchant_Booking_details";
+
+
 
 
 const Merchant_Print_Modal = ({ closeModal, isOpen, bookingInfo }) => {

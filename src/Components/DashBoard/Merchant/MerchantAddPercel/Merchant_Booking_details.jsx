@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // Reusable component for package details
 import Barcode from 'react-barcode';
-import './CourierSlip.css';
+import './MerchantSlip.css';
 import { PiScissorsLight } from 'react-icons/pi';
 // import QRCode from 'react-qr-code';
 import logoImg from '../../../../../src/assets/nexp-update.png'
