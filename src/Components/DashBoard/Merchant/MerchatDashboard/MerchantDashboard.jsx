@@ -247,16 +247,16 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
         />
       </div>
 
-      <div className="flex  gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
+      {/* <div className="flex  gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
         <DeliveryCard title="Out for Delivery" items={DeliveryData.outForDelivery} />
-        {/* <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} /> */}
         <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} />
-      </div>
-      <div className="mb-8 border-[2px] hover:shadow-2xl rounded hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
+        <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} />
+      </div> */}
+      {/* <div className="mb-8 border-[2px] hover:shadow-2xl rounded hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
         <OrdersTable orders={orders} />
-      </div>
+      </div> */}
       {/* Filter */}
-      <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
+      {/* <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
         <div className="flex gap-6 mb-4">
           <div>
             <label className="font-semibold text-gray-700">From: </label>
@@ -286,7 +286,7 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
             <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
