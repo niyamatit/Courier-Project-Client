@@ -204,15 +204,22 @@ const handleDivisionChange = (e) => {
     
             if (deliveryOption === 'Home Delivery') {
                 if (weightValue <= 1) {
+                    calculatedWeightCharge = 180;
+                } else {
+                    const remainingWeight = weightValue - 1;
+                    const remainingCeil = Math.ceil(remainingWeight);
+                    calculatedWeightCharge = 180 + (remainingCeil * rate.home);
+                }
+            } 
+            else if (deliveryOption === 'Office Delivery') {
+                
+                if (weightValue <= 1) {
                     calculatedWeightCharge = 150;
                 } else {
                     const remainingWeight = weightValue - 1;
                     const remainingCeil = Math.ceil(remainingWeight);
-                    calculatedWeightCharge = 150 + (remainingCeil * rate.home);
+                    calculatedWeightCharge = 150 + (remainingCeil * rate.office);
                 }
-            } 
-            else if (deliveryOption === 'Office Delivery') {
-                calculatedWeightCharge = Math.ceil(weightValue) * rate.office;
             }
         }
     
