@@ -809,13 +809,14 @@ const incrementCnNumber = (cnNumber) => {
         timer: 1500,
       });
       setIsOpen(true);
+      setBookingInfo(PercelInformation)
       // const nextCnNumber = incrementCnNumber(MerchantCnNumber);
       // setMerchantCnNumber(nextCnNumber);
       const response = await axiosSecure.put('/merchant_cn_number');
         setMerchantCnNumber(response.data.nextNumber);
     }
-    setBookingInfo(PercelInformation)
-    setIsOpen(true);
+    
+    
   };
 
   useEffect(() => {
