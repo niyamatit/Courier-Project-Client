@@ -4,6 +4,7 @@ import { Fragment, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { OfflineBookingDetails } from "./OfflineBookingDetails";
 import OfflineSticker from "../OfflineSticker";
+import Merchant_Booking_details from "./Merchant_Booking_details";
 
 
 const Merchant_Print_Modal = ({ closeModal, isOpen, bookingInfo }) => {
@@ -53,10 +54,13 @@ const Merchant_Print_Modal = ({ closeModal, isOpen, bookingInfo }) => {
                 >
                   Print Details
                 </Dialog.Title>
-                <div ref={packageRef} className="mt-2 text-center">
+                 <div ref={packageRef} className="mt-2 text-center">
+                  {/* <OfflineBookingDetails bookingInfo={bookingInfo} />
                   <OfflineBookingDetails bookingInfo={bookingInfo} />
-                  <OfflineBookingDetails bookingInfo={bookingInfo} />
-                  <OfflineBookingDetails bookingInfo={bookingInfo} />
+                  <OfflineBookingDetails bookingInfo={bookingInfo} /> */}
+                  <Merchant_Booking_details bookingInfo={bookingInfo}/>
+                  <Merchant_Booking_details bookingInfo={bookingInfo}/>
+                  <Merchant_Booking_details bookingInfo={bookingInfo}/>
                 </div>
 
                 {/* <div ref={stickerRef} className="mt-2 text-center">
