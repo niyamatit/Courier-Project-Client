@@ -255,7 +255,7 @@ const BookingForm = () => {
       // Submit booking information
       const ParcelProductDetails = await axiosSecure.post("/offline", Bookinginfo);
   
-      if (ParcelProductDetails.data.insertedId) {
+       if (ParcelProductDetails.data.insertedId) {
         Swal.fire({
           position: "top-end",
           icon: "success",
