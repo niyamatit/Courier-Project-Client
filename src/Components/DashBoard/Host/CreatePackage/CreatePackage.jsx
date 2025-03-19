@@ -38,6 +38,7 @@ const CreatePackage = () => {
     const [amount, setAmount] = useState('');
     const [amountError, setAmountError] = useState('');
     const [paymentOption, setPaymentOption] = useState('');
+    const [DeptOption, setDeptOption] = useState('');
     const [cod, setCod] = useState(null); // New state for cod value
     const [condition, setCondition] = useState('')
     const [balance, setBalance] = useState(20000); // Initial branch balance
@@ -119,6 +120,9 @@ const handleDivisionChange = (e) => {
 
     const handlePaymentOptionChange = (event) => {
         setPaymentOption(event.target.value);
+    };
+    const handlePaymentOptionChange_dept = (event) => {
+        setDeptOption(event.target.value);
     };
 
     const generateTrackingNumber = () => {
@@ -351,6 +355,7 @@ const handleDivisionChange = (e) => {
                 recipientMobile,
                 productDetails,
                 qty,
+                Dept:DeptOption,
                 weight_kg,
                 Post_Code,
                 selectedArea,
@@ -691,7 +696,7 @@ const handleDivisionChange = (e) => {
                 <label className="label">
                         <span className="label-text font-rancho text-xl">Select Department*</span>
                     </label>
-                        <select onChange={handlePaymentOptionChange} className="select select-bordered text-xl w-full ">
+                        <select onChange={handlePaymentOptionChange_dept} className="select select-bordered text-xl w-full ">
                             <option disabled selected>Select Department</option>
                             <option value="Document">Document</option>
                             <option value="Parcel">Parcel</option>
