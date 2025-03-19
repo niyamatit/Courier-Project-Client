@@ -334,7 +334,7 @@ const handleDivisionChange = (e) => {
                 senderMobile,
                 recipientName,
                 recipientMobile,
-                productDetails,
+                 productDetails,
                 qty,
                 weight_kg,
                 Post_Code,
