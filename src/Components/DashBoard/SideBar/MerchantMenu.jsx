@@ -34,31 +34,30 @@ const MerchantMenu = () => {
     const updateMerchantBalances = async () => {
       if (users.length && parcels.length) {
         for (const merchant of users) {
-          // Filter parcels for this merchant
-          const merchantParcels = parcels.filter(
-            (parcel) => parcel.Merchant_email === merchant?.email && !parcel?.isProcessed
-            
-          );
+          const merchantParcels = parcels.filter(parcel => parcel.Merchant_email === merchant?.email);
+  
           if (merchantParcels.length === 0) continue;
-          console.log("Email",merchantParcels)
-          // Calculate the updated balance
-          let balance = parseFloat(merchant?.Merchant_Balance || 0) ;
-          merchantParcels.forEach((parcel) => {
-            if (parcel.Tracking_Rider_Merchant_Delivary_Update_Successful) {
-              balance += parseFloat(parcel.Calculate_Charge_Merchant || 0) ; 
-            } else {
-              balance -= parseFloat(parcel.Calculate_Charge_Merchant || 0) ; 
+  
+          let balance = parseFloat(merchant?.Merchant_Balance || 0);
+  
+          for (const parcel of merchantParcels) {
+            if (!parcel?.isProcessed) {
+              balance -= parseFloat(parcel.Calculate_Charge_Merchant || 0);
+            } else if (parcel?.Tracking_Rider_Merchant_Delivary_Update_Successful === "Delivery Done" && !parcel?.isBalanceUpdated) {
+              balance += parseFloat(parcel.Calculate_Charge_Merchant || 0);
+  
+              // Mark the parcel as processed to prevent re-updating
+              try {
+                await axiosSecure.put(`/parcels/updateBalanceFlag/${parcel._id}`, { isBalanceUpdated: true });
+              } catch (error) {
+                console.error(`Failed to update balance flag for parcel ${parcel._id}`, error);
+              }
             }
-            
-          });
-
-          
+          }
+  
           try {
-            await axiosSecure.put(`/merchants/balance/mer/${merchant?.email}`, {
-              balance,
-            });
-            
-            console.log(`Updated balance for ${balance} ${merchant.email}`);
+            await axiosSecure.put(`/merchants/balance/mer/${merchant?.email}`, { balance });
+            console.log(`Updated balance for ${merchant.email}: ${balance}`);
           } catch (error) {
             console.error(`Failed to update balance for ${merchant.email}`, error);
           }
@@ -67,9 +66,10 @@ const MerchantMenu = () => {
         refetchParcels();
       }
     };
-
+  
     updateMerchantBalances();
-  }, [users, parcels,]);
+  }, [users, parcels]);
+  
 
 
   return (

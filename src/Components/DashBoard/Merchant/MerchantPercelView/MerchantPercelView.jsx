@@ -87,6 +87,7 @@ const MerchantParcelList = () => {
         <table className="table-auto w-full bg-white border-collapse shadow-md">
           <thead>
             <tr className="bg-blue-600 text-white">
+             
               <th className="p-3 border">Date</th>
               <th className="p-3 border">Merchant ID</th>
               <th className="p-3 border">Merchant Email</th>
@@ -101,8 +102,9 @@ const MerchantParcelList = () => {
           </thead>
           <tbody>
             {parcels.length > 0 ? (
-              parcels.map(parcel => (
+              parcels.map((parcel , index) => (
                 <tr key={parcel._id} className="hover:bg-gray-50">
+                  
                   <td className="p-3 border">{formatDateForTable(parcel.Date)}</td>
                   <td className="p-3 border">{parcel.Merchant_ID || 'N/A'}</td>
                   <td className="p-3 border">{parcel?.Merchant_email || 'N/A'}</td>
