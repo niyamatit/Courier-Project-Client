@@ -25,7 +25,7 @@ const MerchantMenu = () => {
   const { data: parcels = [],refetch: refetchParcels } = useQuery({
     queryKey: ['parcels'],
     queryFn: async () => {
-      const res = await axiosSecure.get("/parcelhkdbjsbdjkshujsbh");
+      const res = await axiosSecure.get(`/merchanjjfjhjdhj/${verifiedUser?.email}`);
       return res.data;
     }
   })
@@ -78,7 +78,7 @@ const MerchantMenu = () => {
         <p className="     font-semibold ml-5">{verifiedUser?.name} ({verifiedUser?.email})</p>
         
         <p className="text-sm  ml-[45px] font-semibold">Merchant ID- {verifiedUser?.merchantID}</p>
-        <p className="text-sm  ml-[45px] font-semibold">Merchant Balance : {verifiedUser?.Merchant_Balance/2}</p>
+        <p className="text-sm  ml-[45px] font-semibold">Merchant Balance : {verifiedUser?.Merchant_Balance}</p>
       </div>
       <MenuItem
         icon={IoHomeOutline}
