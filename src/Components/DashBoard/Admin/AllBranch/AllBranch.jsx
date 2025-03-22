@@ -14,7 +14,7 @@ const AllBranch = () => {
     const [initialBranch, setInitialBranch] = useState([]);
     const queryClient = useQueryClient();
     const { data: Balances = [] } = useQuery({
-        queryKey: ["Balances"],
+         queryKey: ["Balances"],
         
         queryFn: async () => {
           const res = await axiosSecure.get(`/recharge`);
