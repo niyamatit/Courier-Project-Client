@@ -21,7 +21,7 @@ const AllBranch = () => {
           return res.data;
         },
       });
-      console.log("Branch Balace",Balances)
+     
     useEffect(() => {
         if (initialBranch.length > 0) {
             const indexedBranchs = initialBranch.map((p, idx) => ({ ...p, idx: idx + 1 }));
@@ -131,7 +131,7 @@ const AllBranch = () => {
                                 {branchs.map((branch, index) =>{
 const Branch_Total_Balance = Balances.find(balance => 
     balance?.Branch_Email?.trim().toLowerCase() === branch?.email?.trim().toLowerCase()
-)?.Amount;
+)?.Amount || 0;
 
 
 
