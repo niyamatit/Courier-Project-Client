@@ -18,7 +18,7 @@ export const saveUser = async user => {
 
 export const getToken = async email => {
     const { data } = await axiosSecure.post(`/jwt`, email)
-    console.log("token created ------------>", data)
+    
     return data;
 }
 
@@ -46,7 +46,7 @@ export const getPackage = async () => {
 
 export const getAllPackage = async (email) => {
     const { data } = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${email}`);
-    console.log("Fetching packages for email:", email);
+    
     return data;
 };
 
@@ -66,7 +66,7 @@ export const getOffline = async () => {
 
 export const getAllOffline = async (email) => {
     const { data } = await axiosSecure.get(`/offline/${email}`);
-    console.log("Fetching offline booking for email:", email);
+    
     return data;
 };
 
@@ -92,7 +92,7 @@ export const UpdateDivisionCharge = async (id , divisionCharge) =>{
 
 export const getAllBranch = async (email) => {
     const { data } = await axiosSecure.get(`/branch/${email}`);
-    console.log("Fetching branch for email:", email);
+    
     return data;
 };
 
@@ -104,7 +104,7 @@ export const updateBranch = async (updatedBranch) => {
 
 // export const getAllRider = async (email, status = "processing") => {
 //     const { data } = await axiosSecure.get(`/rider/${email}?status=${status}`);
-//     console.log("Fetching riders for email:", email);
+
 //     return data;
 // };
 export const getAllRider = async () => {
@@ -115,7 +115,7 @@ export const getAllRider = async () => {
 
 export const getAllRecharge = async (email, status = "processing") => {
     const { data } = await axiosSecure.get(`/recharge/${email}?status=${status}`);
-    console.log("Fetching riders for email:", email);
+    
     return data;
 };
 
@@ -134,7 +134,7 @@ export const updateRole = async ({ email, role }) => {
 // update action save data in database
 export const updateAction = async ({ update, id, note }) => {
     const currentAction = { update, note }
-    console.log(update)
+   
     const { data } = await axiosSecure.patch(`/package/${id}`, currentAction)
     return data
 }
@@ -142,7 +142,7 @@ export const updateAction = async ({ update, id, note }) => {
 // update action save data in database
 export const updateActionOnline = async ({ update, id }) => {
     const currentAction = { update }
-    console.log(update)
+    
     const { data } = await axiosSecure.patch(`/bookings/${id}`, currentAction)
     return data
 }
@@ -152,7 +152,7 @@ export const updateActionOnline = async ({ update, id }) => {
 export const getAllUsers = async () => {
     try {
         const { data } = await axiosSecure.get("/admin");
-        console.log("API Response from /user:", data);
+        
         return data;
     } catch (error) {
         console.error("Error in getAllUsers:", error.message);

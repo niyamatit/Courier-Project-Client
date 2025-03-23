@@ -12,15 +12,16 @@ const BookingInfo = () => {
     const [selectedBooking, setSelectedBooking] = useState(null);
     const queryClient = useQueryClient();
     const [initialBooking, setInitialBooking] = useState([]);
-
+    const [searchStartDate, setSearchStartDate] = useState("");
+    const [searchEndDate, setSearchEndDate] = useState("");
     const[verifiedUser] = useUsersData();
 
-    useEffect(() => {
-        if (initialBooking.length > 0) {
-            const indexedBookings = initialBooking.map((p, idx) => ({ ...p, idx: idx + 1 }));
-            setSelectedBooking(indexedBookings);
-        }
-    }, [initialBooking]);
+    // useEffect(() => {
+    //     if (initialBooking.length > 0) {
+    //         const indexedBookings = initialBooking.map((p, idx) => ({ ...p, idx: idx + 1 }));
+    //         setSelectedBooking(indexedBookings);
+    //     }
+    // }, [initialBooking]);
 
     const {
         data: bookings = [],
@@ -52,12 +53,32 @@ const BookingInfo = () => {
         mutation.mutate(updatedBooking); // Update booking data
     };
 
+    const DateFilterSearch = initialBooking.filter((booking)=>{
+        const BookingDate = new Date(booking.booking).toISOString().split("T")[0];
+        return (!searchStartDate || BookingDate >= searchStartDate) && (!searchEndDate || BookingDate <= searchEndDate);
+    })
+
     if (isLoading) return <p>Loading...</p>;
 
     return (
         <div className='container mx-auto px-4 sm:px-8'>
             <h2 className='text-2xl font-bold text-gray-700 mb-4 text-center mt-5'>All Online Booking</h2>
+            
             <div className='py-8'>
+            <div className="mb-4 flex gap-4 justify-center">
+                    <input
+                        type="date"
+                        value={searchStartDate}
+                        onChange={(e) => setSearchStartDate(e.target.value)}
+                        className="border border-gray-300 rounded px-2 py-1 text-sm"
+                    />
+                    <input
+                        type="date"
+                        value={searchEndDate}
+                        onChange={(e) => setSearchEndDate(e.target.value)}
+                        className="border border-gray-300 rounded px-2 py-1 text-sm"
+                    />
+                </div>
                 <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
                     <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
                         <table className='min-w-full leading-normal'>
@@ -100,7 +121,7 @@ const BookingInfo = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {bookings.map((booking, index) => (
+                                {DateFilterSearch.map((booking, index) => (
                                     <TableBooking key={booking._id} booking={{ ...booking, idx: index + 1 }} onView={handleView} onSave={handleSave} />
                                 ))}
                             </tbody>
