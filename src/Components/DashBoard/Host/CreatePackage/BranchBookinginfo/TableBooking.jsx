@@ -60,6 +60,9 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                     <p className='text-gray-900 whitespace-no-wrap'>{booking?.productDetails}</p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                    <p className='text-gray-900 whitespace-no-wrap'>{booking?.CnNumber}</p>
+                </td>
+                <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <button
                         onClick={() => onView(booking)}
                         className='text-blue-500 hover:underline'

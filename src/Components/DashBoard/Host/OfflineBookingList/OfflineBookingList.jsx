@@ -210,7 +210,7 @@ const OfflineBookingList = () => {
   // Filtered bookings based on the search date
   const filteredOfflines = searchDate
     ? offlines.filter((offline) => {
-      const bookingDate = new Date(offline.bookingDate).toISOString().split("T")[0]; // Convert to YYYY-MM-DD
+      const bookingDate = new Date(offline.bookingDate).toISOString().split("T")[0]; 
       return bookingDate === searchDate;
     })
     : offlines;
