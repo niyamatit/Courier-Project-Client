@@ -151,7 +151,7 @@ export const updateActionOnline = async ({ update, id }) => {
 // Get all users
 export const getAllUsers = async () => {
     try {
-        const { data } = await axiosSecure.get("/admin");
+         const { data } = await axiosSecure.get("/admin");
         
         return data;
     } catch (error) {
