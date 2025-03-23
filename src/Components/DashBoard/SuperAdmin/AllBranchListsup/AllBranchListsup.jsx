@@ -5,6 +5,7 @@ import useAuth from "../../../../hooks/useAuth";
 import { getBranch, updateBranch } from "../../../../api/auth";
 import TableBranchsup from "./TableBranchsup";
 import BranchModalsup from "./BranchModalsup";
+import axiosSecure from "../../../../api/axiosSecure";
 
 
 const AllBranchListsup = () => {
@@ -12,7 +13,14 @@ const AllBranchListsup = () => {
     const [selectedBranch, setSelectedBranch] = useState(null);
     const [initialBranch, setInitialBranch] = useState([]);
     const queryClient = useQueryClient();
-
+    const { data: Balances = [] } = useQuery({
+        queryKey: ["Balances"],
+        
+        queryFn: async () => {
+          const res = await axiosSecure.get(`/recharge`);
+          return res.data;
+        },
+      });
     useEffect(() => {
         if (initialBranch.length > 0) {
             const indexedBranchs = initialBranch.map((p, idx) => ({ ...p, idx: idx + 1 }));
@@ -98,6 +106,12 @@ const AllBranchListsup = () => {
                                     >
                                         Branch type
                                     </th>
+                                    <th
+                                        scope='col'
+                                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                                    >
+                                        Branch Balance
+                                    </th>
                                     <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
                                         Actions
                                     </th>
@@ -107,9 +121,15 @@ const AllBranchListsup = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {branchs.map((branch, index) => (
-                                    <TableBranchsup key={branch._id} branch={{ ...branch, idx: index + 1 }} refetch={refetch} onView={handleView} />
-                                ))}
+                                {branchs.map((branch, index) =>{
+                               
+                               const Branch_Total_Balance = Balances.find(balance => balance?.Branch_Name === branch?.Branch_Name)?.Amount || 0;
+                                
+                                
+                                return (
+                                    <TableBranchsup key={branch._id} branch={{ ...branch, idx: index + 1 ,Branch_Balace:Branch_Total_Balance}} refetch={refetch} onView={handleView} />
+);
+})}
                             </tbody>
                         </table>
                     </div>
