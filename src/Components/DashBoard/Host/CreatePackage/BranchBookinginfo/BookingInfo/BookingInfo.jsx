@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../../../../../hooks/useAuth";
-import { getPackage, updateBooking } from "../../../../../../api/auth";
+import { getAllPackage, getPackage, updateBooking } from "../../../../../../api/auth";
 import BookingModal from "../BookingModal";
 import TableBooking from "../TableBooking";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useUsersData from "../../../../../../hooks/useUsersData/useUsersData";
 
 
 const BookingInfo = () => {
@@ -12,7 +13,7 @@ const BookingInfo = () => {
     const queryClient = useQueryClient();
     const [initialBooking, setInitialBooking] = useState([]);
 
-
+    const[verifiedUser] = useUsersData();
 
     useEffect(() => {
         if (initialBooking.length > 0) {
@@ -25,9 +26,9 @@ const BookingInfo = () => {
         data: bookings = [],
         isLoading,
     } = useQuery({
-        queryKey: ['bookings'],
-        enabled: !loading,
-        queryFn: async () => await getPackage(),
+        queryKey: ['bookings',verifiedUser?.email],
+        enabled: !loading && !!verifiedUser?.email,
+        queryFn: async () => await getAllPackage(verifiedUser?.email),
         onSuccess: (data) => {
             // Populate initialBooking when the data is fetched
             setInitialBooking(data);
