@@ -32,7 +32,9 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
                     text: `Balance updated successfully.`,
                     icon: "success",
                 });
-                
+                branch.Branch_Balace = updatedAmount;
+
+            
                 refetch();
                 onClose();
             } else {
