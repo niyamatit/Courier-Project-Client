@@ -42,6 +42,7 @@ const TableRecharge = ({ recharge, refetch }) => {
         Account_Number: recharge?.Account_Number,
         Branch_Request_Note: recharge?.Recharge_Note,
         done: 'done',
+        
       });
   
       console.log('Update Response:', updateResponse.data);
@@ -49,8 +50,22 @@ const TableRecharge = ({ recharge, refetch }) => {
       // Step 2: If the status is "cancel", delete the data
       if (status === "cancel" || status == "accept") {
         const deleteResponse = await axiosSecure.delete(`/recharge/${recharge._id}`);
-        console.log('Delete Response:', deleteResponse.data);
-  
+        
+        const { data } = await axiosSecure.post(`/history`, {
+          Total_Amount_Branch: recharge?.Amount,
+          Branch_Email:recharge?.Branch_Email,
+          Branch_Name:recharge?.Branch_Name,
+          Branch_Number:recharge?.Branch_Number || 'N/A',
+          Amount_Now_Added:parseFloat(amount),
+          Status:`Amount Added By Admin Through Branch Request (Name: ${verifiedUser?.name})`,
+          Added_Admin_Name:verifiedUser?.name,
+          Added_Admin_Email:verifiedUser?.email,
+          Date: new Date(),
+          Note:note,
+          isRechargeComplete: true
+          
+         
+      });
         if (deleteResponse.status === 200) {
           console.log('Recharge successfully deleted.');
         }

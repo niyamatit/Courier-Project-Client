@@ -1,86 +1,14 @@
-// import { FaTrashAlt } from "react-icons/fa";
-// import axiosSecure from "../../../../api/axiosSecure";
-// import Swal from "sweetalert2";
 
-
-
-// const TableBranch = ({ branch, onView, refetch }) => {
-
-//     const handleDelete = id => {
-//         Swal.fire({
-//             title: "Are you sure?",
-//             text: "You won't be able to revert this!",
-//             icon: "warning",
-//             showCancelButton: true,
-//             confirmButtonColor: "#3085d6",
-//             cancelButtonColor: "#d33",
-//             confirmButtonText: "Yes, delete it!"
-//         }).then((result) => {
-//             if (result.isConfirmed) {
-
-//                 axiosSecure.delete(`/branch/${id}`)
-//                     .then(res => {
-//                         if (res.data.deletedCount > 0) {
-//                             refetch();
-//                             Swal.fire({
-//                                 title: "Deleted!",
-//                                 text: "Your file has been deleted.",
-//                                 icon: "success"
-//                             });
-//                         }
-//                     })
-//             }
-//         });
-//     }
-
-//     return (
-//         <tr className="font-rancho">
-//             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//                 <p className='text-gray-900 whitespace-no-wrap'>{branch?.Date}</p>
-//             </td>
-//             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//                 <div className='flex items-center'>
-//                     <p className='text-gray-900 whitespace-no-wrap'>
-//                         {branch?.Branch_Name}
-//                     </p>
-//                 </div>
-//             </td>
-//             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//                 <p className='text-gray-900 whitespace-no-wrap'>{branch?.Branch_Number}</p>
-//             </td>
-//             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//                 <p className='text-gray-900 whitespace-no-wrap'>{branch?.Branch_Commission}</p>
-//             </td>
-//             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//                 <p className='text-gray-900 whitespace-no-wrap'>{branch?.Branch_type}</p>
-//             </td>
-//             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//                 <button
-//                     onClick={() => onView(branch)}
-//                     className='text-blue-500 hover:underline'
-//                 >
-//                     View
-//                 </button>
-//             </td>
-//             <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//                 <button
-//                     onClick={() => handleDelete(branch._id)}
-//                     className="btn btn-ghost btn-xs">
-//                     <FaTrashAlt className="text-red-600"></FaTrashAlt>
-//                 </button>
-//             </td>
-//         </tr >
-//     );
-// };
-
-// export default TableBranch;
-
+import { MdAddBox } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import { useQuery } from "@tanstack/react-query";
+import { FaPlus } from 'react-icons/fa';
 
+import { useState } from "react";
+import AddBalanceModal from "./AddBalanceModal";
 const TableBranch = ({ branch, onView, refetch }) => {
     const [verifiedUser] = useUsersData();
   const { data: users = [],refetch: refetchUsers } = useQuery({
@@ -90,7 +18,7 @@ const TableBranch = ({ branch, onView, refetch }) => {
       return res.data;
     }
   })
-  
+  const [showModal, setShowModal] = useState(false);
 
   const SerachUser = users.filter(user=>user?.email === branch?.email)
  
@@ -151,54 +79,68 @@ const TableBranch = ({ branch, onView, refetch }) => {
     };
 
     return (
-        <tr className="font-rancho">
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 font-semibold whitespace-no-wrap">{branch?.idx}</p>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">{branch?.Date}</p>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <div className="flex items-center">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                        {branch?.Branch_Name}
-                    </p>
-                </div>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Number}</p>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Commission}</p>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_type}</p>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">{deobfuscatePassword(branch?.Branch_Password) || "N/A"}</p>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Balace}</p>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <button
-                    onClick={() => onView(branch)}
-                    className="text-blue-500 hover:underline"
-                >
-                    View
-                </button>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <button
-                    onClick={() => handleDelete(branch?.Branch_Name)}
-                    aria-label="Delete branch"
-                    className="btn btn-ghost btn-xs"
-                >
-                    <FaTrashAlt className="text-red-600" />
-                </button>
-            </td>
-        </tr>
+        <>
+            <tr className="font-rancho">
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 font-semibold whitespace-no-wrap">{branch?.idx}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">{branch?.Date}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Name}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Number}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Commission}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_type}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">{deobfuscatePassword(branch?.Branch_Password) || "N/A"}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Balace}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <button onClick={() => setShowModal(true)}>
+                        <FaPlus className="text-green-500" />
+                    </button>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <button
+                        onClick={() => onView(branch)}
+                        className="text-blue-500 hover:underline"
+                    >
+                        View
+                    </button>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <button
+                        onClick={() => handleDelete(branch?.Branch_Name)}
+                        aria-label="Delete branch"
+                        className="btn btn-ghost btn-xs"
+                    >
+                        <FaTrashAlt className="text-red-600" />
+                    </button>
+                </td>
+            </tr>
+    
+            
+            {showModal && (
+                <AddBalanceModal
+                    show={showModal} 
+                    onClose={() => setShowModal(false)} 
+                    branch={branch} 
+                    refetch={refetch} 
+                />
+            )}
+        </>
     );
+    
 };
 
 export default TableBranch;

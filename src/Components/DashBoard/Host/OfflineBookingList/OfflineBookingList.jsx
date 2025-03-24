@@ -186,28 +186,28 @@ const OfflineBookingList = () => {
     enabled: !loading,
     queryFn: async () => await getOffline(),
     onSuccess: (data) => {
-      setInitialOffline(data); // Populate the offline bookings
+      setInitialOffline(data); 
     },
   });
 
   const mutation = useMutation({
     mutationFn: updateOffline,
     onSuccess: () => {
-      queryClient.invalidateQueries(["offlines"]); // Refresh data
+      queryClient.invalidateQueries(["offlines"]); 
     },
     onError: (error) => {
       console.error("Error updating offline booking:", error);
     },
   });
 
-  const handleView = (offline) => setSelectedOffline(offline); // Open modal
-  const handleCloseModal = () => setSelectedOffline(null); // Close modal
+  const handleView = (offline) => setSelectedOffline(offline); 
+  const handleCloseModal = () => setSelectedOffline(null); 
   const handleSave = (updatedOffline) => {
-    mutation.mutate(updatedOffline); // Save changes
-    handleCloseModal(); // Close modal after saving
+    mutation.mutate(updatedOffline); 
+    handleCloseModal(); 
   };
 
-  // Filtered bookings based on the search date
+  
   const filteredOfflines = searchDate
     ? offlines.filter((offline) => {
       const bookingDate = new Date(offline.bookingDate).toISOString().split("T")[0]; 
