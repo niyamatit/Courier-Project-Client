@@ -1,11 +1,12 @@
 import { useState } from "react";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
     const [amount, setAmount] = useState("");
     const [note, setNote] = useState("");
-
+    const [verifiedUser] = useUsersData();
     const handleSubmit = async () => {
         const parsedAmount = parseFloat(amount);
 
@@ -33,7 +34,19 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
                     icon: "success",
                 });
                 branch.Branch_Balace = updatedAmount;
-
+                const { data } = await axiosSecure.post(`/history`, {
+                    Total_Amount_Branch: updatedAmount,
+                    Branch_Email:branch?.email,
+                    Branch_Name:branch?.Branch_Name,
+                    Branch_Number:branch?.Branch_Number,
+                    Amount_Now_Added:parsedAmount,
+                    Status:`Amount Added By Admin ${verifiedUser?.name}`,
+                    Added_Admin_Name:verifiedUser?.name,
+                    Added_Admin_Email:verifiedUser?.email,
+                    Date: new Date()
+                    
+                   
+                });
             
                 refetch();
                 onClose();
