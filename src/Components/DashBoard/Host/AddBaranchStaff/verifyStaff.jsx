@@ -20,7 +20,17 @@ const VerifyStaff = () => {
       setError("Staff verification failed. Please check your credentials.");
     }
   }, [verifiedStaff, loginAttempted, navigate]);
-
+  const obfuscatePassword = (password) => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+    let obfuscated = "";
+    for (let char of password) {
+      obfuscated += char; // Add the actual character
+      for (let i = 0; i < 20; i++) {
+        obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+      }
+    }
+    return obfuscated;
+  };
   const handleLogIn = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -31,7 +41,7 @@ const VerifyStaff = () => {
     const form = e.target;
     const StaffEmail = form.email.value;
     const StaffPassword = form.password.value;
-
+     
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
