@@ -12,7 +12,7 @@ const Recharge_History = () => {
 
     return (
         <div className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Recharge History</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Recharge Complete History</h2>
             
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
@@ -24,7 +24,7 @@ const Recharge_History = () => {
                              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Now Added (৳)</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Note</th>
                             
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             
                         </tr>
@@ -40,7 +40,7 @@ const Recharge_History = () => {
                                     {history.Account_Name || 'N/A'}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
-                                    {parseInt(history.Total_Amount_Branch).toLocaleString()}
+                                    {parseInt(history.Total_Amount_Branch).toLocaleString() || 'N/A'}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
                                     {history.Amount_Now_Added.toLocaleString()}
@@ -53,9 +53,16 @@ const Recharge_History = () => {
                                         {history.Status.includes('Added') ? 'Completed' : 'Pending'}
                                     </span>
                                 </td> */}
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {new Date(history.Date).toLocaleDateString()}
-                                </td>
+                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+  {new Date(history.Date).toLocaleString('en-BD', {
+    day: 'numeric',
+    month: 'numeric',
+    year: '2-digit',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }).replace(/,/, ' (') + ')'}
+</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {history.Status || ""}
                                 </td>

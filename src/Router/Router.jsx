@@ -99,6 +99,7 @@ import AllReviews from "../Components/Pages/Home/Reviews/AllReviews";
 import VerifyStaff from "../Components/DashBoard/Host/AddBaranchStaff/verifyStaff";
 import InterNational_Booking_Branch from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch";
 import Merchant_Parcel_List_Online from "../Components/DashBoard/Host/MerchantList/Merchant_Parcel_List_Online";
+import Recharge_History from "../Components/DashBoard/Host/Recharge/RechargeComplete/Recharge_History";
 
 
 
@@ -796,7 +797,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "recharge-complete",
-        element: <RechargeComplete></RechargeComplete>
+        element: <Recharge_History/>
       },
       {
         path: "recharge-history",
