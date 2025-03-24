@@ -165,11 +165,11 @@ const HostMenu = () => {
             label='Recharge Apply'
             address='recharge-apply'
           /></li>
-          <li><MenuItem
+          {/* <li><MenuItem
             icon={FaWpforms}
             label='Recharge complete'
             address='recharge-complete'
-          /></li>
+          /></li> */}
           <li><MenuItem
             icon={FaWpforms}
             label='Recharge History'

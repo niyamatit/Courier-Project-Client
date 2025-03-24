@@ -9,9 +9,9 @@ const RechargeComplete = () => {
     const [verifiedUser] = useUsersData()
 
     const { data: recharge = [], refetch } = useQuery({
-        queryKey: ['recharge', verifiedUser?.email], // Query key includes user email
-        queryFn: () => getAllRecharge(verifiedUser?.email, "accept"), // Function to fetch recharge
-        enabled: !!verifiedUser?.email, // Only run when email is available
+        queryKey: ['recharge', verifiedUser?.email], 
+        queryFn: () => getAllRecharge(verifiedUser?.email, "accept"), 
+        enabled: !!verifiedUser?.email, 
     });
 
     console.log({ recharge })

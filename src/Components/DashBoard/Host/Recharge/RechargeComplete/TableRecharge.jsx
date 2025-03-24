@@ -52,9 +52,11 @@ const TableRecharge = ({ recharge, refetch }) => {
         const deleteResponse = await axiosSecure.delete(`/recharge/${recharge._id}`);
         
         const { data } = await axiosSecure.post(`/history`, {
-          Total_Amount_Branch: recharge?.Amount,
+          Total_Amount_Branch: recharge?.Amount || 'N/A',
           Branch_Email:recharge?.Branch_Email,
           Branch_Name:recharge?.Branch_Name,
+          Account_Name: recharge?.Account_Name,
+          Branch_Request_Amount:parseFloat(recharge?.Branch_Request_Amount),
           Branch_Number:recharge?.Branch_Number || 'N/A',
           Amount_Now_Added:parseFloat(amount),
           Status:`Amount Added By Admin Through Branch Request (Name: ${verifiedUser?.name})`,
