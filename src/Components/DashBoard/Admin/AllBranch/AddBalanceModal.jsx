@@ -59,7 +59,8 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
                 {/* Modal Header */}
                 <div className="flex justify-between items-center border-b pb-2">
                     <h2 className="text-lg font-semibold">Add Balance to {branch?.Branch_Name}</h2>
-                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700">&times;</button>
+                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700">×</button>
+
                 </div>
 
                 {/* Modal Body */}
