@@ -57,7 +57,7 @@ const MerchantMenu = () => {
   
           try {
             await axiosSecure.put(`/merchants/balance/mer/${merchant?.email}`, { balance });
-            console.log(`Updated balance for ${merchant.email}: ${balance}`);
+            // console.log(`Updated balance for ${merchant.email}: ${balance}`);
           } catch (error) {
             console.error(`Failed to update balance for ${merchant.email}`, error);
           }
