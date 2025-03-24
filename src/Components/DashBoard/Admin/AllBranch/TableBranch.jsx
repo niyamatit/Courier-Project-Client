@@ -5,7 +5,7 @@ import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import { useQuery } from "@tanstack/react-query";
-
+import { FaPlus } from 'react-icons/fa';
 const TableBranch = ({ branch, onView, refetch }) => {
     const [verifiedUser] = useUsersData();
   const { data: users = [],refetch: refetchUsers } = useQuery({
@@ -106,7 +106,7 @@ const TableBranch = ({ branch, onView, refetch }) => {
                 <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Balace}</p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <button className="text-gray-900 whitespace-no-wrap">{<MdAddBox/>}</button>
+                <button className="text-gray-900 whitespace-no-wrap"><FaPlus size={15} className="text-green-500" /></button>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button
