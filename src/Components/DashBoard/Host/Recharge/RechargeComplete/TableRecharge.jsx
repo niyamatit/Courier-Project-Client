@@ -55,6 +55,8 @@ const TableRecharge = ({ recharge, refetch }) => {
           Total_Amount_Branch: recharge?.Amount,
           Branch_Email:recharge?.Branch_Email,
           Branch_Name:recharge?.Branch_Name,
+          Account_Name: recharge?.Account_Name,
+          Branch_Request_Amount:parseFloat(recharge?.Branch_Request_Amount),
           Branch_Number:recharge?.Branch_Number || 'N/A',
           Amount_Now_Added:parseFloat(amount),
           Status:`Amount Added By Admin Through Branch Request (Name: ${verifiedUser?.name})`,
