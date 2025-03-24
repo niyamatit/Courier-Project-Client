@@ -21,7 +21,7 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
         const updatedAmount = parseFloat(branch.Branch_Balace || 0) + parsedAmount;
 
         try {
-            const { data } = await axiosSecure.put(`/recharge/${branch.email}`, {
+            const { data } = await axiosSecure.put(`/recharge/add/balance/${branch.email}`, {
                 Amount: updatedAmount,
                
             });
@@ -32,6 +32,7 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
                     text: `Balance updated successfully.`,
                     icon: "success",
                 });
+                
                 refetch();
                 onClose();
             } else {
