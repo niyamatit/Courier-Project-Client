@@ -40,10 +40,12 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
                     Branch_Name:branch?.Branch_Name,
                     Branch_Number:branch?.Branch_Number,
                     Amount_Now_Added:parsedAmount,
-                    Status:`Amount Added By Admin ${verifiedUser?.name}`,
+                    Status:`Amount Added By Admin Directly (Name: ${verifiedUser?.name})`,
                     Added_Admin_Name:verifiedUser?.name,
                     Added_Admin_Email:verifiedUser?.email,
-                    Date: new Date()
+                    Date: new Date(),
+                    Note:note,
+                    isRechargeComplete: true
                     
                    
                 });
