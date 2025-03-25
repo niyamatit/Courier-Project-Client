@@ -42,7 +42,7 @@ const TableBranch = ({ branch, onView, refetch }) => {
                 confirmButtonText: "Yes, delete it!",
             });
 
-            if (result.isConfirmed) {
+             if (result.isConfirmed) {
                
                     const res = await axiosSecure.delete(`/users/branch/${name}`);
                     console.log("res",res)
