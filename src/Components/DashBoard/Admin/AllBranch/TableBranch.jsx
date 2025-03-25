@@ -43,12 +43,14 @@ const TableBranch = ({ branch, onView, refetch }) => {
             });
 
             if (result.isConfirmed) {
-                if(branch?.email){
+               
                     const res = await axiosSecure.delete(`/users/branch/${name}`);
-                   }
-                const response = await axiosSecure.delete(`/branch/${name}`);
+                    console.log("res",res)
+                   
+                   const ReName = name.trim()
+                const response = await axiosSecure.delete(`/branch/hello/branch/${ReName}`);
                
-               
+                console.log("response",response.data)
                
                
                
