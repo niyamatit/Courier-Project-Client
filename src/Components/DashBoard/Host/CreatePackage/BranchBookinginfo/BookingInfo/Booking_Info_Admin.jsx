@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useAuth from "../../../../../../hooks/useAuth";
-import { getAllPackage, getPackage, updateBooking } from "../../../../../../api/auth";
-import BookingModal from "../BookingModal";
-import TableBooking from "../TableBooking";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUsersData from "../../../../../../hooks/useUsersData/useUsersData";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getPackage, updateBooking } from "../../../../../../api/auth";
+import TableBooking from "../TableBooking";
+import BookingModal from "../BookingModal";
 
-const BookingInfo = () => {
+
+const Booking_Info_Admin = () => {
     const { loading } = useAuth();
     const [selectedBooking, setSelectedBooking] = useState(null);
     const queryClient = useQueryClient();
@@ -19,9 +20,9 @@ const BookingInfo = () => {
         data: bookings = [],
         isLoading,
     } = useQuery({
-        queryKey: ['bookings', verifiedUser?.email],
-        enabled: !loading && !!verifiedUser?.email,
-        queryFn: async () => await getAllPackage(verifiedUser?.email),
+        queryKey: ['bookings',],
+        enabled: !loading,
+        queryFn: async () => await getPackage(),
         onSuccess: (data) => {
             setInitialBooking(data);
         },
@@ -83,7 +84,7 @@ const BookingInfo = () => {
                         <label htmlFor="search-end-date" className="mr-2 text-lg font-medium text-gray-700">
                             End Date:
                         </label>
-                         <input
+                        <input
                             type="date"
                             id="search-end-date"
                             value={searchEndDate}
@@ -151,4 +152,4 @@ const BookingInfo = () => {
     );
 };
 
-export default BookingInfo;
+export default Booking_Info_Admin;

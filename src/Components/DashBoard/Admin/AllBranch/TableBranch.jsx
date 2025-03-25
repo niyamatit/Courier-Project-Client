@@ -42,13 +42,15 @@ const TableBranch = ({ branch, onView, refetch }) => {
                 confirmButtonText: "Yes, delete it!",
             });
 
-            if (result.isConfirmed) {
-                if(branch?.email){
+              if (result.isConfirmed) {
+               
                     const res = await axiosSecure.delete(`/users/branch/${name}`);
-                   }
-                const response = await axiosSecure.delete(`/branch/${name}`);
+                    console.log("res",res)
+                   
+                   const ReName = name.trim()
+                const response = await axiosSecure.delete(`/branch/hello/branch/${ReName}`);
                
-               
+                console.log("response",response.data)
                
                
                

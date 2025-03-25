@@ -388,7 +388,7 @@ const handleDivisionChange = (e) => {
             setIsOpen(true);
     
             const response = await addPackage(packageData);
-    
+             console.log("packageData",packageData)
             if (response?.insertedId) {
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
                 SetCnNumber(cnUpdateResponse.data.nextNumber);

@@ -122,6 +122,7 @@ const BranchAdd = () => {
 
 
       const BranchInfo = await axiosSecure.post("/branch", BranchInformation);
+      
 
       if (BranchInfo.data.insertedId) {
 
@@ -149,7 +150,12 @@ const BranchAdd = () => {
         if (verifyBrnach) {
           const response = await axiosSecure.post('/users/auth/register', BranchLogin);
         }
-
+        const RechargeApply = {
+          Amount: parseFloat(0),
+        Branch_Email: formData?.Staff_User_ID || "",
+        Branch_Name: formData?.YourName || "",
+        }
+        const Info = await axiosSecure.post("/recharge/add/branch", RechargeApply);
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
