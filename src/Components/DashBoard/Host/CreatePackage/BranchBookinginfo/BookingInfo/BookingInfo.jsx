@@ -83,7 +83,7 @@ const BookingInfo = () => {
                         <label htmlFor="search-end-date" className="mr-2 text-lg font-medium text-gray-700">
                             End Date:
                         </label>
-                        <input
+                         <input
                             type="date"
                             id="search-end-date"
                             value={searchEndDate}
