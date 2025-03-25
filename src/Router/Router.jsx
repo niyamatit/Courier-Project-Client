@@ -100,6 +100,7 @@ import VerifyStaff from "../Components/DashBoard/Host/AddBaranchStaff/verifyStaf
 import InterNational_Booking_Branch from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch";
 import Merchant_Parcel_List_Online from "../Components/DashBoard/Host/MerchantList/Merchant_Parcel_List_Online";
 import Recharge_History from "../Components/DashBoard/Host/Recharge/RechargeComplete/Recharge_History";
+import Booking_Info_Admin from "../Components/DashBoard/Host/CreatePackage/BranchBookinginfo/BookingInfo/Booking_Info_Admin";
 
 
 
@@ -806,6 +807,10 @@ export const router = createBrowserRouter([
       {
         path: "booking-info",
         element: <BookingInfo></BookingInfo>
+      },
+      {
+        path: "booking-info-admin",
+        element: <Booking_Info_Admin/>
       },
       {
         path: "offline-booking",

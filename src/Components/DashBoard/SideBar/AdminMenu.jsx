@@ -103,7 +103,7 @@ const AdminMenu = () => {
         icon={MdBookOnline}
 
         label='Online Booking view'
-        address='booking-info'
+        address='booking-info-admin'
       />
       <MenuItem
         icon={MdBookOnline}
