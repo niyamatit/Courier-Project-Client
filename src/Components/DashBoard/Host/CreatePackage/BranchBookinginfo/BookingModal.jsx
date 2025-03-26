@@ -34,7 +34,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
 
 
     return (
-        <div className="absolute top-0 left-0 w-full h-full bg-gray-600 bg-opacity-50 flex justify-center items-center overflow-y-auto">
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-50 flex justify-center items-start overflow-y-auto pt-10">
             <div className="bg-white p-6 rounded shadow-lg w-full max-w-3xl max-h-screen overflow-y-auto relative">
                 <h2 className="text-xl font-bold mb-4">
                     {isEditing ? "Edit Booking Details" : "Booking Details"}
@@ -106,8 +106,8 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                             <span className="text-gray-700">Package Tracking Number:</span>
                             <input
                                 type="text"
-                                name="packageTrackingNumber"
-                                value={editableBooking.packageTrackingNumber}
+                                name="CnNumber"
+                                value={editableBooking.CnNumber}
                                 onChange={handleChange}
                                 className="mt-1 block w-full border-gray-300 rounded-md"
                             />
@@ -142,7 +142,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                         <p><strong>Recipient Mobile:</strong> {booking.recipientMobile}</p>
                         <p><strong>Product Details:</strong> {booking.productDetails}</p>
                         <p><strong>Booking ID:</strong> {booking._id}</p>
-                        <p><strong>Package Tracking Number:</strong> {booking.packageTrackingNumber}</p>
+                        <p><strong>Package Tracking Number:</strong> {booking.CnNumber}</p>
                         <p><strong>Package Quantity:</strong> {booking.qty}</p>
                         <p><strong>District:</strong> {booking.districtName}</p>
                         <p><strong>Area:</strong> {booking.selectedArea}</p>
