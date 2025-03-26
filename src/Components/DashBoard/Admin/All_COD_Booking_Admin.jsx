@@ -13,7 +13,7 @@ const All_COD_Booking_Admin = () => {
     });
 
     const allBookings = [...OnlineBookings, ...OfflineBookings];
-
+    
     return (
         <div className="p-4">
             <h2 className="text-xl font-bold mb-4">All COD Bookings</h2>
@@ -24,6 +24,7 @@ const All_COD_Booking_Admin = () => {
                     <thead>
                         <tr className="bg-gray-200">
                             <th className="border px-4 py-2">Sl.</th>
+                            <th className="border px-4 py-2">Date</th>
                             <th className="border px-4 py-2">CN Number</th>
                             <th className="border px-4 py-2">Sender Name</th>
                             <th className="border px-4 py-2">Sender Number</th>
@@ -41,15 +42,27 @@ const All_COD_Booking_Admin = () => {
                         {allBookings.map((booking, index) => (
                             <tr key={booking._id} className="border">
                                 <td className="border px-4 py-2">{index + 1}</td>
+                                <td className="border px-4 py-2">
+  {booking?.booking
+    ? new Date(booking.booking).toLocaleString()
+    : booking?.bookingDate
+    ? new Date(booking.bookingDate + "T00:00:00").toLocaleString() // Ensures compatibility
+    : booking?.Date
+    ? new Date(booking.Date + "T00:00:00").toLocaleString()
+    : "N/A"}
+</td>
+
                                 <td className="border px-4 py-2">{booking.CnNumber}</td>
+                               
                                 <td className="border px-4 py-2">{booking.senderName}</td>
                                 <td className="border px-4 py-2">{booking.senderMobile || booking.senderContactNo}</td>
                                 <td className="border px-4 py-2">{booking.recipientName || booking.receiverName}</td>
                                 <td className="border px-4 py-2">{booking.recipientMobile || booking.receiverContactNo}</td>
-                                <td className="border px-4 py-2">{booking.amount || booking.totalCharge}</td>
-                                <td className="border px-4 py-2">{booking.condition || booking.receiverPay}</td>
-                                <td className="border px-4 py-2">{booking.conditionCharge || booking.serviceCharge}</td>
-                                <td className="border px-4 py-2">{(booking.condition || booking.receiverPay) + (booking.conditionCharge || booking.serviceCharge)}</td>
+                                <td className="border px-4 py-2">{parseFloat(booking.amount) || booking.totalCharge}</td>
+                                <td className="border px-4 py-2">{(parseFloat(booking.condition)) || booking.senderReceive || 0}</td>
+                                <td className="border px-4 py-2">{(parseFloat(booking.conditionCharge)-parseFloat(booking.condition)) || booking.serviceCharge || 0}</td>
+                                {/* <td className="border px-4 py-2">{ || booking.receiverPay}</td> */}
+                                <td className="border px-4 py-2">{(booking.conditionCharge) || parseFloat(booking?.receiverPay) ||0}</td>
                                 <td className="border px-4 py-2">Due</td>
                                 <td className="border px-4 py-2">
                                     <button className="bg-blue-500 text-white px-4 py-1 rounded">Pay</button>
