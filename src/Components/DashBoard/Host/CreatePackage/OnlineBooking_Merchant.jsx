@@ -313,7 +313,33 @@ const OnlineBooking_Merchant = () => {
             }
         } catch (error) {
             console.error("Error:", error.message);
-            toast.error("An error occurred while creating the package.");
+            const errorMessage = 
+                error.response?.data?.error ||
+                error.response?.data?.message ||
+                error.message ||
+                "An error occurred while creating the package.";
+        
+            if (error.response?.status === 409) {  // CN conflict error
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: 'Duplicate CN! Refreshing...',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: errorMessage,
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        
+            setIsOpen(false);
         }
     
         form.reset();

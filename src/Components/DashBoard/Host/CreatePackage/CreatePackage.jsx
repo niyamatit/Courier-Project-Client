@@ -405,18 +405,32 @@ const handleDivisionChange = (e) => {
         } catch (error) {
             console.error("Error:", error.message);
             const errorMessage = 
-    error.response?.data?.error ||
-    error.response?.data?.message ||
-    error.message ||
-    "An error occurred while creating the package.";
-            Swal.fire({
-                position: "top-end",
-                icon: "error",
-                title: 'Maybe CN Same Please Refresh.....',
-                showConfirmButton: false,
-                timer: 3000,
-              });
-              setIsOpen(false);
+                error.response?.data?.error ||
+                error.response?.data?.message ||
+                error.message ||
+                "An error occurred while creating the package.";
+        
+            if (error.response?.status === 409) {  // CN conflict error
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: 'Duplicate CN! Refreshing...',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: errorMessage,
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        
+            setIsOpen(false);
         }
     
         form.reset();
