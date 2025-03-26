@@ -117,7 +117,7 @@ const AdminMenu = () => {
         label='Merchant Booking view'
         address='merchantbooking-info'
       />
-      <MenuItem
+       <MenuItem
         icon={MdBookOnline}
 
         label='All COD Booking'
