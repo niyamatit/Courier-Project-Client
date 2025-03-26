@@ -117,6 +117,12 @@ const AdminMenu = () => {
         label='Merchant Booking view'
         address='merchantbooking-info'
       />
+       <MenuItem
+        icon={MdBookOnline}
+
+        label='All COD Booking'
+        address='all-cod-booking-admin'
+      />
     </>
   )
 }
