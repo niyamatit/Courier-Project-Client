@@ -412,10 +412,11 @@ const handleDivisionChange = (e) => {
             Swal.fire({
                 position: "top-end",
                 icon: "error",
-                title: errorMessage,
+                title: 'Maybe CN Same Please Refresh.....',
                 showConfirmButton: false,
                 timer: 3000,
               });
+              setIsOpen(false);
         }
     
         form.reset();
