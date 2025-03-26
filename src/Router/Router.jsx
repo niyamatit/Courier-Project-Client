@@ -101,6 +101,7 @@ import InterNational_Booking_Branch from "../Components/DashBoard/Host/CreatePac
 import Merchant_Parcel_List_Online from "../Components/DashBoard/Host/MerchantList/Merchant_Parcel_List_Online";
 import Recharge_History from "../Components/DashBoard/Host/Recharge/RechargeComplete/Recharge_History";
 import Booking_Info_Admin from "../Components/DashBoard/Host/CreatePackage/BranchBookinginfo/BookingInfo/Booking_Info_Admin";
+import All_COD_Booking_Admin from "../Components/DashBoard/Admin/All_COD_Booking_Admin";
 
 
 
@@ -819,6 +820,10 @@ export const router = createBrowserRouter([
       {
         path: "merchantbooking-info",
         element: <MerchantPercelView></MerchantPercelView>
+      },
+      {
+        path: "all-cod-booking-admin",
+        element: <All_COD_Booking_Admin/>
       },
 
       // super admin

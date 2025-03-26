@@ -47,8 +47,8 @@ const TableBranch = ({ branch, onView, refetch }) => {
                     const res = await axiosSecure.delete(`/users/branch/${name}`);
                     console.log("res",res)
                    
-                   const ReName = name.trim()
-                const response = await axiosSecure.delete(`/branch/hello/branch/${ReName}`);
+                   
+                const response = await axiosSecure.delete(`/branch/hello/branch/${name}`);
                
                 console.log("response",response.data)
                
