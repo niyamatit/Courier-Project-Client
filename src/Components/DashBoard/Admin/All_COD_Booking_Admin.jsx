@@ -44,7 +44,7 @@ const All_COD_Booking_Admin = () => {
             <h2 className="text-3xl font-bold mb-10 text-center mt-5 ">All COD Bookings</h2>
             <div className="my-4 text-center space-x-4">
                     <div className="inline-block">
-                        <label htmlFor="search-start-date" className="mr-2 text-lg font-medium text-gray-700">
+                        <label htmlFor="search-start-date" className="mr-2 text-lg font-medium text-black">
                             Start Date:
                         </label>
                         <input
@@ -56,7 +56,7 @@ const All_COD_Booking_Admin = () => {
                         />
                     </div>
                     <div className="inline-block">
-                        <label htmlFor="search-end-date" className="mr-2 text-lg font-medium text-gray-700">
+                        <label htmlFor="search-end-date" className="mr-2 text-lg font-medium text-black">
                             End Date:
                         </label>
                          <input
