@@ -388,7 +388,7 @@ const handleDivisionChange = (e) => {
             setIsOpen(true);
     
             const response = await addPackage(packageData);
-             console.log("packageData",packageData)
+            //  console.log("packageData",packageData)
             if (response?.insertedId) {
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
                 SetCnNumber(cnUpdateResponse.data.nextNumber);
@@ -404,7 +404,18 @@ const handleDivisionChange = (e) => {
             }
         } catch (error) {
             console.error("Error:", error.message);
-            toast.error("An error occurred while creating the package.");
+            const errorMessage = 
+    error.response?.data?.error ||
+    error.response?.data?.message ||
+    error.message ||
+    "An error occurred while creating the package.";
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: errorMessage,
+                showConfirmButton: false,
+                timer: 3000,
+              });
         }
     
         form.reset();
