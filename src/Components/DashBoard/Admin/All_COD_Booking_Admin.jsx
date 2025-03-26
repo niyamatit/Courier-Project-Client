@@ -46,7 +46,7 @@ const All_COD_Booking_Admin = () => {
   {booking?.booking
     ? new Date(booking.booking).toLocaleString()
     : booking?.bookingDate
-    ? new Date(booking.bookingDate + "T00:00:00").toLocaleString() // Ensures compatibility
+    ? new Date(booking.bookingDate + "T00:00:00").toLocaleString() 
     : booking?.Date
     ? new Date(booking.Date + "T00:00:00").toLocaleString()
     : "N/A"}
@@ -63,10 +63,18 @@ const All_COD_Booking_Admin = () => {
                                 <td className="border px-4 py-2">{(parseFloat(booking.conditionCharge)-parseFloat(booking.condition)) || booking.serviceCharge || 0}</td>
                                 {/* <td className="border px-4 py-2">{ || booking.receiverPay}</td> */}
                                 <td className="border px-4 py-2">{(booking.conditionCharge) || parseFloat(booking?.receiverPay) ||0}</td>
-                                <td className="border px-4 py-2">Due</td>
+                                {
+                                    (booking?.conditionCharge || parseFloat(booking?.receiverPay)) ?
+                                    <td className="border px-4 py-2">Due</td> : <td className="border px-4 py-2">N/A</td>
+                                }
                                 <td className="border px-4 py-2">
-                                    <button className="bg-blue-500 text-white px-4 py-1 rounded">Pay</button>
-                                </td>
+  <button
+    className="bg-blue-500 text-white px-4 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+    disabled={!(booking?.conditionCharge || parseFloat(booking?.receiverPay))}
+  >
+    Pay
+  </button>
+</td>
                             </tr>
                         ))}
                     </tbody>
