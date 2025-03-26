@@ -34,7 +34,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
 
 
     return (
-        <div className="fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-50 flex justify-center items-start overflow-y-auto pt-10">
+         <div className="fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-50 flex justify-center items-start overflow-y-auto pt-10">
             <div className="bg-white p-6 rounded shadow-lg w-full max-w-3xl max-h-screen overflow-y-auto relative">
                 <h2 className="text-xl font-bold mb-4">
                     {isEditing ? "Edit Booking Details" : "Booking Details"}
