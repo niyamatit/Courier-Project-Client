@@ -61,7 +61,7 @@ const All_COD_Booking_Admin = () => {
 
         };
         try {
-            const response = await axiosSecure.patch("/update-payment/hello/bhai/kaj/kor", paymentData);
+             const response = await axiosSecure.patch("/update-payment/hello/bhai/kaj/kor", paymentData);
             if (response.status === 200) {
                 await queryClient.invalidateQueries(["OnlineBookings"]);
       await queryClient.invalidateQueries(["OfflineBookings"]);
