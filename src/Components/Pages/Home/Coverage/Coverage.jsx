@@ -36,7 +36,7 @@ const Coverage = () => {
 
                     <div className="hero-content font-rancho text-center">
                         <div className="max-w-md">
-                            <h1 className="mb-5 text-5xl text-primary font-bold">Our Coverage Area</h1>
+                            <h1 className="mb-5 text-5xl text-primary font-bold">Our Booking Coverage Area</h1>
 
                         </div>
                     </div>
