@@ -1,12 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { getOffline, getPackage } from "../../../api/auth";
 import { useState } from "react";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
+import axiosSecure from "../../../api/axiosSecure";
+import Swal from "sweetalert2";
 
 const All_COD_Booking_Admin = () => {
     const { data: OnlineBookings = [], isLoading: isOnlineLoading } = useQuery({
         queryKey: ["OnlineBookings"],
         queryFn: async () => await getPackage(),
     });
+    const [verifiedUser] = useUsersData();
 
     const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
         queryKey: ["OfflineBookings"],
@@ -40,6 +44,38 @@ const All_COD_Booking_Admin = () => {
         }
         return true;
     });
+    const handleSave = async () => {
+
+        if(!selectedBooking){
+            return 
+        }
+        const paymentData = {
+            id: selectedBooking._id,
+            cnNumber: selectedBooking.CnNumber,
+            Admin_Accept_Payment: (parseFloat(selectedBooking?.conditionCharge)) || parseFloat(selectedBooking?.receiverPay) || 0,
+            note: note,
+            Received_Payment_Admin_Name:verifiedUser?.name,
+            Received_Payment_Admin_Email:verifiedUser?.email,
+            Admin_Accept_Payment_Time: new Date()
+
+        };
+        try {
+            const response = await axiosSecure.put("/update-payment", paymentData);
+            if (response.status === 200) {
+                Swal.fire("Success!", "Payment updated successfully!", "success");
+                setSelectedBooking(null);
+                setNote("");
+            } else {
+                Swal.fire("Error!", "Failed to update payment!", "error");
+            }
+        } catch (error) {
+            console.error("Error updating payment:", error);
+            Swal.fire("Error!", "An error occurred while updating payment.", "error");
+        }
+
+
+
+    }
 
     return (
         <div className="p-4">
@@ -142,11 +178,11 @@ const All_COD_Booking_Admin = () => {
 
             {/* Editable COD Amount Field */}
             <label className="block mb-4">
-                <span className="text-gray-700 font-semibold">COD Amount:</span>
+                <span className="text-gray-700 font-semibold">Total COD Amount:</span>
                 <input
                     type="number"
                     className="w-full mt-1 p-2 border rounded"
-                    value={(parseFloat(selectedBooking?.condition)) || selectedBooking?.senderReceive || 0}
+                    value={(parseFloat(selectedBooking?.conditionCharge)) || parseFloat(selectedBooking?.receiverPay) || 0}
                     // onChange={(e) => setSelectedBooking({ ...selectedBooking, receiverPay: e.target.value,conditionCharge:e.target.value })}
                 />
             </label>
@@ -172,7 +208,7 @@ const All_COD_Booking_Admin = () => {
                     Close
                 </button>
                 <button
-                    // onClick={handleSave}
+                    onClick={handleSave}
                     className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
                 >
                     Save Payment
