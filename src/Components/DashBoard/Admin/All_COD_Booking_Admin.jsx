@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getOffline, getPackage } from "../../../api/auth";
 import { useState } from "react";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
@@ -16,6 +16,7 @@ const All_COD_Booking_Admin = () => {
         queryKey: ["OfflineBookings"],
         queryFn: async () => await getOffline(),
     });
+    const queryClient = useQueryClient();
 
     const allBookings = [...OnlineBookings, ...OfflineBookings];
     const [searchStartDate, setSearchStartDate] = useState("");
@@ -52,7 +53,7 @@ const All_COD_Booking_Admin = () => {
         const paymentData = {
             id: selectedBooking._id,
             cnNumber: selectedBooking.CnNumber,
-            Admin_Accept_Payment: (parseFloat(selectedBooking?.conditionCharge)) || parseFloat(selectedBooking?.receiverPay) || 0,
+            Admin_Accept_Payment_Amount: (parseFloat(selectedBooking?.conditionCharge)) || parseFloat(selectedBooking?.receiverPay) || 0,
             note: note,
             Received_Payment_Admin_Name:verifiedUser?.name,
             Received_Payment_Admin_Email:verifiedUser?.email,
@@ -60,8 +61,10 @@ const All_COD_Booking_Admin = () => {
 
         };
         try {
-            const response = await axiosSecure.put("/update-payment", paymentData);
+            const response = await axiosSecure.patch("/update-payment/hello/bhai/kaj/kor", paymentData);
             if (response.status === 200) {
+                await queryClient.invalidateQueries(["OnlineBookings"]);
+      await queryClient.invalidateQueries(["OfflineBookings"]);
                 Swal.fire("Success!", "Payment updated successfully!", "success");
                 setSelectedBooking(null);
                 setNote("");
@@ -154,12 +157,16 @@ const All_COD_Booking_Admin = () => {
                                 <td className="border px-4 py-2">{(booking.conditionCharge) || parseFloat(booking?.receiverPay) || 0}</td>
                                 {
                                     (booking?.conditionCharge || parseFloat(booking?.receiverPay)) ?
-                                        <td className="border px-4 py-2">Due</td> : <td className="border px-4 py-2">N/A</td>
+                                       <>
+                                       {
+                                        (booking?.Admin_Accept_Payment_Amount) ?  <td className="border px-4 text-green-500 py-2">Paid</td> : <td className="border px-4 py-2">Due</td>
+                                       }
+                                       </> : <td className="border px-4 py-2">N/A</td>
                                 }
                                 <td className="border px-4 py-2">
                                     <button
                                         className="bg-blue-500 text-white px-4 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                                        disabled={!(booking?.conditionCharge || parseFloat(booking?.receiverPay))}
+                                        disabled={!(booking?.conditionCharge || parseFloat(booking?.receiverPay) ) || booking?.Admin_Accept_Payment_Amount}
                                         onClick={()=>setSelectedBooking(booking)}
                                     >
                                         Pay
