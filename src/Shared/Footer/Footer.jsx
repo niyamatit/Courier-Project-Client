@@ -36,21 +36,21 @@ const Footer = () => {
               </h2>
               <ul className="text-white dark:text-gray-300 font-medium space-y-4">
                 <li className="">
-                  <a href="" className="hover:underline ">
+                  <a href="https://www.facebook.com/Niyamat.Express" className="hover:underline ">
                     Facebook
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a href="" className="hover:underline">
                     Instagram
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <a href="" className="hover:underline">
                     Linkedin
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a href="" className="hover:underline">
                     Twitter
                   </a>
@@ -59,7 +59,9 @@ const Footer = () => {
                   <a href="" className="hover:underline">
                     WhatsApp
                   </a>
-                </li>
+                </li> */}
+                <p className="mt-4 flex gap-2">Email: <span>support@niyamatexpress.com</span></p>
+              <p>Tel: 09697687401, 09638840680</p>
               </ul>
             </div>
             <div>
@@ -84,7 +86,7 @@ const Footer = () => {
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-white sm:text-center dark:text-gray-300">
-            © 2024{" "}
+            © 2025{" "}
             <a href="https://niyamatexpress.com/" className="hover:underline">
               Niyamat Express™
             </a>
@@ -95,7 +97,7 @@ const Footer = () => {
           
           <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
             <a
-              href="#"
+              href="https://www.facebook.com/Niyamat.Express"
               className="text-white hover:text-gray-200 dark:hover:text-white"
             >
               <svg
