@@ -57,7 +57,7 @@ const All_COD_Booking_Admin = () => {
             note: note,
             Received_Payment_Admin_Name:verifiedUser?.name,
             Received_Payment_Admin_Email:verifiedUser?.email,
-            Admin_Accept_Payment_Time: new Date()
+            Admin_Accept_Payment_Time: new Date(),
 
         };
         try {
