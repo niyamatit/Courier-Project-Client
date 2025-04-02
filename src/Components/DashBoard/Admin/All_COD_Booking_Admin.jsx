@@ -65,7 +65,7 @@ const All_COD_Booking_Admin = () => {
             if (response.status === 200) {
                 await queryClient.invalidateQueries(["OnlineBookings"]);
       await queryClient.invalidateQueries(["OfflineBookings"]);
-                Swal.fire("Success!", "Payment updated successfully!", "success");
+                Swal.fire("Success!", "Payment updated successfully!!!", "success");
                 setSelectedBooking(null);
                 setNote("");
             } else {
