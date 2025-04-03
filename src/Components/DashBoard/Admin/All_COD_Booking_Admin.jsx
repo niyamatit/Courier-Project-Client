@@ -23,6 +23,8 @@ const All_COD_Booking_Admin = () => {
     const [searchEndDate, setSearchEndDate] = useState("");
     const [selectedBooking, setSelectedBooking] = useState(null);
     const [note, setNote] = useState("");
+    const [notesddd, setNotesdd] = useState("");
+
     const filteredOfflines = allBookings.filter((booking) => {
         // Ensure correct date field is used
         const bookingDate = booking.booking
