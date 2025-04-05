@@ -22,6 +22,7 @@ const All_COD_Booking_Admin = () => {
     const [searchStartDate, setSearchStartDate] = useState("");
     const [searchEndDate, setSearchEndDate] = useState("");
     const [selectedBooking, setSelectedBooking] = useState(null);
+    const [notesdfdfsf, setNotfsfsfsfse] = useState("");
     const [note, setNote] = useState("");
     
 
