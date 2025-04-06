@@ -72,7 +72,7 @@ const All_COD_Booking_Admin = () => {
                 setSelectedBooking(null);
                 setNote("");
             } else {
-                Swal.fire("Error!", "Failed to update payment!", "error");
+                Swal.fire("Error!", "Failed to update payment!!", "error");
             }
         } catch (error) {
             console.error("Error updating payment:", error);
