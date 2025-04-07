@@ -11,13 +11,13 @@ const Footer = () => {
             <a href="" className="flex items-center">
               <img src={logoImg } className="h-20 rounded-lg mr-3" alt="" />
             </a>
-            <div className="md:w-[400px] lg:w-[600px] md:mr-10">
+            <div className="md:w-[600px] lg:w-[700px] md:mr-10">
               <p className="text-justify">
                 We fuse our global network with our depth of expertise in air freight, ocean freight, railway transportation, trucking, and multimode transportation, also we are providing sourcing, warehousing, E-commercial fulfillment, and value-added service to our customers including kitting, assembly, customized package and business inserts, etc.
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-12 text-white sm:gap-6 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-12 text-white sm:gap-6 sm:grid-cols-4">
             <div>
               <h2 className="mb-6 text-sm font-semibold  uppercase dark:text-white">
                 Our Services
@@ -60,8 +60,7 @@ const Footer = () => {
                     WhatsApp
                   </a>
                 </li> */}
-                <p className="mt-4 flex gap-2">Email: <span>support@niyamatexpress.com</span></p>
-              <p>Tel: 09697687401, 09638840680</p>
+                
               </ul>
             </div>
             <div>
@@ -79,6 +78,15 @@ const Footer = () => {
                     Terms &amp; Conditions
                   </Link>
                 </li>
+              </ul>
+            </div>
+            <div>
+              <h2 className="mb-6 text-sm font-semibold  uppercase dark:text-white">
+                Contact US
+              </h2>
+              <ul className="text-white dark:text-gray-300 font-medium">
+              <p className="mt-4 flex gap-2">Email: <span>support@niyamatexpress.com</span></p>
+              <p>Tel: 09697687401, 09638840680</p>
               </ul>
             </div>
           </div>

@@ -64,7 +64,8 @@ const COD_Booking_Branch = () => {
             Received_Payment_Admin_Email:verifiedUser?.email,
             Admin_Accept_Payment_Time: new Date(),
             Accept_By_Branch_Email:verifiedUser?.email,
-            Accept_By_Branch_Name:verifiedUser?.name
+            Accept_By_Branch_Name:verifiedUser?.name,
+            Branch_Payment:true
 
         };
         try {
