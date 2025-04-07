@@ -14,7 +14,7 @@ const COD_Booking_Branch = () => {
     });
     
 
-    const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
+     const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
         queryKey: ["OfflineBookings",verifiedUser?.email],
         queryFn: async () => await getAllOffline(verifiedUser?.email),
     });
