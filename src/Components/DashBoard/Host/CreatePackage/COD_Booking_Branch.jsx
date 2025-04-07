@@ -1,20 +1,22 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getOffline, getPackage } from "../../../api/auth";
-import { useState } from "react";
-import useUsersData from "../../../hooks/useUsersData/useUsersData";
-import axiosSecure from "../../../api/axiosSecure";
+
 import Swal from "sweetalert2";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import { useState } from "react";
+import axiosSecure from "../../../../api/axiosSecure";
+import { getAllOffline, getAllPackage } from "../../../../api/auth";
 
-const All_COD_Booking_Admin = () => {
-    const { data: OnlineBookings = [], isLoading: isOnlineLoading } = useQuery({
-        queryKey: ["OnlineBookings"],
-        queryFn: async () => await getPackage(),
-    });
+const COD_Booking_Branch = () => {
     const [verifiedUser] = useUsersData();
+    const { data: OnlineBookings = [], isLoading: isOnlineLoading } = useQuery({
+        queryKey: ["OnlineBookings",verifiedUser?.email],
+        queryFn: async () => await getAllPackage(verifiedUser?.email),
+    });
+    
 
-    const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
-        queryKey: ["OfflineBookings"],
-        queryFn: async () => await getOffline(),
+     const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
+        queryKey: ["OfflineBookings",verifiedUser?.email],
+        queryFn: async () => await getAllOffline(verifiedUser?.email),
     });
     const queryClient = useQueryClient();
 
@@ -61,6 +63,8 @@ const All_COD_Booking_Admin = () => {
             Received_Payment_Admin_Name:verifiedUser?.name,
             Received_Payment_Admin_Email:verifiedUser?.email,
             Admin_Accept_Payment_Time: new Date(),
+            Accept_By_Branch_Email:verifiedUser?.email,
+            Accept_By_Branch_Name:verifiedUser?.name
 
         };
         try {
@@ -85,7 +89,7 @@ const All_COD_Booking_Admin = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-3xl font-bold mb-10 text-center mt-5 ">All COD Bookings</h2>
+            <h2 className="text-3xl font-bold mb-10 text-center mt-5 ">All COD Bookings Branch</h2>
             <div className="my-4 text-center space-x-4">
                 <div className="inline-block">
                     <label htmlFor="search-start-date" className="mr-2 text-lg font-medium text-black">
@@ -231,4 +235,4 @@ const All_COD_Booking_Admin = () => {
     );
 };
 
-export default All_COD_Booking_Admin;
+export default COD_Booking_Branch;

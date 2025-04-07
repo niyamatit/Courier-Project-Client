@@ -102,6 +102,7 @@ import Merchant_Parcel_List_Online from "../Components/DashBoard/Host/MerchantLi
 import Recharge_History from "../Components/DashBoard/Host/Recharge/RechargeComplete/Recharge_History";
 import Booking_Info_Admin from "../Components/DashBoard/Host/CreatePackage/BranchBookinginfo/BookingInfo/Booking_Info_Admin";
 import All_COD_Booking_Admin from "../Components/DashBoard/Admin/All_COD_Booking_Admin";
+import COD_Booking_Branch from "../Components/DashBoard/Host/CreatePackage/COD_Booking_Branch";
 
 
 
@@ -643,6 +644,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <HostRoute>
             <OnlineSchedule />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "cod-booking-branch",
+        element: <PrivateRoute>
+          <HostRoute>
+           <COD_Booking_Branch/>
           </HostRoute>
         </PrivateRoute>
       }

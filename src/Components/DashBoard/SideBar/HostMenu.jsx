@@ -281,6 +281,11 @@ const HostMenu = () => {
         label='Merchant List'
         address='merchant-list'
       />
+      <MenuItem
+        icon={FaList}
+        label='All COD Booking'
+        address='cod-booking-branch'
+      />
 
 
 <div className="dropdown">
