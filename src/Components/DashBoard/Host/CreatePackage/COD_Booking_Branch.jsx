@@ -63,6 +63,8 @@ const COD_Booking_Branch = () => {
             Received_Payment_Admin_Name:verifiedUser?.name,
             Received_Payment_Admin_Email:verifiedUser?.email,
             Admin_Accept_Payment_Time: new Date(),
+            Accept_By_Branch_Email:verifiedUser?.email,
+            Accept_By_Branch_Name:verifiedUser?.name
 
         };
         try {
@@ -87,7 +89,7 @@ const COD_Booking_Branch = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-3xl font-bold mb-10 text-center mt-5 ">All COD Bookings</h2>
+            <h2 className="text-3xl font-bold mb-10 text-center mt-5 ">All COD Bookings Branch</h2>
             <div className="my-4 text-center space-x-4">
                 <div className="inline-block">
                     <label htmlFor="search-start-date" className="mr-2 text-lg font-medium text-black">
