@@ -56,7 +56,7 @@ const All_COD_Booking_Admin = () => {
         const paymentData = {
             id: selectedBooking._id,
             cnNumber: selectedBooking.CnNumber,
-            Admin_Accept_Payment_Amount: (parseFloat(selectedBooking?.conditionCharge)) || parseFloat(selectedBooking?.receiverPay) || 0,
+            Admin_Accept_Payment_Amount: (parseFloat(selectedBooking.condition)) || selectedBooking.senderReceive || 0,
             note: note,
             Received_Payment_Admin_Name:verifiedUser?.name,
             Received_Payment_Admin_Email:verifiedUser?.email,
@@ -154,7 +154,7 @@ const All_COD_Booking_Admin = () => {
                                 <td className="border px-4 py-2">{booking.recipientName || booking.receiverName}</td>
                                 <td className="border px-4 py-2">{booking.recipientMobile || booking.receiverContactNo}</td>
                                 <td className="border px-4 py-2">{parseFloat(booking.amount) || booking.totalCharge}</td>
-                                <td className="border px-4 py-2">{(parseFloat(booking.condition)) || booking.senderReceive || 0}</td>
+                                <td className="border px-4  py-2">{(parseFloat(booking.condition)) || booking.senderReceive || 0}</td>
                                 <td className="border px-4 py-2">{(parseFloat(booking.conditionCharge) - parseFloat(booking.condition)) || booking.serviceCharge || 0}</td>
                                 {/* <td className="border px-4 py-2">{ || booking.receiverPay}</td> */}
                                 <td className="border px-4 py-2">{(booking.conditionCharge) || parseFloat(booking?.receiverPay) || 0}</td>
@@ -162,7 +162,7 @@ const All_COD_Booking_Admin = () => {
                                     (booking?.conditionCharge || parseFloat(booking?.receiverPay)) ?
                                        <>
                                        {
-                                        (booking?.Admin_Accept_Payment_Amount) ?  <td className="border px-4 text-green-500 py-2">Paid</td> : <td className="border px-4 py-2">Due</td>
+                                        (booking?.Admin_Accept_Payment_Amount) ?  <td className="border px-4 text-green-500 py-2">Paid</td> : <td className="border px-4 py-2 text-red-600">Due</td>
                                        }
                                        </> : <td className="border px-4 py-2">N/A</td>
                                 }
@@ -192,7 +192,7 @@ const All_COD_Booking_Admin = () => {
                 <input
                     type="number"
                     className="w-full mt-1 p-2 border rounded"
-                    value={(parseFloat(selectedBooking?.conditionCharge)) || parseFloat(selectedBooking?.receiverPay) || 0}
+                    value={(parseFloat(selectedBooking.condition)) || selectedBooking.senderReceive || 0}
                     // onChange={(e) => setSelectedBooking({ ...selectedBooking, receiverPay: e.target.value,conditionCharge:e.target.value })}
                 />
             </label>
