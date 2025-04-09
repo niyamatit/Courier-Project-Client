@@ -20,7 +20,7 @@ const Pending_Parcel_List_Merchant = () => {
     }
   });
 
-  const { data: Verify_Admin_MotherHub = [], refetch } = useQuery({
+   const { data: Verify_Admin_MotherHub = [], refetch } = useQuery({
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
