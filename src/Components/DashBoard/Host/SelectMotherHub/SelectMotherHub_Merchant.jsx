@@ -13,8 +13,9 @@ const SelectMotherHub_Merchant = () => {
   const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [note, setNote] = useState("");
+  const [notemnmnm, setNotejkhhjkh] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
-  const [selectedBranchjhmhmjmmnb, setSelectedBranchkjkjjlkjj] = useState("");
+  
   
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
