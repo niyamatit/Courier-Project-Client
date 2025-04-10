@@ -13,7 +13,7 @@ const SelectMotherHub_Merchant = () => {
   const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [note, setNote] = useState("");
-  const [notemnmnm, setNotejkhhjkh] = useState("");
+  
   const [selectedBranch, setSelectedBranch] = useState("");
   
   
