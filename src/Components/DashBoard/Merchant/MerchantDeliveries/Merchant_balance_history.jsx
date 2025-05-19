@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import useUsersData from "../../../hooks/useUsersData/useUsersData";
-import axiosSecure from "../../../api/axiosSecure";
+
+
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import axiosSecure from "../../../../api/axiosSecure";
 
 const Merchant_balance_history = () => {
     const [verifiedUser] = useUsersData();

@@ -104,6 +104,7 @@ import Booking_Info_Admin from "../Components/DashBoard/Host/CreatePackage/Branc
 import All_COD_Booking_Admin from "../Components/DashBoard/Admin/All_COD_Booking_Admin";
 import COD_Booking_Branch from "../Components/DashBoard/Host/CreatePackage/COD_Booking_Branch";
 import Merchant_recharge_apply from "../Components/DashBoard/Merchant/Merchant_recharge_apply";
+import Merchant_balance_history from "../Components/DashBoard/Merchant/MerchantDeliveries/Merchant_balance_history";
 
 
 
@@ -692,6 +693,10 @@ export const router = createBrowserRouter([
       {
         path: "recharge_apply",
         element: <Merchant_recharge_apply/>
+      },
+      {
+        path: "balance_history",
+        element: <Merchant_balance_history/>
       },
       // Rider Dashboard
       {
