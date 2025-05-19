@@ -6,7 +6,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { FaTruck } from 'react-icons/fa';
 import { FaFileInvoice } from 'react-icons/fa';
 import { MdStore } from 'react-icons/md';
-
+import { History, Scale, Wallet, CalendarClock, LineChart,CircleDollarSign } from "lucide-react";
 import { RiBox3Line } from 'react-icons/ri';
 
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
@@ -41,10 +41,10 @@ const MerchantMenu = () => {
           let balance = parseFloat(merchant?.Merchant_Balance || 0);
   
           for (const parcel of merchantParcels) {
-            if (!parcel?.isProcessed) {
-              balance -= parseFloat(parcel.Calculate_Charge_Merchant || 0);
-            } else if (parcel?.Tracking_Rider_Merchant_Delivary_Update_Successful === "Delivery Done" && !parcel?.isBalanceUpdated) {
+             if (parcel?.Tracking_Rider_Merchant_Delivary_Update_Successful === "Delivery Done" && !parcel?.isProcessed) {
               balance += parseFloat(parcel.Calculate_Charge_Merchant || 0);
+            // } else if (parcel?.Tracking_Rider_Merchant_Delivary_Update_Successful === "Delivery Done" && !parcel?.isBalanceUpdated) {
+            //   balance += parseFloat(parcel.Calculate_Charge_Merchant || 0);
   
               // Mark the parcel as processed to prevent re-updating
               try {
@@ -126,6 +126,16 @@ const MerchantMenu = () => {
         icon={RiBox3Line}
         label='My Parcel List (Online)'
         address='/dashboard/Parcel_Online'
+      />
+      <MenuItem
+        icon={History}
+        label='Balance History'
+        address='/dashboard/balance_history'
+      />
+      <MenuItem
+        icon={CircleDollarSign}
+        label='Recharge Apply'
+        address='/dashboard/recharge_apply'
       />
 
       {/* <MenuItem
