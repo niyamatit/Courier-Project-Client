@@ -6,7 +6,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { FaTruck } from 'react-icons/fa';
 import { FaFileInvoice } from 'react-icons/fa';
 import { MdStore } from 'react-icons/md';
-
+import { History, Scale, Wallet, CalendarClock, LineChart,CircleDollarSign } from "lucide-react";
 import { RiBox3Line } from 'react-icons/ri';
 
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
@@ -126,6 +126,16 @@ const MerchantMenu = () => {
         icon={RiBox3Line}
         label='My Parcel List (Online)'
         address='/dashboard/Parcel_Online'
+      />
+      <MenuItem
+        icon={History}
+        label='Balance History'
+        address='/dashboard/balance_history'
+      />
+      <MenuItem
+        icon={CircleDollarSign}
+        label='Recharge Apply'
+        address='/dashboard/recharge_apply'
       />
 
       {/* <MenuItem
