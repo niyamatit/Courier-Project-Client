@@ -5,7 +5,7 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../../api/axiosSecure";
 
 const Merchant_balance_history = () => {
-    const [verifiedUser] = useUsersData();
+     const [verifiedUser] = useUsersData();
     const { data: Balance_History = [] } = useQuery({
         queryKey: ['Balance_History', verifiedUser?.email],
         queryFn: async () => {
