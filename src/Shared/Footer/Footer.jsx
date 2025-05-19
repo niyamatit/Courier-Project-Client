@@ -63,7 +63,7 @@ const Footer = () => {
                 
               </ul>
             </div>
-            <div>
+            <div className="hidden md:block lg::block">
               <h2 className="mb-6 text-sm font-semibold  uppercase dark:text-white">
                 Legal
               </h2>
@@ -85,7 +85,7 @@ const Footer = () => {
                 Contact US
               </h2>
               <ul className="text-white dark:text-gray-300 font-medium">
-              <p className="mt-4 flex gap-2">Email: <span>support@niyamatexpress.com</span></p>
+              <p className="mt-4 flex flex-col  md:flex-row lg:flex-row gap-2">Email: <span>support@niyamatexpress.com</span></p>
               <p>Tel: 09697687401, 09638840680</p>
               </ul>
             </div>
