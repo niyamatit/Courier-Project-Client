@@ -62,7 +62,19 @@ const handleStatusChange = async (id, newStatus) => {
                   <td className="border p-2">
                     {new Date(item.transaction_date).toLocaleString()}
                   </td>
-                  <td className="border p-2 capitalize">{item.status}</td>
+                 <td
+  className={`border p-2 capitalize font-semibold ${
+    item.status === "In process"
+      ? "text-yellow-500"
+      : item.status === "Hand over Bank"
+      ? "text-blue-500"
+      : item.status === "Paid Successful"
+      ? "text-green-600"
+      : "text-gray-600"
+  }`}
+>
+  {item.status}
+</td>
                    <td className="border p-2">
                     <select
                       defaultValue=""
