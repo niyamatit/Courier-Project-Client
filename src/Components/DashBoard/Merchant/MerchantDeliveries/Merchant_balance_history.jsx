@@ -45,12 +45,13 @@ const Merchant_balance_history = () => {
                             <th className="px-4 py-3 text-left">Weight</th>
                             
                             <th className="px-4 py-3 text-right rounded-tr-lg">Amount</th>
+                            <th className="px-4 py-3 text-right rounded-tr-lg">Status</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {CombinedHistory.map(parcel => (
                             <tr key={parcel._id} className={`hover:bg-gray-50 even:bg-gray-50 ${
-    parcel?.ApplyAMount ? 'border bg-red-200 ' : ''
+    parcel?.ApplyAMount ? 'border bg-red-100 ' : ''
   }`}>
                                 <td className="px-4 py-3 text-gray-700">
                                     {new Date(parcel.Date || parcel?.transaction_date).toLocaleDateString('en-US', {
@@ -76,6 +77,19 @@ const Merchant_balance_history = () => {
                                 }`}>
                                     {parcel.Calculate_Charge_Merchant || parcel?.ApplyAMount} ৳
                                 </td>
+                                  <td
+        className={` capitalize font-semibold ${
+          parcel.status === "In process"
+            ? "text-yellow-800"
+            : parcel.status === "Hand over Bank"
+            ? "text-blue-600"
+            : parcel.status === "Paid Successful"
+            ? "text-green-600"
+            : "text-gray-600"
+        }`}
+      >
+        {parcel.status || 'N/A'}
+      </td>
                             </tr>
                         ))}
                     </tbody>

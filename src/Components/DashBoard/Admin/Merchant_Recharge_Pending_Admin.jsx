@@ -32,8 +32,8 @@ const handleStatusChange = async (id, newStatus) => {
   };
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-semibold mb-4">Pending Merchant Recharges</h1>
-
+     
+<h2 className="text-blue-600 font-bold text-2xl mb-4">Pending Merchant Recharges ({Merchant_history.length})</h2>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
@@ -41,27 +41,31 @@ const handleStatusChange = async (id, newStatus) => {
           <table className="min-w-full table-auto border border-gray-300">
             <thead className="bg-blue-500 text-white">
               <tr>
+                <th className="p-2 border">SL</th>
+                <th className="p-2 border">Date</th>
                 <th className="p-2 border">Merchant ID</th>
                 <th className="p-2 border">Merchant Name</th>
                 <th className="p-2 border">Email</th>
                 <th className="p-2 border">Amount</th>
-                <th className="p-2 border">Note</th>
-                <th className="p-2 border">Date</th>
+              
+                
                 <th className="p-2 border">Status</th>
                 <th className="p-2 border">Action</th>
               </tr>
             </thead>
             <tbody>
-              {Merchant_history.map((item) => (
+              {Merchant_history.map((item,index) => (
                 <tr key={item._id} className="text-center">
+                     <td className="border p-2">{index+1}</td>
+                    <td className="border p-2">
+                    {new Date(item.transaction_date).toLocaleString()}
+                  </td>
                   <td className="border p-2">{item.merchantID}</td>
                   <td className="border p-2">{item.Merchant_Name}</td>
                   <td className="border p-2">{item.Merchant_email}</td>
                   <td className="border p-2">{item.ApplyAMount}</td>
-                  <td className="border p-2">{item.Note}</td>
-                  <td className="border p-2">
-                    {new Date(item.transaction_date).toLocaleString()}
-                  </td>
+                  
+                  
                   <td
   className={`border p-2 capitalize font-semibold ${
     item.status === "In process"
