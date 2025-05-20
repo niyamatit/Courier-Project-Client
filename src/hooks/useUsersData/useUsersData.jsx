@@ -8,7 +8,7 @@ const useUsersData = () => {
     const UserEmail = (localStorage.getItem('email'))
     // console.log("LOcal Email:",UserEmail)
     
-     const {  data: users = [], isLoading} = useQuery({
+     const {  data: users = [], isLoading,refetch} = useQuery({
         queryKey: ['users'],
         queryFn: async() => {
             const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
@@ -21,7 +21,7 @@ const useUsersData = () => {
     // console.log("All Users",users)
 
 
-    return [verifiedUser, isLoading]
+    return [verifiedUser, isLoading,refetch]
 
 };
 

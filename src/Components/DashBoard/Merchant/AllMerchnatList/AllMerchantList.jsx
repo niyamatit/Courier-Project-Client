@@ -81,6 +81,7 @@ const AllMerchantList = () => {
                             <th className="px-6 py-4 font-semibold">In-District Weight Charge</th>
                             {/* <th className="px-6 py-4 font-semibold">Sub-District Weight Charge</th> */}
                             <th className="px-6 py-4 font-semibold">Overall Bangladesh Weight Charge</th>
+                            <th className="px-6 py-4 font-semibold">Merchant Balance</th>
                             <th className="px-6 py-4 font-semibold">Actions</th>
                         </tr>
                     </thead>
@@ -235,6 +236,7 @@ const AllMerchantList = () => {
                                         className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                                     />
                                 </td>
+                                 <td className="px-6 py-4">{merchant?.Merchant_Balance}</td>
                                 <td className="px-6 py-4 text-center">
                                     <button
                                         onClick={() => handleRemove(merchant._id)}

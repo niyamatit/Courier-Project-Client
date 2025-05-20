@@ -5,7 +5,7 @@ import { MdBookOnline, MdMoney, MdPending, MdPersonAdd, MdRateReview } from 'rea
 import { MdStore } from 'react-icons/md';
 import { BsBuilding } from "react-icons/bs";
 import { BsGrid } from "react-icons/bs";
-
+import { BatteryCharging, Zap, CircleDollarSign, SendHorizontal } from "lucide-react";
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 const AdminMenu = () => {
   const [verifiedUser] = useUsersData();
@@ -48,6 +48,10 @@ const AdminMenu = () => {
       <MenuItem icon={FaUserCog}
         label='All Merchant List'
         address='AllMerchnatList' />
+
+      <MenuItem icon={CircleDollarSign}
+        label='Merchant Recharge Pending'
+        address='Merchant-Recharge-Apply' />
 
 
       <MenuItem
