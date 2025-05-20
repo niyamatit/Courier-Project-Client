@@ -105,6 +105,7 @@ import All_COD_Booking_Admin from "../Components/DashBoard/Admin/All_COD_Booking
 import COD_Booking_Branch from "../Components/DashBoard/Host/CreatePackage/COD_Booking_Branch";
 import Merchant_recharge_apply from "../Components/DashBoard/Merchant/Merchant_recharge_apply";
 import Merchant_balance_history from "../Components/DashBoard/Merchant/MerchantDeliveries/Merchant_balance_history";
+import Merchant_Recharge_Pending_Admin from "../Components/DashBoard/Admin/Merchant_Recharge_Pending_Admin";
 
 
 
@@ -370,6 +371,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <AllMerchantList />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "Merchant-Recharge-Apply",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+             <Merchant_Recharge_Pending_Admin/>
             </AdminRoute>
           </PrivateRoute>
         ),
