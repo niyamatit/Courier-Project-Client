@@ -106,6 +106,7 @@ import COD_Booking_Branch from "../Components/DashBoard/Host/CreatePackage/COD_B
 import Merchant_recharge_apply from "../Components/DashBoard/Merchant/Merchant_recharge_apply";
 import Merchant_balance_history from "../Components/DashBoard/Merchant/MerchantDeliveries/Merchant_balance_history";
 import Merchant_Recharge_Pending_Admin from "../Components/DashBoard/Admin/Merchant_Recharge_Pending_Admin";
+import InterNational_Booking_Branch_History from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch_History";
 
 
 
@@ -251,6 +252,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <InterNational_Booking_Branch/>
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "international-booking-history",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <InterNational_Booking_Branch_History/>
             </HostRoute>
           </PrivateRoute>
         ),
