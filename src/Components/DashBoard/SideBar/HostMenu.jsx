@@ -186,6 +186,11 @@ const HostMenu = () => {
         label='International Booking'
         address='international-booking'
       />
+      <MenuItem
+        icon={MdOutlineManageHistory}
+        label='International Booking History'
+        address='international-booking-history'
+      />
 
 
 
