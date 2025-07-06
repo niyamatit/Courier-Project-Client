@@ -5,6 +5,7 @@ import './CourierSlip.css';
 import { PiScissorsLight } from 'react-icons/pi';
 // import QRCode from 'react-qr-code';
 import logoImg from '../../../../../src/assets/nexp-update.png'
+import QRCode from 'react-qr-code';
 export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
     
 
@@ -44,10 +45,21 @@ export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
                 <div>
                         
                         {bookingInfo?.CnNumber ? (
-                            <Barcode className="h-[50px] w-60" value={bookingInfo.CnNumber|| 0} />
-                        ) : (
-                            <p className="text-red-500">Tracking Number Not Available</p>
-                        )}
+  <div className="flex py-1  items-center">
+    <Barcode
+      className="h-[50px] w-60"
+      value={String(bookingInfo.CnNumber || 0)}
+    />
+    <QRCode
+      className="h-[50px] w-20"
+      value={String(bookingInfo.CnNumber || 0)}
+    />
+  </div>
+) : (
+  <p className="text-red-500">Tracking Number Not Available</p>
+)}
+
+
                     </div>
                     <div>
                         <strong>Booking: </strong>{bookingInfo?.bookingBranch}
@@ -86,7 +98,7 @@ export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
                 <div className="table-row">
                     <div className="table-cell">{bookingInfo?.Parcel_Weight} kg</div>
                     <div className="table-cell">{bookingInfo?.Product_Details}</div>
-                    <div className="table-cell">{bookingInfo?.Total_Charge}</div>
+                    <div className="table-cell">{bookingInfo?.Total_Charge} (Cash)</div>
                 </div>
             </div>
 
@@ -102,7 +114,7 @@ export const InterNationalBookingDetails_Branch = ({ bookingInfo }) => (
                     Total charge: {bookingInfo?.Total_Charge}
                 </div>
                 <div>
-                <strong>{`${bookingInfo?.serviceType}`}</strong>
+                <strong>{`${bookingInfo?.serviceType} (Estimate Delivery 12-20 Days)`}</strong>
                 {/* <strong>{`${bookingInfo?.serviceType} - ${bookingInfo?.["H/D"] 
     ? "Home Delivery" 
     : bookingInfo?.["O/D"] 
