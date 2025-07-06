@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
 import logoImg from '../../assets/nexp-update.png'
+import { useEffect } from "react";
 
 const Footer = () => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://static.elfsight.com/platform/platform.js";
+    script.async = true;
+    script.setAttribute("data-elfsight-app-lazy", "true");
+    document.body.appendChild(script);
+  }, []);
   return (
     <footer className="bg-blue-400 text-white">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -110,7 +118,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
+          <div className="elfsight-app-5c88a7da-0668-469b-a647-e6f25a35dc6d" />
     </footer>
+    
   );
 };
 
