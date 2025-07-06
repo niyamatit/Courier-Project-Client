@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 import { useState } from "react"; // Import useState for modal state
+import InterNationalPrintModal_Branch from "./InterNationalPrintModal_Branch";
 
 const InterNational_Booking_Branch_History = () => {
     const { data: Int_Booking_History, isLoading, error } = useQuery({
@@ -10,10 +11,19 @@ const InterNational_Booking_Branch_History = () => {
             return response.data;
         },
     });
-
+ const [offlineBookingShow, setOfflineBooking] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+const [isOpen, setIsOpen] = useState(false);
 
+    const closeModalPrint = () => {
+        setIsOpen(false);
+    };
+
+    const print = (item) => {
+        setOfflineBooking(item);
+        setIsOpen(true);
+    };
     const handleViewMore = (item) => {
         setSelectedItem(item);
         setIsModalOpen(true);
@@ -42,7 +52,8 @@ const InterNational_Booking_Branch_History = () => {
                             <th scope="col" className="py-4 px-6 text-left text-sm font-bold uppercase tracking-wider">Service Type</th>
                             <th scope="col" className="py-4 px-6 text-left text-sm font-bold uppercase tracking-wider">Item Type</th>
                             <th scope="col" className="py-4 px-6 text-left text-sm font-bold uppercase tracking-wider">Booking Date</th>
-                            <th scope="col" className="py-4 px-6 text-center text-sm font-bold uppercase tracking-wider rounded-tr-lg">Actions</th>
+                            <th scope="col" className="py-4 px-6 text-center text-sm font-bold uppercase tracking-wider rounded-tr-lg">View Details</th>
+                            <th scope="col" className="py-4 px-6 text-center text-sm font-bold uppercase tracking-wider rounded-tr-lg">Print Details</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -63,8 +74,23 @@ const InterNational_Booking_Branch_History = () => {
                                         View Details
                                     </button>
                                 </td>
+                                <td className="py-4 px-6 whitespace-nowrap text-center">
+                                    <button
+                                         onClick={()=>print(item)}
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                                    >
+                                        Print
+                                    </button>
+                                </td>
                             </tr>
+                            
                         ))}
+                         <InterNationalPrintModal_Branch
+                closeModal={closeModalPrint}
+                isOpen={isOpen}
+                offlineBookingShow={offlineBookingShow}
+                bookingInfo={offlineBookingShow}
+            ></InterNationalPrintModal_Branch>
                     </tbody>
                 </table>
             </div>
