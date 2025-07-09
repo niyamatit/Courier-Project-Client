@@ -85,7 +85,7 @@ const MotherHub_Select_Parcel_Int = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Select Destination Branch For Offline Parcels of {verifiedUser?.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">Select Destination Branch For International Parcels of {verifiedUser?.name}</h1>
       {Array.isArray(Verify_Admin_MotherHub_Int) && Verify_Admin_MotherHub_Int.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
