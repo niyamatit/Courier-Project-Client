@@ -35,7 +35,7 @@ const All_InterNational_Booking = () => {
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/offline/accept/parcel/${pkgId}`);
+      await axiosSecure.post(`/int/accept/parcel/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -62,10 +62,10 @@ const All_InterNational_Booking = () => {
     }
 
     try {
-       await axiosSecure.post(`/offline/select-MotherHub/branch/${selectedPackage._id}`, {
-          Tracking_Booking_Branch_Select_MotherHub: selectedBranch,
-        Tracking_Booking_Branch_Select_MotherHub_Note: note,
-        Tracking_Booking_Branch_Select_MotherHub_Date: new Date()
+       await axiosSecure.post(`/int/select-MotherHub/branch/${selectedPackage._id}`, {
+          Tracking_Booking_Branch_Select_MotherHub_Int: selectedBranch,
+        Tracking_Booking_Branch_Select_MotherHub_Note_Int: note,
+        Tracking_Booking_Branch_Select_MotherHub_Date_Int: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -118,7 +118,7 @@ const All_InterNational_Booking = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.Product_Details}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                  {pkg?.Tracking_Booking_Branch_Received_Parcel ? (
+                  {pkg?.Tracking_Booking_Branch_Received_Parcel_Int ? (
   <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
 ) : (
   <button
@@ -129,8 +129,8 @@ const All_InterNational_Booking = () => {
   </button>
 )}
 
-{pkg?.Tracking_Booking_Branch_Received_Parcel ? (
-  pkg?.Tracking_Booking_Branch_Select_MotherHub ? (
+{pkg?.Tracking_Booking_Branch_Received_Parcel_Int ? (
+  pkg?.Tracking_Booking_Branch_Select_MotherHub_Int ? (
     <h1 className="text-green-500 border p-1 border-green-500">
       Already Selected
     </h1>
