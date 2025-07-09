@@ -132,11 +132,11 @@ const PackageTracking = () => {
                 </div>
 
                 {/* 2nd Step: Sent to MotherHub Branch */}
-                {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub || searchResult?.Tracking_Booking_Merchant_Select_MotherHub) && (
+                {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub || searchResult?.Tracking_Booking_Merchant_Select_MotherHub || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Int ) && (
                   <div className="relative">
                     <div className="flex items-center space-x-4">
                       <div
-                        className={`flex items-center justify-center w-10 h-10 rounded-full ${searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub || searchResult?.Tracking_Booking_Merchant_Select_MotherHub
+                        className={`flex items-center justify-center w-10 h-10 rounded-full ${searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_email || searchResult?.Tracking_Booking_Branch_Select_MotherHub || searchResult?.Tracking_Booking_Merchant_Select_MotherHub || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Int 
                             ? "bg-green-500 text-white"
                             : "bg-gray-300 text-gray-500"
                           }`}
@@ -150,9 +150,9 @@ const PackageTracking = () => {
                         </h1>
                         <p className="text-gray-500 text-sm">
                           Sent Time:{" "}
-                          {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date)
+                          {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date_Int )
                             ? formatTime(
-                              searchResult.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date
+                              searchResult.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date_Int
                             )
                             : "Not Available"}
                         </p>
