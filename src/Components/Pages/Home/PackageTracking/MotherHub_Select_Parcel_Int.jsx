@@ -4,12 +4,12 @@ import Swal from "sweetalert2";
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useUsersData from "../../../hooks/useUsersData/useUsersData";
-import axiosSecure from "../../../api/axiosSecure";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import axiosSecure from "../../../../api/axiosSecure";
 
 
 
-const All_InterNational_Booking = () => {
+const MotherHub_Select_Parcel_Int = () => {
   const [verifiedUser] = useUsersData();
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
@@ -28,14 +28,14 @@ const All_InterNational_Booking = () => {
     queryKey: ["Verify_Admin_MotherHub_Int", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/int/email/Branch/${verifiedUser?.email}`);
+      const res = await axiosSecure.get(`/int/email/Branch/destination/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/int/accept/parcel/${pkgId}`);
+      await axiosSecure.post(`/int/accept/parcel/destination/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -62,10 +62,10 @@ const All_InterNational_Booking = () => {
     }
 
     try {
-       await axiosSecure.post(`/int/select-MotherHub/branch/${selectedPackage._id}`, {
-          Tracking_Booking_Branch_Select_MotherHub_Int: selectedBranch,
-        Tracking_Booking_Branch_Select_MotherHub_Note_Int: note,
-        Tracking_Booking_Branch_Select_MotherHub_Date_Int: new Date()
+       await axiosSecure.post(`/int/select-Destion/branch/again/${selectedPackage._id}`, {
+          Tracking_MotherHub_Branch_Select_Destiantion_Branch_Int: selectedBranch,
+        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Note_Int: note,
+        Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Int: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -85,7 +85,7 @@ const All_InterNational_Booking = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">All International Parcels of {verifiedUser?.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">Select Destination Branch For International Parcels of {verifiedUser?.name}</h1>
       {Array.isArray(Verify_Admin_MotherHub_Int) && Verify_Admin_MotherHub_Int.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
@@ -95,11 +95,11 @@ const All_InterNational_Booking = () => {
                 <th className="border border-blue-500 px-4 py-2">Date</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Name</th>
-                <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
+                {/* <th className="border border-blue-500 px-4 py-2">Sender Mobile</th> */}
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
-                <th className="border border-blue-500 px-4 py-2">Recipient Address</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
                 <th className="border border-blue-500 px-4 py-2">CN Number</th>
+                <th className="border border-blue-500 px-4 py-2">Recipient Address</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -112,13 +112,13 @@ const All_InterNational_Booking = () => {
                   </td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.Sender_Name_Int}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Name_Int}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.Sender_Contact_Number_Int}</td>
+                  {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td> */}
                   <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Contact_Number_Int}</td>
-                  <td className="border border-blue-500 px-4 py-2">({pkg.Customer_Country_Name},{pkg.Customer_State},{pkg.Customer_City})</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.Product_Details}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
+                  <td className="border border-blue-500 px-4 py-2">({pkg.Customer_Country_Name},{pkg.Customer_State},{pkg.Customer_City})</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                  {pkg?.Tracking_Booking_Branch_Received_Parcel_Int ? (
+                  {pkg?.Tracking_MotherHub_Branch_Received_Parcel_Int ? (
   <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
 ) : (
   <button
@@ -129,10 +129,10 @@ const All_InterNational_Booking = () => {
   </button>
 )}
 
-{pkg?.Tracking_Booking_Branch_Received_Parcel_Int ? (
-  pkg?.Tracking_Booking_Branch_Select_MotherHub_Int ? (
+{pkg?.Tracking_MotherHub_Branch_Received_Parcel_Int ? (
+  pkg?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Int ? (
     <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected
+      Already Selected Destination Branch
     </h1>
   ) : (
     <button
@@ -142,7 +142,7 @@ const All_InterNational_Booking = () => {
         setShowSelectBranchModal(true);
       }}
     >
-      Select MotherHub
+      Select Destination Branch
     </button>
   )
 ) : (
@@ -197,7 +197,7 @@ const All_InterNational_Booking = () => {
       {showSelectBranchModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Select MotherHub</h2>
+            <h2 className="text-2xl font-bold mb-4">Select Dest. Branch</h2>
             <div className="mb-4">
               
               <select
@@ -205,7 +205,7 @@ const All_InterNational_Booking = () => {
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="">Select MotherHub Branch</option>
+                <option value="">Select Dest. Branch</option>
                 {users
   .filter(
     (user) =>
@@ -246,4 +246,4 @@ const All_InterNational_Booking = () => {
   );
 };
 
-export default All_InterNational_Booking;
+export default MotherHub_Select_Parcel_Int;

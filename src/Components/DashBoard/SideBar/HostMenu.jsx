@@ -205,6 +205,11 @@ const HostMenu = () => {
         label='All Parcel List Online'
         address='online-scheduling'
       />
+      <MenuItem
+        icon={FaList}
+        label='All Parcel List International'
+        address='int-scheduling'
+      />
       <div className="dropdown">
         <div tabIndex={0} role="button" className="w-[200px] items-center flex gap-3  text-center m-1"><BsHouseAddFill className="ml-3" />Delivery Parcle List</div>
         <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
@@ -255,6 +260,12 @@ const HostMenu = () => {
               icon={IoHome}
               label='MotherHub PickUp Parcel (Offline)'
               address='parcel-motherHub-Select-Offline'
+            /></li>
+          <li>
+            <MenuItem
+              icon={IoHome}
+              label='MotherHub PickUp Parcel (International)'
+              address='parcel-motherHub-Select-int'
             /></li>
           <li>
             <MenuItem
