@@ -110,12 +110,12 @@ const All_InterNational_Booking = () => {
                   <td className="border border-blue-500 px-4 py-2">
                     {new Date(pkg.bookingDate).toLocaleDateString()}
                   </td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.receiverName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.receiverContactNo}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.receiverContactNo}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.product}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Sender_Name_Int}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Name_Int}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Sender_Contact_Number_Int}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Contact_Number_Int}</td>
+                  <td className="border border-blue-500 px-4 py-2">({pkg.Customer_Country_Name},{pkg.Customer_State},{pkg.Customer_City})</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Product_Details}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                   {pkg?.Tracking_Booking_Branch_Received_Parcel ? (
