@@ -94,6 +94,9 @@ const TableBranch = ({ branch, onView, refetch }) => {
                     <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Name}</p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p className="text-gray-900 whitespace-no-wrap">{branch?.email}</p>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">{branch?.Branch_Number}</p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
