@@ -167,11 +167,11 @@ const PackageTracking = () => {
                 )}
 
                 {/* 3rd Step: Received at MotherHub */}
-                {(searchResult?.Tracking_MotherHub_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Merchant) && (
+                {(searchResult?.Tracking_MotherHub_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Merchant || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Int) && (
                   <div className="relative">
                     <div className="flex items-center space-x-4">
                       <div
-                        className={`flex items-center justify-center w-10 h-10 rounded-full ${(searchResult?.Tracking_MotherHub_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Merchant)
+                        className={`flex items-center justify-center w-10 h-10 rounded-full ${(searchResult?.Tracking_MotherHub_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Merchant || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Int)
                             ? "bg-green-500 text-white"
                             : "bg-gray-300 text-gray-500"
                           }`}
@@ -184,9 +184,9 @@ const PackageTracking = () => {
                         </h1>
                         <p className="text-gray-500 text-sm">
                           Received Time:{" "}
-                          {searchResult?.Tracking_MotherHub_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant
+                          {searchResult?.Tracking_MotherHub_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant ||  searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Int
                             ? formatTime(
-                              searchResult.Tracking_MotherHub_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant
+                              searchResult.Tracking_MotherHub_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant ||  searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Int
                             )
                             : "Not Available"}
                         </p>
