@@ -107,6 +107,7 @@ import Merchant_recharge_apply from "../Components/DashBoard/Merchant/Merchant_r
 import Merchant_balance_history from "../Components/DashBoard/Merchant/MerchantDeliveries/Merchant_balance_history";
 import Merchant_Recharge_Pending_Admin from "../Components/DashBoard/Admin/Merchant_Recharge_Pending_Admin";
 import InterNational_Booking_Branch_History from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch_History";
+import All_InterNational_Booking from "../Components/DashBoard/Admin/All_InterNational_Booking";
 
 
 
@@ -332,6 +333,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <OnlineSchedule />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "int-scheduling",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <All_InterNational_Booking/>
             </HostRoute>
           </PrivateRoute>
         ),
