@@ -108,6 +108,7 @@ import Merchant_balance_history from "../Components/DashBoard/Merchant/MerchantD
 import Merchant_Recharge_Pending_Admin from "../Components/DashBoard/Admin/Merchant_Recharge_Pending_Admin";
 import InterNational_Booking_Branch_History from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch_History";
 import All_InterNational_Booking from "../Components/DashBoard/Admin/All_InterNational_Booking";
+import MotherHub_Select_Parcel_Int from "../Components/Pages/Home/PackageTracking/MotherHub_Select_Parcel_Int";
 
 
 
@@ -590,6 +591,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <HostRoute>
             <SelectMotherHub_Offline />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "parcel-motherHub-Select-int",
+        element: <PrivateRoute>
+          <HostRoute>
+            <MotherHub_Select_Parcel_Int/>
           </HostRoute>
         </PrivateRoute>
       },
