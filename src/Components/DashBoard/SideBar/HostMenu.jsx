@@ -240,6 +240,12 @@ const HostMenu = () => {
           <li>
             <MenuItem
               icon={IoHome}
+              label='Pending Parcel List (International)'
+              address='pending-parcel-list-int'
+            /></li>
+          <li>
+            <MenuItem
+              icon={IoHome}
               label='Processing'
               address='pickup-processing'
             /></li>

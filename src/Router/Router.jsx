@@ -109,6 +109,7 @@ import Merchant_Recharge_Pending_Admin from "../Components/DashBoard/Admin/Merch
 import InterNational_Booking_Branch_History from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch_History";
 import All_InterNational_Booking from "../Components/DashBoard/Admin/All_InterNational_Booking";
 import MotherHub_Select_Parcel_Int from "../Components/Pages/Home/PackageTracking/MotherHub_Select_Parcel_Int";
+import Pending_Parecl_List_International from "../Components/Pages/Home/PackageTracking/Pending_Parecl_List_International";
 
 
 
@@ -575,6 +576,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <HostRoute>
             <Pending_Parcel_List_Merchant />
+          </HostRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "pending-parcel-list-int",
+        element: <PrivateRoute>
+          <HostRoute>
+           <Pending_Parecl_List_International/>
           </HostRoute>
         </PrivateRoute>
       },
