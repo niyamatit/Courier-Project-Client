@@ -164,6 +164,7 @@ const Pending_Parecl_List_International = () => {
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
                 <th className="border border-blue-500 px-4 py-2">CN Number</th>
+                <th className="border border-blue-500 px-4 py-2">Recipient Address</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -172,14 +173,15 @@ const Pending_Parecl_List_International = () => {
                 <tr key={pkg._id} className="hover:bg-blue-100">
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
-                    {new Date(pkg.booking).toLocaleDateString()}
+                    {new Date(pkg.bookingDate).toLocaleDateString()}
                   </td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.senderName}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.recipientName}</td>
-                  {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderMobile}</td> */}
-                  <td className="border border-blue-500 px-4 py-2">{pkg.recipientMobile}</td>
-                  <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Sender_Name_Int}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Name_Int}</td>
+                  {/* <td className="border border-blue-500 px-4 py-2">{pkg.senderContactNo}</td> */}
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Customer_Contact_Number_Int}</td>
+                  <td className="border border-blue-500 px-4 py-2">{pkg.Product_Details}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
+                  <td className="border border-blue-500 px-4 py-2">({pkg.Customer_Country_Name},{pkg.Customer_State},{pkg.Customer_City})</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                     {pkg?.Tracking_Destination_Branch_Received_Parcel ? (
                       <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
