@@ -130,10 +130,10 @@ const handleSubmit = () => {
   {Array.isArray(RiderPickupOnline_Int) && RiderPickupOnline_Int.length > 0 ? (
     RiderPickupOnline_Int.filter(
       (item) =>
-        !item.Tracking_Rider_Online_Booking_Delivary_Update_Successful &&
-        !item.Tracking_Rider_Online_Booking_Delivary_Update_Returned &&
-        !item?.Tracking_Rider_Online_Booking_Delivary_Update_Hold &&
-        !item?.Tracking_Rider_Online_Booking_Delivary_Update_Exchange
+        !item.Tracking_Rider_Online_Booking_Delivary_Update_Successful_Int &&
+        !item.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int &&
+        !item?.Tracking_Rider_Online_Booking_Delivary_Update_Hold_Int &&
+        !item?.Tracking_Rider_Online_Booking_Delivary_Update_Exchange_Int
     ).map((item, index) => (
       <tr key={item._id} className="hover:bg-gray-100">
         <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
