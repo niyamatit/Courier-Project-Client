@@ -183,7 +183,7 @@ const Pending_Parecl_List_International = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2">({pkg.Customer_Country_Name},{pkg.Customer_State},{pkg.Customer_City})</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                    {pkg?.Tracking_Destination_Branch_Received_Parcel ? (
+                    {pkg?.Tracking_Destination_Branch_Received_Parcel_Int ? (
                       <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
                     ) : (
                       <button
