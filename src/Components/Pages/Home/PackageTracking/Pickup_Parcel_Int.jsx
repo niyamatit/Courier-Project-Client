@@ -145,7 +145,7 @@ const handleSubmit = () => {
         <td className="border border-gray-300 px-4 py-2">({item.Customer_Country_Name},{item.Customer_State},{item.Customer_City})</td>
         <td className="border border-gray-300 px-4 py-2">{item.Customer_address_Int}</td>
         <td className="border border-gray-300 px-4 py-2 text-center">{item.Total_Charge}</td>
-        <td className="border border-gray-300 px-4 py-2 text-center">{item.update}</td>
+        {/* <td className="border border-gray-300 px-4 py-2 text-center">{item.update}</td> */}
         <td className="border border-gray-300 px-4 py-2 text-center">
           <div className='flex gap-1'>
           <button
