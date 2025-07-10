@@ -322,7 +322,7 @@ const PackageTracking = () => {
                 }
                 {/* 8th Step: Delivery/Return Update By Branch (Optional) */}
                 {
-                  (searchResult?.Tracking_Destination_Branch_Delivery_Parcel || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update || searchResult?.Tracking_Rider_Merchant_Delivary_Update) && <div className="relative ">
+                  (searchResult?.Tracking_Destination_Branch_Delivery_Parcel || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update || searchResult?.Tracking_Rider_Merchant_Delivary_Update || searchResult?.Tracking_Destination_Branch_Returned_Parcel) && <div className="relative ">
 
                     <div className="space-y-6">
                       {/* Tracking Timeline */}
@@ -330,16 +330,18 @@ const PackageTracking = () => {
 
                         <div className="relative">
                           <div className="flex items-center space-x-4 mb-4">
-                            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${(searchResult?.Tracking_Destination_Branch_Delivery_Parcel || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Successful) ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
+                            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${(searchResult?.Tracking_Destination_Branch_Delivery_Parcel || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Successful || searchResult?.Tracking_Destination_Branch_Returned_Parcel) ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
                               {(searchResult?.Tracking_Destination_Branch_Delivery_Parcel || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Successful) ? '✓' : '-'}
                             </div>
                             <div>
-                              <h1 className="text-gray-700 font-semibold">{(searchResult?.Tracking_Destination_Branch_Delivery_Parcel || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Successful) || (searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Returned || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Returned)}</ h1>
+                              <h1 className="text-gray-700 font-semibold">{(searchResult?.Tracking_Destination_Branch_Delivery_Parcel || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Successful) || (searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Returned || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Returned) || searchResult?.Tracking_Destination_Branch_Returned_Parcel}</ h1>
                               <p className="text-gray-500 text-sm">
-                                {(searchResult?.Tracking_Destination_Branch_Delivery_Parcel_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Time)
+                                {(searchResult?.Tracking_Destination_Branch_Delivery_Parcel_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Time 
+                                  || searchResult?.Tracking_Destination_Branch_Returned_Parcel_Time
+                                )
                                   ? `Delivery Time: ${formatTime(searchResult.Tracking_Destination_Branch_Delivery_Parcel_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Time)}`
                                   : (searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Return_Time)
-                                    ? `Returned Time: ${formatTime(searchResult.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Return_Time)}`
+                                    ? `Returned Time: ${formatTime(searchResult.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Return_Time) || searchResult?.Tracking_Destination_Branch_Returned_Parcel_Time}`
                                     : 'Not Available'}
                               </p>
 
