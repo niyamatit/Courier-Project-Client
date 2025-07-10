@@ -31,7 +31,7 @@ const Pending_Parecl_List_International = () => {
 
   const handleAccept = async (pkgId) => {
     try {
-      await axiosSecure.post(`/package/accept/destination/${pkgId}`);
+      await axiosSecure.post(`/int/accept/destination/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
@@ -48,7 +48,7 @@ const Pending_Parecl_List_International = () => {
   };
    const handleDelivery = async (pkgId) => {
     try {
-      await axiosSecure.post(`/package/accept/destination/delivery/${pkgId}`);
+      await axiosSecure.post(`/int/accept/destination/delivery/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Deliveried",
@@ -65,7 +65,7 @@ const Pending_Parecl_List_International = () => {
   };
   const handleHold = async (pkgId) => {
     try {
-      await axiosSecure.post(`/package/accept/destination/delivery/hold/${pkgId}`);
+      await axiosSecure.post(`/int/accept/destination/delivery/hold/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Holded",
@@ -82,7 +82,7 @@ const Pending_Parecl_List_International = () => {
   };
   const handlReturn = async (pkgId) => {
     try {
-      await axiosSecure.post(`/package/accept/destination/delivery/hold/return/${pkgId}`);
+      await axiosSecure.post(`/int/accept/destination/delivery/hold/return/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Returned",
@@ -99,7 +99,7 @@ const Pending_Parecl_List_International = () => {
   };
   const handlExchange = async (pkgId) => {
     try {
-      await axiosSecure.post(`/package/accept/destination/delivery/hold/return/Exchange/${pkgId}`);
+      await axiosSecure.post(`/int/accept/destination/delivery/hold/return/Exchange/${pkgId}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Exchanged",
@@ -126,11 +126,11 @@ const Pending_Parecl_List_International = () => {
     }
 
     try {
-      await axiosSecure.post(`/package/select-rider/rider/${selectedPackage._id}`, {
-        Tracking_Destination_Branch_Select_Rider: selectedBranch,
-        Tracking_Destination_Branch_Note: note,
+      await axiosSecure.post(`/int/select-rider/rider/${selectedPackage._id}`, {
+        Tracking_Destination_Branch_Select_Rider_Int: selectedBranch,
+        Tracking_Destination_Branch_Note_Int: note,
         done:"done",
-        Tracking_Destination_Branch_Select_Rider_Date: new Date()
+        Tracking_Destination_Branch_Select_Rider_Date_Int: new Date()
       });
       Swal.fire({
         icon: "success",
@@ -194,8 +194,8 @@ const Pending_Parecl_List_International = () => {
                       </button>
                     )}
                     {
-                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Delivery_Parcel) &&
-                      (pkg?.Tracking_Destination_Branch_Delivery_Parcel ? (
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Delivery_Parcel_Int) &&
+                      (pkg?.Tracking_Destination_Branch_Delivery_Parcel_Int ? (
                         <h1 className="text-green-500 border p-1 border-green-500">Deliveried</h1>
                       ) : (
                         <button
@@ -208,7 +208,7 @@ const Pending_Parecl_List_International = () => {
                     }
 
                     {
-                     ( !pkg?.done || pkg?.Tracking_Destination_Branch_Hold_Parcel) && (pkg?.Tracking_Destination_Branch_Hold_Parcel ? (
+                     ( !pkg?.done || pkg?.Tracking_Destination_Branch_Hold_Parcel_Int) && (pkg?.Tracking_Destination_Branch_Hold_Parcel_Int ? (
                         <h1 className="text-yellow-500 border p-1 border-green-500">Holded</h1>
                       ) : (
                         <button
@@ -220,7 +220,7 @@ const Pending_Parecl_List_International = () => {
                       ))
                     }
                     {
-                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Returned_Parcel) && (pkg?.Tracking_Destination_Branch_Returned_Parcel ? (
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Returned_Parcel_Int) && (pkg?.Tracking_Destination_Branch_Returned_Parcel_Int ? (
                         <h1 className="text-red-500 border p-1 border-green-500">Returned</h1>
                       ) : (
                         <button
@@ -232,7 +232,7 @@ const Pending_Parecl_List_International = () => {
                       ))
                     }
                    {
-                    (!pkg?.done || pkg?.Tracking_Destination_Branch_Exchanged_Parcel) &&  (pkg?.Tracking_Destination_Branch_Exchanged_Parcel ? (
+                    (!pkg?.done || pkg?.Tracking_Destination_Branch_Exchanged_Parcel_Int) &&  (pkg?.Tracking_Destination_Branch_Exchanged_Parcel_Int ? (
                       <h1 className="text-yellow-500 border p-1 border-green-500">Exchanged</h1>
                     ) : (
                       <button
@@ -244,7 +244,7 @@ const Pending_Parecl_List_International = () => {
                     ))
                    }
                     {
-                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Select_Rider) && (pkg?.Tracking_Destination_Branch_Select_Rider ? (
+                      (!pkg?.done || pkg?.Tracking_Destination_Branch_Select_Rider_Int) && (pkg?.Tracking_Destination_Branch_Select_Rider_Int ? (
                         <h1 className="text-green-500 border p-1 border-green-500">
                           Already Selected Rider
                         </h1>
