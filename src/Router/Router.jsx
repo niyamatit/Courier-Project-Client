@@ -110,6 +110,7 @@ import InterNational_Booking_Branch_History from "../Components/DashBoard/Host/C
 import All_InterNational_Booking from "../Components/DashBoard/Admin/All_InterNational_Booking";
 import MotherHub_Select_Parcel_Int from "../Components/Pages/Home/PackageTracking/MotherHub_Select_Parcel_Int";
 import Pending_Parecl_List_International from "../Components/Pages/Home/PackageTracking/Pending_Parecl_List_International";
+import Pickup_Parcel_Int from "../Components/Pages/Home/PackageTracking/Pickup_Parcel_Int";
 
 
 
@@ -779,6 +780,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <PickUpParcelList_Merchant />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pickup-list-int",
+        element: (
+          <PrivateRoute>
+           <Pickup_Parcel_Int/>
           </PrivateRoute>
         ),
       },
