@@ -20,11 +20,11 @@ const Pending_Parecl_List_International = () => {
     }
   });
 
-  const { data: Verify_Admin_MotherHub = [], refetch } = useQuery({
-    queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
+  const { data: Verify_Admin_MotherHub_Int = [], refetch } = useQuery({
+    queryKey: ["Verify_Admin_MotherHub_Int", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/package/email/Branch/${verifiedUser?.email}`);
+      const res = await axiosSecure.get(`/int/email/Branch/${verifiedUser?.email}`);
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
@@ -151,7 +151,7 @@ const Pending_Parecl_List_International = () => {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Select Rider For The Parcels {verifiedUser?.name}</h1>
-      {Array.isArray(Verify_Admin_MotherHub) && Verify_Admin_MotherHub.length > 0 ? (
+      {Array.isArray(Verify_Admin_MotherHub_Int) && Verify_Admin_MotherHub_Int.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
             <thead className="bg-blue-500 text-white">
@@ -168,7 +168,7 @@ const Pending_Parecl_List_International = () => {
               </tr>
             </thead>
             <tbody>
-              {Verify_Admin_MotherHub.map((pkg, idx) => (
+              {Verify_Admin_MotherHub_Int.map((pkg, idx) => (
                 <tr key={pkg._id} className="hover:bg-blue-100">
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
