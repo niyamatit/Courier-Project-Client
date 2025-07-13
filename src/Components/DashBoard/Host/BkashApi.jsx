@@ -56,13 +56,35 @@ accountNumber,
 transactionId,
 Payment_Email: verifiedUser?.email ||"",
 Payment_Name: verifiedUser?.name ||"",
-date : new Date().toLocaleDateString(),
-Role: "Branch"
+date : new Date().toLocaleString(),
+Role: verifiedUser?.role || "N/A",
+status: "pending",
 
     }
     // console.log('Payment Data:', paymentData);
     // Optionally send this data to your backend
-    axiosSecure.post('/payment-confirm',paymentData)
+   try {
+      const res = await axiosSecure.post('/payment-confirm', paymentData);
+      if (res.data.insertedId) {
+       
+        setAmount('');
+        setAccountNumber('');   
+        setTransactionId('');
+        Swal.fire({
+          icon: 'success',
+          title: 'Payment Saved Wait For Admin Approval',
+          text: `Transaction ID: ${transactionId}`,
+        });
+      }
+
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed to Save',
+        text: 'Something went wrong while saving payment data.',
+      });
+    }
   };
 
   return (
@@ -75,6 +97,7 @@ Role: "Branch"
         className="w-full p-2 border mb-4 rounded"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
+        placeholder='Enter Amount'
       />
 
       <label className="block mb-2">Your Account Number:</label>
@@ -83,6 +106,7 @@ Role: "Branch"
         className="w-full p-2 border mb-4 rounded"
         value={accountNumber}
         onChange={(e) => setAccountNumber(e.target.value)}
+        placeholder='Enter Your Account Number'
       />
 
       <button
@@ -111,14 +135,14 @@ Role: "Branch"
         </>
       )}
 
-      {paid && (
+      {/* {paid && (
         <div className="mt-6 p-4 border border-green-600 rounded bg-green-50">
-          <h2 className="text-green-700 font-semibold">Payment Successful</h2>
+          <h2 className="text-green-700 font-semibold">Payment Info</h2>
           <p>Amount: ৳{amount}</p>
           <p>Account: {accountNumber}</p>
           <p>Transaction ID: {transactionId}</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
