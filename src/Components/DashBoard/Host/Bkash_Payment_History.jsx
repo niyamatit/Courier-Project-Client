@@ -42,6 +42,7 @@ const Bkash_Payment_History = () => {
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700">Transaction ID</th>
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700">Status</th>
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700 rounded-tr-lg">Payment Status</th>
+              <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700 rounded-tr-lg">Admin Note</th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +70,7 @@ const Bkash_Payment_History = () => {
                     <span className="text-green-500">Payment Confirmed</span>)
                  }
                 </>}</td>
+                <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.note || 'No Note'}</td>
               </tr>
             ))}
           </tbody>
