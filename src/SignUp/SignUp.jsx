@@ -16,7 +16,7 @@ const handleSignUp = async e => {
   const form = e.target;
   const name = form.name.value;
   const email = form.email.value;
-  const password = form.password.value;
+  const password = form.password.value.trim();
   const image = form.image.files[0];
   const role = 'guest'
 
