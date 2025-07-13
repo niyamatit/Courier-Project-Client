@@ -121,7 +121,8 @@ const Bkash_Payment_Admin = () => {
                 <table className="min-w-full bg-white border border-gray-200">
                     <thead className="bg-blue-100 border-b border-gray-300">
                         <tr>
-                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase">Amount</th>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase">SL</th>
+                            <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase">Amount(৳)</th>
                             <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase">Account</th>
                             <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase">Transaction ID</th>
                             <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase">Email</th>
@@ -134,15 +135,16 @@ const Bkash_Payment_Admin = () => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {Payment_History_Admin.map((payment) => (
+                        {Payment_History_Admin.map((payment,index) => (
                             <tr key={payment._id} className="hover:bg-gray-50">
-                                <td className="py-4 px-6">{payment.amount}</td>
+                                <td className="py-4 px-6">{index+1}</td>
+                                <td className="py-4 px-6 font-bold">৳ {payment.amount}</td>
                                 <td className="py-4 px-6">{payment.accountNumber}</td>
                                 <td className="py-4 px-6">{payment.transactionId}</td>
                                 <td className="py-4 px-6">{payment.Payment_Email}</td>
                                 <td className="py-4 px-6">{payment.Payment_Name}</td>
                                 <td className="py-4 px-6">{payment.date}</td>
-                                <td className="py-4 px-6">{payment.Role}</td>
+                                <td className="py-4 px-6">{payment.Role === 'host' ? 'Branch' : 'Merchant'}</td>
                                 <td className="py-4 px-6">
                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                         payment.status === 'confirmed'
