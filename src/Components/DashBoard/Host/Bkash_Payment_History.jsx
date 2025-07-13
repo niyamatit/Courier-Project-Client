@@ -51,7 +51,7 @@ const Bkash_Payment_History = () => {
               <tr key={payment._id} className="hover:bg-blue-50 transition duration-200 even:bg-blue-50 odd:bg-white">
                 <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{index+1}</td>
                 <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.date}</td>
-                <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.amount} ৳</td>
+                <td className="py-3 px-6 border-b border-blue-200 text-gray-800 font-bold">৳ {payment.amount} </td>
                 <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.accountNumber}</td>
                 <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.transactionId}</td>
                 <td className="py-3 px-6 border-b border-blue-200">
