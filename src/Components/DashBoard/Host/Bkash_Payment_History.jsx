@@ -64,7 +64,10 @@ const Bkash_Payment_History = () => {
                     <span className="text-red-500">Wait For Admin Confirmation</span>
                 </> : <>
                 
-                 <span className="text-green-500">Admin Confirmed</span>
+                 {
+                    payment.status === 'confirmed' && (
+                    <span className="text-green-500">Payment Confirmed</span>)
+                 }
                 </>}</td>
               </tr>
             ))}

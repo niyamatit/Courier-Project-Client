@@ -63,8 +63,55 @@ const Bkash_Payment_Admin = () => {
         }
     };
 
+    const handleRejectPayment = async (id, currentStatus) => {
+        if (currentStatus === 'confirmed') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Already Confirmed!',
+                text: 'You cannot reject a confirmed payment.'
+            });
+            return;
+        }
+
+        if (currentStatus === 'rejected') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Already Rejected!',
+                text: 'This payment has already been rejected.'
+            });
+            return;
+        }
+
+        const note = noteStates[id] || '';
+
+        try {
+            const res = await axiosSecure.patch(`/bkash/${id}`, { status: 'rejected', note });
+            if (res.data.modifiedCount > 0) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Rejected!',
+                    text: 'Payment has been rejected.'
+                });
+                refetch();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to reject payment.'
+                });
+            }
+        } catch (error) {
+            console.error("Error rejecting payment:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An error occurred while rejecting the payment.'
+            });
+        }
+    };
+
     if (isLoading) {
-        return <p>Loading payment history...</p>;
+        return <p className="text-center text-lg mt-10">Loading payment history...</p>;
     }
 
     return (
@@ -98,7 +145,11 @@ const Bkash_Payment_Admin = () => {
                                 <td className="py-4 px-6">{payment.Role}</td>
                                 <td className="py-4 px-6">
                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                        payment.status === 'confirmed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                        payment.status === 'confirmed'
+                                            ? 'bg-green-100 text-green-800'
+                                            : payment.status === 'rejected'
+                                            ? 'bg-red-100 text-red-800'
+                                            : 'bg-yellow-100 text-yellow-800'
                                     }`}>
                                         {payment.status}
                                     </span>
@@ -110,21 +161,34 @@ const Bkash_Payment_Admin = () => {
                                         placeholder="Optional note"
                                         value={noteStates[payment._id] ?? payment.note ?? ''}
                                         onChange={(e) => handleNoteChange(payment._id, e.target.value)}
-                                        disabled={payment.status === 'confirmed'}
+                                        disabled={payment.status === 'confirmed' || payment.status === 'rejected'}
                                     />
                                 </td>
                                 <td className="py-4 px-6">
-                                    <button
-                                        onClick={() => handleConfirmPayment(payment._id, payment.status)}
-                                        className={`px-4 py-2 rounded-md transition duration-300 ${
-                                            payment.status === 'confirmed'
-                                                ? 'bg-gray-400 text-white cursor-not-allowed'
-                                                : 'bg-blue-600 hover:bg-blue-700 text-white'
-                                        }`}
-                                        disabled={payment.status === 'confirmed'}
-                                    >
-                                        {payment.status === 'confirmed' ? 'Confirmed' : 'Confirm'}
-                                    </button>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => handleConfirmPayment(payment._id, payment.status)}
+                                            className={`px-3 py-1 rounded-md text-sm transition ${
+                                                payment.status === 'confirmed'
+                                                    ? 'bg-gray-400 text-white cursor-not-allowed'
+                                                    : 'bg-green-600 hover:bg-green-700 text-white'
+                                            }`}
+                                            disabled={payment.status === 'confirmed' || payment.status === 'rejected'}
+                                        >
+                                            Confirm
+                                        </button>
+                                        <button
+                                            onClick={() => handleRejectPayment(payment._id, payment.status)}
+                                            className={`px-3 py-1 rounded-md text-sm transition ${
+                                                payment.status === 'confirmed' || payment.status === 'rejected'
+                                                    ? 'bg-gray-400 text-white cursor-not-allowed'
+                                                    : 'bg-red-600 hover:bg-red-700 text-white'
+                                            }`}
+                                            disabled={payment.status === 'confirmed' || payment.status === 'rejected'}
+                                        >
+                                            Reject
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
