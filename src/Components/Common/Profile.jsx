@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 
 import { useState } from "react"
@@ -162,7 +163,7 @@ const obfuscatePassword = (password) => {
                             placeholder='New Password'
                             className='w-full p-2 border rounded-lg'
                             value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
+                            onChange={(e) => setNewPassword(e.target.value.trim())}
                           />
                         </div>
                         <div>

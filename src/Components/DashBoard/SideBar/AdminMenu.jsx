@@ -104,6 +104,12 @@ const AdminMenu = () => {
         address='recharge-complete'
       />
       <MenuItem
+        icon={MdPending}
+
+        label='Bkash Recharge History'
+        address='recharge-bkash-history-admin'
+      />
+      <MenuItem
         icon={MdBookOnline}
 
         label='Online Booking view'
