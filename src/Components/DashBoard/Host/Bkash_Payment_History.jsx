@@ -36,7 +36,8 @@ const Bkash_Payment_History = () => {
         <table className="min-w-full bg-white border border-blue-200 shadow-md rounded-lg">
           <thead>
             <tr className="bg-blue-600 text-white">
-              <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700 rounded-tl-lg">Date</th>
+              <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700 rounded-tl-lg">SL</th>
+              <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700 rounded-tl-lg">Time</th>
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700">Amount(৳)</th>
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700">Account Number</th>
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700">Transaction ID</th>
@@ -46,10 +47,11 @@ const Bkash_Payment_History = () => {
             </tr>
           </thead>
           <tbody>
-            {Payment_History.map((payment) => (
+            {Payment_History.map((payment,index) => (
               <tr key={payment._id} className="hover:bg-blue-50 transition duration-200 even:bg-blue-50 odd:bg-white">
+                <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{index+1}</td>
                 <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.date}</td>
-                <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.amount}</td>
+                <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.amount} ৳</td>
                 <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.accountNumber}</td>
                 <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.transactionId}</td>
                 <td className="py-3 px-6 border-b border-blue-200">
@@ -66,8 +68,8 @@ const Bkash_Payment_History = () => {
                 </> : <>
                 
                  {
-                    payment.status === 'confirmed' && (
-                    <span className="text-green-500">Payment Confirmed</span>)
+                    payment.status === 'confirmed' ? (
+                    <span className="text-green-500">Payment Confirmed</span>) : (<span className="text-red-500">Payment Rejected</span>)
                  }
                 </>}</td>
                 <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.note || 'No Note'}</td>
