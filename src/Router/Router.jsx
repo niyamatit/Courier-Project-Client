@@ -113,6 +113,7 @@ import Pending_Parecl_List_International from "../Components/Pages/Home/PackageT
 import Pickup_Parcel_Int from "../Components/Pages/Home/PackageTracking/Pickup_Parcel_Int";
 import BkashApi from "../Components/DashBoard/Host/BkashApi";
 import Bkash_Payment_History from "../Components/DashBoard/Host/Bkash_Payment_History";
+import Bkash_Payment_Admin from "../Components/DashBoard/Admin/Bkash_Payment_Admin";
 
 
 
@@ -378,6 +379,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <ManageUsers />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "recharge-bkash-history",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <Bkash_Payment_Admin/>
             </AdminRoute>
           </PrivateRoute>
         ),
