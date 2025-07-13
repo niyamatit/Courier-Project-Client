@@ -176,9 +176,14 @@ const HostMenu = () => {
             address='recharge-history'
           /></li>
           <li><MenuItem
-            icon={FaWpforms}
+            icon={FaMoneyBill}
             label='Pay Bkash'
             address='recharge-bkash'
+          /></li>
+          <li><MenuItem
+            icon={FaWpforms}
+            label='Bkash Pyment History'
+            address='recharge-bkash-history'
           /></li>
         </ul>
       </div>
