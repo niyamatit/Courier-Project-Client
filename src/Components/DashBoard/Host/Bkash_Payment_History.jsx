@@ -58,6 +58,7 @@ const Bkash_Payment_History = () => {
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                     payment.status === 'pending' ? 'bg-yellow-200 text-yellow-800' :
                     payment.status === 'confirmed' ? 'bg-green-200 text-green-800' :
+                    payment.status === 'rejected' ? 'bg-red-200 text-white-800' :
                     'bg-red-200 text-red-800'
                   }`}>
                     {payment.status}
