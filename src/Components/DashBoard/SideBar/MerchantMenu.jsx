@@ -137,6 +137,11 @@ const MerchantMenu = () => {
         label='Recharge Apply'
         address='/dashboard/recharge_apply'
       />
+      <MenuItem
+        icon={CircleDollarSign}
+        label='Pay With Bkash'
+        address='/dashboard/Bkash-Payment'
+      />
 
       {/* <MenuItem
         icon={FaClipboardList}
