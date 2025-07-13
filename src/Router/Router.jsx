@@ -384,7 +384,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "recharge-bkash-history",
+        path: "recharge-bkash-history-admin",
         element: (
           <PrivateRoute>
             <AdminRoute>
