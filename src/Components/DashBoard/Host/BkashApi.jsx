@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import Swal from 'sweetalert2';
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 
@@ -58,6 +58,7 @@ Payment_Email: verifiedUser?.email ||"",
 Payment_Name: verifiedUser?.name ||"",
 
     }
+    console.log('Payment Data:', paymentData);
     // Optionally send this data to your backend
     // axios.post('/api/payment-confirm', { amount, accountNumber, transactionId })
   };
