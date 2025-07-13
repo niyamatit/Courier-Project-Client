@@ -749,6 +749,10 @@ export const router = createBrowserRouter([
         element: <BkashApi />
       },
       {
+        path: "Bkash-Payment-history",
+        element: <Bkash_Payment_History />
+      },
+      {
         path: "recharge_apply",
         element: <Merchant_recharge_apply/>
       },
