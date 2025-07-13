@@ -41,7 +41,7 @@ const Bkash_Payment_History = () => {
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700">Account Number</th>
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700">Transaction ID</th>
               <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700">Status</th>
-              <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700 rounded-tr-lg">Role</th>
+              <th className="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider border-b border-blue-700 rounded-tr-lg">Payment Status</th>
             </tr>
           </thead>
           <tbody>
@@ -60,7 +60,12 @@ const Bkash_Payment_History = () => {
                     {payment.status}
                   </span>
                 </td>
-                <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.Role}</td>
+                <td className="py-3 px-6 border-b border-blue-200 text-gray-800">{payment.status === 'pending' ? <>
+                    <span className="text-red-500">Wait For Admin Confirmation</span>
+                </> : <>
+                
+                 <span className="text-green-500">Admin Confirmed</span>
+                </>}</td>
               </tr>
             ))}
           </tbody>
