@@ -142,6 +142,11 @@ const MerchantMenu = () => {
         label='Pay With Bkash'
         address='/dashboard/Bkash-Payment'
       />
+      <MenuItem
+        icon={History}
+        label='Bkash Payment History'
+        address='/dashboard/Bkash-Payment-history'
+      />
 
       {/* <MenuItem
         icon={FaClipboardList}
