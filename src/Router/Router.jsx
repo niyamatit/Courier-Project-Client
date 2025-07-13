@@ -112,6 +112,7 @@ import MotherHub_Select_Parcel_Int from "../Components/Pages/Home/PackageTrackin
 import Pending_Parecl_List_International from "../Components/Pages/Home/PackageTracking/Pending_Parecl_List_International";
 import Pickup_Parcel_Int from "../Components/Pages/Home/PackageTracking/Pickup_Parcel_Int";
 import BkashApi from "../Components/DashBoard/Host/BkashApi";
+import Bkash_Payment_History from "../Components/DashBoard/Host/Bkash_Payment_History";
 
 
 
@@ -876,6 +877,10 @@ export const router = createBrowserRouter([
       {
         path: "recharge-bkash",
         element: <BkashApi/>
+      },
+      {
+        path: "recharge-bkash-history",
+        element: <Bkash_Payment_History/>
       },
       {
         path: "recharge-processign",
