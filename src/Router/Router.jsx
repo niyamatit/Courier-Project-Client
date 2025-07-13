@@ -111,6 +111,7 @@ import All_InterNational_Booking from "../Components/DashBoard/Admin/All_InterNa
 import MotherHub_Select_Parcel_Int from "../Components/Pages/Home/PackageTracking/MotherHub_Select_Parcel_Int";
 import Pending_Parecl_List_International from "../Components/Pages/Home/PackageTracking/Pending_Parecl_List_International";
 import Pickup_Parcel_Int from "../Components/Pages/Home/PackageTracking/Pickup_Parcel_Int";
+import BkashApi from "../Components/DashBoard/Host/BkashApi";
 
 
 
@@ -871,6 +872,10 @@ export const router = createBrowserRouter([
       {
         path: "recharge-apply",
         element: <RechargeApply></RechargeApply>
+      },
+      {
+        path: "recharge-bkash",
+        element: <BkashApi/>
       },
       {
         path: "recharge-processign",

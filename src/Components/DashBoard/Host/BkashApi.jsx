@@ -1,6 +1,7 @@
 import  { useState } from 'react';
 import Swal from 'sweetalert2';
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
+import axiosSecure from '../../../api/axiosSecure';
 
 const BkashApi = () => {
   const [amount, setAmount] = useState('');
@@ -31,7 +32,7 @@ const BkashApi = () => {
     });
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!transactionId) {
       Swal.fire({
         icon: 'error',
@@ -51,16 +52,17 @@ const BkashApi = () => {
 
     const paymentData = {
       amount,                   
-
-        accountNumber,
+accountNumber,
 transactionId,
 Payment_Email: verifiedUser?.email ||"",
 Payment_Name: verifiedUser?.name ||"",
+date : new Date().toLocaleDateString(),
+Role: "Branch"
 
     }
-    console.log('Payment Data:', paymentData);
+    // console.log('Payment Data:', paymentData);
     // Optionally send this data to your backend
-    // axios.post('/api/payment-confirm', { amount, accountNumber, transactionId })
+    axiosSecure.post('/payment-confirm',paymentData)
   };
 
   return (
