@@ -87,12 +87,18 @@ const Notice = () => {
         </div>
 
         <button
-          type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-          disabled={notices.length > 0}
-        >
-          ➕ Add Notice
-        </button>
+  type="submit"
+  className={`px-6 py-2 rounded-lg transition font-medium ${
+    notices.length > 0
+      ? 'bg-white text-gray-400 border border-gray-300 cursor-not-allowed'
+      : 'bg-blue-600 text-white hover:bg-blue-700'
+  }`}
+  disabled={notices.length > 0}
+  title={notices.length > 0 ? 'You already have a notice' : 'Add a new notice'}
+>
+  ➕ Add Notice
+</button>
+
       </form>
 
       {/* Notices List */}
