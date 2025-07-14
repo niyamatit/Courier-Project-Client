@@ -20,6 +20,10 @@ const AdminMenu = () => {
         address='/dashboard/statistics'
       />
 
+      <MenuItem icon={MdPersonAdd}
+        label='Add Notice'
+        address='add-notice' />
+
       <MenuItem icon={FaUserCog}
         label='Manage Users'
         address='manage-users' />
