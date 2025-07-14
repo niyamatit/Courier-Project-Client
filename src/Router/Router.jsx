@@ -114,6 +114,7 @@ import Pickup_Parcel_Int from "../Components/Pages/Home/PackageTracking/Pickup_P
 import BkashApi from "../Components/DashBoard/Host/BkashApi";
 import Bkash_Payment_History from "../Components/DashBoard/Host/Bkash_Payment_History";
 import Bkash_Payment_Admin from "../Components/DashBoard/Admin/Bkash_Payment_Admin";
+import Notice from "../Components/DashBoard/Admin/Notice";
 
 
 
@@ -389,6 +390,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <Bkash_Payment_Admin/>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "add-notice",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <Notice />
             </AdminRoute>
           </PrivateRoute>
         ),
