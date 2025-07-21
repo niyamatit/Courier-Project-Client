@@ -9,6 +9,7 @@ import OfflinePrintModal from "./OfflinePrintModal";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 import UseStaffVerify from "../../../../../hooks/UseStaffVerify/UseStaffVerify";
+import axios from "axios";
 
 const BookingForm = () => {
   const {
@@ -268,6 +269,49 @@ const BookingForm = () => {
         const response = await axiosSecure.put("/number");
         setCnNumber(response.data.nextNumber);
         setBookingInfo(Bookinginfo);
+        // Step 5: Send SMS using BulkSMSBD
+   // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+
+// Build message
+const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
+const receiverMessage = `Hello ${Bookinginfo.receiverName}, Your Parcel : ${bookingInfo?.product}, Your parcel booking (CN: ${Bookinginfo.CnNumber}) is successful.`;
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?.senderContactNo)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data.receiverContactNo)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+console.log(data?.senderContactNo, data.receiverContactNo, "Sender and Receiver Contact No."  );
+try {
+  const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    axios.get(receiverUrl)
+  ]);
+
+  // Optional console for debug
+  console.log("SMS Response:", senderRes.data, receiverRes.data);
+
+  if (senderRes.data?.error_message || receiverRes.data?.error_message) {
+    const senderError = senderRes.data?.error_message || '';
+    const receiverError = receiverRes.data?.error_message || '';
+    
+    Swal.fire({
+      icon: "warning",
+      title: "SMS Error",
+      html: `<b>Sender SMS:</b> ${senderError}<br><b>Receiver SMS:</b> ${receiverError}`,
+    });
+  } else {
+    console.log("SMS sent successfully");
+  }
+} catch (smsError) {
+  console.error("SMS sending failed:", smsError);
+  Swal.fire({
+    icon: "error",
+    title: "SMS Failed",
+    text: "Failed to send SMS due to network or API issue.",
+  });
+}
       }
     } catch (error) {
       console.error("Error adding parcel:", error);
