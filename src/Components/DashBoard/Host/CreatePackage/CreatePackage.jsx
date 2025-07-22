@@ -534,6 +534,8 @@ const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(rec
     </label>
     <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile'
     onChange={handleSenderMobileChange}
+    minLength={11} 
+    maxLength={11}
     required />
 </div>
                     <div className="form-control md:w-1/2">
@@ -635,6 +637,8 @@ const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(rec
                         </label>
                         <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
                         onChange={handleReceiverMobileChange}
+                        maxLength={11}
+                        minLength={11}
                         required />
 
                     </div>
