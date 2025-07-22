@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import axiosSecure from "../../../../../api/axiosSecure";
 import useAuth from "../../../../../hooks/useAuth";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
+import axios from "axios";
 
 
 const RechargeApply = () => {
@@ -28,6 +29,7 @@ const RechargeApply = () => {
             Account_Number: data?.accountNumber || "",
             Branch_Request_Amount: data?.accountAmount || "",
             Recharge_Note: data?.rechargenote || "",
+            Mobile_Number: data?.mobile_Number || "",
             Date: new Date().toISOString().split('T')[0],
             Status: "processing",
             update: "recharge"
@@ -43,6 +45,30 @@ const RechargeApply = () => {
                 showConfirmButton: false,
                 timer: 1500,
             });
+
+            // ============================================SMS=======================================
+             // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+
+// Build message
+const senderMessage = `Dear ${verifiedUser?.name}, Your recharge request (A/C No: ${data?.accountNumber}) is successful.
+
+Recharge Amount: ৳${data?.accountAmount} is waiting for waiting for admin approval.
+
+Thank you for choosing Niyamat Express Courier & Parcel Service.
+ 
+`;
+
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?.mobile_Number)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+      const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    
+  ]); 
         }
     };
 
@@ -98,6 +124,22 @@ const RechargeApply = () => {
                             />
                             {errors.accountamount && (
                                 <span className="text-red-500">{errors.accountamount.message}</span>
+                            )}
+                        </div>
+                        {/* Mobile Number */}
+                        <div className="field mt-2">
+                            <label htmlFor="account amount:" className="block mb-2">
+                                Mobile Number
+                            </label>
+                            <InputText
+                                id="mobile_Number"
+                                {...register("mobile_Number", { required: "account amount is required" })}
+                                className="w-full p-inputtext"
+                                minLength={11}
+                                maxLength={11}
+                            />
+                            {errors.mobile_Number && (
+                                <span className="text-red-500">{errors.mobile_Number.message}</span>
                             )}
                         </div>
                         {/* recharge note */}
