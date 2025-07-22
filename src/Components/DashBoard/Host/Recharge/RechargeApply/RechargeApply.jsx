@@ -63,7 +63,7 @@ Thank you for choosing Niyamat Express Courier & Parcel Service.
 
 
 // Build URLs
-const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?.mobile_Number)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?.accountNumber)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
 // const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
       const [senderRes, receiverRes] = await Promise.all([
     axios.get(senderUrl),
@@ -127,7 +127,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?
                             )}
                         </div>
                         {/* Mobile Number */}
-                        <div className="field mt-2">
+                        {/* <div className="field mt-2">
                             <label htmlFor="account amount:" className="block mb-2">
                                 Mobile Number
                             </label>
@@ -141,7 +141,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?
                             {errors.mobile_Number && (
                                 <span className="text-red-500">{errors.mobile_Number.message}</span>
                             )}
-                        </div>
+                        </div> */}
                         {/* recharge note */}
                         <div className="field mt-2">
                             <label htmlFor="recharge note:" className="block mb-2">

@@ -15,6 +15,7 @@ const RechargeProcessign = () => {
 
     // console.log(recharge)
     const rechargeProcessing = recharge.filter(user => user?.update === 'recharge');
+    console.log(rechargeProcessing,"rechargeProcessing");
     return (
         <div>
             <div className='container mx-auto px-4 sm:px-8'>
