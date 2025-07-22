@@ -7,6 +7,7 @@ import axiosSecure from "../../../../api/axiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
+import axios from "axios";
 
 
 
@@ -392,7 +393,7 @@ const handleDivisionChange = (e) => {
             if (response?.insertedId) {
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
                 SetCnNumber(cnUpdateResponse.data.nextNumber);
-    
+    // ----------------------------------------
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -401,6 +402,33 @@ const handleDivisionChange = (e) => {
                     timer: 1500,
                 });
                 toast.success("Package Added!");
+// ----------------------------------------SMS Section-----------------------------------------
+
+        // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+
+// Build message
+const senderMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${CnNumber}) is Successful.
+Thanks Niyamat Express Courier and Parcel Service
+For Tracking visit: https://www.niyamatexpress.com/tracking 
+`;
+// const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
+const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${CnNumber}) is Successful.
+Thanks Niyamat Express Courier and Parcel Service
+For Tracking visit: https://www.niyamatexpress.com/tracking 
+`;
+// const receiverMessage = `Hello ${Bookinginfo.receiverName}, Your Parcel : ${bookingInfo?.product}, Your parcel booking (CN: ${Bookinginfo.CnNumber}) is successful.`;
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(senderMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+      const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    axios.get(receiverUrl)
+  ]);    
+
             }
         } catch (error) {
             console.error("Error:", error.message);
@@ -506,6 +534,8 @@ const handleDivisionChange = (e) => {
     </label>
     <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile'
     onChange={handleSenderMobileChange}
+    minLength={11} 
+    maxLength={11}
     required />
 </div>
                     <div className="form-control md:w-1/2">
@@ -607,6 +637,8 @@ const handleDivisionChange = (e) => {
                         </label>
                         <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
                         onChange={handleReceiverMobileChange}
+                        maxLength={11}
+                        minLength={11}
                         required />
 
                     </div>

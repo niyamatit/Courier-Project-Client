@@ -18,6 +18,7 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
 
 import InterNationalPrintModal_Branch from "./InterNationalPrintModal_Branch";
+import axios from "axios";
 
 const InterNational_Booking_Branch = () => {
   const {
@@ -295,6 +296,32 @@ const InterNational_Booking_Branch = () => {
         const response = await axiosSecure.put("/Branch/Int/CnNmber");
         setCnNumber(response.data.nextNumber);
         setBookingInfo(Bookinginfo);
+
+        // ------------------------------------SMS------------------------------------------
+          // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+
+// Build message
+const senderMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${data?.CnNumber}) is Successful.
+Thanks Niyamat Express Courier and Parcel Service
+For Tracking visit: https://www.niyamatexpress.com/tracking 
+`;
+// const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
+// const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${CnNumber}) is Successful.
+// Thanks Niyamat Express Courier and Parcel Service
+// For Tracking visit: https://www.niyamatexpress.com/tracking 
+// `;
+// const receiverMessage = `Hello ${Bookinginfo.receiverName}, Your Parcel : ${bookingInfo?.product}, Your parcel booking (CN: ${Bookinginfo.CnNumber}) is successful.`;
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?.SenderContactINT)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+      const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    
+  ]); 
       }
     } catch (error) {
       console.error("Error adding parcel:", error);
@@ -445,6 +472,7 @@ const InterNational_Booking_Branch = () => {
                 onChange={(e) => setSenderContactNo(e.target.value)}
                 type="number"
                 minLength={11}
+                maxLength={11}
 
               />
               <InputField
@@ -602,6 +630,8 @@ const InterNational_Booking_Branch = () => {
                 placeholder="Enter Sender Contact Number"
                 onChange={(e) => setReceiverContactNo(e.target.value)}
                 type="number"
+                minLength={11}
+                maxLength={11}
               />
               <InputField
                 watchValues={watchValues}

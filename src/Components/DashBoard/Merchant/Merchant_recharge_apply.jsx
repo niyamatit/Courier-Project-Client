@@ -3,12 +3,13 @@ import axiosSecure from "../../../api/axiosSecure";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import axios from "axios";
 
 const Merchant_recharge_apply = () => {
     const [verifiedUser, isLoading, refetch] = useUsersData(); // Assuming useUsersData returns refetch too
     const { register, handleSubmit, reset } = useForm();
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    const [mobile, setMobile] = useState("");
    const onSubmit = async () => {
     if (verifiedUser?.Merchant_Balance < 0) return;
 
@@ -33,6 +34,7 @@ const Merchant_recharge_apply = () => {
             merchantID: verifiedUser?.merchantID,
             Merchant_email: verifiedUser?.email,
             Merchant_Name: verifiedUser?.name,
+            Mobile_Number: mobile,
             Note: `Apply Recharge ${verifiedUser?.name}`,
             transaction_date: new Date(),
             transaction_type: "recharge",
@@ -55,6 +57,28 @@ const Merchant_recharge_apply = () => {
         });
         reset();
         refetch();
+          // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+
+// Build message
+const senderMessage = `Dear ${verifiedUser?.name}, Your recharge request  is successful.
+
+Recharge Amount: ৳${verifiedUser?.Merchant_Balance} is waiting for waiting for admin approval.
+
+Thank you for choosing Niyamat Express Courier & Parcel Service.
+ 
+`;
+
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(mobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+      const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    
+  ]); 
 
     } catch (error) {
         console.error("Recharge error:", error);
@@ -96,6 +120,20 @@ const Merchant_recharge_apply = () => {
                         {verifiedUser?.Merchant_Balance < 0 && (
                             <p className="text-red-500 text-sm mt-1">Balance is negative. Recharge not allowed.</p>
                         )}
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                           Mobile Number
+                        </label>
+                        <input
+                            type="number"
+                            minLength={11}
+                            maxLength={11}
+                            value={mobile}
+          onChange={(e) => setMobile(e.target.value)}
+                            className="w-full px-4 py-2 border border-blue-200 rounded-lg bg-gray-100"
+                        />
+                       
                     </div>
 
                     {/* Submit Button */}
