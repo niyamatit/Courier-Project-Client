@@ -276,12 +276,12 @@ const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
 
 // Build message
-const senderMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${Bookinginfo.CnNumber}) Successful.
+const senderMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${Bookinginfo.CnNumber}) is Successful.
 Thanks Niyamat Express Courier and Parcel Service
 For Tracking visit: https://www.niyamatexpress.com/tracking 
 `;
 // const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
-const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${Bookinginfo.CnNumber}) Successful.
+const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${Bookinginfo.CnNumber}) is Successful.
 Thanks Niyamat Express Courier and Parcel Service
 For Tracking visit: https://www.niyamatexpress.com/tracking 
 `;
@@ -502,6 +502,7 @@ try {
                 onChange={(e) => setSenderContactNo(e.target.value)}
                 type="number"
                 minLength={11}
+                maxLength={11}
 
               />
               <InputField
@@ -610,6 +611,8 @@ try {
                 placeholder="receiver contact no."
                 onChange={(e) => setReceiverContactNo(e.target.value)}
                 type="number"
+                minLength={11}
+                maxLength={11}
               />
               <InputField
                 watchValues={watchValues}
