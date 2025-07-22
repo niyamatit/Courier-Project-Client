@@ -298,7 +298,7 @@ try {
   ]);
 
   // Optional console for debug
-  console.log("SMS Response:", senderRes.data, receiverRes.data);
+  // console.log("SMS Response:", senderRes.data, receiverRes.data);
 
   if (senderRes.data?.error_message || receiverRes.data?.error_message) {
     const senderError = senderRes.data?.error_message || '';
