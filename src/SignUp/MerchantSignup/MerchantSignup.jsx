@@ -6,6 +6,7 @@ import axiosSecure from '../../api/axiosSecure';
 import { imageUpload } from '../../api/utils';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 const MerchantSignup = () => {
   const [loading, setLoading] = React.useState(false);
@@ -703,7 +704,24 @@ const handleSignUp = async (data) => {
   const uniqueId = `${datePart}${randomPart}`;
   const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '0')}`;
   const merchantID = timePart + uniqueId;
+ // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+const otpGenerated = Math.floor(1000 + Math.random() * 900000).toString();
+// Build message
+const senderMessage = `Your OTP is ${otpGenerated}
+ 
+`;
 
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data.email)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+      const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    
+  ]); 
   try {
     setLoading(true);
 
@@ -843,13 +861,14 @@ return (
 
           <div className='grid grid-cols-2 gap-4'>
           <div>
-            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Email Address or Phone Number</label>
+            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Phone Number</label>
             <input
-              type="text"
+              type="number"
               id="email"
-              placeholder="Enter Your Email or Phone Number"
+              placeholder="Enter Your Phone Number"
               {...register('email', { required: 'Email or phone number is required' })}
               className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-gray-100"
+              maxLength={11}
             />
             {errors.email && <span className="text-red-500">{errors.email.message}</span>}
           </div>
