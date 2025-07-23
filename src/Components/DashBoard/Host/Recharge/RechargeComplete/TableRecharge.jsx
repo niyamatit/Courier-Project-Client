@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosSecure from "../../../../../api/axiosSecure";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
+import axios from "axios";
 
 
 const TableRecharge = ({ recharge, refetch }) => {
@@ -68,6 +69,28 @@ const TableRecharge = ({ recharge, refetch }) => {
           
          
       });
+       // ============================================SMS=======================================
+             // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+
+// Build message
+const senderMessage = `Dear ${recharge?.Branch_Name}, your recharge request (A/C No: ${recharge?.Account_Number}) of ৳ ${amount} has been approved and added to your balance.
+
+Thank you for choosing Niyamat Express Courier & Parcel Service.
+
+ 
+`;
+
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recharge?.Account_Number)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+      const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    
+  ]); 
         if (deleteResponse.status === 200) {
           console.log('Recharge successfully deleted.');
         }
