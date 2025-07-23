@@ -1,7 +1,7 @@
-import React from 'react';
+import  { useState } from 'react';
 
 const OTP_Modal = ({ show, onClose, onSubmit }) => {
-  const [otp, setOtp] = React.useState('');
+  const [otp, setOtp] = useState('');
 
   if (!show) return null;
 
