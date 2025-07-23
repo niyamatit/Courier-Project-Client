@@ -726,7 +726,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data.
     setLoading(true);
 
     // Upload image
-    const imageData = await imageUpload(data.image[0]); // Assuming imageUpload is your image uploading function
+    const imageData = await imageUpload(data.image[0]);  
 
     // Send signup request
     const response = await axiosSecure.post('/users/auth/register', {
