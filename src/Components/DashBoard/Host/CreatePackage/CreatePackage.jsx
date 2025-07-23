@@ -49,16 +49,17 @@ const CreatePackage = () => {
     const [weightCharge, setWeightCharge] = useState(0);
     const [weight, setWeight] = useState("");
     const [selectedDivision, setSelectedDivision] = useState('');
-    
+    const [qty, setQty] = useState('');
+const [autoRateOverride, setAutoRateOverride] = useState(false);
     const [userModified, setUserModified] = useState(false);
     
     // Update weightCharge effect
     useEffect(() => {
-        // ... existing weight charge calculation ...
-        if (!userModified) {
-            setAmount(weightCharge);
-        }
-    }, [weightCharge, userModified]);
+    if (!userModified && !autoRateOverride) {
+        setAmount(weightCharge);
+    }
+}, [weightCharge, userModified, autoRateOverride]);
+
     
     // Amount handler
     const handleAmountChange = (e) => {
@@ -511,6 +512,28 @@ const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(rec
     
 
 
+useEffect(() => {
+    const parsedQty = parseInt(qty) || 0;
+
+    let autoRate = 0;
+    if (DeptOption === "Mobile") {
+        autoRate = 300 * parsedQty;
+    } else if (DeptOption === "I_Phone") {
+        autoRate = 500 * parsedQty;
+    } else if (DeptOption === "Laptop") {
+        autoRate = 800 * parsedQty;
+    }
+
+    if (autoRate > 0) {
+        setAutoRateOverride(true);
+        setAmount(autoRate);
+        setAmountError(''); // clear any old errors
+    } else {
+        setAutoRateOverride(false);
+    }
+}, [DeptOption, qty]);
+
+
 
     const formRef = useRef();
 
@@ -590,7 +613,20 @@ const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(rec
                         <label className="label">
                             <span className="label-text font-rancho text-xl">Product Quantity</span>
                         </label>
-                        <input type="text" placeholder="Enter Product Quantity" className="input input-bordered" name='qty' required />
+                     <input
+    type="text"
+    placeholder="Enter Product Quantity"
+    className="input input-bordered"
+    name='qty'
+    value={qty}
+    onChange={(e) => {
+        setUserModified(false); // enable auto-rate on qty change
+        setQty(e.target.value);
+    }}
+    required
+/>
+
+
                     </div>
                 </div>
                 {/* Product Details and quantity */}
