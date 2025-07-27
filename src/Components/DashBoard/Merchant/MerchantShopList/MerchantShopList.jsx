@@ -13,7 +13,7 @@ const MerchantShopList = () => {
   const { data: shopData = [], refetch, isLoading } = useQuery({
     queryKey: ["shopData", verifiedUser?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/store");
+      const res = await axiosSecure.get(`store/${verifiedUser?.email}`);
       return res.data;
     },
     enabled: !!verifiedUser?.email,
@@ -59,10 +59,21 @@ const MerchantShopList = () => {
     setEditData(null);
   };
 
+  if(shopData.length === 0 ) {
+    return (
+      <div className="text-center text-gray-500 mt-8">
+        No shops found. Please create a shop.<Link to="/dashboard/CreateStore">
+          <h1 className="underline text-blue-600">Create Shop</h1>
+        </Link>
+      </div>
+    );
+
+  }
+
   return (
     <div className="bg-white text-gray-800 p-8 rounded-lg shadow-lg w-full mt-8 border border-gray-200">
       <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center">
-        Shop List
+        Shop List of {verifiedUser?.name}
       </h1>
 
       <div className="flex justify-end mb-4">
