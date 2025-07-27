@@ -73,7 +73,7 @@ const MerchantShopList = () => {
   return (
     <div className="bg-white text-gray-800 p-8 rounded-lg shadow-lg w-full mt-8 border border-gray-200">
       <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center">
-        Shop List
+        Shop List of {verifiedUser?.name}
       </h1>
 
       <div className="flex justify-end mb-4">
