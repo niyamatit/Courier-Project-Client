@@ -2,6 +2,7 @@ import { useState } from "react";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import axios from "axios";
 
 const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
     const [amount, setAmount] = useState("");
@@ -49,7 +50,26 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
                     
                    
                 });
-            
+              // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+
+// Build message
+const senderMessage = `Dear ${branch?.Branch_Name}, your balance are added ৳${parsedAmount} (Note:${note}).
+
+Thanks Niyamat Express.
+ `;
+
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number("01641749267")}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+      const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    
+  ]); 
+  console.log("SMS Response:", senderRes.data);
                 refetch();
                 onClose();
             } else {
