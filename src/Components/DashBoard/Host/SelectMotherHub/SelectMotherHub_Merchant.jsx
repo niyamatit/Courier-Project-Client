@@ -5,6 +5,7 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
+import axios from "axios";
 
 
 const SelectMotherHub_Merchant = () => {
@@ -34,14 +35,33 @@ const SelectMotherHub_Merchant = () => {
     },
   });
 
-  const handleAccept = async (pkgId) => {
+  const handleAccept = async (pkg) => {
     try {
-      await axiosSecure.post(`/merchant/accept/parcel/destination/again/mer/${pkgId}`);
+      await axiosSecure.post(`/merchant/accept/parcel/destination/again/mer/${pkg._id}`);
       Swal.fire({
         icon: "success",
         title: "Parcel Accepted",
         text: "The parcel has been successfully accepted!",
       });
+
+      // Step 5: Send SMS using BulkSMSBD
+const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+const SENDER_ID = "8809617624950";
+
+// Build message
+const senderMessage = `Dear Customer, your parcel booking from ${pkg.Store_Name} in ${verifiedUser?.name}
+Thanks -Niyamat Express
+`;
+
+
+// Build URLs
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(pkg.Customer_Contact_Number)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+      const [senderRes, receiverRes] = await Promise.all([
+    axios.get(senderUrl),
+    
+  ]);
       refetch();
     } catch (error) {
       Swal.fire({
@@ -126,7 +146,7 @@ const SelectMotherHub_Merchant = () => {
 ) : (
   <button
     className="bg-green-500 text-white px-2 py-1 rounded"
-    onClick={() => handleAccept(pkg._id)}
+    onClick={() => handleAccept(pkg)}
   >
     Accept
   </button>
