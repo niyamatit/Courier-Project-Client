@@ -858,7 +858,7 @@ const incrementCnNumber = (cnNumber) => {
   const { data: shopDatassss = []} = useQuery({
     queryKey: ["shopDatassss", verifiedUser?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/store");
+      const res = await axiosSecure.get(`store/${verifiedUser?.email}`);
       return res.data;
     },
     enabled: !!verifiedUser?.email,
@@ -988,13 +988,13 @@ const incrementCnNumber = (cnNumber) => {
                       onChange={(e) => setStore(e.target.value)}
                     >
                       <option value="" disabled selected>Select Your Store*</option>
-                      <option value="Niyamat Express">Niyamat Express</option>
+                   
                      
-                      {/* {shopDatassss.map((shop) => (
+                      {shopDatassss.map((shop) => (
     <option key={shop._id} value={shop?.Store_Name}>
       {shop?.Store_Name}
     </option>
-  ))} */}
+  ))}
                     </select>
                     {errors.store && (
                       <span className="text-red-500">This field is required</span>
