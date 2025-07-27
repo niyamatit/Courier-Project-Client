@@ -59,7 +59,7 @@ const MerchantShopList = () => {
     setEditData(null);
   };
 
-  if(shopData.length === 0 ) {
+  if(shopData.length === 0 && !isLoading) {
     return (
       <div className="text-center text-gray-500 mt-8">
         No shops found. Please create a shop.<Link to="/dashboard/CreateStore">
