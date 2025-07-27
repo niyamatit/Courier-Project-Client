@@ -64,7 +64,6 @@ const SENDER_ID = "8809617624950";
 
 // Build message
 const senderMessage = `Dear ${verifiedUser?.name}, Your recharge request  is successful.
-
 Recharge Amount: ৳${verifiedUser?.Merchant_Balance} is waiting for waiting for admin approval.
 
 Thank you for choosing Niyamat Express Courier & Parcel Service.

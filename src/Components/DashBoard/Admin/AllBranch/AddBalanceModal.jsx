@@ -69,7 +69,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(branc
     axios.get(senderUrl),
     
   ]); 
-  console.log("SMS Response:", senderRes.data);
+//   console.log("SMS Response:", senderRes.data);
                 refetch();
                 onClose();
             } else {
