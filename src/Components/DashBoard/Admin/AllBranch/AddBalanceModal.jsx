@@ -63,7 +63,7 @@ Thanks Niyamat Express.
 
 
 // Build URLs
-const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number("01641749267")}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(branch?.Branch_Number)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
 // const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
       const [senderRes, receiverRes] = await Promise.all([
     axios.get(senderUrl),
