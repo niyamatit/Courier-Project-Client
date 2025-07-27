@@ -281,8 +281,8 @@ Thanks Niyamat Express
 For Tracking visit: https://www.niyamatexpress.com/tracking 
 `;
 // const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
-const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${Bookinginfo.CnNumber}) is Successful.
-Thanks Niyamat Express Courier and Parcel Service
+const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac:${Bookinginfo.CnNumber}) is Successful.
+Thanks Niyamat Express
 For Tracking visit: https://www.niyamatexpress.com/tracking 
 `;
 // const receiverMessage = `Hello ${Bookinginfo.receiverName}, Your Parcel : ${bookingInfo?.product}, Your parcel booking (CN: ${Bookinginfo.CnNumber}) is successful.`;
