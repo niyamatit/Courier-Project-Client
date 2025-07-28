@@ -322,6 +322,23 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?
     axios.get(senderUrl),
     
   ]); 
+
+  const MessageInfo = {
+    senderMessage:senderMessage,
+    
+    SMS_Staus: {
+      Sender: senderRes.data,
+        Receiver: receiverRes.data  
+    },
+    senderMobile: Number(data?.SenderContactINT),
+     Purpuse: "International Booking",
+    CnNumber: data.CnNumber,
+    Branch_Email: verifiedUser?.email,
+    Branch_Name: verifiedUser?.name,
+    date : new Date().toISOString(),
+}
+const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
+  
       }
     } catch (error) {
       console.error("Error adding parcel:", error);

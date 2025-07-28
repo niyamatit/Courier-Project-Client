@@ -441,6 +441,7 @@ const MessageInfo = {
     senderMobile: senderMobile,
     recipientMobile: recipientMobile,
     CnNumber: CnNumber,
+    Purpuse: "Online Booking",
     Branch_Email: verifiedUser?.email,
     Branch_Name: verifiedUser?.name,
     date : new Date().toISOString(),

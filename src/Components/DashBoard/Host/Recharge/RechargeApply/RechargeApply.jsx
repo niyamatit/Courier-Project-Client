@@ -69,6 +69,23 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?
     axios.get(senderUrl),
     
   ]); 
+
+  const MessageInfo = {
+    senderMessage:senderMessage,
+    
+    SMS_Staus: {
+      Sender: senderRes.data,
+        Receiver: receiverRes.data  
+    },
+    senderMobile: data?.accountNumber,
+    
+    
+    Purpuse: "Recharge Apply Branch",
+    Branch_Email: verifiedUser?.email,
+    Branch_Name: verifiedUser?.name,
+    date : new Date().toISOString(),
+}
+const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
         }
     };
 

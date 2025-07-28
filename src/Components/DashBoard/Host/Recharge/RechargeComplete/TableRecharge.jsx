@@ -91,6 +91,23 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recha
     axios.get(senderUrl),
     
   ]); 
+
+  const MessageInfo = {
+    senderMessage:senderMessage,
+    
+    SMS_Staus: {
+      Sender: senderRes.data,
+        Receiver: receiverRes.data  
+    },
+    senderMobile: recharge?.Account_Number,
+    
+    
+    Purpuse: "Admin Approve Recharge Request of Branch",
+    Branch_Email: verifiedUser?.email,
+    Branch_Name: verifiedUser?.name,
+    date : new Date().toISOString(),
+}
+const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
         if (deleteResponse.status === 200) {
           console.log('Recharge successfully deleted.');
         }

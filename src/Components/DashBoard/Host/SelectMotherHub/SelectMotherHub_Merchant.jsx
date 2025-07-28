@@ -62,6 +62,23 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(pkg.C
     axios.get(senderUrl),
     
   ]);
+
+  const MessageInfo = {
+    senderMessage:senderMessage,
+    
+    SMS_Staus: {
+      Sender: senderRes.data,
+        Receiver: receiverRes.data  
+    },
+    senderMobile: pkg.Customer_Contact_Number,
+    
+    CnNumber: pkg.CnNumber,
+    Purpuse: "Merchant Booking Parcel Accepted by MotherHub Branch",
+    Branch_Email: verifiedUser?.email,
+    Branch_Name: verifiedUser?.name,
+    date : new Date().toISOString(),
+}
+const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
       refetch();
     } catch (error) {
       Swal.fire({

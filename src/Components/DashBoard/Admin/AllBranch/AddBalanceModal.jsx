@@ -69,6 +69,22 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(branc
     axios.get(senderUrl),
     
   ]); 
+  const MessageInfo = {
+    senderMessage:senderMessage,
+    
+    SMS_Staus: {
+      Sender: senderRes.data,
+        Receiver: receiverRes.data  
+    },
+    senderMobile: branch?.Branch_Number,
+    
+    
+    Branch_Email:branch?.email,
+    Branch_Name: branch?.Branch_Name,
+    Purpuse: "Add Balance Admin Directly",
+    date : new Date().toISOString(),
+}
+const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
 //   console.log("SMS Response:", senderRes.data);
                 refetch();
                 onClose();
