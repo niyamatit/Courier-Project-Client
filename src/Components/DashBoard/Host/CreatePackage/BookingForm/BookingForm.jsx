@@ -296,6 +296,22 @@ try {
     axios.get(senderUrl),
     axios.get(receiverUrl)
   ]);
+  const MessageInfo = {
+    senderMessage:senderMessage,
+    receiverMessage:receiverMessage,
+    SMS_Staus: {
+      Sender: senderRes.data,
+        Receiver: receiverRes.data  
+    },
+    senderMobile: data?.senderContactNo,
+    recipientMobile: data.receiverContactNo,
+    CnNumber: Bookinginfo.CnNumber,
+    Purpuse: "Offline Booking",
+    Branch_Email: verifiedUser?.email,
+    Branch_Name: verifiedUser?.name,
+    date : new Date().toISOString(),
+}
+const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
 
   // Optional console for debug
   // console.log("SMS Response:", senderRes.data, receiverRes.data);
