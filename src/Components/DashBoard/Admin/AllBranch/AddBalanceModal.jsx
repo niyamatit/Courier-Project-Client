@@ -51,7 +51,7 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
                    
                 });
               // Step 5: Send SMS using BulkSMSBD
-const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const SMS_API = "https://bulksmsbd.net/api/smsapi";
 const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
 

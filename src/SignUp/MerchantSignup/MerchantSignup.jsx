@@ -705,7 +705,7 @@ const handleSignUp = async (data) => {
   const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '0')}`;
   const merchantID = timePart + uniqueId;
  // Step 5: Send SMS using BulkSMSBD
-const SMS_API = "http://bulksmsbd.net/api/smsapi";
+const SMS_API = "https://bulksmsbd.net/api/smsapi";
 const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
 const otpGenerated = Math.floor(1000 + Math.random() * 900000).toString();
