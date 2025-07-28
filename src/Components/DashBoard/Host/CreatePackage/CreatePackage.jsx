@@ -430,6 +430,23 @@ const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(rec
     axios.get(receiverUrl)
   ]);    
 
+
+const MessageInfo = {
+    senderMessage:senderMessage,
+    receiverMessage:receiverMessage,
+    SMS_Staus: {
+      Sender: senderRes.data,
+        Receiver: receiverRes.data  
+    },
+    senderMobile: senderMobile,
+    recipientMobile: recipientMobile,
+    CnNumber: CnNumber,
+    Branch_Email: verifiedUser?.email,
+    Branch_Name: verifiedUser?.name,
+    date : new Date().toISOString(),
+}
+const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
+
             }
         } catch (error) {
             console.error("Error:", error.message);
