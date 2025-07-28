@@ -115,6 +115,7 @@ import BkashApi from "../Components/DashBoard/Host/BkashApi";
 import Bkash_Payment_History from "../Components/DashBoard/Host/Bkash_Payment_History";
 import Bkash_Payment_Admin from "../Components/DashBoard/Admin/Bkash_Payment_Admin";
 import Notice from "../Components/DashBoard/Admin/Notice";
+import Sms_History from "../Components/DashBoard/Admin/Sms_History";
 
 
 
@@ -943,6 +944,10 @@ export const router = createBrowserRouter([
       {
         path: "all-cod-booking-admin",
         element: <All_COD_Booking_Admin/>
+      },
+      {
+        path: "sms-history",
+        element: <Sms_History/>
       },
 
       // super admin
