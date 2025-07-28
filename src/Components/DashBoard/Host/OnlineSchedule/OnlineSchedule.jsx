@@ -1,5 +1,3 @@
-
-
 import Swal from "sweetalert2";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import { useState } from "react";
@@ -8,12 +6,26 @@ import axiosSecure from "../../../../api/axiosSecure";
 
 
 const OnlineSchedule = () => {
+  // Custom hook to fetch user data
   const [verifiedUser] = useUsersData();
+  // State for the currently selected package for modals
   const [selectedPackage, setSelectedPackage] = useState(null);
+  // State to control the visibility of the "Select Branch" modal
   const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
+  // State to control the visibility of the "View Details" modal
   const [showViewModal, setShowViewModal] = useState(false);
+  // State for the note in the "Select Branch" modal
   const [note, setNote] = useState("");
+  // State for the selected branch email in the "Select Branch" modal
   const [selectedBranch, setSelectedBranch] = useState("");
+  // State for search term in the filter
+  const [searchTerm, setSearchTerm] = useState("");
+  // State for start date in the date filter
+  const [startDate, setStartDate] = useState("");
+  // State for end date in the date filter
+  const [endDate, setEndDate] = useState("");
+
+  // Fetch all users from the backend
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
@@ -22,15 +34,19 @@ const OnlineSchedule = () => {
     }
   });
 
+  // Fetch online parcels specific to the verified user (MotherHub Admin)
   const { data: Verify_Admin_MotherHub = [], refetch } = useQuery({
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
+    // Only enable this query if verifiedUser.email exists
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${verifiedUser?.email}`);
+      // Ensure the response is always an array
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
 
+  // Handler for accepting a parcel
   const handleAccept = async (pkgId) => {
     try {
       await axiosSecure.post(`/online/accept/parcel/${pkgId}`);
@@ -39,7 +55,7 @@ const OnlineSchedule = () => {
         title: "Parcel Accepted",
         text: "The parcel has been successfully accepted!",
       });
-      refetch();
+      refetch(); // Refetch data to update the UI
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -49,7 +65,9 @@ const OnlineSchedule = () => {
     }
   };
 
+  // Handler for selecting a MotherHub branch for a package
   const handleSelectBranch = async () => {
+    // Validate that both branch and note are filled
     if (!selectedBranch || !note) {
       Swal.fire({
         icon: "warning",
@@ -60,18 +78,19 @@ const OnlineSchedule = () => {
     }
 
     try {
-       await axiosSecure.post(`/online/select-MotherHub/branch/${selectedPackage._id}`, {
+      // Send a POST request to select the MotherHub branch
+      await axiosSecure.post(`/online/select-MotherHub/branch/${selectedPackage._id}`, {
         Tracking_Admin_Select_Online_MotherHub_Branch_email: selectedBranch,
         Tracking_Admin_Select_Online_MotherHub_Branch_Note: note,
-        Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date()
+        Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date() // Record the current date
       });
       Swal.fire({
         icon: "success",
         title: "MotherHub Branch Selected",
         text: "MotherHub Branch has been successfully selected!",
       });
-      refetch()
-      setShowSelectBranchModal(false);
+      refetch(); // Refetch data to update the UI
+      setShowSelectBranchModal(false); // Close the modal
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -81,10 +100,62 @@ const OnlineSchedule = () => {
     }
   };
 
+  // Filtered packages based on search term and date range
+  const filteredPackages = Verify_Admin_MotherHub.filter((pkg) => {
+    // Check if the package matches the search term (CN Number or mobile numbers)
+    const matchesSearch =
+      searchTerm === "" ||
+      pkg.CnNumber.toLowerCase().trim().includes(searchTerm.toLowerCase().trim()) ||
+      pkg.recipientMobile.trim().includes(searchTerm.trim()) ||
+      pkg.senderMobile.trim().includes(searchTerm.trim());
+
+    // Parse package booking date and filter dates
+    const packageDate = new Date(pkg.booking);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+
+    // Check if the package date falls within the selected date range
+    const matchesDate =
+      (!start || packageDate >= start) && (!end || packageDate <= end);
+
+    return matchesSearch && matchesDate;
+  });
+
   return (
     <div className="p-4">
+      {/* Page Title */}
       <h1 className="text-2xl font-bold mb-4">All Online Parcels of {verifiedUser?.name}</h1>
-      {Array.isArray(Verify_Admin_MotherHub) && Verify_Admin_MotherHub.length > 0 ? (
+
+      {/* Search and Filter Section */}
+      <div className="mb-4 p-4  rounded-lg flex flex-col md:flex-row gap-4">
+        {/* Search input field */}
+        <input
+          type="text"
+          placeholder="Search by CN Number or Mobile"
+          className="p-2 border border-blue-500 rounded flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchTerm.trim()}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {/* Date filter inputs */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <input
+            type="date"
+            className="p-2 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+          <input
+            type="date"
+            className="p-2 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </div>
+      </div>
+      {/* End Search and Filter Section */}
+
+      {/* Conditional rendering for packages table or no packages message */}
+      {Array.isArray(filteredPackages) && filteredPackages.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
             <thead className="bg-blue-500 text-white">
@@ -101,7 +172,8 @@ const OnlineSchedule = () => {
               </tr>
             </thead>
             <tbody>
-              {Verify_Admin_MotherHub.map((pkg, idx) => (
+              {/* Map through filtered packages to display them in the table */}
+              {filteredPackages.map((pkg, idx) => (
                 <tr key={pkg._id} className={`hover:bg-blue-100 ${ pkg.Merchant_ID ? 'bg-green-100' : ''}`}>
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
@@ -114,46 +186,49 @@ const OnlineSchedule = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                  {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
-  <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
-) : (
-  <button
-    className="bg-green-500 text-white px-2 py-1 rounded"
-    onClick={() => handleAccept(pkg._id)}
-  >
-    Accept
-  </button>
-)}
+                    {/* Conditional rendering for Accept button */}
+                    {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
+                      <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
+                    ) : (
+                      <button
+                        className="bg-green-500 text-white px-2 py-1 rounded"
+                        onClick={() => handleAccept(pkg._id)}
+                      >
+                        Accept
+                      </button>
+                    )}
 
-{pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
-  pkg?.Tracking_Admin_Select_Online_MotherHub_Branch_email ? (
-    <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected 
-    </h1>
-  ) : (
-    <button
-      className="bg-blue-500 text-white px-2 py-1 rounded"
-      onClick={() => {
-        setSelectedPackage(pkg);
-        setShowSelectBranchModal(true);
-      }}
-    >
-      Select MotherHub
-    </button>
-  )
-) : (
-  <button className="bg-gray-500 text-white px-2 py-1 rounded">
-    Accept First
-  </button>
-)}
+                    {/* Conditional rendering for Select MotherHub button */}
+                    {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
+                      pkg?.Tracking_Admin_Select_Online_MotherHub_Branch_email ? (
+                        <h1 className="text-green-500 border p-1 border-green-500">
+                          Already Selected
+                        </h1>
+                      ) : (
+                        <button
+                          className="bg-blue-500 text-white px-2 py-1 rounded"
+                          onClick={() => {
+                            setSelectedPackage(pkg);
+                            setShowSelectBranchModal(true);
+                          }}
+                        >
+                          Select MotherHub
+                        </button>
+                      )
+                    ) : (
+                      <button className="bg-gray-500 text-white px-2 py-1 rounded">
+                        Accept First
+                      </button>
+                    )}
 
-<button
-  className="bg-gray-500 text-white px-2 py-1 rounded"
-  onClick={() => {
-    setSelectedPackage(pkg);
-    setShowViewModal(true);
-  }}
->
+                    {/* View button */}
+                    <button
+                      className="bg-gray-500 text-white px-2 py-1 rounded"
+                      onClick={() => {
+                        setSelectedPackage(pkg);
+                        setShowViewModal(true);
+                      }}
+                    >
                       View
                     </button>
                   </td>
@@ -163,30 +238,31 @@ const OnlineSchedule = () => {
           </table>
         </div>
       ) : (
+        // Message displayed if no packages are found
         <div>No packages found!</div>
       )}
 
-      {/* Modal for Viewing Package */}
+      {/* Modal for Viewing Package Details */}
       {showViewModal && (
         <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-4">Package Details</h2>
-          <ul className="list-disc pl-6">
-            {Object.entries(selectedPackage).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded mt-4"
-            onClick={() => setShowViewModal(false)}
-          >
-            Close
-          </button>
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">Package Details</h2>
+            <ul className="list-disc pl-6">
+              {/* Dynamically display all key-value pairs of the selected package */}
+              {Object.entries(selectedPackage).map(([key, value]) => (
+                <li key={key}>
+                  <strong>{key}:</strong> {typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value)}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+              onClick={() => setShowViewModal(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-      
       )}
 
       {/* Modal for Selecting Branch */}
@@ -195,42 +271,44 @@ const OnlineSchedule = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
             <h2 className="text-2xl font-bold mb-4">Select MotherHub</h2>
             <div className="mb-4">
-              
+              {/* Dropdown for selecting MotherHub Branch */}
               <select
-                className="border p-2 w-full"
+                className="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
                 <option value="">Select MotherHub Branch</option>
+                {/* Filter users to only show those with 'host' role */}
                 {users
-  .filter(
-    (user) =>
-      user?.role === "host" 
-  )
-  .map((user) => (
-    <option key={user._id} value={user?.email}>
-      {`${user?.name || "No Name Found"} (${user?.email})`}
-    </option>
-  ))}
-
+                  .filter(
+                    (user) =>
+                      user?.role === "host"
+                  )
+                  .map((user) => (
+                    <option key={user._id} value={user?.email}>
+                      {`${user?.name || "No Name Found"} (${user?.email})`}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2">Note:</label>
+              {/* Textarea for adding a note */}
               <textarea
-                className="border border-gray-300 p-2 w-full rounded"
+                className="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
             </div>
+            {/* Submit and Cancel buttons for the modal */}
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               onClick={handleSelectBranch}
             >
               Submit
             </button>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded"
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
               onClick={() => setShowSelectBranchModal(false)}
             >
               Cancel
