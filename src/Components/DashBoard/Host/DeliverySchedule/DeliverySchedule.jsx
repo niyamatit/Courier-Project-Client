@@ -90,17 +90,22 @@ const DeliverySchedule = () => {
     // Convert search query to lowercase for case-insensitive search
     const lowerCaseSearchQuery = searchQuery.toLowerCase().trim();
 
+    // Safely access properties and convert to lowercase
+    const senderContactNo = pkg.senderContactNo?.toLowerCase().trim() ?? '';
+    const receiverContactNo = pkg.receiverContactNo?.toLowerCase().trim() ?? '';
+    const cnNumber = pkg.CnNumber?.toLowerCase().trim() ?? '';
+
     // Check if sender/receiver contact or CN number includes the search query
-    const matchesSearchQuery = 
-      pkg.senderContactNo.toLowerCase().trim().includes(lowerCaseSearchQuery) || 
-      pkg.receiverContactNo.toLowerCase().trim().includes(lowerCaseSearchQuery) || 
-      pkg.CnNumber.toLowerCase().trim().includes(lowerCaseSearchQuery);
+    const matchesSearchQuery =
+      senderContactNo.includes(lowerCaseSearchQuery) ||
+      receiverContactNo.includes(lowerCaseSearchQuery) ||
+      cnNumber.includes(lowerCaseSearchQuery);
     
     const bookingDate = new Date(pkg.bookingDate);
     const start = startDate ? new Date(startDate) : null;
     const end = endDate ? new Date(endDate) : null;
 
-    const matchesDateRange = 
+    const matchesDateRange =
       (!start || bookingDate >= start) &&
       (!end || bookingDate <= end);
 
@@ -112,29 +117,29 @@ const DeliverySchedule = () => {
       <h1 className="text-2xl font-bold mb-4">All Offline Parcels of {verifiedUser?.name}</h1>
 
       {/* Search and Filter Section */}
-      <div className="mb-4 flex justify-between  items-center">
-        <input 
-          type="text" 
-          placeholder="Search by Contact No. or CN Number" 
-          className="border border-blue-400 focus:ring-blue-500 focus:border-blue-500 p-2 rounded-md shadow-sm md:w-[70%] "
+      <div className="mb-4 flex flex-col md:flex-row justify-between items-center gap-4"> {/* Added flex-col and gap for responsiveness */}
+        <input
+          type="text"
+          placeholder="Search by Contact No. or CN Number"
+          className="border border-blue-400 focus:ring-blue-500 focus:border-blue-500 p-2 rounded-md shadow-sm w-full md:w-[70%]" 
           value={searchQuery.trim()}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-       <div>
- <label className="text-gray-700">
+       <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto"> {/* Added flex-col and gap for responsiveness */}
+<label className="text-gray-700">
           Start Date:
-          <input 
-            type="date" 
-            className="border border-blue-400 focus:ring-blue-500 focus:border-blue-500 p-2 rounded-md ml-2 shadow-sm"
+          <input
+            type="date"
+            className="border border-blue-400 focus:ring-blue-500 focus:border-blue-500 p-2 rounded-md ml-2 shadow-sm w-full md:w-auto" 
             value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
+onChange={(e) => setStartDate(e.target.value)}
+/>
         </label>
         <label className="text-gray-700">
           End Date:
-          <input 
-            type="date" 
-            className="border border-blue-400 focus:ring-blue-500 focus:border-blue-500 p-2 rounded-md ml-2 shadow-sm"
+          <input
+            type="date"
+            className="border border-blue-400 focus:ring-blue-500 focus:border-blue-500 p-2 rounded-md ml-2 shadow-sm w-full md:w-auto" 
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
@@ -235,7 +240,7 @@ const DeliverySchedule = () => {
           <ul className="list-none p-0 space-y-2 text-gray-800">
             {selectedPackage && Object.entries(selectedPackage).map(([key, value]) => (
               <li key={key} className="flex items-start">
-                <strong className="min-w-[120px] capitalize text-blue-600 mr-2">{key.replace(/([A-Z])/g, ' $1').trim()}:</strong> 
+                <strong className="min-w-[120px] capitalize text-blue-600 mr-2">{key.replace(/([A-Z])/g, ' $1').trim()}:</strong>
                 <span className="flex-1">
                   {key.includes("Date") && value ? new Date(value).toLocaleDateString() : (typeof value === 'object' && value !== null ? JSON.stringify(value) : value)}
                 </span>
@@ -269,7 +274,7 @@ const DeliverySchedule = () => {
                 <option value="">Select MotherHub Branch</option>
                 {users
                   .filter(
-                    (user) => user?.role === "host"  
+                    (user) => user?.role === "host"
                   )
                   .map((user) => (
                     <option key={user._id} value={user?.email}>

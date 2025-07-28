@@ -1,13 +1,8 @@
-
-
 import Swal from "sweetalert2";
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../api/axiosSecure";
-
-
 
 const All_InterNational_Booking = () => {
   const [verifiedUser] = useUsersData();
@@ -16,6 +11,10 @@ const All_InterNational_Booking = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [note, setNote] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
+  const [startDate, setStartDate] = useState(""); // New state for start date
+  const [endDate, setEndDate] = useState(""); // New state for end date
+
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
@@ -62,8 +61,8 @@ const All_InterNational_Booking = () => {
     }
 
     try {
-       await axiosSecure.post(`/int/select-MotherHub/branch/${selectedPackage._id}`, {
-          Tracking_Booking_Branch_Select_MotherHub_Int: selectedBranch,
+      await axiosSecure.post(`/int/select-MotherHub/branch/${selectedPackage._id}`, {
+        Tracking_Booking_Branch_Select_MotherHub_Int: selectedBranch,
         Tracking_Booking_Branch_Select_MotherHub_Note_Int: note,
         Tracking_Booking_Branch_Select_MotherHub_Date_Int: new Date()
       });
@@ -72,7 +71,7 @@ const All_InterNational_Booking = () => {
         title: "MotherHub Branch Selected",
         text: "MotherHub Branch has been successfully selected!",
       });
-      refetch()
+      refetch();
       setShowSelectBranchModal(false);
     } catch (error) {
       Swal.fire({
@@ -83,10 +82,64 @@ const All_InterNational_Booking = () => {
     }
   };
 
+  // Filtered parcels based on search term and date range
+  const filteredParcels = Verify_Admin_MotherHub_Int.filter((pkg) => {
+    const matchesSearchTerm =
+      pkg.Sender_Contact_Number_Int.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.Customer_Contact_Number_Int.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.CnNumber.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const bookingDate = new Date(pkg.bookingDate);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+
+    const matchesDateRange =
+      (!start || bookingDate >= start) && (!end || bookingDate <= end);
+
+    return matchesSearchTerm && matchesDateRange;
+  });
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">All International Parcels of {verifiedUser?.name}</h1>
-      {Array.isArray(Verify_Admin_MotherHub_Int) && Verify_Admin_MotherHub_Int.length > 0 ? (
+
+      {/* Search and Filter Section */}
+      <div className="mb-4 flex flex-col md:flex-row gap-4 items-center">
+        <div className="w-full md:w-1/2">
+          <label htmlFor="search" className="block text-gray-700 font-bold mb-2">Search by Phone Number or CN Number:</label>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search by phone or CN number..."
+            className="border-2 border-blue-500 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="w-full md:w-1/4">
+          <label htmlFor="startDate" className="block text-gray-700 font-bold mb-2">Start Date:</label>
+          <input
+            type="date"
+            id="startDate"
+            className="border-2 border-blue-500 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+        </div>
+        <div className="w-full md:w-1/4">
+          <label htmlFor="endDate" className="block text-gray-700 font-bold mb-2">End Date:</label>
+          <input
+            type="date"
+            id="endDate"
+            className="border-2 border-blue-500 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </div>
+      </div>
+      {/* --- */}
+
+      {Array.isArray(filteredParcels) && filteredParcels.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
             <thead className="bg-blue-500 text-white">
@@ -104,7 +157,7 @@ const All_InterNational_Booking = () => {
               </tr>
             </thead>
             <tbody>
-              {Verify_Admin_MotherHub_Int.map((pkg, idx) => (
+              {filteredParcels.map((pkg, idx) => (
                 <tr key={pkg._id} className="hover:bg-blue-100">
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
@@ -118,46 +171,46 @@ const All_InterNational_Booking = () => {
                   <td className="border border-blue-500 px-4 py-2">{pkg.Product_Details}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                  {pkg?.Tracking_Booking_Branch_Received_Parcel_Int ? (
-  <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
-) : (
-  <button
-    className="bg-green-500 text-white px-2 py-1 rounded"
-    onClick={() => handleAccept(pkg._id)}
-  >
-    Accept
-  </button>
-)}
+                    {pkg?.Tracking_Booking_Branch_Received_Parcel_Int ? (
+                      <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
+                    ) : (
+                      <button
+                        className="bg-green-500 text-white px-2 py-1 rounded"
+                        onClick={() => handleAccept(pkg._id)}
+                      >
+                        Accept
+                      </button>
+                    )}
 
-{pkg?.Tracking_Booking_Branch_Received_Parcel_Int ? (
-  pkg?.Tracking_Booking_Branch_Select_MotherHub_Int ? (
-    <h1 className="text-green-500 border p-1 border-green-500">
-      Already Selected
-    </h1>
-  ) : (
-    <button
-      className="bg-blue-500 text-white px-2 py-1 rounded"
-      onClick={() => {
-        setSelectedPackage(pkg);
-        setShowSelectBranchModal(true);
-      }}
-    >
-      Select MotherHub
-    </button>
-  )
-) : (
-  <button className="bg-gray-500 text-white px-2 py-1 rounded">
-    Accept First
-  </button>
-)}
+                    {pkg?.Tracking_Booking_Branch_Received_Parcel_Int ? (
+                      pkg?.Tracking_Booking_Branch_Select_MotherHub_Int ? (
+                        <h1 className="text-green-500 border p-1 border-green-500">
+                          Already Selected
+                        </h1>
+                      ) : (
+                        <button
+                          className="bg-blue-500 text-white px-2 py-1 rounded"
+                          onClick={() => {
+                            setSelectedPackage(pkg);
+                            setShowSelectBranchModal(true);
+                          }}
+                        >
+                          Select MotherHub
+                        </button>
+                      )
+                    ) : (
+                      <button className="bg-gray-500 text-white px-2 py-1 rounded" disabled>
+                        Accept First
+                      </button>
+                    )}
 
-<button
-  className="bg-gray-500 text-white px-2 py-1 rounded"
-  onClick={() => {
-    setSelectedPackage(pkg);
-    setShowViewModal(true);
-  }}
->
+                    <button
+                      className="bg-gray-500 text-white px-2 py-1 rounded"
+                      onClick={() => {
+                        setSelectedPackage(pkg);
+                        setShowViewModal(true);
+                      }}
+                    >
                       View
                     </button>
                   </td>
@@ -167,30 +220,34 @@ const All_InterNational_Booking = () => {
           </table>
         </div>
       ) : (
-        <div>No packages found!</div>
+        <div className="text-center text-gray-600 mt-8">No packages found matching your criteria.</div>
       )}
 
       {/* Modal for Viewing Package */}
       {showViewModal && (
         <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-4">Package Details</h2>
-          <ul className="list-disc pl-6">
-            {Object.entries(selectedPackage).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded mt-4"
-            onClick={() => setShowViewModal(false)}
-          >
-            Close
-          </button>
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">Package Details</h2>
+            <ul className="list-disc pl-6">
+              {Object.entries(selectedPackage).map(([key, value]) => (
+                <li key={key} className="mb-1">
+                  <strong className="capitalize">{key.replace(/_/g, ' ')}:</strong>{" "}
+                  {typeof value === 'object' && value !== null && !Array.isArray(value)
+                    ? JSON.stringify(value)
+                    : value instanceof Date
+                    ? value.toLocaleDateString()
+                    : value?.toString()}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+              onClick={() => setShowViewModal(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-      
       )}
 
       {/* Modal for Selecting Branch */}
@@ -199,42 +256,37 @@ const All_InterNational_Booking = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
             <h2 className="text-2xl font-bold mb-4">Select MotherHub</h2>
             <div className="mb-4">
-              
               <select
-                className="border p-2 w-full"
+                className="border p-2 w-full border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
                 <option value="">Select MotherHub Branch</option>
                 {users
-  .filter(
-    (user) =>
-      user?.role === "host" 
-  )
-  .map((user) => (
-    <option key={user._id} value={user?.email}>
-      {`${user?.name || "No Name Found"} (${user?.email})`}
-    </option>
-  ))}
-
+                  .filter((user) => user?.role === "host")
+                  .map((user) => (
+                    <option key={user._id} value={user?.email}>
+                      {`${user?.name || "No Name Found"} (${user?.email})`}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2">Note:</label>
               <textarea
-                className="border border-gray-300 p-2 w-full rounded"
+                className="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
             </div>
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600 transition duration-200"
               onClick={handleSelectBranch}
             >
               Submit
             </button>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded"
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
               onClick={() => setShowSelectBranchModal(false)}
             >
               Cancel
