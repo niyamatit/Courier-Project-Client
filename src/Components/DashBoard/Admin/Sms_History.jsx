@@ -111,7 +111,8 @@ const Sms_History = () => {
                   {index + 1}
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {moment(sms.date).format('YYYY-MM-DD HH:mm')}
+                  {/* Changed date format here */}
+                  {moment(sms.date).format('DD MMMM YYYY hh:mm A')}
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
                   {sms.CnNumber}
