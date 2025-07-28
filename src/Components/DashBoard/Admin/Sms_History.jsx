@@ -130,7 +130,7 @@ const Sms_History = () => {
       </div>
 
       {isModalOpen && selectedSms && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center  z-50 overflow-y-auto ">
           <div className="bg-white rounded-lg p-8 max-w-lg w-full shadow-xl">
             <h2 className="text-2xl font-bold text-blue-800 mb-4">SMS Details</h2>
             <div className="space-y-3 text-gray-700">
