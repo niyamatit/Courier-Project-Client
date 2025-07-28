@@ -7,6 +7,7 @@ import { BsBuilding } from "react-icons/bs";
 import { BsGrid } from "react-icons/bs";
 import { BatteryCharging, Zap, CircleDollarSign, SendHorizontal } from "lucide-react";
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
+import { FaHistory } from "react-icons/fa";
 const AdminMenu = () => {
   const [verifiedUser] = useUsersData();
   return (
@@ -136,6 +137,12 @@ const AdminMenu = () => {
 
         label='All COD Booking'
         address='all-cod-booking-admin'
+      />
+       <MenuItem
+        icon={FaHistory}
+
+        label='All SMS History'
+        address='sms-history'
       />
     </>
   )
