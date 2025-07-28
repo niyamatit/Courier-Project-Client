@@ -7,7 +7,8 @@ const Sms_History = () => {
   const [todaySmsCount, setTodaySmsCount] = useState(0);
   const [selectedSms, setSelectedSms] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [filterStatus, setFilterStatus] = useState("all"); // New state for status filter
 
   const { data: SMS_History = [], refetch: refetchSMS } = useQuery({
     queryKey: ['SMS_History'],
@@ -37,12 +38,26 @@ const Sms_History = () => {
     setSelectedSms(null);
   };
 
-  // Filtered SMS history based on search term
-  const filteredSmsHistory = SMS_History.filter(sms =>
-    sms.recipientMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sms.senderMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sms.CnNumber.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Function to determine SMS status
+  const getSmsOverallStatus = (sms) => {
+    return sms.SMS_Staus.Sender.response_code === 202 && sms.SMS_Staus.Receiver.response_code === 202
+      ? "success"
+      : "failed";
+  };
+
+  // Filtered SMS history based on search term and status
+  const filteredSmsHistory = SMS_History.filter(sms => {
+    const matchesSearchTerm =
+      sms.recipientMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      sms.senderMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      sms.CnNumber.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const smsStatus = getSmsOverallStatus(sms);
+    const matchesFilterStatus =
+      filterStatus === "all" || smsStatus === filterStatus;
+
+    return matchesSearchTerm && matchesFilterStatus;
+  });
 
   return (
     <div className="container mx-auto p-6">
@@ -59,15 +74,24 @@ const Sms_History = () => {
         </div>
       </div>
 
-      {/* Search Input */}
-      <div className="mb-6">
+      {/* Search and Filter Inputs */}
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
         <input
           type="text"
           placeholder="Search by CN Number, Sender Mobile, or Recipient Mobile..."
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <select
+          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
+          <option value="all">All Status</option>
+          <option value="success">Success</option>
+          <option value="failed">Failed</option>
+        </select>
       </div>
 
       <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
@@ -95,7 +119,6 @@ const Sms_History = () => {
               <th className="px-5 py-3 border-b-2 border-blue-700 text-left text-sm font-semibold uppercase tracking-wider">
                 Branch Name
               </th>
-
               <th className="px-5 py-3 border-b-2 border-blue-700 text-left text-sm font-semibold uppercase tracking-wider">
                 Status
               </th>
@@ -105,59 +128,69 @@ const Sms_History = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredSmsHistory.map((sms, index) => (
-              <tr key={sms._id} className="hover:bg-blue-50 odd:bg-blue-50 even:bg-white">
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {index + 1}
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {/* Changed date format here */}
-                  {moment(sms.date).format('DD MMMM YYYY hh:mm A')}
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {sms.CnNumber}
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {sms.Purpuse}
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {sms.senderMobile}
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {sms.recipientMobile}
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {sms.Branch_Name}
-                </td>
-
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {sms.SMS_Staus.Sender.response_code === 202 && sms.SMS_Staus.Receiver.response_code === 202 ? (
-                    <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                      <span aria-hidden="true" className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                      <span className="relative">Success</span>
-                    </span>
-                  ) : (
-                    <span className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                      <span aria-hidden="true" className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                      <span className="relative">Failed</span>
-                    </span>
-                  )}
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  <button
-                    onClick={() => handleViewDetails(sms)}
-                    className="text-blue-600 hover:text-blue-900 font-semibold"
-                  >
-                    View Details
-                  </button>
+            {filteredSmsHistory.length > 0 ? (
+              filteredSmsHistory.map((sms, index) => (
+                <tr
+                  key={sms._id}
+                  className={`${
+                    getSmsOverallStatus(sms) === "success"
+                      ? "bg-green-100 hover:bg-green-100"
+                      : "bg-red-100 hover:bg-red-100"
+                  } odd:bg-opacity-75 even:bg-opacity-50`}
+                >
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    {index + 1}
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    {moment(sms.date).format('DD MMMM YYYY hh:mm A')}
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    {sms.CnNumber}
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    {sms.Purpuse}
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    {sms.senderMobile}
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    {sms.recipientMobile}
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    {sms.Branch_Name}
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    {getSmsOverallStatus(sms) === "success" ? (
+                      <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                        <span aria-hidden="true" className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                        <span className="relative">Success</span>
+                      </span>
+                    ) : (
+                      <span className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                        <span aria-hidden="true" className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                        <span className="relative">Failed</span>
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                    <button
+                      onClick={() => handleViewDetails(sms)}
+                      className="text-blue-600 hover:text-blue-900 font-semibold"
+                    >
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="9" className="px-5 py-4 text-center text-gray-600">
+                  No SMS records found matching your criteria.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
-        {filteredSmsHistory.length === 0 && (
-          <div className="text-center py-4 text-gray-600">No SMS records found matching your search.</div>
-        )}
       </div>
 
       {isModalOpen && selectedSms && (
