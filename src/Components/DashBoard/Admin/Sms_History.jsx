@@ -7,6 +7,7 @@ const Sms_History = () => {
   const [todaySmsCount, setTodaySmsCount] = useState(0);
   const [selectedSms, setSelectedSms] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
   const { data: SMS_History = [], refetch: refetchSMS } = useQuery({
     queryKey: ['SMS_History'],
@@ -36,6 +37,13 @@ const Sms_History = () => {
     setSelectedSms(null);
   };
 
+  // Filtered SMS history based on search term
+  const filteredSmsHistory = SMS_History.filter(sms =>
+    sms.recipientMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    sms.senderMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    sms.CnNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold text-blue-800 mb-6">SMS History</h1>
@@ -51,10 +59,27 @@ const Sms_History = () => {
         </div>
       </div>
 
+      {/* Search Input */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search by CN Number, Sender Mobile, or Recipient Mobile..."
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
         <table className="min-w-full leading-normal">
           <thead>
             <tr className="bg-blue-600 text-white">
+              <th className="px-5 py-3 border-b-2 border-blue-700 text-left text-sm font-semibold uppercase tracking-wider">
+                SL
+              </th>
+              <th className="px-5 py-3 border-b-2 border-blue-700 text-left text-sm font-semibold uppercase tracking-wider">
+                Date
+              </th>
               <th className="px-5 py-3 border-b-2 border-blue-700 text-left text-sm font-semibold uppercase tracking-wider">
                 CN Number
               </th>
@@ -70,9 +95,7 @@ const Sms_History = () => {
               <th className="px-5 py-3 border-b-2 border-blue-700 text-left text-sm font-semibold uppercase tracking-wider">
                 Branch Name
               </th>
-              <th className="px-5 py-3 border-b-2 border-blue-700 text-left text-sm font-semibold uppercase tracking-wider">
-                Date
-              </th>
+
               <th className="px-5 py-3 border-b-2 border-blue-700 text-left text-sm font-semibold uppercase tracking-wider">
                 Status
               </th>
@@ -82,8 +105,14 @@ const Sms_History = () => {
             </tr>
           </thead>
           <tbody>
-            {SMS_History.map((sms) => (
+            {filteredSmsHistory.map((sms, index) => (
               <tr key={sms._id} className="hover:bg-blue-50 odd:bg-blue-50 even:bg-white">
+                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                  {index + 1}
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
+                  {moment(sms.date).format('YYYY-MM-DD HH:mm')}
+                </td>
                 <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
                   {sms.CnNumber}
                 </td>
@@ -99,9 +128,7 @@ const Sms_History = () => {
                 <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
                   {sms.Branch_Name}
                 </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                  {moment(sms.date).format('YYYY-MM-DD HH:mm')}
-                </td>
+
                 <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
                   {sms.SMS_Staus.Sender.response_code === 202 && sms.SMS_Staus.Receiver.response_code === 202 ? (
                     <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -127,10 +154,13 @@ const Sms_History = () => {
             ))}
           </tbody>
         </table>
+        {filteredSmsHistory.length === 0 && (
+          <div className="text-center py-4 text-gray-600">No SMS records found matching your search.</div>
+        )}
       </div>
 
       {isModalOpen && selectedSms && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center  z-50 overflow-y-auto ">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-start justify-center z-50 overflow-y-auto py-4">
           <div className="bg-white rounded-lg p-8 max-w-lg w-full shadow-xl">
             <h2 className="text-2xl font-bold text-blue-800 mb-4">SMS Details</h2>
             <div className="space-y-3 text-gray-700">
@@ -141,7 +171,7 @@ const Sms_History = () => {
               <p><strong>Branch Email:</strong> {selectedSms.Branch_Email}</p>
               <p><strong>Branch Name:</strong> {selectedSms.Branch_Name}</p>
               <p><strong>Date:</strong> {moment(selectedSms.date).format('YYYY-MM-DD HH:mm:ss')}</p>
-              
+
               <h3 className="text-xl font-semibold mt-4 text-blue-700">Sender SMS Status:</h3>
               <p><strong>Response Code:</strong> {selectedSms.SMS_Staus.Sender.response_code}</p>
               <p><strong>Message ID:</strong> {selectedSms.SMS_Staus.Sender.message_id || 'N/A'}</p>
