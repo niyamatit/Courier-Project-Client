@@ -804,7 +804,10 @@ const handleSignUp = async (data) => {
   const API_KEY = "VSkytluAnQbG0vsCEbHQ";
   const SENDER_ID = "8809617624950";
 
-  const senderMessage = `Your OTP is ${otpGenerated}`;
+  const senderMessage = `Your OTP is ${otpGenerated}
+  
+  Thanks Niyamat Express. 
+  `;
   const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data.email)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
 
   try {
