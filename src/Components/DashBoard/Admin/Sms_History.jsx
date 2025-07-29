@@ -46,18 +46,21 @@ const Sms_History = () => {
   };
 
   // Filtered SMS history based on search term and status
-  const filteredSmsHistory = SMS_History.filter(sms => {
+  const filteredSmsHistory = SMS_History
+  .filter((sms) => sms.senderMobile) // Filter only entries with senderMobile
+  .filter((sms) => {
     const matchesSearchTerm =
-      sms.recipientMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      sms.senderMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      sms.CnNumber.toLowerCase().includes(searchTerm.toLowerCase()) || '';
+      (sms.recipientMobile?.toLowerCase().includes(searchTerm.toLowerCase()) || '') ||
+      (sms.senderMobile?.toLowerCase().includes(searchTerm.toLowerCase()) || '') ||
+      (sms.CnNumber?.toLowerCase().includes(searchTerm.toLowerCase()) || '');
 
     const smsStatus = getSmsOverallStatus(sms);
     const matchesFilterStatus =
-      filterStatus === "all" || smsStatus === filterStatus;
+      filterStatus === 'all' || smsStatus === filterStatus;
 
     return matchesSearchTerm && matchesFilterStatus;
   });
+
 
   return (
     <div className="container mx-auto p-6">
@@ -66,7 +69,7 @@ const Sms_History = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <div className="bg-blue-100 p-4 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold text-blue-700">Total SMS Sent</h2>
-          <p className="text-3xl font-bold text-blue-900">{SMS_History.length}</p>
+          <p className="text-3xl font-bold text-blue-900">{filteredSmsHistory.length}</p>
         </div>
         <div className="bg-blue-100 p-4 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold text-blue-700">Today's SMS</h2>
