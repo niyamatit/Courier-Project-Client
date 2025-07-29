@@ -7,13 +7,18 @@ import { imageUpload } from '../../api/utils';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import OTP_Modal from '../../Components/Pages/Home/SpoonserSlider/OTP_Modal';
 
 const MerchantSignup = () => {
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  
+  const [otpSent, setOtpSent] = useState(false);
+const [showOtpModal, setShowOtpModal] = useState(false);
+const [tempFormData, setTempFormData] = useState(null);
+const [serverOtpID, setServerOtpID] = useState(null);
+
   const [filteredAreas, setFilteredAreas] = useState([]);
   const obfuscatePassword = (password) => {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
@@ -695,82 +700,151 @@ const getDistrictName = (id) => {
   const district = Districts.find(district => district.id === id);
   return district ? district.name : "";
 };
+// const handleSignUp = async (data) => {
+//   const districtName = getDistrictName(data.district);
+//     const formData = { ...data, district: districtName };
+//   const date = new Date();
+//   const datePart = `${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+//   const randomPart = Math.floor(Math.random() * 10).toString();
+//   const uniqueId = `${datePart}${randomPart}`;
+//   const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '0')}`;
+//   const merchantID = timePart + uniqueId;
+//  // Step 5: Send SMS using BulkSMSBD
+// const SMS_API = "https://bulksmsbd.net/api/smsapi";
+// const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+// const SENDER_ID = "8809617624950";
+// const otpGenerated = Math.floor(1000 + Math.random() * 900000).toString();
+// // Build message
+// const senderMessage = `Your OTP is ${otpGenerated}
+ 
+// `;
+
+
+// // Build URLs
+// const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data.email)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+// // const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+//       const [senderRes, receiverRes] = await Promise.all([
+//     await axios.get(senderUrl),
+    
+//   ]); 
+//   try {
+   
+
+//     // Save OTP to backend for 5 minutes
+//     const res = await axiosSecure.post("/otp/save", {
+//       otp: otpGenerated,
+//       number: data.email,
+//     });
+
+//     setServerOtpID(res.data.id); // if backend returns an OTP ID
+//     setTempFormData(formData);   // store form data locally
+//     setShowOtpModal(true);       // show OTP input modal
+//     setOtpSent(true);
+//   } catch (error) {
+//     console.error("OTP Send Failed:", error);
+//     Swal.fire("Failed to send OTP", "Check number or server.", "error");
+//   }
+//   try {
+//     setLoading(true);
+
+//     // Upload image
+//     const imageData = await imageUpload(data.image[0]);  
+
+//     // Send signup request
+//     const response = await axiosSecure.post('/users/auth/register', {
+//       name: data.name,
+//       email: data.email,
+//       password: data.password,
+//       role: 'merchant',
+//       imageUrl: imageData?.data?.display_url,
+//       merchantID,
+//       Merchant_Balance: 0,
+//       info:obfuscatePassword(data.password),
+//       Merchant_District:formData?.district || "",
+//       Merchant_District_ID:selectedDistrict || "",
+//       Merchant_Area:formData?.area || "",
+//       Merchant_Full_Address: formData?.customerAddress || "",
+//       Merchant_Branch: formData?.branch || ""
+//     });
+
+//     if (response.status === 201) {
+//       Swal.fire({
+//         icon: 'success',
+//         title: 'Merchant Signup Successful',
+//         text: 'You have been successfully registered as a Merchant!',
+//       });
+//       localStorage.setItem("email", data.email);
+//       navigate('/');
+//     } else {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Sign Up Failed',
+//         text: response.data.message || 'Something went wrong!',
+//       });
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     Swal.fire({
+//       icon: 'error',
+//       title: 'Sign Up Failed',
+//       text: err?.response?.data?.message || 'An error occurred!',
+//     });
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 const handleSignUp = async (data) => {
   const districtName = getDistrictName(data.district);
-    const formData = { ...data, district: districtName };
-  const date = new Date();
-  const datePart = `${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
-  const randomPart = Math.floor(Math.random() * 10).toString();
-  const uniqueId = `${datePart}${randomPart}`;
-  const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '0')}`;
-  const merchantID = timePart + uniqueId;
- // Step 5: Send SMS using BulkSMSBD
-const SMS_API = "https://bulksmsbd.net/api/smsapi";
-const API_KEY = "VSkytluAnQbG0vsCEbHQ";
-const SENDER_ID = "8809617624950";
-const otpGenerated = Math.floor(1000 + Math.random() * 900000).toString();
-// Build message
-const senderMessage = `Your OTP is ${otpGenerated}
- 
-`;
+  const formData = { ...data, district: districtName };
+  setTempFormData(formData);
 
+  const otpGenerated = Math.floor(100000 + Math.random() * 900000).toString();
 
-// Build URLs
-const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data.email)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
-// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
-      const [senderRes, receiverRes] = await Promise.all([
-    axios.get(senderUrl),
-    
-  ]); 
+  const SMS_API = "https://bulksmsbd.net/api/smsapi";
+  const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+  const SENDER_ID = "8809617624950";
+
+  const senderMessage = `Your OTP is ${otpGenerated}`;
+  const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data.email)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+
   try {
-    setLoading(true);
+    await axios.get(senderUrl);
 
-    // Upload image
-    const imageData = await imageUpload(data.image[0]);  
-
-    // Send signup request
-    const response = await axiosSecure.post('/users/auth/register', {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      role: 'merchant',
-      imageUrl: imageData?.data?.display_url,
-      merchantID,
-      Merchant_Balance: 0,
-      info:obfuscatePassword(data.password),
-      Merchant_District:formData?.district || "",
-      Merchant_District_ID:selectedDistrict || "",
-      Merchant_Area:formData?.area || "",
-      Merchant_Full_Address: formData?.customerAddress || "",
-      Merchant_Branch: formData?.branch || ""
+    const res = await axiosSecure.post("/otp/save", {
+      otp: otpGenerated,
+      number: data.email,
     });
 
-    if (response.status === 201) {
-      Swal.fire({
-        icon: 'success',
-        title: 'Merchant Signup Successful',
-        text: 'You have been successfully registered as a Merchant!',
-      });
-      localStorage.setItem("email", data.email);
-      navigate('/');
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Sign Up Failed',
-        text: response.data.message || 'Something went wrong!',
-      });
-    }
-  } catch (err) {
-    console.error(err);
-    Swal.fire({
-      icon: 'error',
-      title: 'Sign Up Failed',
-      text: err?.response?.data?.message || 'An error occurred!',
-    });
-  } finally {
-    setLoading(false);
+    setServerOtpID(res.data.id);
+    setShowOtpModal(true);
+  } catch (error) {
+    console.error("OTP Error:", error);
+    Swal.fire("Failed", "Could not send OTP. Try again.", "error");
   }
 };
+
+const saveUserToDatabase = async (formData, merchantID) => {
+  const imageData = await imageUpload(formData.image[0]);
+
+  const response = await axiosSecure.post('/users/auth/register', {
+    name: formData.name,
+    email: formData.email,
+    password: formData.password,
+    role: 'merchant',
+    imageUrl: imageData?.data?.display_url,
+    merchantID,
+    Merchant_Balance: 0,
+    info: obfuscatePassword(formData.password),
+    Merchant_District: formData?.district || "",
+    Merchant_District_ID: formData?.districtID || "",
+    Merchant_Area: formData?.area || "",
+    Merchant_Full_Address: formData?.customerAddress || "",
+    Merchant_Branch: formData?.branch || ""
+  });
+
+  return response;
+};
+
 const {  data: users = []} = useQuery({
     queryKey: ['users'],
     queryFn: async() => {
@@ -780,7 +854,66 @@ const {  data: users = []} = useQuery({
     }
     
 });
+// const handleOtpSubmit = async (otpEntered) => {
+//   try {
+//     // Check OTP
+//     const response = await axiosSecure.post('/otp/verify', {
+//       otp: otpEntered,
+//       number: tempFormData.email,
+//     });
 
+//     if (response.data.valid) {
+//       await saveUserToDatabase(tempFormData); // Save user data after OTP verification
+//       await axiosSecure.delete(`/otp/remove/${serverOtpID}`); // Remove OTP from DB
+//       setShowOtpModal(false); // Close the modal
+//       Swal.fire('Success', 'OTP verified successfully!', 'success');
+//     } else {
+//       Swal.fire('Error', 'Invalid OTP. Please try again.', 'error');
+//     }
+//   } catch (error) {
+//     Swal.fire('Error', 'An error occurred while verifying OTP.', 'error');
+//   }
+// };
+
+const handleOtpSubmit = async (otpEntered) => {
+  try {
+    const response = await axiosSecure.post('/otp/verify', {
+      otp: otpEntered,
+      number: tempFormData.email,
+    });
+
+    if (response.data.valid) {
+      const date = new Date();
+      const datePart = `${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+      const randomPart = Math.floor(Math.random() * 10).toString();
+      const uniqueId = `${datePart}${randomPart}`;
+      const timePart = `${date.getHours()}${date.getMinutes().toString().padStart(2, '0')}`;
+      const merchantID = timePart + uniqueId;
+
+      setLoading(true);
+
+      const res = await saveUserToDatabase(tempFormData, merchantID);
+
+      if (res.status === 201) {
+        Swal.fire("Success", "Signup successful!", "success");
+        localStorage.setItem("email", tempFormData.email);
+        navigate('/');
+      } else {
+        Swal.fire("Error", "Failed to register", "error");
+      }
+
+      await axiosSecure.delete(`/otp/remove/${serverOtpID}`);
+      setShowOtpModal(false);
+    } else {
+      Swal.fire("Error", "Invalid OTP", "error");
+    }
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Verification failed", "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
 return (
   <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -929,8 +1062,18 @@ return (
         </Link>.
       </p>
     </div>
+    {showOtpModal && (
+  <OTP_Modal
+    show={showOtpModal}
+    onClose={() => setShowOtpModal(false)}
+    onSubmit={handleOtpSubmit}
+  />
+)}
   </div>
+
+  
 );
+
 
 
 };

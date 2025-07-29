@@ -50,7 +50,7 @@ const Sms_History = () => {
     const matchesSearchTerm =
       sms.recipientMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sms.senderMobile.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      sms.CnNumber.toLowerCase().includes(searchTerm.toLowerCase());
+      sms.CnNumber.toLowerCase().includes(searchTerm.toLowerCase()) || '';
 
     const smsStatus = getSmsOverallStatus(sms);
     const matchesFilterStatus =
