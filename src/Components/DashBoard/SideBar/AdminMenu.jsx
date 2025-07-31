@@ -8,6 +8,7 @@ import { BsGrid } from "react-icons/bs";
 import { BatteryCharging, Zap, CircleDollarSign, SendHorizontal } from "lucide-react";
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 import { FaHistory } from "react-icons/fa";
+import { GoPlus } from "react-icons/go";
 const AdminMenu = () => {
   const [verifiedUser] = useUsersData();
   return (
@@ -21,7 +22,7 @@ const AdminMenu = () => {
         address='/dashboard/statistics'
       />
 
-      <MenuItem icon={MdPersonAdd}
+      <MenuItem icon={GoPlus}
         label='Add Costing'
         address='add-costing' />
         
