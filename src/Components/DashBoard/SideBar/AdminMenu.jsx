@@ -22,6 +22,10 @@ const AdminMenu = () => {
       />
 
       <MenuItem icon={MdPersonAdd}
+        label='Add Costing'
+        address='add-costing' />
+        
+      <MenuItem icon={MdPersonAdd}
         label='Add Notice'
         address='add-notice' />
 
