@@ -17,7 +17,7 @@ const Add_Costing = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ['Costs', verifiedUser?.email],
+    queryKey: ['costs', verifiedUser?.email],
     queryFn: async () => {
       if (!verifiedUser?.email) return [];
       const res = await axiosSecure.get('/costs');
@@ -32,6 +32,8 @@ const Add_Costing = () => {
       await axiosSecure.post('/cost', {
         message: data.message,
         date: new Date().toISOString(),
+        Who_Added: verifiedUser?.email,
+        Who_Added_Name: verifiedUser?.name,
       });
       reset();
       refetch();
@@ -55,7 +57,7 @@ const Add_Costing = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axiosSecure.delete(`/Costs/${id}`);
+        await axiosSecure.delete(`/costs/${id}`);
         refetch();
         Swal.fire('Deleted!', 'Cost has been deleted.', 'success');
       } catch (err) {
