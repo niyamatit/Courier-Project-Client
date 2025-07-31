@@ -20,7 +20,7 @@ const Add_Costing = () => {
     queryKey: ['Costs', verifiedUser?.email],
     queryFn: async () => {
       if (!verifiedUser?.email) return [];
-      const res = await axiosSecure.get('/Costs');
+      const res = await axiosSecure.get('/costs');
       return res.data;
     },
     enabled: !!verifiedUser?.email,
@@ -66,13 +66,13 @@ const Add_Costing = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-xl rounded-lg mt-8">
-      <h1 className="text-3xl font-semibold text-blue-700 mb-6 border-b pb-2">📢 Cost Board</h1>
+      <h1 className="text-3xl font-semibold text-blue-700 mb-6 border-b pb-2">Add Cost</h1>
 
       {/* Cost Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="mb-8 bg-blue-50 p-4 rounded-lg">
         <div className="mb-4">
           <label htmlFor="message" className="block font-medium text-gray-700 mb-1">
-            Write Cost
+            Add Cost
           </label>
           <textarea
             id="message"
@@ -81,7 +81,7 @@ const Add_Costing = () => {
               errors.message ? 'border-red-500' : 'border-gray-300'
             }`}
             rows={4}
-            placeholder="Type your Cost message..."
+            placeholder="Type your Cost name..."
           />
           {errors.message && (
             <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
@@ -95,8 +95,8 @@ const Add_Costing = () => {
       ? 'bg-white text-gray-400 border border-gray-300 cursor-not-allowed'
       : 'bg-blue-600 text-white hover:bg-blue-700'
   }`}
-  disabled={Costs.length > 0}
-  title={Costs.length > 0 ? 'You already have a Cost' : 'Add a new Cost'}
+  
+  
 >
   ➕ Add Cost
 </button>
