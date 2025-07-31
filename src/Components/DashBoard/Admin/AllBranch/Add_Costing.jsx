@@ -20,7 +20,7 @@ const Add_Costing = () => {
     queryKey: ['costs', verifiedUser?.email],
     queryFn: async () => {
       if (!verifiedUser?.email) return [];
-      const res = await axiosSecure.get('/costs');
+      const res = await axiosSecure.get('/costs-name');
       return res.data;
     },
     enabled: !!verifiedUser?.email,
@@ -29,15 +29,18 @@ const Add_Costing = () => {
   // Handle Add Cost
   const onSubmit = async (data) => {
     try {
-      await axiosSecure.post('/cost', {
-        message: data.message,
+
+        const constInfo = {
+  cost_name: data.message,
         date: new Date().toISOString(),
         Who_Added: verifiedUser?.email,
         Who_Added_Name: verifiedUser?.name,
-      });
+        }
+
+      await axiosSecure.post('/cost-name', constInfo);
       reset();
       refetch();
-      Swal.fire('Success', 'Cost added successfully!', 'success');
+      Swal.fire('Success', 'Cost Name added successfully!', 'success');
     } catch (err) {
       Swal.fire('Error', 'Failed to add Cost', 'error');
     }
@@ -47,7 +50,7 @@ const Add_Costing = () => {
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to delete this Cost?',
+      text: 'You want to delete this Cost Name?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563EB',
@@ -68,7 +71,7 @@ const Add_Costing = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-xl rounded-lg mt-8">
-      <h1 className="text-3xl font-semibold text-blue-700 mb-6 border-b pb-2">Add Cost</h1>
+      <h1 className="text-3xl font-semibold text-blue-700 mb-6 border-b pb-2">Add Cost Name</h1>
 
       {/* Cost Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="mb-8 bg-blue-50 p-4 rounded-lg">
@@ -76,7 +79,7 @@ const Add_Costing = () => {
           <label htmlFor="message" className="block font-medium text-gray-700 mb-1">
             Add Cost
           </label>
-          <textarea
+          <input
             id="message"
             {...register('message', { required: 'Message is required' })}
             className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 ${
@@ -93,14 +96,13 @@ const Add_Costing = () => {
         <button
   type="submit"
   className={`px-6 py-2 rounded-lg transition font-medium ${
-    Costs.length > 0
-      ? 'bg-white text-gray-400 border border-gray-300 cursor-not-allowed'
-      : 'bg-blue-600 text-white hover:bg-blue-700'
+    
+       'bg-blue-600 text-white hover:bg-blue-700'
   }`}
   
   
 >
-  ➕ Add Cost
+  ➕ Add Cost Name
 </button>
 
       </form>
@@ -118,7 +120,7 @@ const Add_Costing = () => {
               className="bg-gray-50 border border-gray-200 p-4 rounded-lg flex justify-between items-start shadow-sm"
             >
               <div>
-                <p className="text-gray-800 text-base">{Cost.message}</p>
+                <p className=" text-base text-red-400 font-semibold">{Cost.cost_name}</p>
                 <p className="text-xs text-gray-500 mt-1">
                   Posted on {new Date(Cost.date).toLocaleString()}
                 </p>
