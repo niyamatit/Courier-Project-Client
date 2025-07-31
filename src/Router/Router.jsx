@@ -116,6 +116,7 @@ import Bkash_Payment_History from "../Components/DashBoard/Host/Bkash_Payment_Hi
 import Bkash_Payment_Admin from "../Components/DashBoard/Admin/Bkash_Payment_Admin";
 import Notice from "../Components/DashBoard/Admin/Notice";
 import Sms_History from "../Components/DashBoard/Admin/Sms_History";
+import Add_Costing from "../Components/DashBoard/Admin/AllBranch/Add_Costing";
 
 
 
@@ -401,6 +402,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <Notice />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "add-costing",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <Add_Costing/>
             </AdminRoute>
           </PrivateRoute>
         ),
