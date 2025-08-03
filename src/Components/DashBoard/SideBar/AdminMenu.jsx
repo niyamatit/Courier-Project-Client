@@ -29,7 +29,7 @@ const AdminMenu = () => {
       <MenuItem icon={GoPlus}
         label='Add Costing Amount'
         address='add-costing-amount' />
-      <MenuItem icon={GoPlus}
+      <MenuItem icon={FaHistory}
         label='Cost History'
         address='cost-history' />
         

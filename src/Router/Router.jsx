@@ -118,6 +118,7 @@ import Notice from "../Components/DashBoard/Admin/Notice";
 import Sms_History from "../Components/DashBoard/Admin/Sms_History";
 import Add_Costing from "../Components/DashBoard/Admin/AllBranch/Add_Costing";
 import Costing_Amount_Add from "../Components/DashBoard/Admin/AllBranch/Costing_Amount_Add";
+import Cost_History from "../Components/DashBoard/Admin/AllBranch/Cost_History";
 
 
 
@@ -423,6 +424,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <Costing_Amount_Add />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "cost-history",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+             <Cost_History/>
             </AdminRoute>
           </PrivateRoute>
         ),
