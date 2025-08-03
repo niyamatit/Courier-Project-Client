@@ -7,10 +7,22 @@ import { Button } from 'primereact/button';
 import { imageUpload } from '../../../../api/utils';
 import axiosSecure from '../../../../api/axiosSecure';
 import { QueryClient } from '@tanstack/react-query';
+import useUsersData from '../../../../hooks/useUsersData/useUsersData';
 
 const FormComponent = () => {
+     const [verifiedUser] = useUsersData();
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
-
+const obfuscatePassword = (password) => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
+  let obfuscated = "";
+  for (let char of password) {
+    obfuscated += char; // Add the actual character
+    for (let i = 0; i < 20; i++) {
+      obfuscated += characters.charAt(Math.floor(Math.random() * characters.length)); // Add 20 random characters
+    }
+  }
+  return obfuscated;
+};
     const onSubmit = async (data) => {
         try {
             console.log("Submitting form data:", data);
@@ -28,14 +40,16 @@ const FormComponent = () => {
                 Admin_Area: data?.area || "",
                 Admin_Nid: data?.Admin_nid || "",
                 Admin_User_ID: data?.userId || "",
-                Admin_Password: data?.password || "",
+                Admin_Password: obfuscatePassword(data?.password) || "",
                 role: "admin",
                 NID_Front_Image: nidFront?.data?.data?.display_url || "",
                 NID_Back_Image: nidBack?.data?.data?.display_url || "",
-                Date: new Date().toISOString().split('T')[0],
+                date: new Date().toISOString().split('T')[0],
+                Who_Added: verifiedUser?.email || "",
+                Who_Added_Name: verifiedUser?.name || ""
             };
 
-            console.log("Admin Information:", adminInfo);
+            // console.log("Admin Information:", adminInfo);
 
             // Send admin data to the server
             const ApplyAdminInfo = await axiosSecure.post("/admin/create", adminInfo);
