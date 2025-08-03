@@ -42,7 +42,7 @@ const Costing_Amount_Add = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
       <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8 transform transition duration-500 ">
-        <h2 className="text-3xl font-extrabold  text-center mb-6 text-blue-500">Add New Cost</h2>
+        <h2 className="text-3xl font-extrabold  text-center mb-6 text-blue-600">Add New Cost</h2>
       
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
