@@ -51,7 +51,7 @@ const FormComponent = () => {
                 imageUrl: "",
             };
 
-            // const response = await axiosSecure.post('/users/auth/register', AdminLogin);
+            const response = await axiosSecure.post('/users/auth/register', AdminLogin);
             // console.log("Admin registration response:", response.data);
         } catch (error) {
             console.error("Error during form submission:", error.response?.data || error.message);
