@@ -23,8 +23,11 @@ const AdminMenu = () => {
       />
 
       <MenuItem icon={GoPlus}
-        label='Add Costing'
+        label='Add Costing Name'
         address='add-costing' />
+      <MenuItem icon={GoPlus}
+        label='Add Costing Amount'
+        address='add-costing-amount' />
         
       <MenuItem icon={MdPersonAdd}
         label='Add Notice'
