@@ -39,7 +39,7 @@ const Cost_History = () => {
 
     return (
         <div className="container mx-auto p-4 md:p-8 bg-gray-50 min-h-screen">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-center text-blue-600 mb-6 md:mb-10">Cost History</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-center text-blue-600 mb-6 md:mb-10">Cost History</h1>
             
             {/* Search and Filter Inputs */}
             <div className="mb-8 flex flex-col md:flex-row items-center justify-center gap-4">
