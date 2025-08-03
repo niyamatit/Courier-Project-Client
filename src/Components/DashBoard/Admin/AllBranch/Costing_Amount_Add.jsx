@@ -40,51 +40,60 @@ const Costing_Amount_Add = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white shadow p-6 rounded">
-      <h2 className="text-2xl font-bold mb-4">Add Costing Amount</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8 transform transition duration-500 ">
+        <h2 className="text-3xl font-extrabold  text-center mb-6 text-blue-500">Add New Cost</h2>
+      
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Dropdown */}
-        <div>
-          <label className="block mb-1 font-medium">Costing Name</label>
-          <select {...register("cost_name", { required: true })} className="w-full border px-3 py-2 rounded">
-            <option value="">Select a cost name</option>
-            {cost_names.map((item) => (
-              <option key={item._id} value={item.cost_name}>
-                {item.cost_name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Dropdown */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">Costing Name</label>
+            <select
+              {...register("cost_name", { required: "Cost name is required" })}
+              className="w-full border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+            >
+              <option value="">Select a cost name</option>
+              {cost_names.map((item) => (
+                <option key={item._id} value={item.cost_name}>
+                  {item.cost_name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        {/* Amount */}
-        <div>
-          <label className="block mb-1 font-medium">Amount</label>
-          <input
-            type="number"
-            step="0.01"
-            {...register("amount", { required: true })}
-            className="w-full border px-3 py-2 rounded"
-            placeholder="Enter amount"
-          />
-        </div>
+          {/* Amount */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">Amount</label>
+            <input
+              type="number"
+              step="0.01"
+              {...register("amount", { required: "Amount is required" })}
+              className="w-full border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              placeholder="e.g., 50.00"
+            />
+          </div>
 
-        {/* Note */}
-        <div>
-          <label className="block mb-1 font-medium">Note</label>
-          <textarea
-            {...register("note")}
-            className="w-full border px-3 py-2 rounded"
-            placeholder="Optional note"
-            rows={3}
-          />
-        </div>
+          {/* Note */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">Note</label>
+            <textarea
+              {...register("note")}
+              className="w-full border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              placeholder="Add an optional note about this cost..."
+              rows={4}
+            />
+          </div>
 
-        {/* Submit */}
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-          Add Cost
-        </button>
-      </form>
+          {/* Submit */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-md"
+          >
+            Add Cost
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
