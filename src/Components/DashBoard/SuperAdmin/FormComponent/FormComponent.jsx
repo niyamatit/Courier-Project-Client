@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 const FormComponent = () => {
      const [verifiedUser] = useUsersData();
      const queryClient = useQueryClient();
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue,reset } = useForm();
 const obfuscatePassword = (password) => {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(()){:}}||><?";
   let obfuscated = "";
@@ -72,7 +72,7 @@ const obfuscatePassword = (password) => {
         text: "New admin has been successfully created.",
       });
     }
-
+reset()
     // Optionally: reset form, refetch data
     queryClient.invalidateQueries({ queryKey: ['admin'] });
   } catch (error) {
