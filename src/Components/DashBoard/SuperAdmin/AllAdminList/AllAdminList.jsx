@@ -65,6 +65,7 @@ const AllAdminList = () => {
               <th className="py-3 px-4 text-left">Name</th>
               <th className="py-3 px-4 text-left">Email</th>
               <th className="py-3 px-4 text-left">Role</th>
+              <th className="py-3 px-4 text-left">Country</th>
               <th className="py-3 px-4 text-left">Action</th>
             </tr>
           </thead>
@@ -82,6 +83,7 @@ const AllAdminList = () => {
                 <td className="py-3 px-4">{admin.name}</td>
                 <td className="py-3 px-4">{admin.email}</td>
                 <td className="py-3 px-4 capitalize text-blue-600 font-medium">{admin.role}</td>
+                <td className="py-3 px-4 capitalize text-blue-600 font-medium">{admin.Admin_Country}</td>
                 <td className="py-3 px-4">
                   <button
                     onClick={() => handleDelete(admin._id, admin.name)}
