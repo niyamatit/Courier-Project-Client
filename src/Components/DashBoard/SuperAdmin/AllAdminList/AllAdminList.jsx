@@ -1,8 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
+import Swal from "sweetalert2";
 
 const AllAdminList = () => {
-  const { data: users = [], isLoading } = useQuery({
+  const queryClient = useQueryClient();
+
+  // Fetch all users
+  const { data: users = [], isLoading,refetch } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
@@ -11,6 +15,41 @@ const AllAdminList = () => {
   });
 
   const adminList = users.filter(user => user.role === 'admin');
+
+  // Delete mutation
+  const deleteAdminMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.delete(`/users/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+
+      Swal.fire("Deleted!", "Admin has been removed.", "success");
+      queryClient.invalidateQueries(['users']); 
+      refetch()
+    // Refresh user list
+    },
+    onError: () => {
+      Swal.fire("Error!", "Something went wrong.", "error");
+    }
+  });
+
+  // Confirm delete
+  const handleDelete = (id, name) => {
+    Swal.fire({
+      title: `Delete ${name}?`,
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#2563eb",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteAdminMutation.mutate(id);
+      }
+    });
+  };
 
   if (isLoading) return <p className="text-center mt-10 text-blue-600 font-semibold">Loading admin list...</p>;
 
@@ -26,6 +65,7 @@ const AllAdminList = () => {
               <th className="py-3 px-4 text-left">Name</th>
               <th className="py-3 px-4 text-left">Email</th>
               <th className="py-3 px-4 text-left">Role</th>
+              <th className="py-3 px-4 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -42,6 +82,14 @@ const AllAdminList = () => {
                 <td className="py-3 px-4">{admin.name}</td>
                 <td className="py-3 px-4">{admin.email}</td>
                 <td className="py-3 px-4 capitalize text-blue-600 font-medium">{admin.role}</td>
+                <td className="py-3 px-4">
+                  <button
+                    onClick={() => handleDelete(admin._id, admin.name)}
+                    className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded text-sm"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
