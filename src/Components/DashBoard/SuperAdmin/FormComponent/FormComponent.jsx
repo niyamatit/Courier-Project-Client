@@ -60,6 +60,7 @@ const obfuscatePassword = (password) => {
       password: data?.password || "",
       role: "admin",
       imageUrl: "",
+      Admin_Country: data?.country || "",
     };
 
     const registerRes = await axiosSecure.post('/users/auth/register', AdminLogin);
