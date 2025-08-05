@@ -45,6 +45,7 @@
     "react-minimal-pie-chart": "^8.4.0",
     "react-qr-code": "^2.0.15",
     "react-router-dom": "^6.23.1",
+    "react-select": "^5.10.2",
     "react-slick": "^0.30.2",
     "react-spinners": "^0.14.1",
     "react-to-print": "^2.15.1",
