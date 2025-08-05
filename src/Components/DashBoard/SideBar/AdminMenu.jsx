@@ -5,7 +5,7 @@ import { MdBookOnline, MdMoney, MdPending, MdPersonAdd, MdRateReview } from 'rea
 import { MdStore } from 'react-icons/md';
 import { BsBuilding } from "react-icons/bs";
 import { BsGrid } from "react-icons/bs";
-import { BatteryCharging, Zap, CircleDollarSign, SendHorizontal } from "lucide-react";
+import {  CircleDollarSign, } from "lucide-react";
 import useUsersData from '../../../hooks/useUsersData/useUsersData';
 import { FaHistory } from "react-icons/fa";
 import { GoPlus } from "react-icons/go";
@@ -21,8 +21,10 @@ const AdminMenu = () => {
         label='Statistics'
         address='/dashboard/statistics'
       />
-
-      <MenuItem icon={GoPlus}
+<h1 className='text-xl text-gray-500 font-bold'>-------cost section------</h1>
+      {
+        verifiedUser?.permissions?.includes('Cost_Section') && <>
+        <MenuItem icon={GoPlus}
         label='Add Costing Name'
         address='add-costing' />
 
@@ -33,7 +35,14 @@ const AdminMenu = () => {
         label='Cost History'
         address='cost-history' />
         
-      <MenuItem icon={MdPersonAdd}
+        
+        
+        </>
+      }
+     <h1 className='text-xl text-gray-500 font-bold'>------others section-----</h1>   
+     {
+      verifiedUser?.permissions?.includes('Other_Section') && <> 
+       <MenuItem icon={MdPersonAdd}
         label='Add Notice'
         address='add-notice' />
 
@@ -60,18 +69,40 @@ const AdminMenu = () => {
       <MenuItem icon={BsGrid}
         label='Support Company List'
         address='company-list' />
+      
+      
+      
+      </>
+     }
 
-
-      <MenuItem icon={FaUserCog}
+ <h1 className='text-xl text-gray-500 font-bold'>---merchant section----</h1>
+      {
+        verifiedUser?.permissions?.includes('Merchant_Section') && <>
+        <MenuItem icon={FaUserCog}
         label='All Merchant List'
         address='AllMerchnatList' />
 
       <MenuItem icon={CircleDollarSign}
         label='Merchant Recharge Pending'
         address='Merchant-Recharge-Apply' />
+<MenuItem
+        icon={MdBookOnline}
 
+        label='Merchant Booking view'
+        address='merchantbooking-info'
+      />
+        
+        
+        
+        
+        
+        </>
+      }
+<h1 className='text-xl text-gray-500 font-bold'>-----branch section-----</h1>
 
-      <MenuItem
+      {
+         verifiedUser?.permissions?.includes('Branch_Section') && <>
+         <MenuItem
         icon={FaUserAlt}
         label='Rider Add'
         address='rider-add'
@@ -132,18 +163,14 @@ const AdminMenu = () => {
         label='Online Booking view'
         address='booking-info-admin'
       />
+      
       <MenuItem
         icon={MdBookOnline}
 
         label='Offline Booking view'
         address='offline-booking'
       />
-      <MenuItem
-        icon={MdBookOnline}
-
-        label='Merchant Booking view'
-        address='merchantbooking-info'
-      />
+      
        <MenuItem
         icon={MdBookOnline}
 
@@ -156,6 +183,9 @@ const AdminMenu = () => {
         label='All SMS History'
         address='sms-history'
       />
+         
+         </>
+      }
     </>
   )
 }
