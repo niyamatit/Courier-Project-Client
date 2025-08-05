@@ -6,7 +6,7 @@ const AllAdminList = () => {
   const queryClient = useQueryClient();
 
   // Fetch all users
-  const { data: users = [], isLoading,refetch } = useQuery({
+  const { data: users = [], isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
@@ -32,13 +32,15 @@ const AllAdminList = () => {
       const res = await axiosSecure.delete(`/users/${id}`);
       return res.data;
     },
-    onSuccess: () => {
+   onSuccess: (_, id) => {
+    Swal.fire("Deleted!", "Admin has been removed.", "success");
 
-      Swal.fire("Deleted!", "Admin has been removed.", "success");
-      queryClient.invalidateQueries(['users']); 
-      refetch()
-    // Refresh user list
-    },
+    // Instantly update UI without refetch
+    queryClient.setQueryData(['users'], (oldData = []) =>
+        oldData.filter(user => user._id !== id)
+    );
+},
+
     onError: () => {
       Swal.fire("Error!", "Something went wrong.", "error");
     }
@@ -63,25 +65,33 @@ const AllAdminList = () => {
 
   if (isLoading) return <p className="text-center mt-10 text-blue-600 font-semibold">Loading admin list...</p>;
 const handlePermissionChange = async (userId, newPermissions) => {
-        try {
-            await axiosSecure.patch(`/users/aghghghghhg/jhghg/${userId}`, { permissions: newPermissions });
-            queryClient.invalidateQueries(['users']);
-            Swal.fire({
-                icon: 'success',
-                title: 'Permissions Updated!',
-                text: 'User permissions updated successfully.',
-                showConfirmButton: false,
-                timer: 1200
-            });
-        } catch (error) {
-            console.error('Failed to update permissions:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Update Failed',
-                text: 'Failed to update permissions. Please try again.',
-            });
-        }
-    };
+    try {
+        await axiosSecure.patch(`/users/aghghghghhg/jhghg/${userId}`, { permissions: newPermissions });
+
+        // ✅ Instantly update cache without waiting for refetch
+        queryClient.setQueryData(['users'], (oldData = []) =>
+            oldData.map(user =>
+                user._id === userId ? { ...user, permissions: newPermissions } : user
+            )
+        );
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Permissions Updated!',
+            text: 'User permissions updated successfully.',
+            showConfirmButton: false,
+            timer: 1200
+        });
+    } catch (error) {
+        console.error('Failed to update permissions:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Update Failed',
+            text: 'Failed to update permissions. Please try again.',
+        });
+    }
+};
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4 text-blue-700">Admin List ({adminList.length})</h1>
