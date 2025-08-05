@@ -55,7 +55,7 @@ const AllAdminList = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4 text-blue-700">Admin List</h1>
+      <h1 className="text-2xl font-bold mb-4 text-blue-700">Admin List ({adminList.length})</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-blue-200 shadow-md rounded-lg">
           <thead className="bg-blue-600 text-white">
