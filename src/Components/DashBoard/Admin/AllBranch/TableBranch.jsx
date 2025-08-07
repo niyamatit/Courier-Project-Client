@@ -124,6 +124,17 @@ const TableBranch = ({ branch, onView, refetch }) => {
                         View
                     </button>
                 </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <select
+            value={branch?.status || "active"} // Default to active if not set
+            onChange={(e) => handleStatusChange(branch._id, e.target.value)}
+            className="p-2 border rounded-md"
+          >
+            <option value="active">Active</option>
+            <option value="suspend">Suspend</option>
+            <option value="server-off">Server Off</option>
+          </select>
+        </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <button
                         onClick={() => handleDelete(branch?.Branch_Name)}

@@ -2,6 +2,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import Select from 'react-select';
+
+
+
 const AllAdminList = () => {
   const queryClient = useQueryClient();
 
