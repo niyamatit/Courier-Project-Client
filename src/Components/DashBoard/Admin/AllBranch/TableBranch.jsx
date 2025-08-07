@@ -84,6 +84,7 @@ const TableBranch = ({ branch, onView, refetch }) => {
     try {
       await axiosSecure.patch(`/users/update-status/${userId}`, { status: newStatus });
       refetchUsers(); 
+      refetch();
       Swal.fire({
         title: "Status Updated!",
         text: `User's status has been changed to ${newStatus}.`,

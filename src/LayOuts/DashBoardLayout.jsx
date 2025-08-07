@@ -30,7 +30,7 @@ const DashboardLayout = () => {
       <div className="flex items-center justify-center h-screen text-center">
         <div>
           <h2 className="text-2xl font-bold text-red-600">Access Denied</h2>
-          {/* <p className="text-lg mt-2">Your branch is currently <strong>{currentBranch?.status}</strong>.</p> */}
+          
           {
             currentBranch?.status === 'suspend' ? (
               <p className="text-lg mt-2">Your are <strong className="text-red-500">Suspended</strong>.</p>
