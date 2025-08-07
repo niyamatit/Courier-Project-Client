@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 import Sidebar from "../Components/DashBoard/SideBar/SideBar"
 import useUsersData from "../hooks/useUsersData/useUsersData";
 import axiosSecure from "../api/axiosSecure";
@@ -33,12 +33,13 @@ const DashboardLayout = () => {
           {/* <p className="text-lg mt-2">Your branch is currently <strong>{currentBranch?.status}</strong>.</p> */}
           {
             currentBranch?.status === 'suspend' ? (
-              <p className="text-lg mt-2">Your are <strong>suspended</strong>.</p>
+              <p className="text-lg mt-2">Your are <strong className="text-red-500">Suspended</strong>.</p>
             ) : (
-              <p className="text-lg mt-2">Now <strong>server off</strong> Please try again later.</p>
+              <p className="text-lg mt-2">Now <strong className="text-red-600">Server Off</strong>. Please try again later.</p>
             )
           }
-          <p className="text-sm mt-1 text-gray-500">Please contact the administrator for further access.</p>
+         
+          <Link to="/"><p className="text-green-500">Back to Home</p></Link>
         </div>
       </div>
     );
