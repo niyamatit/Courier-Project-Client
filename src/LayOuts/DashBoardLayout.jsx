@@ -1,8 +1,50 @@
 import { Outlet } from "react-router-dom"
 import Sidebar from "../Components/DashBoard/SideBar/SideBar"
+import useUsersData from "../hooks/useUsersData/useUsersData";
+import axiosSecure from "../api/axiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 
 const DashboardLayout = () => {
+  const [verifiedUser] = useUsersData();
+  const { data: Branches = [], isLoading } = useQuery({
+    queryKey: ['Branches'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/vgfsdhfsdhhsxgcfbxcjkxnbnj454557");
+      return res.data;
+    }
+  });
+
+  const currentBranch = Branches.find(branch => branch?.email === verifiedUser?.email);
+
+  const isSuspendedBranch =
+    verifiedUser?.role === 'host' &&
+    (currentBranch?.status === 'suspend' || currentBranch?.status === 'server-off');
+
+  if (isLoading) {
+    return <div className="text-center mt-20 text-xl font-semibold">Loading dashboard...</div>;
+  }
+
+  if (isSuspendedBranch) {
+    return (
+      <div className="flex items-center justify-center h-screen text-center">
+        <div>
+          <h2 className="text-2xl font-bold text-red-600">Access Denied</h2>
+          {/* <p className="text-lg mt-2">Your branch is currently <strong>{currentBranch?.status}</strong>.</p> */}
+          {
+            currentBranch?.status === 'suspend' ? (
+              <p className="text-lg mt-2">Your are <strong>suspended</strong>.</p>
+            ) : (
+              <p className="text-lg mt-2">Now <strong>server off</strong> Please try again later.</p>
+            )
+          }
+          <p className="text-sm mt-1 text-gray-500">Please contact the administrator for further access.</p>
+        </div>
+      </div>
+    );
+  }
+
+
     return (
       <div className='relative min-h-screen md:flex'>
         {/* Sidebar Component */}
