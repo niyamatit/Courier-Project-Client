@@ -80,7 +80,24 @@ const TableBranch = ({ branch, onView, refetch }) => {
             console.error("Delete branch error:", error);
         }
     };
-
+ const handleStatusChange = async (userId, newStatus) => {
+    try {
+      await axiosSecure.patch(`/users/update-status/${userId}`, { status: newStatus });
+      refetchUsers(); 
+      Swal.fire({
+        title: "Status Updated!",
+        text: `User's status has been changed to ${newStatus}.`,
+        icon: "success",
+      });
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to update the user's status.",
+        icon: "error",
+      });
+      console.error("Error updating user status:", error);
+    }
+  };
     return (
         <>
             <tr className="font-rancho">
@@ -126,7 +143,7 @@ const TableBranch = ({ branch, onView, refetch }) => {
                 </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
           <select
-            value={branch?.status || "active"} // Default to active if not set
+            value={branch?.status} // Default to active if not set
             onChange={(e) => handleStatusChange(branch._id, e.target.value)}
             className="p-2 border rounded-md"
           >
