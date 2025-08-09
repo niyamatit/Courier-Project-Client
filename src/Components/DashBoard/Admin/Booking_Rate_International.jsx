@@ -97,22 +97,38 @@ const handleProductChange = (index, field, value) => {
   // Save Product
   const onSubmitProducts = async (e) => {
   e.preventDefault();
+
+
+  const ProductsInfo = {
+    branchId: selectedBranch,
+      products: productFields,
+      date: new Date().toISOString(),
+  }
   try {
-      
-    const productsInfo ={
-        products: productFields,
-
+    const response = await axiosSecure.post("/api/products/bulk", ProductsInfo);
+    setSelectedBranch("");
+    setProductFields([{ name: "", unit: "", price: "" }]);
+    if (response.status === 201) {
+      Swal.fire("✅ Success!", "Products added successfully.", "success");
+      setSelectedBranch("");
+      setProductFields([{ name: "", unit: "", price: "" }]);
+      fetchProducts();
     }
-
-
-    await axiosSecure.post("/api/products/bulk", { products: productFields });
-    setProductFields([{ name: "", unit: "", price: "" }]); 
-    Swal.fire("Success!", "Products added successfully.", "success");
-    fetchProducts();
   } catch (error) {
-    console.error("Failed to save products:", error);
+   if (error.response) {
+      if (error.response.status === 409) {
+        Swal.fire("⚠️ Duplicate!", "Branch data already exists.", "warning");
+      } else if (error.response.status === 500) {
+        Swal.fire("❌ Error!", "Failed to add products. Please try again.", "error");
+      } else {
+        Swal.fire("❌ Error!", "Unexpected error occurred.", "error");
+      }
+    } else {
+      Swal.fire("❌ Error!", "Network error. Please check your connection.", "error");
+    }
   }
 };
+
 
 
   // Edit Branch
@@ -188,6 +204,16 @@ const handleProductChange = (index, field, value) => {
   
 
     const branches = Branch.filter(branch => branch?.role === "host");
+
+
+     const {  data: productList_Int = [], refetch: ProductRefetch} = useQuery({
+        queryKey: ['productList_Int'],
+        queryFn: async() => {
+            const res = await axiosSecure.get("/int-add-products");
+            return res.data;
+        }
+
+    });
 
   return (
     <div className="bg-gray-50 min-h-screen w-full p-4 md:p-8 font-sans">
@@ -479,8 +505,8 @@ const handleProductChange = (index, field, value) => {
                         <th className="py-4 px-6 text-center">Actions</th>
                       </tr>
                     </thead>
-                    {/* <tbody className="bg-white text-gray-700 text-sm">
-                      {productList.map((p) => (
+                    <tbody className="bg-white text-gray-700 text-sm">
+                      {productList_Int.map((p) => (
                         <tr key={p._id} className="border-b border-gray-100 hover:bg-gray-50">
                           <td className="py-4 px-6 font-medium whitespace-nowrap">{p.name}</td>
                           <td className="py-4 px-6">{p.unit}</td>
@@ -495,7 +521,7 @@ const handleProductChange = (index, field, value) => {
                           </td>
                         </tr>
                       ))}
-                    </tbody> */}
+                    </tbody>
                   </table>
                 </div>
               ) : (
