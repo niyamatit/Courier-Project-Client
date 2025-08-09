@@ -145,7 +145,10 @@ export default function BranchProductManager() {
                     SL
                   </th>
                   <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Date
+                    Product Added
+                  </th>
+                  <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Product Updated
                   </th>
                   <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Branch ID
@@ -166,6 +169,9 @@ export default function BranchProductManager() {
                     </td>
                     <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm text-gray-500">
                       {new Date(branch.date).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(branch.updateDate).toLocaleString()}
                     </td>
                     <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm font-semibold text-gray-700">
                       {branch.branchId}
