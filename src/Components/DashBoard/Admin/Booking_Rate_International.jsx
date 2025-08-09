@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import axiosSecure from "../../../api/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import BranchProductManager from "./BranchProductManager";
 const Booking_Rate_International = () => {
   const {
     register,
@@ -495,35 +496,7 @@ const handleProductChange = (index, field, value) => {
               {loading ? (
                 <p className="text-center text-gray-500 py-8">Loading products...</p>
               ) : productList.length > 0 ? (
-                <div className="overflow-x-auto rounded-lg shadow-sm">
-                  <table className="w-full table-auto">
-                    <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
-                      <tr className="border-b border-gray-200">
-                        <th className="py-4 px-6 text-left">Name</th>
-                        <th className="py-4 px-6 text-left">Unit</th>
-                        <th className="py-4 px-6 text-left">Price</th>
-                        <th className="py-4 px-6 text-center">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white text-gray-700 text-sm">
-                      {productList_Int.map((p) => (
-                        <tr key={p._id} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-4 px-6 font-medium whitespace-nowrap">{p.name}</td>
-                          <td className="py-4 px-6">{p.unit}</td>
-                          <td className="py-4 px-6">${p.price}</td>
-                          <td className="py-4 px-6 text-center">
-                            <button
-                              onClick={() => handleDeleteProduct(p._id)}
-                              className="bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-red-600 transition-colors shadow-sm"
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <BranchProductManager />
               ) : (
                 <p className="text-center text-gray-500 py-8">No products found. Add a new product to get started.</p>
               )}
