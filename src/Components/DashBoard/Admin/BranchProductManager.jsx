@@ -173,7 +173,7 @@ export default function BranchProductManager() {
                     <td className="px-4 py-4 sm:px-6 text-sm text-gray-600">
                       {branch.products.map((prod, idx) => (
                         <div key={idx} className="mb-1">
-                          <span className="font-medium text-gray-800">{prod.name}</span> - {prod.unit} - <span className="text-green-600 font-mono">৳ {prod.price}</span>
+                          <span className="font-medium text-gray-800">{prod.name}</span> -  <span className="text-green-600 font-mono">৳ {prod.price}</span> - {prod.unit}
                         </div>
                       ))}
                     </td>
