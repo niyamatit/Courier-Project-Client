@@ -167,34 +167,10 @@ const handleProductChange = (index, field, value) => {
   };
 
   // Delete Product
-  const handleDeleteProduct = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        setLoading(true);
-        try {
-          await axios.delete(`/api/products/${id}`);
-          fetchProducts();
-          Swal.fire("Deleted!", "Your product has been deleted.", "success");
-        } catch (error) {
-          console.error("Failed to delete product:", error);
-          Swal.fire("Error!", "Failed to delete the product.", "error");
-        } finally {
-          setLoading(false);
-        }
-      }
-    });
-  };
+  
 
 
-   const {  data: Branch = [], isLoading,refetch} = useQuery({
+   const {  data: Branch = []} = useQuery({
         queryKey: ['Branch'],
         queryFn: async() => {
             const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
@@ -207,14 +183,7 @@ const handleProductChange = (index, field, value) => {
     const branches = Branch.filter(branch => branch?.role === "host");
 
 
-     const {  data: productList_Int = [], refetch: ProductRefetch} = useQuery({
-        queryKey: ['productList_Int'],
-        queryFn: async() => {
-            const res = await axiosSecure.get("/int-add-products");
-            return res.data;
-        }
-
-    });
+     
 
   return (
     <div className="bg-gray-50 min-h-screen w-full p-4 md:p-8 font-sans">
