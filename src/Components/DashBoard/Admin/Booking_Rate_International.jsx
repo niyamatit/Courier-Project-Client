@@ -2,7 +2,9 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-
+import { FaPlus, FaTimes } from "react-icons/fa";
+import axiosSecure from "../../../api/axiosSecure";
+import { useQuery } from "@tanstack/react-query";
 const Booking_Rate_International = () => {
   const {
     register,
@@ -22,7 +24,24 @@ const Booking_Rate_International = () => {
   const [productList, setProductList] = useState([]);
   const [editId, setEditId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [selectedBranch, setSelectedBranch] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
+const [productFields, setProductFields] = useState([
+  { name: "", unit: "", price: "" }
+]);
+const addProductField = () => {
+  setProductFields([...productFields, { name: "", unit: "", price: "" }]);
+};
+
+const removeProductField = (index) => {
+  const updatedFields = productFields.filter((_, i) => i !== index);
+  setProductFields(updatedFields);
+};
+const handleProductChange = (index, field, value) => {
+  const updatedFields = [...productFields];
+  updatedFields[index][field] = value;
+  setProductFields(updatedFields);
+};
 
   // Fetch Branch Data
   const fetchBranches = async () => {
@@ -76,19 +95,25 @@ const Booking_Rate_International = () => {
   };
 
   // Save Product
-  const onSubmitProduct = async (formData) => {
-    setLoading(true);
-    try {
-      await axios.post("/api/products", formData);
-      resetProduct();
-      setSubmitSuccess(true);
-      fetchProducts();
-    } catch (error) {
-      console.error("Failed to save product:", error);
-    } finally {
-      setLoading(false);
+  const onSubmitProducts = async (e) => {
+  e.preventDefault();
+  try {
+      
+    const productsInfo ={
+        products: productFields,
+
     }
-  };
+
+
+    await axiosSecure.post("/api/products/bulk", { products: productFields });
+    setProductFields([{ name: "", unit: "", price: "" }]); 
+    Swal.fire("Success!", "Products added successfully.", "success");
+    fetchProducts();
+  } catch (error) {
+    console.error("Failed to save products:", error);
+  }
+};
+
 
   // Edit Branch
   const handleEditBranch = (branch) => {
@@ -150,6 +175,19 @@ const Booking_Rate_International = () => {
       }
     });
   };
+
+
+   const {  data: Branch = [], isLoading,refetch} = useQuery({
+        queryKey: ['Branch'],
+        queryFn: async() => {
+            const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+            return res.data;
+        }
+
+    });
+  
+
+    const branches = Branch.filter(branch => branch?.role === "host");
 
   return (
     <div className="bg-gray-50 min-h-screen w-full p-4 md:p-8 font-sans">
@@ -347,55 +385,84 @@ const Booking_Rate_International = () => {
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Manage Products</h2>
               <div className="bg-gray-50 p-6 rounded-xl mb-8 border border-gray-200">
                 <h3 className="text-xl font-bold text-gray-700 mb-4">Add a New Product</h3>
-                <form onSubmit={handleProductSubmit(onSubmitProduct)} className="grid md:grid-cols-3 gap-6">
-                  <div className="col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">Product Name</label>
-                    <input
-                      placeholder="e.g., Electronics"
-                      {...registerProduct("name", { required: "Product Name is required" })}
-                      className={`w-full border ${productErrors.name ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-                    />
-                    {productErrors.name && (
-                      <p className="text-red-500 text-sm mt-1">{productErrors.name.message}</p>
-                    )}
-                  </div>
-                  <div className="col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">Unit</label>
-                    <input
-                      placeholder="e.g., kg"
-                      {...registerProduct("unit", { required: "Unit is required" })}
-                      className={`w-full border ${productErrors.unit ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-                    />
-                    {productErrors.unit && (
-                      <p className="text-red-500 text-sm mt-1">{productErrors.unit.message}</p>
-                    )}
-                  </div>
-                  <div className="col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">Price</label>
-                    <input
-                      placeholder="e.g., 15.00"
-                      {...registerProduct("price", {
-                        required: "Price is required",
-                        valueAsNumber: true,
-                        min: { value: 0, message: "Price must be a positive number" },
-                      })}
-                      type="number"
-                      className={`w-full border ${productErrors.price ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-                    />
-                    {productErrors.price && (
-                      <p className="text-red-500 text-sm mt-1">{productErrors.price.message}</p>
-                    )}
-                  </div>
-                  <div className="col-span-full md:col-span-1 md:col-start-3 self-end">
-                    <button
-                      type="submit"
-                      className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold shadow-lg"
-                      disabled={loading}
-                    >
-                      {loading ? "Adding..." : "Save Product"}
-                    </button>
-                  </div>
-                </form>
+                <form onSubmit={onSubmitProducts} className="space-y-4">
+  {/* Select Branch */}
+  <div>
+    <label className="block font-medium mb-1">Select Branch</label>
+    <select
+      value={selectedBranch}
+      onChange={(e) => setSelectedBranch(e.target.value)}
+      required
+      className="border p-2 rounded w-full"
+    >
+      <option value="">-- Choose Branch --</option>
+      {branches.map((branch) => (
+        <option key={branch.id} value={branch.email}>
+          {branch.name}({branch.email})
+        </option>
+      ))}
+    </select>
+  </div>
+
+  {/* Dynamic Product Fields */}
+  {productFields.map((field, index) => (
+    <div
+      key={index}
+      className="grid grid-cols-4 gap-4 items-center border p-3 rounded-lg bg-gray-50"
+    >
+      <input
+        placeholder="Product Name"
+        value={field.name}
+        onChange={(e) => handleProductChange(index, "name", e.target.value)}
+        className="border p-2 rounded"
+        required
+      />
+      <input
+        placeholder="Unit"
+        value={field.unit}
+        onChange={(e) => handleProductChange(index, "unit", e.target.value)}
+        className="border p-2 rounded"
+        required
+      />
+      <input
+        placeholder="Price"
+        type="number"
+        value={field.price}
+        onChange={(e) => handleProductChange(index, "price", e.target.value)}
+        className="border p-2 rounded"
+        required
+      />
+      <div className="flex items-center justify-center space-x-2">
+        {index === productFields.length - 1 && (
+          <button
+            type="button"
+            onClick={addProductField}
+            className="bg-green-500 text-white p-2 rounded-full"
+          >
+            <FaPlus />
+          </button>
+        )}
+        {productFields.length > 1 && (
+          <button
+            type="button"
+            onClick={() => removeProductField(index)}
+            className="bg-red-500 text-white p-2 rounded-full"
+          >
+            <FaTimes />
+          </button>
+        )}
+      </div>
+    </div>
+  ))}
+
+  {/* Submit */}
+  <button
+    type="submit"
+    className="bg-blue-600 text-white py-2 px-6 rounded-lg"
+  >
+    Save All Products
+  </button>
+</form>
               </div>
 
               <h3 className="text-xl font-bold text-gray-800 mb-4">Product List</h3>
