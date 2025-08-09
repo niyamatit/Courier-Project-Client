@@ -28,21 +28,50 @@ export default function BranchProductManager() {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
+      customClass: {
+        popup: 'bg-white rounded-xl shadow-2xl p-6',
+        title: 'text-2xl font-bold text-gray-800',
+        htmlContainer: 'text-gray-600',
+        confirmButton: 'bg-red-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-700 transition-colors',
+        cancelButton: 'bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-lg hover:bg-gray-400 transition-colors',
+      },
+      buttonsStyling: false,
     });
 
     if (confirm.isConfirmed) {
       try {
         await axios.delete(`/api/products/${id}`);
-        Swal.fire("Deleted!", "Branch data removed.", "success");
+        Swal.fire({
+          title: "Deleted!",
+          text: "Branch data removed.",
+          icon: "success",
+          customClass: {
+            popup: 'bg-white rounded-xl shadow-2xl p-6',
+            title: 'text-2xl font-bold text-gray-800',
+            htmlContainer: 'text-gray-600',
+            confirmButton: 'bg-green-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors',
+          },
+          buttonsStyling: false,
+        });
         fetchBranches();
       } catch (err) {
-        Swal.fire("Error!", "Failed to delete branch data.", "error");
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to delete branch data.",
+          icon: "error",
+          customClass: {
+            popup: 'bg-white rounded-xl shadow-2xl p-6',
+            title: 'text-2xl font-bold text-gray-800',
+            htmlContainer: 'text-gray-600',
+            confirmButton: 'bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors',
+          },
+          buttonsStyling: false,
+        });
       }
     }
   };
 
   const handleEditBranch = (branch) => {
-    // Deep clone to avoid modifying the original until save
     setEditingBranch(JSON.parse(JSON.stringify(branch)));
   };
 
@@ -70,125 +99,185 @@ export default function BranchProductManager() {
       await axios.put(`/api/products/${editingBranch._id}`, {
         products: editingBranch.products,
       });
-      Swal.fire("✅ Success!", "Branch data updated.", "success");
+      Swal.fire({
+        title: "✅ Success!",
+        text: "Branch data updated.",
+        icon: "success",
+        customClass: {
+          popup: 'bg-white rounded-xl shadow-2xl p-6',
+          title: 'text-2xl font-bold text-gray-800',
+          htmlContainer: 'text-gray-600',
+          confirmButton: 'bg-green-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors',
+        },
+        buttonsStyling: false,
+      });
       setEditingBranch(null);
       fetchBranches();
     } catch (err) {
-      Swal.fire("❌ Error!", "Failed to update branch data.", "error");
+      Swal.fire({
+        title: "❌ Error!",
+        text: "Failed to update branch data.",
+        icon: "error",
+        customClass: {
+          popup: 'bg-white rounded-xl shadow-2xl p-6',
+          title: 'text-2xl font-bold text-gray-800',
+          htmlContainer: 'text-gray-600',
+          confirmButton: 'bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors',
+        },
+        buttonsStyling: false,
+      });
     }
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Branch Products Management</h1>
+    <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-6 sm:mb-8 text-center">
+          Branch Products Management
+        </h1>
 
-      {/* Table of Branch Data */}
-      <table className="w-full border-collapse border border-gray-200">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="border p-2">SL</th>
-            <th className="border p-2">Date</th>
-            <th className="border p-2">Branch ID</th>
-            <th className="border p-2">Products</th>
-            
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {branchList.map((branch,index) => (
-            <tr key={branch._id}>
-                <td className="border p-2">
-                {index+ 1}
-              </td>
-                <td className="border p-2">
-                {new Date(branch.date).toLocaleString()}
-              </td>
-              <td className="border p-2">{branch.branchId}</td>
-              <td className="border p-2">
-                {branch.products.map((prod, idx) => (
-                  <div key={idx}>
-                    <span className="font-medium">{prod.name}</span> - {prod.unit} - ${prod.price}
-                  </div>
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gradient-to-r from-gray-100 to-gray-200">
+                <tr>
+                  <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    SL
+                  </th>
+                  <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Branch ID
+                  </th>
+                  <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Products
+                  </th>
+                  <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {branchList.map((branch, index) => (
+                  <tr key={branch._id} className="hover:bg-gray-50 transition-colors duration-200">
+                    <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {index + 1}
+                    </td>
+                    <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(branch.date).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm font-semibold text-gray-700">
+                      {branch.branchId}
+                    </td>
+                    <td className="px-4 py-4 sm:px-6 text-sm text-gray-600">
+                      {branch.products.map((prod, idx) => (
+                        <div key={idx} className="mb-1">
+                          <span className="font-medium text-gray-800">{prod.name}</span> - {prod.unit} - <span className="text-green-600 font-mono">${prod.price}</span>
+                        </div>
+                      ))}
+                    </td>
+                    <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm font-medium">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEditBranch(branch)}
+                          className="flex items-center gap-2 bg-blue-500 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-colors"
+                          title="Edit Branch"
+                        >
+                          <FaEdit className="text-lg" />
+                          <span className="hidden sm:inline">Edit</span>
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBranch(branch._id)}
+                          className="flex items-center gap-2 bg-red-500 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-red-600 transition-colors"
+                          title="Delete Branch"
+                        >
+                          <FaTrash className="text-lg" />
+                          <span className="hidden sm:inline">Delete</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
                 ))}
-              </td>
-              
-              <td className="border p-2 flex gap-2">
-                <button
-                  onClick={() => handleEditBranch(branch)}
-                  className="bg-blue-500 text-white px-3 py-1 rounded flex items-center gap-1"
-                >
-                  <FaEdit /> Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteBranch(branch._id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded flex items-center gap-1"
-                >
-                  <FaTrash /> Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
       {/* Edit Modal */}
       {editingBranch && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center p-4">
-          <div className="bg-white p-6 rounded shadow-lg w-full max-w-lg">
-            <h2 className="text-lg font-bold mb-4">
-              Edit Products for Branch: {editingBranch.branchId}
-            </h2>
-
-            {editingBranch.products.map((prod, idx) => (
-              <div key={idx} className="grid grid-cols-4 gap-2 mb-2 items-center">
-                <input
-                  value={prod.name}
-                  onChange={(e) => handleProductChange(idx, "name", e.target.value)}
-                  placeholder="Name"
-                  className="border p-2 rounded"
-                />
-                <input
-                  value={prod.unit}
-                  onChange={(e) => handleProductChange(idx, "unit", e.target.value)}
-                  placeholder="Unit"
-                  className="border p-2 rounded"
-                />
-                <input
-                  value={prod.price}
-                  type="number"
-                  onChange={(e) => handleProductChange(idx, "price", e.target.value)}
-                  placeholder="Price"
-                  className="border p-2 rounded"
-                />
-                <button
-                  onClick={() => removeProductField(idx)}
-                  className="bg-red-500 text-white p-2 rounded-full"
-                >
-                  <FaTimes />
-                </button>
-              </div>
-            ))}
-
-            <button
-              onClick={addProductField}
-              className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2 mb-4"
-            >
-              <FaPlus /> Add Product
-            </button>
-
-            <div className="flex justify-end gap-2">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 sm:p-8 transform transition-all duration-300 scale-100">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
+                Edit Products for Branch: <span className="text-blue-600">{editingBranch.branchId}</span>
+              </h2>
               <button
                 onClick={() => setEditingBranch(null)}
-                className="bg-gray-400 text-white px-4 py-2 rounded"
+                className="text-gray-500 hover:text-gray-800 transition-colors"
               >
-                Cancel
+                <FaTimes className="text-2xl" />
               </button>
+            </div>
+
+            <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+              {editingBranch.products.map((prod, idx) => (
+                <div key={idx} className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center bg-gray-100 p-4 rounded-xl shadow-sm">
+                  <input
+                    value={prod.name}
+                    onChange={(e) => handleProductChange(idx, "name", e.target.value)}
+                    placeholder="Product Name"
+                    className="col-span-1 sm:col-span-2 border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  />
+                  <input
+                    value={prod.unit}
+                    onChange={(e) => handleProductChange(idx, "unit", e.target.value)}
+                    placeholder="Unit"
+                    className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  />
+                  <div className="relative flex items-center">
+                    <span className="absolute left-3 text-gray-400 font-mono">$</span>
+                    <input
+                      value={prod.price}
+                      type="number"
+                      onChange={(e) => handleProductChange(idx, "price", e.target.value)}
+                      placeholder="Price"
+                      className="w-full border border-gray-300 p-3 pl-8 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                    />
+                  </div>
+                  <button
+                    onClick={() => removeProductField(idx)}
+                    className="sm:col-start-4 bg-red-500 text-white p-3 rounded-full flex items-center justify-center shadow-md hover:bg-red-600 transition-colors"
+                    title="Remove Product"
+                  >
+                    <FaTimes />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex items-center justify-between">
               <button
-                onClick={saveEditedBranch}
-                className="bg-blue-600 text-white px-4 py-2 rounded"
+                onClick={addProductField}
+                className="bg-green-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg flex items-center gap-2 hover:bg-green-600 transition-colors"
               >
-                Save Changes
+                <FaPlus /> Add Product
               </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setEditingBranch(null)}
+                  className="bg-gray-300 text-gray-800 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-gray-400 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={saveEditedBranch}
+                  className="bg-blue-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:bg-blue-700 transition-colors"
+                >
+                  Save Changes
+                </button>
+              </div>
             </div>
           </div>
         </div>
