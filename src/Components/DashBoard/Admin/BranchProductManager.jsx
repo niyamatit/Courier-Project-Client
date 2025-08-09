@@ -96,7 +96,7 @@ export default function BranchProductManager() {
 
   const saveEditedBranch = async () => {
     try {
-      await axios.put(`/api/products/${editingBranch._id}`, {
+      await axiosSecure.patch(`/api/products/updated/${editingBranch._id}`, {
         products: editingBranch.products,
       });
       Swal.fire({
