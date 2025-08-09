@@ -575,7 +575,7 @@ useEffect(() => {
     </label>
     <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile'
     onChange={handleSenderMobileChange}
-    minLength={11} 
+    //minLength={11}={11} 
     maxLength={11}
     required />
 </div>
@@ -692,7 +692,8 @@ useEffect(() => {
                         <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
                         onChange={handleReceiverMobileChange}
                         maxLength={11}
-                        minLength={11}
+                        //minLength={11}={11}
+                        ////minLength={11}={11}
                         required />
 
                     </div>

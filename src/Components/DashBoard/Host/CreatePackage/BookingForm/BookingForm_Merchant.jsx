@@ -511,7 +511,7 @@ const BookingForm_Merchant = () => {
                 required
                 onChange={(e) => setSenderContactNo(e.target.value)}
                 type="number"
-                minLength={11}
+                //minLength={11}={11}
 
               />
               <InputField
