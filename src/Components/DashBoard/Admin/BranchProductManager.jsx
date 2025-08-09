@@ -86,15 +86,23 @@ export default function BranchProductManager() {
       <table className="w-full border-collapse border border-gray-200">
         <thead className="bg-gray-100">
           <tr>
+            <th className="border p-2">SL</th>
+            <th className="border p-2">Date</th>
             <th className="border p-2">Branch ID</th>
             <th className="border p-2">Products</th>
-            <th className="border p-2">Date</th>
+            
             <th className="border p-2">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {branchList.map((branch) => (
+          {branchList.map((branch,index) => (
             <tr key={branch._id}>
+                <td className="border p-2">
+                {index+ 1}
+              </td>
+                <td className="border p-2">
+                {new Date(branch.date).toLocaleString()}
+              </td>
               <td className="border p-2">{branch.branchId}</td>
               <td className="border p-2">
                 {branch.products.map((prod, idx) => (
@@ -103,9 +111,7 @@ export default function BranchProductManager() {
                   </div>
                 ))}
               </td>
-              <td className="border p-2">
-                {new Date(branch.date).toLocaleString()}
-              </td>
+              
               <td className="border p-2 flex gap-2">
                 <button
                   onClick={() => handleEditBranch(branch)}
