@@ -183,6 +183,13 @@ const AdminMenu = () => {
         label='All SMS History'
         address='sms-history'
       />
+       <MenuItem
+        icon={GoPlus}
+
+        label='Add International Booking Rate'
+        address='add-booking-rate-international'
+      />
+
          
          </>
       }
