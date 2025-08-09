@@ -40,7 +40,7 @@ export default function BranchProductManager() {
 
     if (confirm.isConfirmed) {
       try {
-        await axios.delete(`/api/products/${id}`);
+        await axiosSecure.delete(`/api/products/delete/${id}`);
         Swal.fire({
           title: "Deleted!",
           text: "Branch data removed.",
@@ -130,7 +130,7 @@ export default function BranchProductManager() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 ">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-6 sm:mb-8 text-center">
           Branch Products Management
