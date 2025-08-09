@@ -489,7 +489,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 onChange={(e) => setSenderContactNo(e.target.value)}
                 type="number"
                 //minLength={11}={11}
-                maxLength={11}
+                minLength={11}
 
               />
               <InputField
@@ -648,7 +648,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 onChange={(e) => setReceiverContactNo(e.target.value)}
                 type="number"
                 //minLength={11}={11}
-                maxLength={11}
+                minLength={11}
               />
               <InputField
                 watchValues={watchValues}

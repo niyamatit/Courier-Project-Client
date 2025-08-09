@@ -1004,7 +1004,7 @@ return (
               placeholder="Enter Your Phone Number"
               {...register('email', { required: 'Email or phone number is required' })}
               className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-gray-100"
-              maxLength={11}
+              minLength={11}
             />
             {errors.email && <span className="text-red-500">{errors.email.message}</span>}
           </div>
