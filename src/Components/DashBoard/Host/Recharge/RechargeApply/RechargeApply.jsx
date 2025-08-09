@@ -152,7 +152,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                                 id="mobile_Number"
                                 {...register("mobile_Number", { required: "account amount is required" })}
                                 className="w-full p-inputtext"
-                                minLength={11}
+                                //minLength={11}={11}
                                 maxLength={11}
                             />
                             {errors.mobile_Number && (

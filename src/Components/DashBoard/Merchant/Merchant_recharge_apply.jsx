@@ -142,7 +142,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                         </label>
                         <input
                             type="number"
-                            minLength={11}
+                            //minLength={11}={11}
                             maxLength={11}
                             value={mobile}
           onChange={(e) => setMobile(e.target.value)}
