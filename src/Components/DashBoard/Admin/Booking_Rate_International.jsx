@@ -7,6 +7,7 @@ import axiosSecure from "../../../api/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import BranchProductManager from "./BranchProductManager";
 import BranchRateComponents from "./BranchRateComponents";
+
 const Booking_Rate_International = () => {
   const {
     register,
@@ -31,6 +32,13 @@ const Booking_Rate_International = () => {
 const [productFields, setProductFields] = useState([
   { name: "", unit: "", price: "" }
 ]);
+// Add these new state variables at the top of the component
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedBranchData, setSelectedBranchData] = useState(null);
+const handleViewBranch = (branch) => {
+  setSelectedBranchData(branch);
+  setIsModalOpen(true);
+};
 const addProductField = () => {
   setProductFields([...productFields, { name: "", unit: "", price: "" }]);
 };
@@ -369,7 +377,7 @@ const {  data: BranchesForRate = []} = useQuery({
                               Edit
                             </button>
                             <button
-                              onClick={() => handleDeleteBranch(b._id)}
+                              onClick={() => handleViewBranch(b)}
                               className="bg-green-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-green-600 transition-colors shadow-sm"
                             >
                               view
