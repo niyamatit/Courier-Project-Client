@@ -7,6 +7,7 @@ import axiosSecure from "../../../api/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import BranchProductManager from "./BranchProductManager";
 import BranchRateComponents from "./BranchRateComponents";
+import BranchViewModal from "./BranchViewModal";
 
 const Booking_Rate_International = () => {
   const {
@@ -52,6 +53,10 @@ const handleProductChange = (index, field, value) => {
   updatedFields[index][field] = value;
   setProductFields(updatedFields);
 };
+ const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedBranchData(null);
+  };
 
   // Fetch Branch Data
   const fetchBranches = async () => {
@@ -492,6 +497,11 @@ const {  data: BranchesForRate = []} = useQuery({
           )}
         </div>
       </div>
+      <BranchViewModal 
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              branchData={selectedBranchData}
+            />
     </div>
   );
 };
