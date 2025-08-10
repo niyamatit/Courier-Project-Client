@@ -375,12 +375,12 @@ const {  data: BranchesForRate = []} = useQuery({
                           <td className="py-4 px-6">{b.deliveryCompany}</td>
                           <td className="py-4 px-6">৳{b.customAmount}</td>
                           <td className="py-4 px-6 text-center space-x-2">
-                            <button
+                            {/* <button
                               onClick={() => handleEditBranch(b)}
                               className="bg-yellow-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-yellow-600 transition-colors shadow-sm"
                             >
                               Edit
-                            </button>
+                            </button> */}
                             <button
                               onClick={() => handleViewBranch(b)}
                               className="bg-green-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-green-600 transition-colors shadow-sm"
