@@ -171,7 +171,7 @@ export default function BranchProductManager() {
                       {new Date(branch.date).toLocaleString()}
                     </td>
                     <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(branch.updateDate).toLocaleString()}
+                      {new Date(branch.updateDate ).toLocaleString() }
                     </td>
                     <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm font-semibold text-gray-700">
                       {branch.branchId}

@@ -56,6 +56,7 @@ const InterNational_Booking_Branch = () => {
     ReceiverName: "",
     ReceiverAddress: "",
   });
+  const [SelectedProduct,setSelectedProduct]= useState(null);
   const [verifiedStaff] = UseStaffVerify();
   const closeModal = () => {
     setIsOpen(false);
@@ -171,7 +172,7 @@ const InterNational_Booking_Branch = () => {
   };
   
 
-  
+ console.log(SelectedProduct?.price, "SelectedProduct? price"); 
   
 
   const onSubmit = async (data) => {
@@ -248,6 +249,7 @@ const InterNational_Booking_Branch = () => {
         Product_Quantity: parseFloat(data?.productQuantity) || "",
         Product_Details: data?.productDetails || "",
         Product_Remark: data?.remark || "",
+        Product_Price : SelectedProduct?.price || 0,
         Cod_Perchent: 0 || "",
         Weight_Charge: 0 || "",
         Cod_Charge: 0 || "",
@@ -461,6 +463,21 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
       return res.data;
     }
   })
+const { data: usersProducstData = [] } = useQuery({
+    queryKey: ['usersProducstData'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/int-add-products");
+      return res.data;
+    }
+  })
+
+
+  const AllfindProducts = usersProducstData?.find(
+  (product) => product?.branchId === verifiedUser?.email
+);
+
+// Since AllfindProducts is an object, not an array, just access .products directly
+const findProducts = AllfindProducts?.products || [];
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -825,21 +842,24 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                     <label className="label-text text-gray-500 font-semibold mb-1">
                       Item Type*
                     </label>
-                    <select
-                      {...register("itemType", { required: true })}
-                      className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
-                        errors.itemType ? "border-red-500" : "border-gray-300"
-                      }`}
-                      onChange={(e) => setItemType(e.target.value)}
-                    >
-                      <option value="">Select Item Type</option>
-                      <option value="Parcel">Parcel</option>
-                      <option value="Documents">Documents</option>
-                      <option value="Fragile">Fragile</option>
-                      <option value="Medicine">Medicine</option>
-                      <option value="Food">Food</option>
-                      <option value="Device">Device</option>
-                    </select>
+                   <select
+  {...register("itemType", { required: true })}
+  className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+    errors.itemType ? "border-red-500" : "border-gray-300"
+  }`}
+  onChange={(e) => {
+    const product = findProducts.find((p) => p.name === e.target.value);
+    setSelectedProduct(product || null);
+    setItemType(e.target.value);
+  }}
+>
+  <option value="">Select Item Type</option>
+  {findProducts.map((p) => (
+    <option key={p.name} value={p.name}>
+      {p.name} (Price: {p.price})
+    </option>
+  ))}
+</select>
                     {errors.itemType && (
                       <span className="text-red-500">
                         This field is required
@@ -959,6 +979,8 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
 
       <div className="text-gray-700">Cod Charge</div>
       <div className="text-gray-500 text-right">0.00</div>
+      <div className="text-gray-700">Product Price</div>
+      <div className="text-gray-500 text-right">{SelectedProduct?.price || 0}</div>
 
       <div className="text-gray-700">Delivery Charge</div>
       <div className="text-gray-500 text-right">0.00</div>
