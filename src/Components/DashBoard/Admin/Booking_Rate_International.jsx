@@ -6,6 +6,7 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import axiosSecure from "../../../api/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import BranchProductManager from "./BranchProductManager";
+import BranchRateComponents from "./BranchRateComponents";
 const Booking_Rate_International = () => {
   const {
     register,
@@ -182,6 +183,15 @@ const handleProductChange = (index, field, value) => {
 
     const branches = Branch.filter(branch => branch?.role === "host");
 
+const {  data: BranchesForRate = []} = useQuery({
+        queryKey: ['BranchesForRate'],
+        queryFn: async() => {
+            const res = await axiosSecure.get("/int-add-products");
+            return res.data;
+        }
+
+    });
+
 
      
 
@@ -245,82 +255,83 @@ const handleProductChange = (index, field, value) => {
 
           {/* Add Branch Rate Form */}
           {activeSection === "branchRate" && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                {editId ? "Edit Branch Rate" : "Add a New Branch Rate"}
-              </h2>
-              <form onSubmit={handleSubmit(onSubmitBranch)} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">From Country</label>
-                  <input
-                    placeholder="e.g., USA"
-                    {...register("from", { required: "From Country is required" })}
-                    className={`w-full border ${errors.from ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-                  />
-                  {errors.from && (
-                    <p className="text-red-500 text-sm mt-1">{errors.from.message}</p>
-                  )}
-                </div>
-                <div className="col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">To Country</label>
-                  <input
-                    placeholder="e.g., Canada"
-                    {...register("to", { required: "To Country is required" })}
-                    className={`w-full border ${errors.to ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-                  />
-                  {errors.to && (
-                    <p className="text-red-500 text-sm mt-1">{errors.to.message}</p>
-                  )}
-                </div>
-                <div className="col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">Delivery Time</label>
-                  <input
-                    placeholder="e.g., 2-3 Days"
-                    {...register("deliveryTime", { required: "Delivery Time is required" })}
-                    className={`w-full border ${errors.deliveryTime ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-                  />
-                  {errors.deliveryTime && (
-                    <p className="text-red-500 text-sm mt-1">{errors.deliveryTime.message}</p>
-                  )}
-                </div>
-                <div className="col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">Courier Company</label>
-                  <input
-                    placeholder="e.g., FedEx"
-                    {...register("courier", { required: "Courier Company is required" })}
-                    className={`w-full border ${errors.courier ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-                  />
-                  {errors.courier && (
-                    <p className="text-red-500 text-sm mt-1">{errors.courier.message}</p>
-                  )}
-                </div>
-                <div className="col-span-1">
-                  <label className="block text-gray-700 font-medium mb-1">Amount</label>
-                  <input
-                    placeholder="e.g., 50.00"
-                    {...register("amount", {
-                      required: "Amount is required",
-                      valueAsNumber: true,
-                      min: { value: 0, message: "Amount must be a positive number" },
-                    })}
-                    type="number"
-                    className={`w-full border ${errors.amount ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-                  />
-                  {errors.amount && (
-                    <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>
-                  )}
-                </div>
-                <div className="col-span-full md:col-span-1 md:col-start-3 self-end">
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold shadow-lg"
-                    disabled={loading}
-                  >
-                    {loading ? "Processing..." : editId ? "Update Branch" : "Save Branch"}
-                  </button>
-                </div>
-              </form>
-            </div>
+            // <div>
+            //   <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            //     {editId ? "Edit Branch Rate" : "Add a New Branch Rate"}
+            //   </h2>
+            //   <form onSubmit={handleSubmit(onSubmitBranch)} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            //     <div className="col-span-1">
+            //       <label className="block text-gray-700 font-medium mb-1">From Country</label>
+            //       <input
+            //         placeholder="e.g., USA"
+            //         {...register("from", { required: "From Country is required" })}
+            //         className={`w-full border ${errors.from ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
+            //       />
+            //       {errors.from && (
+            //         <p className="text-red-500 text-sm mt-1">{errors.from.message}</p>
+            //       )}
+            //     </div>
+            //     <div className="col-span-1">
+            //       <label className="block text-gray-700 font-medium mb-1">To Country</label>
+            //       <input
+            //         placeholder="e.g., Canada"
+            //         {...register("to", { required: "To Country is required" })}
+            //         className={`w-full border ${errors.to ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
+            //       />
+            //       {errors.to && (
+            //         <p className="text-red-500 text-sm mt-1">{errors.to.message}</p>
+            //       )}
+            //     </div>
+            //     <div className="col-span-1">
+            //       <label className="block text-gray-700 font-medium mb-1">Delivery Time</label>
+            //       <input
+            //         placeholder="e.g., 2-3 Days"
+            //         {...register("deliveryTime", { required: "Delivery Time is required" })}
+            //         className={`w-full border ${errors.deliveryTime ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
+            //       />
+            //       {errors.deliveryTime && (
+            //         <p className="text-red-500 text-sm mt-1">{errors.deliveryTime.message}</p>
+            //       )}
+            //     </div>
+            //     <div className="col-span-1">
+            //       <label className="block text-gray-700 font-medium mb-1">Courier Company</label>
+            //       <input
+            //         placeholder="e.g., FedEx"
+            //         {...register("courier", { required: "Courier Company is required" })}
+            //         className={`w-full border ${errors.courier ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
+            //       />
+            //       {errors.courier && (
+            //         <p className="text-red-500 text-sm mt-1">{errors.courier.message}</p>
+            //       )}
+            //     </div>
+            //     <div className="col-span-1">
+            //       <label className="block text-gray-700 font-medium mb-1">Amount</label>
+            //       <input
+            //         placeholder="e.g., 50.00"
+            //         {...register("amount", {
+            //           required: "Amount is required",
+            //           valueAsNumber: true,
+            //           min: { value: 0, message: "Amount must be a positive number" },
+            //         })}
+            //         type="number"
+            //         className={`w-full border ${errors.amount ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
+            //       />
+            //       {errors.amount && (
+            //         <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>
+            //       )}
+            //     </div>
+            //     <div className="col-span-full md:col-span-1 md:col-start-3 self-end">
+            //       <button
+            //         type="submit"
+            //         className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold shadow-lg"
+            //         disabled={loading}
+            //       >
+            //         {loading ? "Processing..." : editId ? "Update Branch" : "Save Branch"}
+            //       </button>
+            //     </div>
+            //   </form>
+            // </div>
+            <BranchRateComponents/>
           )}
 
           {/* Show Branch Table */}
