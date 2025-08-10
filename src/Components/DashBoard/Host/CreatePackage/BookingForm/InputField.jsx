@@ -1,4 +1,4 @@
-const InputField = ({ label, placeholder, //minLength={11},type = "text", required = false, className, register, name, watchValues, registerOptions, errors, ...props }) => (
+const InputField = ({ label, placeholder, minLength={minLength},type = "text", required = false, className, register, name, watchValues, registerOptions, errors, ...props }) => (
     <div className={`form-control ${className}`}>
         <label className="label">
             <span className="label-text text-gray-500 font-semibold">{label}</span>
@@ -10,7 +10,7 @@ const InputField = ({ label, placeholder, //minLength={11},type = "text", requir
             // required={required}
             {...register(name, registerOptions)}
             {...props}                                                                                       
-            //minLength={11}={//minLength={11}}
+            minLength={minLength}
         />
         {/* {errors[name] && (
       <p className="text-red-500 mt-1 text-sm">{errors[name].message}</p>
