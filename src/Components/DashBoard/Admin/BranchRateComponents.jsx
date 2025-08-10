@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
+import Swal from "sweetalert2";
 
 
 export default function BranchRateEditor() {
@@ -28,15 +29,45 @@ export default function BranchRateEditor() {
   // Patch mutation
   const mutation = useMutation({
     mutationFn: async (updatedData) => {
-      const res = await axiosSecure.patch(
-        `/int-add-products/${selectedBranch._id}`,
-        updatedData
-      );
-      return res.data;
+      try {
+        const res = await axiosSecure.patch(
+          `/int-add-products/${selectedBranch._id}`,
+          updatedData
+        );
+        return res.data;
+      } catch (err) {
+        if (err.response?.status === 400) {
+          // Throw custom error to handle in onError
+          throw { type: "duplicate", message: err.response.data.message };
+        }
+        throw err;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["BranchesForRate"]);
-      alert("Branch updated successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Branch updated successfully!",
+        confirmButtonColor: "#3085d6",
+      });
+    },
+    onError: (error) => {
+      if (error.type === "duplicate") {
+        Swal.fire({
+          icon: "error",
+          title: "Already Added",
+          text: error.message || "already added this branch data !",
+          confirmButtonColor: "#d33",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response?.data?.message || "Something went wrong!",
+          confirmButtonColor: "#d33",
+        });
+      }
     },
   });
 
