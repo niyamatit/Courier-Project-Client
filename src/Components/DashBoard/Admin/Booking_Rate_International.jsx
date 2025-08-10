@@ -340,7 +340,7 @@ const {  data: BranchesForRate = []} = useQuery({
               <h2 className="text-2xl font-bold text-gray-800 mb-6">All Branches</h2>
               {loading ? (
                 <p className="text-center text-gray-500 py-8">Loading branches...</p>
-              ) : branchList.length > 0 ? (
+              ) : BranchesForRate.length > 0 ? (
                 <div className="overflow-x-auto rounded-lg shadow-sm">
                   <table className="w-full table-auto">
                     <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
@@ -349,18 +349,18 @@ const {  data: BranchesForRate = []} = useQuery({
                         <th className="py-4 px-6 text-left">To</th>
                         <th className="py-4 px-6 text-left">Delivery Time</th>
                         <th className="py-4 px-6 text-left">Courier</th>
-                        <th className="py-4 px-6 text-left">Amount</th>
+                        <th className="py-4 px-6 text-left">Custom Amount</th>
                         <th className="py-4 px-6 text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white text-gray-700 text-sm">
-                      {branchList.map((b) => (
+                      {BranchesForRate.map((b) => (
                         <tr key={b._id} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-4 px-6 font-medium whitespace-nowrap">{b.from}</td>
-                          <td className="py-4 px-6">{b.to}</td>
+                          <td className="py-4 px-6 font-medium whitespace-nowrap">{b.fromCountry}</td>
+                          <td className="py-4 px-6">{b.toCountry}</td>
                           <td className="py-4 px-6">{b.deliveryTime}</td>
-                          <td className="py-4 px-6">{b.courier}</td>
-                          <td className="py-4 px-6">${b.amount}</td>
+                          <td className="py-4 px-6">{b.deliveryCompany}</td>
+                          <td className="py-4 px-6">৳{b.customAmount}</td>
                           <td className="py-4 px-6 text-center space-x-2">
                             <button
                               onClick={() => handleEditBranch(b)}
@@ -370,9 +370,9 @@ const {  data: BranchesForRate = []} = useQuery({
                             </button>
                             <button
                               onClick={() => handleDeleteBranch(b._id)}
-                              className="bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-red-600 transition-colors shadow-sm"
+                              className="bg-green-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-green-600 transition-colors shadow-sm"
                             >
-                              Delete
+                              view
                             </button>
                           </td>
                         </tr>
