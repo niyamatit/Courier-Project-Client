@@ -1,4 +1,4 @@
-const InputField = ({ label, placeholder, minLength={minLength},type = "text", required = false, className, register, name, watchValues, registerOptions, errors, ...props }) => (
+const InputField = ({ label, placeholder, minLength=0,type = "text", required = false, className, register, name, watchValues, registerOptions, errors, ...props }) => (
     <div className={`form-control ${className}`}>
         <label className="label">
             <span className="label-text text-gray-500 font-semibold">{label}</span>
