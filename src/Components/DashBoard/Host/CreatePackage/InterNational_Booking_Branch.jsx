@@ -70,16 +70,17 @@ const InterNational_Booking_Branch = () => {
 
 
   useEffect(() => {
-    if (!isManuallyEditing) {
-      const validRate = parseFloat(rate) || 0;
-      const validQuantity = parseFloat(quantity) || 0;
-      const validOtpCharge = parseFloat(OtpCharge) || 0;
-      const validHDCharge = parseFloat(HDCharge) || 0;
-  
-      const total = validRate * validQuantity + validOtpCharge + validHDCharge;
-      setTotalCharge(total);
-    }
-  }, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge]);
+  if (!isManuallyEditing) {
+    const validRate = parseFloat(rate) || 0;
+    const validQuantity = parseFloat(quantity) || 0;
+    const validOtpCharge = parseFloat(OtpCharge) || 0;
+    const validHDCharge = parseFloat(HDCharge) || 0;
+    const ParcelCharge = parseFloat(SelectedProduct?.price || 0);
+    const total = validRate * validQuantity + validOtpCharge + validHDCharge + ParcelCharge;
+    setTotalCharge(total);
+  }
+}, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge, SelectedProduct?.price]); // Add SelectedProduct?.price as a dependency
+
   
 
 
@@ -172,12 +173,13 @@ const InterNational_Booking_Branch = () => {
   };
   
 
- console.log(SelectedProduct?.price, "SelectedProduct? price"); 
+//  console.log(SelectedProduct?.price, "SelectedProduct? price"); 
   
 
   const onSubmit = async (data) => {
     try {
       // If PaymentOption is "Cash", validate and update branch balance
+      setSelectedPayment("Cash");
       if (PaymentOption === "Cash") {
         if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
           Swal.fire({
@@ -190,9 +192,11 @@ const InterNational_Booking_Branch = () => {
   
         // Calculate the current and new balance
         const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0);
+        console.log("Current Balance:", currentBalance);
         const codAmount = parseFloat(data.totalCharge || totalCharge || 0);
+        console.log("Cod Amount:", codAmount);
         const newBalance = currentBalance - codAmount;
-  
+  console.log("New Balance after Cash Payment:", newBalance);
         if (codAmount > currentBalance) {
           Swal.fire({
             icon: "error",
@@ -281,7 +285,7 @@ const InterNational_Booking_Branch = () => {
         Branch_District_Name:verifiedUser?.Branch_District_Name,
         Branch_Area:verifiedUser?.Branch_Area,
       };
-  
+   console.log("Bookinginfo", Bookinginfo);
       // Submit booking information
       const ParcelProductDetails = await axiosSecure.post("/int", Bookinginfo);
   
@@ -301,6 +305,7 @@ const InterNational_Booking_Branch = () => {
 
         // ------------------------------------SMS------------------------------------------
           // Step 5: Send SMS using BulkSMSBD
+// const SMS_API = "demo";
 const SMS_API = "https://bulksmsbd.net/api/smsapi";
 const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
@@ -310,18 +315,14 @@ const senderMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Numbe
 Thanks Niyamat Express Courier and Parcel Service
 For Tracking visit: https://www.niyamatexpress.com/tracking 
 `;
-// const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
-// const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${CnNumber}) is Successful.
-// Thanks Niyamat Express Courier and Parcel Service
-// For Tracking visit: https://www.niyamatexpress.com/tracking 
-// `;
-// const receiverMessage = `Hello ${Bookinginfo.receiverName}, Your Parcel : ${bookingInfo?.product}, Your parcel booking (CN: ${Bookinginfo.CnNumber}) is successful.`;
+
 
 // Build URLs
 const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?.SenderContactINT)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
-// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+
       const [senderRes, receiverRes] = await Promise.all([
     axios.get(senderUrl),
+   
     
   ]); 
 
@@ -330,7 +331,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?
     
     SMS_Staus: {
       Sender: senderRes.data,
-        Receiver: receiverRes.data  
+        Receiver: receiverRes?.data || '' || {},  
     },
     senderMobile: Number(data?.SenderContactINT),
      Purpuse: "International Booking",
@@ -343,6 +344,17 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
   
       }
     } catch (error) {
+      if (error.response?.status === 409) {  
+                      Swal.fire({
+                          position: "top-end",
+                          icon: "error",
+                          title: 'Duplicate CN! Refreshing...',
+                          showConfirmButton: false,
+                          timer: 2000
+                      }).then(() => {
+                          window.location.reload();
+                      });
+                  }
       console.error("Error adding parcel:", error);
       Swal.fire({
         icon: "error",
@@ -467,6 +479,13 @@ const { data: usersProducstData = [] } = useQuery({
     queryKey: ['usersProducstData'],
     queryFn: async () => {
       const res = await axiosSecure.get("/int-add-products");
+      return res.data;
+    }
+  })
+const { data: CN_Number_Collection = [] } = useQuery({
+    queryKey: ['CN_Number_Collection'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/number");
       return res.data;
     }
   })
@@ -770,32 +789,25 @@ const findProducts = AllfindProducts?.products || [];
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="label-text text-gray-500 font-semibold mt-2 mb-1">
-                      Weight Package*
-                    </label>
+  <label className="label-text text-gray-500 font-semibold mt-2 mb-1">
+    Weight Package*
+  </label>
 
-                    <select
-                      {...register("weightPackage", { required: true })}
-                      className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
-                        errors.weightPackage
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
-                      onChange={(e) => setWeightPackage(e.target.value)}
-                    >
-                      <option value="">Select Weight Package</option>
-                      <option value="0.5">0.5kg</option>
-                      <option value="1">1 kg</option>
-                      <option value="2">2 kg</option>
-                      <option value="3">3 kg</option>
-                      <option value="4">4 kg</option>
-                    </select>
-                    {errors.weightPackage && (
-                      <span className="text-red-500">
-                        This field is required
-                      </span>
-                    )}
-                  </div>
+  <input
+    {...register("weightPackage", { required: true })}
+    type="number"
+   
+    className={`input input-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+      errors.weightPackage ? "border-red-500" : "border-gray-300"
+    }`}
+    onChange={(e) => setWeightPackage(e.target.value)}
+    placeholder="Enter weight (kg)"
+  />
+  {errors.weightPackage && (
+    <span className="text-red-500">This field is required</span>
+  )}
+</div>
+
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="label-text text-gray-500 font-semibold mb-1">
                       Total Collection Amount*
