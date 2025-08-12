@@ -305,8 +305,8 @@ const InterNational_Booking_Branch = () => {
 
         // ------------------------------------SMS------------------------------------------
           // Step 5: Send SMS using BulkSMSBD
-// const SMS_API = "demo";
-const SMS_API = "https://bulksmsbd.net/api/smsapi";
+const SMS_API = "demo";
+// const SMS_API = "https://bulksmsbd.net/api/smsapi";
 const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
 
@@ -344,7 +344,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
   
       }
     } catch (error) {
-      if (error.response?.status === 409) {  // CN conflict error
+      if (error.response?.status === 409) {  
                       Swal.fire({
                           position: "top-end",
                           icon: "error",
