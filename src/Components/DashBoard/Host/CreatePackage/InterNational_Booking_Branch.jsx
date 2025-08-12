@@ -770,32 +770,25 @@ const findProducts = AllfindProducts?.products || [];
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                    <label className="label-text text-gray-500 font-semibold mt-2 mb-1">
-                      Weight Package*
-                    </label>
+  <label className="label-text text-gray-500 font-semibold mt-2 mb-1">
+    Weight Package*
+  </label>
 
-                    <select
-                      {...register("weightPackage", { required: true })}
-                      className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
-                        errors.weightPackage
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      }`}
-                      onChange={(e) => setWeightPackage(e.target.value)}
-                    >
-                      <option value="">Select Weight Package</option>
-                      <option value="0.5">0.5kg</option>
-                      <option value="1">1 kg</option>
-                      <option value="2">2 kg</option>
-                      <option value="3">3 kg</option>
-                      <option value="4">4 kg</option>
-                    </select>
-                    {errors.weightPackage && (
-                      <span className="text-red-500">
-                        This field is required
-                      </span>
-                    )}
-                  </div>
+  <input
+    {...register("weightPackage", { required: true })}
+    type="number"
+   
+    className={`input input-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+      errors.weightPackage ? "border-red-500" : "border-gray-300"
+    }`}
+    onChange={(e) => setWeightPackage(e.target.value)}
+    placeholder="Enter weight (kg)"
+  />
+  {errors.weightPackage && (
+    <span className="text-red-500">This field is required</span>
+  )}
+</div>
+
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="label-text text-gray-500 font-semibold mb-1">
                       Total Collection Amount*
