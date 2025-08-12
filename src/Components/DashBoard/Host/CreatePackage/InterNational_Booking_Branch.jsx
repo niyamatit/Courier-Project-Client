@@ -172,7 +172,7 @@ const InterNational_Booking_Branch = () => {
   };
   
 
- console.log(SelectedProduct?.price, "SelectedProduct? price"); 
+//  console.log(SelectedProduct?.price, "SelectedProduct? price"); 
   
 
   const onSubmit = async (data) => {
@@ -190,9 +190,11 @@ const InterNational_Booking_Branch = () => {
   
         // Calculate the current and new balance
         const currentBalance = parseFloat(Branch_Balance[0]?.Amount || 0);
+        console.log("Current Balance:", currentBalance);
         const codAmount = parseFloat(data.totalCharge || totalCharge || 0);
+        console.log("Cod Amount:", codAmount);
         const newBalance = currentBalance - codAmount;
-  
+  console.log("New Balance after Cash Payment:", newBalance);
         if (codAmount > currentBalance) {
           Swal.fire({
             icon: "error",
@@ -281,7 +283,7 @@ const InterNational_Booking_Branch = () => {
         Branch_District_Name:verifiedUser?.Branch_District_Name,
         Branch_Area:verifiedUser?.Branch_Area,
       };
-  
+   console.log("Bookinginfo", Bookinginfo);
       // Submit booking information
       const ParcelProductDetails = await axiosSecure.post("/int", Bookinginfo);
   
@@ -301,6 +303,7 @@ const InterNational_Booking_Branch = () => {
 
         // ------------------------------------SMS------------------------------------------
           // Step 5: Send SMS using BulkSMSBD
+// const SMS_API = "demo";
 const SMS_API = "https://bulksmsbd.net/api/smsapi";
 const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";

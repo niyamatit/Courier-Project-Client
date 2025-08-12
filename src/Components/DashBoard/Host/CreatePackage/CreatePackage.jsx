@@ -323,11 +323,12 @@ const handleDivisionChange = (e) => {
                     return;
                   }
             const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
+            // console.log(CurrentBalance, "Current Balance");
             const CodAmount = parseFloat(weightCharge || 0);
-    
+    // console.log(CodAmount, "Cod Amount");
             if (paymentOption === "Cash") {
                 const newBalance = CurrentBalance - CodAmount;
-    
+    // console.log(newBalance, "New Balance after Cash Payment");    
                 if (CodAmount > CurrentBalance) {
                     Swal.fire({
                         icon: "error",
