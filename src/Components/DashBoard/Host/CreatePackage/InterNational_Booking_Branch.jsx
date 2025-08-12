@@ -70,16 +70,17 @@ const InterNational_Booking_Branch = () => {
 
 
   useEffect(() => {
-    if (!isManuallyEditing) {
-      const validRate = parseFloat(rate) || 0;
-      const validQuantity = parseFloat(quantity) || 0;
-      const validOtpCharge = parseFloat(OtpCharge) || 0;
-      const validHDCharge = parseFloat(HDCharge) || 0;
-  
-      const total = validRate * validQuantity + validOtpCharge + validHDCharge;
-      setTotalCharge(total);
-    }
-  }, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge]);
+  if (!isManuallyEditing) {
+    const validRate = parseFloat(rate) || 0;
+    const validQuantity = parseFloat(quantity) || 0;
+    const validOtpCharge = parseFloat(OtpCharge) || 0;
+    const validHDCharge = parseFloat(HDCharge) || 0;
+    const ParcelCharge = parseFloat(SelectedProduct?.price || 0);
+    const total = validRate * validQuantity + validOtpCharge + validHDCharge + ParcelCharge;
+    setTotalCharge(total);
+  }
+}, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge, SelectedProduct?.price]); // Add SelectedProduct?.price as a dependency
+
   
 
 
