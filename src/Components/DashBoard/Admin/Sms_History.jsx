@@ -39,20 +39,26 @@ const Sms_History = () => {
   };
 
   // Function to determine SMS status
-  const getSmsOverallStatus = (sms) => {
-    return sms.SMS_Staus.Sender.response_code === 202 && sms.SMS_Staus.Receiver.response_code === 202
-      ? "success"
-      : "failed";
-  };
+  // Function to determine SMS status
+const getSmsOverallStatus = (sms) => {
+  // Check if both SMS statuses exist and have the expected structure
+  const senderResponseCode = sms.SMS_Staus?.Sender?.response_code;
+  const receiverResponseCode = sms.SMS_Staus?.Receiver?.response_code;
+
+  return senderResponseCode === 202 && receiverResponseCode === 202
+    ? "success"
+    : "failed";
+};
+
 
   // Filtered SMS history based on search term and status
   const filteredSmsHistory = SMS_History
-  .filter((sms) => sms.senderMobile) // Filter only entries with senderMobile
+  .filter((sms) => sms.senderMobile) 
   .filter((sms) => {
     const matchesSearchTerm =
-      (sms.recipientMobile?.toLowerCase().includes(searchTerm.toLowerCase()) || '') ||
-      (sms.senderMobile?.toLowerCase().includes(searchTerm.toLowerCase()) || '') ||
-      (sms.CnNumber?.toLowerCase().includes(searchTerm.toLowerCase()) || '');
+      (String(sms.recipientMobile || '').toLowerCase().includes(searchTerm.toLowerCase()) || '') ||
+      (String(sms.senderMobile || '').toLowerCase().includes(searchTerm.toLowerCase()) || '') ||
+      (String(sms.CnNumber || '').toLowerCase().includes(searchTerm.toLowerCase()) || '');
 
     const smsStatus = getSmsOverallStatus(sms);
     const matchesFilterStatus =
@@ -60,6 +66,7 @@ const Sms_History = () => {
 
     return matchesSearchTerm && matchesFilterStatus;
   });
+
 
 
   return (

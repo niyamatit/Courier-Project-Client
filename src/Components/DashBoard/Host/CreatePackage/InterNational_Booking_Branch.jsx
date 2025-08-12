@@ -310,18 +310,14 @@ const senderMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Numbe
 Thanks Niyamat Express Courier and Parcel Service
 For Tracking visit: https://www.niyamatexpress.com/tracking 
 `;
-// const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
-// const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Tracking Number: ${CnNumber}) is Successful.
-// Thanks Niyamat Express Courier and Parcel Service
-// For Tracking visit: https://www.niyamatexpress.com/tracking 
-// `;
-// const receiverMessage = `Hello ${Bookinginfo.receiverName}, Your Parcel : ${bookingInfo?.product}, Your parcel booking (CN: ${Bookinginfo.CnNumber}) is successful.`;
+
 
 // Build URLs
 const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?.SenderContactINT)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
-// const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+
       const [senderRes, receiverRes] = await Promise.all([
     axios.get(senderUrl),
+   
     
   ]); 
 
@@ -330,7 +326,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?
     
     SMS_Staus: {
       Sender: senderRes.data,
-        // Receiver: receiverRes.data || '',  
+        Receiver: receiverRes?.data || '' || {},  
     },
     senderMobile: Number(data?.SenderContactINT),
      Purpuse: "International Booking",
