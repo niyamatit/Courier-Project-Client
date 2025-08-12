@@ -45,7 +45,7 @@ const getSmsOverallStatus = (sms) => {
   const senderResponseCode = sms.SMS_Staus?.Sender?.response_code;
   const receiverResponseCode = sms.SMS_Staus?.Receiver?.response_code;
 
-  return senderResponseCode === 202 && receiverResponseCode === 202
+  return senderResponseCode === 202 || receiverResponseCode === 202
     ? "success"
     : "failed";
 };
@@ -164,7 +164,7 @@ const getSmsOverallStatus = (sms) => {
                     {sms.senderMobile}
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
-                    {sms.recipientMobile}
+                    {sms.recipientMobile || 'N/A'}
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 text-sm text-gray-900">
                     {sms.Branch_Name}
