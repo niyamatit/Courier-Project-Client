@@ -330,7 +330,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?
     
     SMS_Staus: {
       Sender: senderRes.data,
-        Receiver: receiverRes.data  
+        // Receiver: receiverRes.data || '',  
     },
     senderMobile: Number(data?.SenderContactINT),
      Purpuse: "International Booking",
