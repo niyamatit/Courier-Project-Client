@@ -731,3 +731,123 @@ const Areas =[
   {"id":"493","district_id":"39","name":"Madhyanagar","bn_name":"মধ্যনগর","url":"null"},
   {"id":"494","district_id":"50","name":"Dasar","bn_name":"ডাসার","url":"null"}
   ]
+
+  // src/components/Booking_Rate_International.jsx
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { FaPlus, FaTimes } from "react-icons/fa";
+import axiosSecure from "../../../api/axiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import BranchProductManager from "./BranchProductManager";
+import BranchRateComponents from "./BranchRateComponents";
+
+// Import the new modal component
+import BranchViewModal from "./BranchViewModal"; 
+
+const Booking_Rate_International = () => {
+  // ... (all your existing code and state variables) ...
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBranchData, setSelectedBranchData] = useState(null);
+
+  // ... (existing code for useQuery, handlers, etc.) ...
+  
+  // New handler to show the modal
+  const handleViewBranch = (branch) => {
+    setSelectedBranchData(branch);
+    setIsModalOpen(true);
+  };
+  
+  // New handler to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedBranchData(null);
+  };
+
+  // ... (rest of your component code) ...
+
+  return (
+    <div className="bg-gray-50 min-h-screen w-full p-4 md:p-8 font-sans">
+      <div className="max-w-7xl mx-auto">
+        {/* ... (Your existing JSX code) ... */}
+
+        {/* ... (Show Branch Table section) ... */}
+        {activeSection === "showBranch" && (
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              All Branches
+            </h2>
+            {loading ? (
+              <p className="text-center text-gray-500 py-8">
+                Loading branches...
+              </p>
+            ) : BranchesForRate.length > 0 ? (
+              <div className="overflow-x-auto rounded-lg shadow-sm">
+                <table className="w-full table-auto">
+                  <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
+                    <tr className="border-b border-gray-200">
+                      <th className="py-4 px-6 text-left">From</th>
+                      <th className="py-4 px-6 text-left">To</th>
+                      <th className="py-4 px-6 text-left">Delivery Time</th>
+                      <th className="py-4 px-6 text-left">Courier</th>
+                      <th className="py-4 px-6 text-left">Custom Amount</th>
+                      <th className="py-4 px-6 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white text-gray-700 text-sm">
+                    {BranchesForRate.map((b) => (
+                      <tr
+                        key={b._id}
+                        className="border-b border-gray-100 hover:bg-gray-50"
+                      >
+                        <td className="py-4 px-6 font-medium whitespace-nowrap">
+                          {b.fromCountry}
+                        </td>
+                        <td className="py-4 px-6">{b.toCountry}</td>
+                        <td className="py-4 px-6">{b.deliveryTime}</td>
+                        <td className="py-4 px-6">{b.deliveryCompany}</td>
+                        <td className="py-4 px-6">৳{b.customAmount}</td>
+                        <td className="py-4 px-6 text-center space-x-2">
+                          <button
+                            onClick={() => handleEditBranch(b)}
+                            className="bg-yellow-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-yellow-600 transition-colors shadow-sm"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleViewBranch(b)}
+                            className="bg-green-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-green-600 transition-colors shadow-sm"
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 py-8">
+                No branches found. Add a new branch rate to get started.
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* ... (Add Product Form and List section) ... */}
+      </div>
+
+      {/* Render the new modal component */}
+      <BranchViewModal 
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        branchData={selectedBranchData}
+      />
+
+    </div>
+  );
+};
+
+export default Booking_Rate_International;
