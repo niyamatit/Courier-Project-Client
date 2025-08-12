@@ -68,7 +68,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(pkg.C
     
     SMS_Staus: {
       Sender: senderRes.data,
-        Receiver: receiverRes.data  
+        Receiver: receiverRes?.data || '' || {} 
     },
     senderMobile: pkg.Customer_Contact_Number,
     
