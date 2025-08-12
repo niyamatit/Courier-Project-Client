@@ -344,6 +344,17 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
   
       }
     } catch (error) {
+      if (error.response?.status === 409) {  // CN conflict error
+                      Swal.fire({
+                          position: "top-end",
+                          icon: "error",
+                          title: 'Duplicate CN! Refreshing...',
+                          showConfirmButton: false,
+                          timer: 2000
+                      }).then(() => {
+                          window.location.reload();
+                      });
+                  }
       console.error("Error adding parcel:", error);
       Swal.fire({
         icon: "error",
@@ -468,6 +479,13 @@ const { data: usersProducstData = [] } = useQuery({
     queryKey: ['usersProducstData'],
     queryFn: async () => {
       const res = await axiosSecure.get("/int-add-products");
+      return res.data;
+    }
+  })
+const { data: CN_Number_Collection = [] } = useQuery({
+    queryKey: ['CN_Number_Collection'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/number");
       return res.data;
     }
   })
