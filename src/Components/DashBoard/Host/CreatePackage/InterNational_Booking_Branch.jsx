@@ -178,6 +178,7 @@ const InterNational_Booking_Branch = () => {
   const onSubmit = async (data) => {
     try {
       // If PaymentOption is "Cash", validate and update branch balance
+      setSelectedPayment("Cash");
       if (PaymentOption === "Cash") {
         if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
           Swal.fire({
