@@ -663,7 +663,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
             {/* Booking Information Section */}
             <Section title="Booking Information">
 
-              <div className="grid grid-cols-2 gap-2">
+              {/* <div className="grid grid-cols-2 gap-2">
                 <InputField
                   watchValues={watchValues}
                   register={register}
@@ -681,7 +681,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                   placeholder=""
                   className="textarea textarea-bordered textarea-sm mt-6 bg-[#f9f5f1] text-black w-full max-w-xs"
                 ></textarea>
-              </div>
+              </div> */}
 
               {/* Auto-generated booking date */}
               <InputField
