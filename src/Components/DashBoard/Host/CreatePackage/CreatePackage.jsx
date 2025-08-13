@@ -458,15 +458,13 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 error.message ||
                 "An error occurred while creating the package.";
         
-            if (error.response?.status === 409) {  // CN conflict error
+            if (error.response?.status === 425455) {  // CN conflict error
                 Swal.fire({
                     position: "top-end",
                     icon: "error",
                     title: 'Duplicate CN! Refreshing...',
                     showConfirmButton: false,
                     timer: 2000
-                }).then(() => {
-                    window.location.reload();
                 });
             } else {
                 Swal.fire({
