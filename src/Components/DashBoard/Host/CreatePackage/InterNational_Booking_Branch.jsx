@@ -741,7 +741,7 @@ const findProducts = AllfindProducts?.products || [];
             {/* Parcel Information Section */}
             <Section title="Parcel Information">
 
-              <div className="grid grid-cols-2 gap-2">
+              {/* <div className="grid grid-cols-2 gap-2">
                 <InputField
                   watchValues={watchValues}
                   register={register}
@@ -759,7 +759,7 @@ const findProducts = AllfindProducts?.products || [];
                   placeholder=""
                   className="textarea textarea-bordered textarea-sm mt-6 bg-[#f9f5f1] text-black w-full max-w-xs"
                 ></textarea>
-              </div>
+              </div> */}
 
               {/* Auto-generated booking date */}
               <InputField
@@ -949,7 +949,7 @@ const findProducts = AllfindProducts?.products || [];
                     </label>
                     <textarea
                       {...register("remark")}
-                      className="textarea textarea-bordered w-full h-[26px] p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                      className="textarea textarea-bordered w-full h-[140px] p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
                     />
                   </div>
                 </div>
