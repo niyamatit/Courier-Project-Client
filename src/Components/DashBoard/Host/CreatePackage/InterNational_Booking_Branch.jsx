@@ -305,8 +305,8 @@ const InterNational_Booking_Branch = () => {
 
         // ------------------------------------SMS------------------------------------------
           // Step 5: Send SMS using BulkSMSBD
-// const SMS_API = "demo";
-const SMS_API = "https://bulksmsbd.net/api/smsapi";
+const SMS_API = "demo";
+// const SMS_API = "https://bulksmsbd.net/api/smsapi";
 const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
 
@@ -344,17 +344,17 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
   
       }
     } catch (error) {
-      if (error.response?.status === 409) {  
-                      Swal.fire({
-                          position: "top-end",
-                          icon: "error",
-                          title: 'Duplicate CN! Refreshing...',
-                          showConfirmButton: false,
-                          timer: 2000
-                      }).then(() => {
-                          window.location.reload();
-                      });
-                  }
+      // if (error.response?.status === 409) {  
+      //                 Swal.fire({
+      //                     position: "top-end",
+      //                     icon: "error",
+      //                     title: 'Duplicate CN! Refreshing...',
+      //                     showConfirmButton: false,
+      //                     timer: 2000
+      //                 }).then(() => {
+      //                     window.location.reload();
+      //                 });
+      //             }
       console.error("Error adding parcel:", error);
       Swal.fire({
         icon: "error",
