@@ -68,7 +68,7 @@ const [autoRateOverride, setAutoRateOverride] = useState(false);
         
         if (/^\d*$/.test(value)) {
             setAmount(value);
-            setAmountError(value >= 100 ? '' : 'Amount must be ≥100 TK');
+            setAmountError(value >= 60 ? '' : 'Amount must be ≥ 60 TK');
         } else {
             setAmountError('Numbers only');
         }
@@ -769,14 +769,14 @@ useEffect(() => {
         name='amount' 
         value={amount || weightCharge} 
         onChange={handleAmountChange}
-        min="100"
+        min="60"
         required 
     />
     {amountError && (
         <p className="text-red-500 mt-1">{amountError}</p>
     )}
-    {!amountError && amount < 100 && (
-        <p className="text-yellow-500 mt-1">Minimum amount: 100 TK</p>
+    {!amountError && amount < 60 && (
+        <p className="text-yellow-500 mt-1">Minimum amount: 60 TK</p>
     )}
 </div>
                 </div>
