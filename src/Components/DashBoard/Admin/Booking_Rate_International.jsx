@@ -8,8 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 import BranchProductManager from "./BranchProductManager";
 import BranchRateComponents from "./BranchRateComponents";
 import BranchViewModal from "./BranchViewModal";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
 
 const Booking_Rate_International = () => {
+
+  const [verifiedUser] = useUsersData();
   const {
     register,
     handleSubmit,
@@ -115,20 +118,25 @@ const handleProductChange = (index, field, value) => {
 
 
   const ProductsInfo = {
-    branchId: selectedBranch,
+    // branchId: selectedBranch,
       products: productFields,
       date: new Date().toISOString(),
+      Who_Added: verifiedUser.email,
+      Who_Added_Role: verifiedUser.role,
+      Who_Added_Name: verifiedUser.name,
+      Status: "International",
   }
   try {
     const response = await axiosSecure.post("/api/products/bulk", ProductsInfo);
     setSelectedBranch("");
-    setProductFields([{ name: "", unit: "", price: "" }]);
+    setProductFields([{ name: "",}]);
     if (response.status === 201) {
       Swal.fire("✅ Success!", "Products added successfully.", "success");
       setSelectedBranch("");
-      setProductFields([{ name: "", unit: "", price: "" }]);
+      setProductFields([{ name: "", }]);
       fetchProducts();
     }
+    refetch();
   } catch (error) {
    if (error.response) {
       if (error.response.status === 409) {
@@ -196,7 +204,7 @@ const handleProductChange = (index, field, value) => {
 
     const branches = Branch.filter(branch => branch?.role === "host");
 
-const {  data: BranchesForRate = []} = useQuery({
+const {  data: BranchesForRate = [] , refetch} = useQuery({
         queryKey: ['BranchesForRate'],
         queryFn: async() => {
             const res = await axiosSecure.get("/int-add-products");
@@ -407,7 +415,7 @@ const {  data: BranchesForRate = []} = useQuery({
                 <h3 className="text-xl font-bold text-gray-700 mb-4">Add a New Product</h3>
                 <form onSubmit={onSubmitProducts} className="space-y-4">
   {/* Select Branch */}
-  <div>
+  {/* <div>
     <label className="block font-medium mb-1">Select Branch</label>
     <select
       value={selectedBranch}
@@ -422,7 +430,7 @@ const {  data: BranchesForRate = []} = useQuery({
         </option>
       ))}
     </select>
-  </div>
+  </div> */}
 
   {/* Dynamic Product Fields */}
   {productFields.map((field, index) => (
@@ -437,21 +445,21 @@ const {  data: BranchesForRate = []} = useQuery({
         className="border p-2 rounded"
         required
       />
-      <input
+      {/* <input
         placeholder="Unit"
         value={field.unit}
         onChange={(e) => handleProductChange(index, "unit", e.target.value)}
         className="border p-2 rounded"
         required
-      />
-      <input
+      /> */}
+      {/* <input
         placeholder="Price"
         type="number"
         value={field.price}
         onChange={(e) => handleProductChange(index, "price", e.target.value)}
         className="border p-2 rounded"
         required
-      />
+      /> */}
       <div className="flex items-center justify-center space-x-2">
         {index === productFields.length - 1 && (
           <button
@@ -477,11 +485,22 @@ const {  data: BranchesForRate = []} = useQuery({
 
   {/* Submit */}
   <button
-    type="submit"
-    className="bg-blue-600 text-white py-2 px-6 rounded-lg"
-  >
-    Save All Products
-  </button>
+  type="submit"
+  onClick={() => window.reload()}
+  disabled={BranchesForRate?.some(pro => pro.Status === "International")}
+  title={
+    BranchesForRate.some(pro => pro.Status === "International")
+      ? "Already Added"
+      : ""
+  }
+  className={`py-2 px-6 rounded-lg text-white 
+    ${BranchesForRate.some(pro => pro.Status === "International")
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700"}`}
+>
+  Save All Products
+</button>
+
 </form>
               </div>
 

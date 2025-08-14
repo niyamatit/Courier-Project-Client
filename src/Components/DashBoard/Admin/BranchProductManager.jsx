@@ -53,6 +53,7 @@ export default function BranchProductManager() {
           },
           buttonsStyling: false,
         });
+        // window.reload();
         fetchBranches();
       } catch (err) {
         Swal.fire({
@@ -69,6 +70,7 @@ export default function BranchProductManager() {
         });
       }
     }
+    // window.reload();
   };
 
   const handleEditBranch = (branch) => {
@@ -84,7 +86,7 @@ export default function BranchProductManager() {
   const addProductField = () => {
     setEditingBranch({
       ...editingBranch,
-      products: [...editingBranch.products, { name: "", unit: "", price: "" }],
+      products: [...editingBranch.products, { name: "",}],
     });
   };
 
@@ -179,7 +181,7 @@ export default function BranchProductManager() {
                     <td className="px-4 py-4 sm:px-6 text-sm text-gray-600">
                       {branch.products.map((prod, idx) => (
                         <div key={idx} className="mb-1">
-                          <span className="font-medium text-gray-800">{prod.name}</span> -  <span className="text-green-600 font-mono">৳ {prod.price}</span> - {prod.unit}
+                          <span className="font-medium text-gray-800">{prod.name}</span>
                         </div>
                       ))}
                     </td>
@@ -236,21 +238,21 @@ export default function BranchProductManager() {
                     placeholder="Product Name"
                     className="col-span-1 sm:col-span-2 border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                   />
-                  <input
+                  {/* <input
                     value={prod.unit}
                     onChange={(e) => handleProductChange(idx, "unit", e.target.value)}
                     placeholder="Unit"
                     className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                  />
+                  /> */}
                   <div className="relative flex items-center">
-                    <span className="absolute left-3 text-gray-400 font-mono">৳</span>
-                    <input
+                    {/* <span className="absolute left-3 text-gray-400 font-mono">৳</span> */}
+                    {/* <input
                       value={prod.price}
                       type="number"
                       onChange={(e) => handleProductChange(idx, "price", e.target.value)}
                       placeholder="Price"
                       className="w-full border border-gray-300 p-3 pl-8 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                    />
+                    /> */}
                   </div>
                   <button
                     onClick={() => removeProductField(idx)}

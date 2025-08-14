@@ -68,7 +68,7 @@ const [autoRateOverride, setAutoRateOverride] = useState(false);
         
         if (/^\d*$/.test(value)) {
             setAmount(value);
-            setAmountError(value >= 100 ? '' : 'Amount must be ≥100 TK');
+            setAmountError(value >= 60 ? '' : 'Amount must be ≥ 60 TK');
         } else {
             setAmountError('Numbers only');
         }
@@ -458,15 +458,13 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 error.message ||
                 "An error occurred while creating the package.";
         
-            if (error.response?.status === 409) {  // CN conflict error
+            if (error.response?.status === 425455) {  // CN conflict error
                 Swal.fire({
                     position: "top-end",
                     icon: "error",
                     title: 'Duplicate CN! Refreshing...',
                     showConfirmButton: false,
                     timer: 2000
-                }).then(() => {
-                    window.location.reload();
                 });
             } else {
                 Swal.fire({
@@ -771,14 +769,14 @@ useEffect(() => {
         name='amount' 
         value={amount || weightCharge} 
         onChange={handleAmountChange}
-        min="100"
+        min="60"
         required 
     />
     {amountError && (
         <p className="text-red-500 mt-1">{amountError}</p>
     )}
-    {!amountError && amount < 100 && (
-        <p className="text-yellow-500 mt-1">Minimum amount: 100 TK</p>
+    {!amountError && amount < 60 && (
+        <p className="text-yellow-500 mt-1">Minimum amount: 60 TK</p>
     )}
 </div>
                 </div>
@@ -829,9 +827,9 @@ useEffect(() => {
             Condition + Charge  = Total COD: {cod || 0} TK
         </p>
                     </div>
-                    <div>
+                    {/* <div>
                         <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="form-control md:px-24 w-full">

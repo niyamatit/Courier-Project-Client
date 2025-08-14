@@ -305,8 +305,8 @@ const InterNational_Booking_Branch = () => {
 
         // ------------------------------------SMS------------------------------------------
           // Step 5: Send SMS using BulkSMSBD
-// const SMS_API = "demo";
-const SMS_API = "https://bulksmsbd.net/api/smsapi";
+const SMS_API = "demo";
+// const SMS_API = "https://bulksmsbd.net/api/smsapi";
 const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
 
@@ -344,17 +344,17 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
   
       }
     } catch (error) {
-      if (error.response?.status === 409) {  
-                      Swal.fire({
-                          position: "top-end",
-                          icon: "error",
-                          title: 'Duplicate CN! Refreshing...',
-                          showConfirmButton: false,
-                          timer: 2000
-                      }).then(() => {
-                          window.location.reload();
-                      });
-                  }
+      // if (error.response?.status === 409) {  
+      //                 Swal.fire({
+      //                     position: "top-end",
+      //                     icon: "error",
+      //                     title: 'Duplicate CN! Refreshing...',
+      //                     showConfirmButton: false,
+      //                     timer: 2000
+      //                 }).then(() => {
+      //                     window.location.reload();
+      //                 });
+      //             }
       console.error("Error adding parcel:", error);
       Swal.fire({
         icon: "error",
@@ -741,7 +741,7 @@ const findProducts = AllfindProducts?.products || [];
             {/* Parcel Information Section */}
             <Section title="Parcel Information">
 
-              <div className="grid grid-cols-2 gap-2">
+              {/* <div className="grid grid-cols-2 gap-2">
                 <InputField
                   watchValues={watchValues}
                   register={register}
@@ -759,7 +759,7 @@ const findProducts = AllfindProducts?.products || [];
                   placeholder=""
                   className="textarea textarea-bordered textarea-sm mt-6 bg-[#f9f5f1] text-black w-full max-w-xs"
                 ></textarea>
-              </div>
+              </div> */}
 
               {/* Auto-generated booking date */}
               <InputField
@@ -949,7 +949,7 @@ const findProducts = AllfindProducts?.products || [];
                     </label>
                     <textarea
                       {...register("remark")}
-                      className="textarea textarea-bordered w-full h-[26px] p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
+                      className="textarea textarea-bordered w-full h-[140px] p-2 rounded-lg bg-[#E8F0FE] text-black border-gray-300"
                     />
                   </div>
                 </div>
