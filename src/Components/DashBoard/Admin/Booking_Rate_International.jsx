@@ -122,11 +122,11 @@ const handleProductChange = (index, field, value) => {
   try {
     const response = await axiosSecure.post("/api/products/bulk", ProductsInfo);
     setSelectedBranch("");
-    setProductFields([{ name: "", unit: "", price: "" }]);
+    setProductFields([{ name: "",}]);
     if (response.status === 201) {
       Swal.fire("✅ Success!", "Products added successfully.", "success");
       setSelectedBranch("");
-      setProductFields([{ name: "", unit: "", price: "" }]);
+      setProductFields([{ name: "", }]);
       fetchProducts();
     }
   } catch (error) {
@@ -407,7 +407,7 @@ const {  data: BranchesForRate = []} = useQuery({
                 <h3 className="text-xl font-bold text-gray-700 mb-4">Add a New Product</h3>
                 <form onSubmit={onSubmitProducts} className="space-y-4">
   {/* Select Branch */}
-  <div>
+  {/* <div>
     <label className="block font-medium mb-1">Select Branch</label>
     <select
       value={selectedBranch}
@@ -422,7 +422,7 @@ const {  data: BranchesForRate = []} = useQuery({
         </option>
       ))}
     </select>
-  </div>
+  </div> */}
 
   {/* Dynamic Product Fields */}
   {productFields.map((field, index) => (
