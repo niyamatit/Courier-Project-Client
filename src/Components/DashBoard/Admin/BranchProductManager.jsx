@@ -53,6 +53,7 @@ export default function BranchProductManager() {
           },
           buttonsStyling: false,
         });
+        // window.reload();
         fetchBranches();
       } catch (err) {
         Swal.fire({
@@ -69,6 +70,7 @@ export default function BranchProductManager() {
         });
       }
     }
+    // window.reload();
   };
 
   const handleEditBranch = (branch) => {
