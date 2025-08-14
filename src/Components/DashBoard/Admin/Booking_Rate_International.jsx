@@ -115,7 +115,7 @@ const handleProductChange = (index, field, value) => {
 
 
   const ProductsInfo = {
-    branchId: selectedBranch,
+    // branchId: selectedBranch,
       products: productFields,
       date: new Date().toISOString(),
   }
@@ -437,21 +437,21 @@ const {  data: BranchesForRate = []} = useQuery({
         className="border p-2 rounded"
         required
       />
-      <input
+      {/* <input
         placeholder="Unit"
         value={field.unit}
         onChange={(e) => handleProductChange(index, "unit", e.target.value)}
         className="border p-2 rounded"
         required
-      />
-      <input
+      /> */}
+      {/* <input
         placeholder="Price"
         type="number"
         value={field.price}
         onChange={(e) => handleProductChange(index, "price", e.target.value)}
         className="border p-2 rounded"
         required
-      />
+      /> */}
       <div className="flex items-center justify-center space-x-2">
         {index === productFields.length - 1 && (
           <button
