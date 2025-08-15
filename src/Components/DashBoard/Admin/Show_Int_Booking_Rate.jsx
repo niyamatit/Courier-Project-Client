@@ -38,11 +38,11 @@ export default function Show_Int_Booking_Rate() {
               .map(
                 (a) => `
               <div class="grid grid-cols-2 gap-x-4 p-2 border rounded-md">
-                <p><strong>Weight:</strong></p><p>${a.ProductWeight} kg</p>
-                <p><strong>Custom:</strong></p><p>$${a.customAmount}</p>
-                <p><strong>Merchant:</strong></p><p>$${a.merchantAmount}</p>
-                <p><strong>Customer:</strong></p><p>$${a.customerAmount}</p>
-                <p><strong>Others Company:</strong></p><p>$${a.othersCompanyAmount}</p>
+                <p><strong>Weight:</strong></p><p>${a.ProductWeight} </p>
+                <p><strong>Custom:</strong></p><p>৳${a.customAmount}</p>
+                <p><strong>Merchant:</strong></p><p>৳${a.merchantAmount}</p>
+                <p><strong>Customer:</strong></p><p>৳${a.customerAmount}</p>
+                <p><strong>Others Company:</strong></p><p>৳${a.othersCompanyAmount}</p>
               </div>`
               )
               .join("")}
@@ -74,6 +74,7 @@ export default function Show_Int_Booking_Rate() {
           othersCompanyAmount: amt.othersCompanyAmount,
           agentAmount: amt.agentAmount,
           customerAmount: amt.customerAmount,
+          merchantAmount: amt.merchantAmount,
         })),
       };
 
@@ -229,6 +230,7 @@ export default function Show_Int_Booking_Rate() {
                     <input type="text" value={amt.othersCompanyAmount} onChange={(e) => handleAmountChange(index, 'othersCompanyAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
                     <input type="text" value={amt.agentAmount} onChange={(e) => handleAmountChange(index, 'agentAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
                     <input type="text" value={amt.customerAmount} onChange={(e) => handleAmountChange(index, 'customerAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
+                    <input type="text" value={amt.merchantAmount} onChange={(e) => handleAmountChange(index, 'merchantAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
                   </div>
                 ))}
               </div>
