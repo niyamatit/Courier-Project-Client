@@ -1144,7 +1144,7 @@ const Areas =[
                   onChange={(e) => setApply(e.target.value)}
                 >
                   <option value="">Apply For*</option>
-                  <option value="Agent">Agent</option>
+                  <option value="District Agent">District Agent</option>
                   <option value="Sub Agent">Sub Agent</option>
                   <option value="Merchant">Merchant</option>
                   <option value="Rider">Rider</option>
