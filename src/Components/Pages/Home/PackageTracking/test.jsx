@@ -851,3 +851,73 @@ const Booking_Rate_International = () => {
 };
 
 export default Booking_Rate_International;
+
+
+
+
+
+
+
+
+
+<div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Enter Weight</label>
+          <input
+            placeholder="Enter Weight"
+            type="number"
+            min={0}
+            {...register("ProductWeight", { required: "Required" })}
+            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.ProductWeight && (
+            <p className="text-red-500 text-sm mt-1">{errors.ProductWeight.message}</p>
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Custom Amount</label>
+          <input
+            placeholder="Custom Amount"
+            type="number"
+            {...register("customAmount", { required: "Required" })}
+            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.customAmount && (
+            <p className="text-red-500 text-sm mt-1">{errors.customAmount.message}</p>
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Others Company Amount</label>
+          <input
+            placeholder="Others Company Amount"
+            type="number"
+            {...register("othersCompanyAmount", { required: "Required" })}
+            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Agent Amount</label>
+          <input
+            placeholder="Agent Amount"
+            type="number"
+            {...register("agentAmount", { required: "Required" })}
+            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Merchant Amount</label>
+          <input
+            placeholder="Merchant Amount"
+            type="number"
+            {...register("merchantAmount", { required: "Required" })}
+            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Customer Amount</label>
+          <input
+            placeholder="Customer Amount"
+            type="number"
+            {...register("customerAmount", { required: "Required" })}
+            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
