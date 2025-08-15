@@ -5,6 +5,12 @@ import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
+import {
+  CitySelect,
+  CountrySelect,
+  StateSelect,
+} from "react-country-state-city";
+import "react-country-state-city/dist/react-country-state-city.css";
 
 export default function BranchRateEditor() {
   const queryClient = useQueryClient();
@@ -36,6 +42,8 @@ export default function BranchRateEditor() {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     control,
     formState: { errors },
   } = useForm({
@@ -76,6 +84,9 @@ export default function BranchRateEditor() {
     onSuccess: () => {
       queryClient.invalidateQueries(["BranchesForRate"]);
       Swal.fire("Success!", "Branch Rate updated successfully!", "success");
+      reset();
+      setSelectedBranch(null);
+      setSelectedProducts("");
     },
     onError: (err) => {
       if (err?.response.status === 409) {
@@ -88,6 +99,7 @@ export default function BranchRateEditor() {
             }
       Swal.fire("Error", err?.response?.data?.message || "Something went wrong", "error");
     },
+    
   });
 
   const onSubmit = (data) => {
@@ -99,7 +111,8 @@ export default function BranchRateEditor() {
       ...data,
       products: selectedProducts,
 
-      
+      From_Country: data.FromCountry || "",
+      To_Country : data.Tocountry || "",
       branchId: selectedBranch?.email,
       branch_Name: selectedBranch?.name,
       date : new Date().toISOString(),
@@ -107,6 +120,9 @@ export default function BranchRateEditor() {
       Who_Added_Name:verifiedUser?.name,
       Who_Added_Role:verifiedUser?.role,
     });
+    reset();
+      setSelectedBranch(null);
+      setSelectedProducts("");
   };
 
   return (
@@ -157,8 +173,44 @@ export default function BranchRateEditor() {
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 gap-4 sm:gap-6"
       >
+        <div className="col-span-2 md:col-span-2 lg:col-span-1">
+  <label className="label-text block text-gray-500 font-semibold mt-2 mb-1">
+    From Country*
+  </label>
+  <CountrySelect
+    onChange={(value) => {
+      
+      setValue("FromCountry", value);
+    }}
+    className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+      errors.FromCountry ? "border-red-500" : "border-gray-300"
+    }`}
+    placeHolder="Select From Country"
+  />
+  {errors.FromCountry && (
+    <span className="text-red-500">This field is required</span>
+  )}
+</div>
+<div className="col-span-2 md:col-span-2 lg:col-span-1">
+  <label className="label-text block text-gray-500 font-semibold mt-2 mb-1">
+    To Country*
+  </label>
+  <CountrySelect
+    onChange={(value) => {
+      
+      setValue("Tocountry", value);
+    }}
+    className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
+      errors.Tocountry ? "border-red-500" : "border-gray-300"
+    }`}
+    placeHolder="Select To Country"
+  />
+  {errors.Tocountry && (
+    <span className="text-red-500">This field is required</span>
+  )}
+</div>
         {/* Basic Info Fields */}
-        {["fromCountry", "toCountry", "deliveryCompany", "deliveryTime"].map((field) => (
+        {[ "deliveryCompany", "deliveryTime"].map((field) => (
           <div key={field}>
             <input
               placeholder={
