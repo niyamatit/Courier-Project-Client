@@ -11,6 +11,7 @@ const VerifyStaff = () => {
   const [loginAttempted, setLoginAttempted] = useState(false);
   const [verifiedStaff] = UseStaffVerify();
   const navigate = useNavigate();
+  const navigatesdsdsdsdsdsdsdsd = useNavigate();
 
   useEffect(() => {
     if (verifiedStaff && loginAttempted) {
