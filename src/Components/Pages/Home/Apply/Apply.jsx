@@ -726,6 +726,7 @@ const Areas =[
         Customer_Email: formData?.email || "",
         Customer_Father_Name: formData?.FatherName || "",
         Customer_Mother_Name: formData?.MotherName || "",
+        NID_Number:formData?.NiD_Number || "",
         Customer_Current_Address: formData?.YourCurrentAddress || "",
         Customer_Permanant_Address: formData?.YourParmanentAddress || "",
         Customer_Date_Of_Birth: formData?.date_of_birth || "",
@@ -753,34 +754,35 @@ const Areas =[
   
       // Show success or error notification
       if (ApplyCustomerInfo.data.insertedId) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Parcel Added Successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      } else {
-        console.log("Debugging Else Block:", ApplyCustomerInfo.data);
-        Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: "Already Applied",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    } catch (error) {
-      console.error("Error occurred while submitting application:", error);
-      Swal.fire({
-        position: "top-end",
-        icon: "error",
-        title: "An error occurred",
-        text: "Please try again later.",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } finally {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Applied Successfully",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+} catch (error) {
+  if (error.response && error.response.status === 409) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "Already Applied",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } else {
+    console.error("Error occurred while submitting application:", error);
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "An error occurred",
+      text: "Please try again later.",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  }
+} finally {
       setIsSubmitting(false)
     }
   };
@@ -979,6 +981,22 @@ const Areas =[
               </div>
             </div>
              {/* Your Image */}
+             <div className="col-span-2 md:col-span-2 lg:col-span-1 mt-3 mb-2">
+                  <label className="block text-gray-700 font-medium mb-1">
+                    NID Number*
+                  </label>
+                  <input
+                    type="text"
+                    {...register("NiD_Number", { required: true })}
+                    className={`input input-bordered w-full p-2 rounded-lg border ${
+                      errors.NiD_Number ? "border-red-500" : "border-gray-300"
+                    }`}
+                    placeholder="Write Your NID Number"
+                  />
+                  {errors.NiD_Number && (
+                    <span className="text-red-500">This field is required</span>
+                  )}
+                </div>
              <div className="col-span-2 md:col-span-2 lg:col-span-1">
                   <label className="block text-gray-700 font-medium mb-1">
                     Your Image*
@@ -1035,7 +1053,7 @@ const Areas =[
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                Your Company Name*
+                Your Company/Shop/Business Name*
                 </label>
                
                 <input
@@ -1052,7 +1070,7 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Business Address*
+                  Your Company/Shop/Business Address*
                 </label>
                 <input
                   type="text"
@@ -1126,7 +1144,7 @@ const Areas =[
                   onChange={(e) => setApply(e.target.value)}
                 >
                   <option value="">Apply For*</option>
-                  <option value="Agent">Agent</option>
+                  <option value="District Agent">District Agent</option>
                   <option value="Sub Agent">Sub Agent</option>
                   <option value="Merchant">Merchant</option>
                   <option value="Rider">Rider</option>

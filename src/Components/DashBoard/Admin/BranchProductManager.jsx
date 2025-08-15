@@ -86,7 +86,7 @@ export default function BranchProductManager() {
   const addProductField = () => {
     setEditingBranch({
       ...editingBranch,
-      products: [...editingBranch.products, { name: "",}],
+      products: [...editingBranch.products, { name: "", unit : "", maxWeight: "" }],
     });
   };
 
@@ -152,9 +152,9 @@ export default function BranchProductManager() {
                   <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Product Updated
                   </th>
-                  <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  {/* <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Branch ID
-                  </th>
+                  </th> */}
                   <th className="px-4 py-3 sm:px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Products
                   </th>
@@ -175,13 +175,13 @@ export default function BranchProductManager() {
                     <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm text-gray-500">
                       {new Date(branch.updateDate ).toLocaleString() }
                     </td>
-                    <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm font-semibold text-gray-700">
+                    {/* <td className="px-4 py-4 sm:px-6 whitespace-nowrap text-sm font-semibold text-gray-700">
                       {branch.branchId}
-                    </td>
+                    </td> */}
                     <td className="px-4 py-4 sm:px-6 text-sm text-gray-600">
                       {branch.products.map((prod, idx) => (
                         <div key={idx} className="mb-1">
-                          <span className="font-medium text-gray-800">{prod.name}</span>
+                          <span className="font-medium text-gray-800">{prod.name} - (Max Weight {prod.maxWeight}) - {prod.unit}</span>
                         </div>
                       ))}
                     </td>
@@ -238,21 +238,21 @@ export default function BranchProductManager() {
                     placeholder="Product Name"
                     className="col-span-1 sm:col-span-2 border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                   />
-                  {/* <input
+                  <input
                     value={prod.unit}
                     onChange={(e) => handleProductChange(idx, "unit", e.target.value)}
                     placeholder="Unit"
                     className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                  /> */}
+                  />
                   <div className="relative flex items-center">
                     {/* <span className="absolute left-3 text-gray-400 font-mono">৳</span> */}
-                    {/* <input
-                      value={prod.price}
+                    <input
+                      value={prod.maxWeight}
                       type="number"
-                      onChange={(e) => handleProductChange(idx, "price", e.target.value)}
-                      placeholder="Price"
+                      onChange={(e) => handleProductChange(idx, "maxWeight", e.target.value)}
+                      placeholder="Max Weight"
                       className="w-full border border-gray-300 p-3 pl-8 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                    /> */}
+                    />
                   </div>
                   <button
                     onClick={() => removeProductField(idx)}

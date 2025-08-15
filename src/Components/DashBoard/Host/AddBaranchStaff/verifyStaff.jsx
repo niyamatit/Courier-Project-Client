@@ -11,6 +11,7 @@ const VerifyStaff = () => {
   const [loginAttempted, setLoginAttempted] = useState(false);
   const [verifiedStaff] = UseStaffVerify();
   const navigate = useNavigate();
+  const navigatesdsdsdsdsdsdsdsd = useNavigate();
 
   useEffect(() => {
     if (verifiedStaff && loginAttempted) {
@@ -135,7 +136,7 @@ const VerifyStaff = () => {
           )}
 
           <div className='mt-6 text-center text-sm text-gray-500'>
-            <p>Need help? Contact support@gmail.com</p>
+            <p>Need help? Contact <span className="font-bold">support@niyamatexpress.com or +8809617179001</span></p>
           </div>
         </div>
       </div>

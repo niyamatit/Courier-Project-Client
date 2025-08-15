@@ -1,16 +1,25 @@
-// BranchRateEditor.jsx
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
-
+import { FaPlus, FaTimes } from "react-icons/fa";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
+import {
+  CitySelect,
+  CountrySelect,
+  StateSelect,
+} from "react-country-state-city";
+import "react-country-state-city/dist/react-country-state-city.css";
 
 export default function BranchRateEditor() {
   const queryClient = useQueryClient();
   const [selectedBranch, setSelectedBranch] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState("");
+  const [SelectedCompany, setSelectedCompany] = useState("");
+  const [verifiedUser] = useUsersData();
 
-  // Fetch branches
+  // Fetch branches for rate
   const { data: BranchesForRate = [] } = useQuery({
     queryKey: ["BranchesForRate"],
     queryFn: async () => {
@@ -19,234 +28,281 @@ export default function BranchRateEditor() {
     },
   });
 
+  const FilterProducts = BranchesForRate[0]?.products || [];
+
+  // Fetch all users (hosts)
+  const { data: Allusers = [] } = useQuery({
+    queryKey: ["Allusers"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+      return res.data;
+    },
+  });
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    // Change: Removed unused fields from defaultValues
+    defaultValues: {
+      deliveryTime: "",
+      amounts: [
+        {
+          ProductWeight: "",
+          customAmount: "",
+          othersCompanyAmount: "",
+          agentAmount: "",
+          merchantAmount: "",
+          customerAmount: "",
+        },
+      ],
+    },
+  });
 
-  // Patch mutation
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "amounts",
+  });
+
+  // Post mutation
   const mutation = useMutation({
-    mutationFn: async (updatedData) => {
-      try {
-        const res = await axiosSecure.patch(
-          `/int-add-products/${selectedBranch._id}`,
-          updatedData
-        );
-        return res.data;
-      } catch (err) {
-        if (err.response?.status === 400) {
-          // Throw custom error to handle in onError
-          throw { type: "duplicate", message: err.response.data.message };
-        }
-        throw err;
-      }
+    mutationFn: async (newRateData) => {
+      const res = await axiosSecure.post(`/rate`, newRateData);
+      return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["BranchesForRate"]);
+      queryClient.invalidateQueries({ queryKey: ["BranchesForRate"] });
       Swal.fire({
         icon: "success",
         title: "Success!",
-        text: "Branch updated successfully!",
-        confirmButtonColor: "#3085d6",
+        text: "Branch Rate added successfully!",
+        timer: 1500,
+        showConfirmButton: false,
       });
+      reset();
+      setSelectedBranch(null);
+      setSelectedProducts("");
+      setSelectedCompany("");
     },
-    onError: (error) => {
-      if (error.type === "duplicate") {
+    onError: (err) => {
+      if (err?.response?.status === 409) {
         Swal.fire({
           icon: "error",
-          title: "Already Added",
-          text: error.message || "already added this branch data !",
-          confirmButtonColor: "#d33",
+          title: "Conflict!",
+          text: "This branch rate data already exists.",
         });
       } else {
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: error.response?.data?.message || "Something went wrong!",
-          confirmButtonColor: "#d33",
+          title: "Oops...",
+          text: err?.response?.data?.message || "Something went wrong!",
         });
       }
     },
   });
 
+  const { data: SupportCompanyList = [] } = useQuery({
+    queryKey: ["SupportCompanyList"],
+    queryFn: async () => {
+      const response = await axiosSecure.get("/Company");
+      return response.data || [];
+    },
+  });
+
+  // Change: Updated onSubmit to manually build the payload
   const onSubmit = (data) => {
     if (!selectedBranch) {
-      alert("Please select a branch first!");
+      Swal.fire("Warning", "Please select a branch first!", "warning");
       return;
     }
-
-    const updatedData = {
-      ...data,
-      branchId: selectedBranch.branchId,
+    
+    // Manually construct the payload with only the required fields
+    const payload = {
+        deliveryTime: data.deliveryTime,
+        amounts: data.amounts,
+        products: selectedProducts,
+        From_Country: data.FromCountry?.name || "",
+        To_Country: data.Tocountry?.name || "",
+        branchId: selectedBranch?.email,
+        Support_Company: SelectedCompany,
+        branch_Name: selectedBranch?.name,
+        date: new Date().toISOString(),
+        who_Added: verifiedUser?.email,
+        Who_Added_Name: verifiedUser?.name,
+        Who_Added_Role: verifiedUser?.role,
     };
 
-    mutation.mutate(updatedData);
+    mutation.mutate(payload);
   };
 
-  return (
-    <div className="p-6 bg-white shadow-xl rounded-lg border border-blue-200">
-      <h2 className="text-3xl font-bold text-blue-800 mb-6 border-b-2 pb-2 border-blue-500">Branch Rate Editor</h2>
+  const inputStyle =
+    "border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-200 bg-blue-50/50";
 
-      {/* Select Branch */}
-      <div className="mb-6">
-        <label className="block text-lg font-semibold text-blue-700 mb-2">Select Branch</label>
-        <select
-          className="border border-blue-400 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-          onChange={(e) => {
-            const branch = BranchesForRate.find(
-              (b) => b._id === e.target.value
-            );
-            setSelectedBranch(branch || null);
-            reset(); // clear form when changing branch
-          }}
-        >
-          <option value="">-- Select Branch --</option>
-          {BranchesForRate.map((branch) => (
-            <option key={branch._id} value={branch._id}>
-              {branch.branchId}
-            </option>
-          ))}
-        </select>
+  return (
+    <div className="p-4 sm:p-6 bg-white shadow-lg rounded-xl border border-gray-200">
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 border-b-2 pb-3 border-blue-500">
+        Add International Branch Rate
+      </h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Select Branch
+          </label>
+          <select
+            className={inputStyle}
+            value={selectedBranch?.email || ""}
+            onChange={(e) => {
+              const branch = Allusers.find((b) => b.email === e.target.value);
+              setSelectedBranch(branch || null);
+            }}
+          >
+            <option value="">-- Select a Branch --</option>
+            {Allusers.filter((b) => b.role === "host").map((branch) => (
+              <option key={branch._id} value={branch.email}>
+                {branch.name} ({branch.email})
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Select Product
+          </label>
+          <select
+            className={inputStyle}
+            value={selectedProducts}
+            onChange={(e) => setSelectedProducts(e.target.value)}
+          >
+            <option value="">-- Select a Product --</option>
+            {FilterProducts.map((p) => (
+              <option key={p._id} value={p.name}>
+                {p.name} - (Max: {p.maxWeight}) {p.unit}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Select Support Company
+          </label>
+          <select
+            className={inputStyle}
+            value={SelectedCompany}
+            onChange={(e) => setSelectedCompany(e.target.value)}
+          >
+            <option value="">-- Select a Company --</option>
+            {SupportCompanyList.map((company) => (
+              <option key={company._id} value={company.Company_Name}>
+                {company.Company_Name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* Show products table */}
-      {selectedBranch && (
-        <div className="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-300">
-          <h3 className="text-xl font-bold text-blue-800 mb-4">Products for {selectedBranch.branchId}</h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-blue-400 text-sm">
-              <thead className="bg-blue-600 text-white">
-                <tr>
-                  <th className="p-3 border border-blue-400">Name</th>
-                  <th className="p-3 border border-blue-400">Unit</th>
-                  <th className="p-3 border border-blue-400">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedBranch.products.map((prod, i) => (
-                  <tr key={i} className="odd:bg-white even:bg-blue-100 transition-colors duration-200">
-                    <td className="p-3 border border-blue-300 text-center">{prod.name}</td>
-                    <td className="p-3 border border-blue-300 text-center">{prod.unit}</td>
-                    <td className="p-3 border border-blue-300 text-center">{prod.price}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-6"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              From Country*
+            </label>
+            <CountrySelect
+              onChange={(value) => setValue("FromCountry", value)}
+              placeHolder="Select Country"
+            />
+            {errors.FromCountry && (
+              <span className="text-red-500 text-sm mt-1">Required</span>
+            )}
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              To Country*
+            </label>
+            <CountrySelect
+              onChange={(value) => setValue("Tocountry", value)}
+              placeHolder="Select Country"
+            />
+            {errors.Tocountry && (
+              <span className="text-red-500 text-sm mt-1">Required</span>
+            )}
           </div>
         </div>
-      )}
-
-      {/* Form for new fields and amounts */}
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* New fields */}
+        
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">From Country</label>
-          <input
-            placeholder="From Country"
-            type="text"
-            {...register("fromCountry", { required: "This field is required." })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.fromCountry && (
-            <p className="text-red-500 text-sm mt-1">{errors.fromCountry.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">To Country</label>
-          <input
-            placeholder="To Country"
-            type="text"
-            {...register("toCountry", { required: "This field is required." })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.toCountry && (
-            <p className="text-red-500 text-sm mt-1">{errors.toCountry.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Company</label>
-          <input
-            placeholder="Delivery Company"
-            type="text"
-            {...register("deliveryCompany", { required: "This field is required." })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.deliveryCompany && (
-            <p className="text-red-500 text-sm mt-1">{errors.deliveryCompany.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Time</label>
-          <input
-            placeholder="Delivery Time"
-            type="text"
-            {...register("deliveryTime", { required: "This field is required." })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.deliveryTime && (
-            <p className="text-red-500 text-sm mt-1">{errors.deliveryTime.message}</p>
-          )}
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Delivery Time
+            </label>
+            <input
+              placeholder="e.g., 5-7 business days"
+              {...register("deliveryTime", { required: "This field is required" })}
+              className={inputStyle}
+            />
+            {errors.deliveryTime && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.deliveryTime.message}
+              </p>
+            )}
         </div>
 
-        {/* Existing Amount fields */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Custom Amount</label>
-          <input
-            placeholder="Custom Amount"
-            type="number"
-            {...register("customAmount", { required: "Required" })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.customAmount && (
-            <p className="text-red-500 text-sm mt-1">{errors.customAmount.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Others Company Amount</label>
-          <input
-            placeholder="Others Company Amount"
-            type="number"
-            {...register("othersCompanyAmount", { required: "Required" })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Agent Amount</label>
-          <input
-            placeholder="Agent Amount"
-            type="number"
-            {...register("agentAmount", { required: "Required" })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Merchant Amount</label>
-          <input
-            placeholder="Merchant Amount"
-            type="number"
-            {...register("merchantAmount", { required: "Required" })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Customer Amount</label>
-          <input
-            placeholder="Customer Amount"
-            type="number"
-            {...register("customerAmount", { required: "Required" })}
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <div className="space-y-4">
+          <label className="block text-sm font-semibold text-gray-700 -mb-2">
+            Rate Details
+          </label>
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 p-4 border border-blue-200 bg-blue-50/30 rounded-lg relative"
+            >
+              {[
+                "ProductWeight", "customAmount", "othersCompanyAmount", 
+                "agentAmount", "merchantAmount", "customerAmount",
+              ].map((name) => (
+                <input
+                  key={name}
+                  placeholder={name.replace(/([A-Z])/g, " $1").trim()}
+                  type="number"
+                  step="0.01"
+                  {...register(`amounts.${index}.${name}`, { required: "Required" })}
+                  className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                />
+              ))}
+              {fields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 transition-colors"
+                >
+                  <FaTimes size={12} />
+                </button>
+              )}
+            </div>
+          ))}
         </div>
 
-        <button
-          type="submit"
-          disabled={mutation.isLoading}
-          className="col-span-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 disabled:bg-blue-400"
-        >
-          {mutation.isLoading ? "Updating..." : "Update Branch"}
-        </button>
+        <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+          <button
+            type="button"
+            onClick={() => append({ /* default values */ })}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-100 text-blue-700 font-semibold px-4 py-3 rounded-lg hover:bg-blue-200 transition-colors"
+          >
+            <FaPlus /> Add Rate Row
+          </button>
+          <button
+            type="submit"
+            disabled={mutation.isLoading}
+            className="w-full sm:w-auto bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
+          >
+            {mutation.isLoading ? "Saving Rate..." : "Save Branch Rate"}
+          </button>
+        </div>
       </form>
     </div>
   );
