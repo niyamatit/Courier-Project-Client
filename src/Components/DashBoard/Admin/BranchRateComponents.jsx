@@ -14,9 +14,10 @@ import "react-country-state-city/dist/react-country-state-city.css";
 
 export default function BranchRateEditor() {
   const queryClient = useQueryClient();
-  const [selectedBranch, setSelectedBranch] = useState(null);
+  const [selectedBranch, setSelectedBranch] = useState(null); // State now holds the full branch object
   const [selectedProducts, setSelectedProducts] = useState("");
-  const [verifiedUser]= useUsersData()
+  const [SelectedCompany, setSelectedCompany] = useState("");
+  const [verifiedUser] = useUsersData();
 
   // Fetch branches for rate
   const { data: BranchesForRate = [] } = useQuery({
@@ -43,7 +44,6 @@ export default function BranchRateEditor() {
     handleSubmit,
     reset,
     setValue,
-    watch,
     control,
     formState: { errors },
   } = useForm({
@@ -70,231 +70,250 @@ export default function BranchRateEditor() {
     name: "amounts",
   });
 
-  // Patch mutation
+  // Post mutation
   const mutation = useMutation({
-    mutationFn: async (updatedData) => {
-      const res = await axiosSecure.post(
-        `/rate`,
-        updatedData
-      );
+    mutationFn: async (newRateData) => {
+      const res = await axiosSecure.post(`/rate`, newRateData);
       return res.data;
-      
     },
-    
     onSuccess: () => {
-      queryClient.invalidateQueries(["BranchesForRate"]);
-      Swal.fire("Success!", "Branch Rate updated successfully!", "success");
+      queryClient.invalidateQueries({ queryKey: ["BranchesForRate"] });
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Branch Rate added successfully!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
       reset();
       setSelectedBranch(null);
       setSelectedProducts("");
+      setSelectedCompany("");
     },
     onError: (err) => {
-      if (err?.response.status === 409) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Branch Rate Data Already exists',
-                showConfirmButton: false,
-                timer: 1500
-              });
-            }
-      Swal.fire("Error", err?.response?.data?.message || "Something went wrong", "error");
+      // Improved error handling
+      if (err?.response?.status === 409) {
+        Swal.fire({
+          icon: "error",
+          title: "Conflict!",
+          text: "This branch rate data already exists.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err?.response?.data?.message || "Something went wrong!",
+        });
+      }
     },
-    
+  });
+
+  const { data: SupportCompanyList = [] } = useQuery({
+    queryKey: ["SupportCompanyList"],
+    queryFn: async () => {
+      const response = await axiosSecure.get("/Company");
+      return response.data || [];
+    },
   });
 
   const onSubmit = (data) => {
     if (!selectedBranch) {
-      Swal.fire("Select branch", "Please select a branch first!", "warning");
+      Swal.fire("Warning", "Please select a branch first!", "warning");
       return;
     }
     mutation.mutate({
       ...data,
       products: selectedProducts,
-
-      From_Country: data.FromCountry || "",
-      To_Country : data.Tocountry || "",
+      From_Country: data.FromCountry?.name || "",
+      To_Country: data.Tocountry?.name || "",
       branchId: selectedBranch?.email,
+      Support_Company: SelectedCompany,
       branch_Name: selectedBranch?.name,
-      date : new Date().toISOString(),
-      who_Added:verifiedUser?.email,
-      Who_Added_Name:verifiedUser?.name,
-      Who_Added_Role:verifiedUser?.role,
+      date: new Date().toISOString(),
+      who_Added: verifiedUser?.email,
+      Who_Added_Name: verifiedUser?.name,
+      Who_Added_Role: verifiedUser?.role,
     });
-    reset();
-      setSelectedBranch(null);
-      setSelectedProducts("");
   };
 
+  // Common input class for consistent styling
+  const inputStyle =
+    "border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-200 bg-blue-50/50";
+
   return (
-    <div className="p-4 sm:p-6 bg-white shadow-xl rounded-lg border border-blue-200">
-      <h2 className="text-xl sm:text-3xl font-bold text-blue-800 mb-6 border-b-2 pb-2 border-blue-500">
-        Add Branch Rate (International)
+    <div className="p-4 sm:p-6 bg-white shadow-lg rounded-xl border border-gray-200">
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 border-b-2 pb-3 border-blue-500">
+        Add International Branch Rate
       </h2>
 
-      {/* Select Branch */}
-      <div className="mb-6">
-        <label className="block text-base font-semibold text-blue-700 mb-2">
-          Select Branch
-        </label>
-        <select
-          className="border border-blue-400 p-2 sm:p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-         onChange={(e) => setSelectedBranch(e.target.value)}
-        >
-          <option value="">-- Select Branch --</option>
-          {Allusers.filter((b) => b.role === "host").map((branch) => (
-            <option key={branch._id} value={branch?.email}>
-              {branch?.email}
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* Grid for selecting branch, product, and company */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        {/* Select Branch */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Select Branch
+          </label>
+          <select
+            className={inputStyle}
+            value={selectedBranch?.email || ""}
+            onChange={(e) => {
+              const branch = Allusers.find((b) => b.email === e.target.value);
+              setSelectedBranch(branch || null);
+            }}
+          >
+            <option value="">-- Select a Branch --</option>
+            {Allusers.filter((b) => b.role === "host").map((branch) => (
+              <option key={branch._id} value={branch.email}>
+                {branch.name} ({branch.email})
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Select Products */}
-      <div className="mb-6">
-        <label className="block text-base font-semibold text-blue-700 mb-2">
-          Select Products
-        </label>
-        <select
-          className="border border-blue-400 p-2 sm:p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={selectedProducts}
-          onChange={(e) => setSelectedProducts(e.target.value)}
-        >
-          <option value="">-- Select Products --</option>
-          {FilterProducts.map((p) => (
-            <option key={p._id} value={p.name}>
-              {p.name} - (Max: {p.maxWeight}) {p.unit}
-            </option>
-          ))}
-        </select>
+        {/* Select Products */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Select Product
+          </label>
+          <select
+            className={inputStyle}
+            value={selectedProducts}
+            onChange={(e) => setSelectedProducts(e.target.value)}
+          >
+            <option value="">-- Select a Product --</option>
+            {FilterProducts.map((p) => (
+              <option key={p._id} value={p.name}>
+                {p.name} - (Max: {p.maxWeight}) {p.unit}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Select Support Company */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Select Support Company
+          </label>
+          <select
+            className={inputStyle}
+            value={SelectedCompany}
+            onChange={(e) => setSelectedCompany(e.target.value)}
+          >
+            <option value="">-- Select a Company --</option>
+            {SupportCompanyList.map((company) => (
+              <option key={company._id} value={company.Company_Name}>
+                {company.Company_Name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 gap-4 sm:gap-6"
+        className="grid grid-cols-1 gap-6"
       >
-        <div className="col-span-2 md:col-span-2 lg:col-span-1">
-  <label className="label-text block text-gray-500 font-semibold mt-2 mb-1">
-    From Country*
-  </label>
-  <CountrySelect
-    onChange={(value) => {
-      
-      setValue("FromCountry", value);
-    }}
-    className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
-      errors.FromCountry ? "border-red-500" : "border-gray-300"
-    }`}
-    placeHolder="Select From Country"
-  />
-  {errors.FromCountry && (
-    <span className="text-red-500">This field is required</span>
-  )}
-</div>
-<div className="col-span-2 md:col-span-2 lg:col-span-1">
-  <label className="label-text block text-gray-500 font-semibold mt-2 mb-1">
-    To Country*
-  </label>
-  <CountrySelect
-    onChange={(value) => {
-      
-      setValue("Tocountry", value);
-    }}
-    className={`select select-bordered w-full p-2 rounded-lg border bg-[#E8F0FE] text-black ${
-      errors.Tocountry ? "border-red-500" : "border-gray-300"
-    }`}
-    placeHolder="Select To Country"
-  />
-  {errors.Tocountry && (
-    <span className="text-red-500">This field is required</span>
-  )}
-</div>
-        {/* Basic Info Fields */}
-        {[ "deliveryCompany", "deliveryTime"].map((field) => (
-          <div key={field}>
-            <input
-              placeholder={
-                field === "fromCountry"
-                  ? "From Country"
-                  : field === "toCountry"
-                  ? "To Country"
-                  : field === "deliveryCompany"
-                  ? "Delivery Company"
-                  : "Delivery Time"
-              }
-              {...register(field, { required: "This field is required" })}
-              className="border p-2 sm:p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* From Country */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              From Country*
+            </label>
+            <CountrySelect
+              onChange={(value) => setValue("FromCountry", value)}
+              placeHolder="Select Country"
             />
-            {errors[field] && (
+            {errors.FromCountry && (
+              <span className="text-red-500 text-sm mt-1">Required</span>
+            )}
+          </div>
+
+          {/* To Country */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              To Country*
+            </label>
+            <CountrySelect
+              onChange={(value) => setValue("Tocountry", value)}
+              placeHolder="Select Country"
+            />
+            {errors.Tocountry && (
+              <span className="text-red-500 text-sm mt-1">Required</span>
+            )}
+          </div>
+        </div>
+        
+        {/* Delivery Time Input */}
+        <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Delivery Time
+            </label>
+            <input
+              placeholder="e.g., 5-7 business days"
+              {...register("deliveryTime", { required: "This field is required" })}
+              className={inputStyle}
+            />
+            {errors.deliveryTime && (
               <p className="text-red-500 text-sm mt-1">
-                {errors[field].message}
+                {errors.deliveryTime.message}
               </p>
             )}
-          </div>
-        ))}
+        </div>
 
-        {/* Amount Fields */}
-        {fields.map((field, index) => (
-          <div
-            key={field.id}
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 p-3 border rounded-lg relative"
+        {/* Dynamic Amount Fields */}
+        <div className="space-y-4">
+          <label className="block text-sm font-semibold text-gray-700 -mb-2">
+            Rate Details
+          </label>
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 p-4 border border-blue-200 bg-blue-50/30 rounded-lg relative"
+            >
+              {[
+                "ProductWeight", "customAmount", "othersCompanyAmount", 
+                "agentAmount", "merchantAmount", "customerAmount",
+              ].map((name) => (
+                <input
+                  key={name}
+                  placeholder={name.replace(/([A-Z])/g, " $1").trim()}
+                  type="number"
+                  step="0.01"
+                  {...register(`amounts.${index}.${name}`, { required: "Required" })}
+                  className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                />
+              ))}
+              {fields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 transition-colors"
+                >
+                  <FaTimes size={12} />
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+          <button
+            type="button"
+            onClick={() => append({ /* default values */ })}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-100 text-blue-700 font-semibold px-4 py-3 rounded-lg hover:bg-blue-200 transition-colors"
           >
-            {[
-              "ProductWeight",
-              "customAmount",
-              "othersCompanyAmount",
-              "agentAmount",
-              "merchantAmount",
-              "customerAmount",
-            ].map((name) => (
-              <input
-                key={name}
-                placeholder={name.replace(/([A-Z])/g, " $1").trim()}
-                type="number"
-                {...register(`amounts.${index}.${name}`, {
-                  required: "Required",
-                })}
-                className="border p-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            ))}
-            {fields.length > 1 && (
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-1"
-              >
-                <FaTimes />
-              </button>
-            )}
-          </div>
-        ))}
-
-        {/* Add Amount Row */}
-        <button
-          type="button"
-          onClick={() =>
-            append({
-              ProductWeight: "",
-              customAmount: "",
-              othersCompanyAmount: "",
-              agentAmount: "",
-              merchantAmount: "",
-              customerAmount: "",
-            })
-          }
-          className="flex items-center gap-2 bg-green-500 text-white px-3 sm:px-4 py-2 rounded hover:bg-green-600"
-        >
-          <FaPlus /> Add More Amounts
-        </button>
-
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={mutation.isLoading}
-          className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-blue-400"
-        >
-          {mutation.isLoading ? "Updating Branch Rate..." : "Update Branch Rate"}
-        </button>
+            <FaPlus /> Add Rate Row
+          </button>
+          <button
+            type="submit"
+            disabled={mutation.isLoading}
+            className="w-full sm:w-auto bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
+          >
+            {mutation.isLoading ? "Saving Rate..." : "Save Branch Rate"}
+          </button>
+        </div>
       </form>
     </div>
   );
