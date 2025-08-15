@@ -4,11 +4,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import { FaPlus, FaTimes } from "react-icons/fa";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
 
 export default function BranchRateEditor() {
   const queryClient = useQueryClient();
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState("");
+  const [verifiedUser]= useUsersData()
 
   // Fetch branches for rate
   const { data: BranchesForRate = [] } = useQuery({
@@ -87,6 +89,10 @@ export default function BranchRateEditor() {
       ...data,
       products: selectedProducts,
       branchId: selectedBranch.branchId,
+      date : new Date().toISOString(),
+      who_Added:verifiedUser?.email,
+      Who_Added_Name:verifiedUser?.name,
+      Who_Added_Role:verifiedUser?.role,
     });
   };
 
