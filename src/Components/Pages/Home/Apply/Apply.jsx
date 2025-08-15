@@ -756,7 +756,7 @@ const Areas =[
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Parcel Added Successfully",
+          title: "Applied Successfully",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -1035,7 +1035,7 @@ const Areas =[
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                Your Company Name*
+                Your Company/Shop/Business Name*
                 </label>
                
                 <input
@@ -1052,7 +1052,7 @@ const Areas =[
               </div>
               <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
-                  Your Business Address*
+                  Your Company/Shop/Business Address*
                 </label>
                 <input
                   type="text"
