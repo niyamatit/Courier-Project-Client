@@ -14,7 +14,7 @@ import "react-country-state-city/dist/react-country-state-city.css";
 
 export default function BranchRateEditor() {
   const queryClient = useQueryClient();
-  const [selectedBranch, setSelectedBranch] = useState(null); // State now holds the full branch object
+  const [selectedBranch, setSelectedBranch] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState("");
   const [SelectedCompany, setSelectedCompany] = useState("");
   const [verifiedUser] = useUsersData();
@@ -47,10 +47,8 @@ export default function BranchRateEditor() {
     control,
     formState: { errors },
   } = useForm({
+    // Change: Removed unused fields from defaultValues
     defaultValues: {
-      fromCountry: "",
-      toCountry: "",
-      deliveryCompany: "",
       deliveryTime: "",
       amounts: [
         {
@@ -91,7 +89,6 @@ export default function BranchRateEditor() {
       setSelectedCompany("");
     },
     onError: (err) => {
-      // Improved error handling
       if (err?.response?.status === 409) {
         Swal.fire({
           icon: "error",
@@ -116,27 +113,32 @@ export default function BranchRateEditor() {
     },
   });
 
+  // Change: Updated onSubmit to manually build the payload
   const onSubmit = (data) => {
     if (!selectedBranch) {
       Swal.fire("Warning", "Please select a branch first!", "warning");
       return;
     }
-    mutation.mutate({
-      ...data,
-      products: selectedProducts,
-      From_Country: data.FromCountry?.name || "",
-      To_Country: data.Tocountry?.name || "",
-      branchId: selectedBranch?.email,
-      Support_Company: SelectedCompany,
-      branch_Name: selectedBranch?.name,
-      date: new Date().toISOString(),
-      who_Added: verifiedUser?.email,
-      Who_Added_Name: verifiedUser?.name,
-      Who_Added_Role: verifiedUser?.role,
-    });
+    
+    // Manually construct the payload with only the required fields
+    const payload = {
+        deliveryTime: data.deliveryTime,
+        amounts: data.amounts,
+        products: selectedProducts,
+        From_Country: data.FromCountry?.name || "",
+        To_Country: data.Tocountry?.name || "",
+        branchId: selectedBranch?.email,
+        Support_Company: SelectedCompany,
+        branch_Name: selectedBranch?.name,
+        date: new Date().toISOString(),
+        who_Added: verifiedUser?.email,
+        Who_Added_Name: verifiedUser?.name,
+        Who_Added_Role: verifiedUser?.role,
+    };
+
+    mutation.mutate(payload);
   };
 
-  // Common input class for consistent styling
   const inputStyle =
     "border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-200 bg-blue-50/50";
 
@@ -146,9 +148,7 @@ export default function BranchRateEditor() {
         Add International Branch Rate
       </h2>
 
-      {/* Grid for selecting branch, product, and company */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        {/* Select Branch */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Select Branch
@@ -169,8 +169,6 @@ export default function BranchRateEditor() {
             ))}
           </select>
         </div>
-
-        {/* Select Products */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Select Product
@@ -188,8 +186,6 @@ export default function BranchRateEditor() {
             ))}
           </select>
         </div>
-
-        {/* Select Support Company */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Select Support Company
@@ -209,13 +205,11 @@ export default function BranchRateEditor() {
         </div>
       </div>
 
-      {/* Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 gap-6"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* From Country */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               From Country*
@@ -228,8 +222,6 @@ export default function BranchRateEditor() {
               <span className="text-red-500 text-sm mt-1">Required</span>
             )}
           </div>
-
-          {/* To Country */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               To Country*
@@ -244,7 +236,6 @@ export default function BranchRateEditor() {
           </div>
         </div>
         
-        {/* Delivery Time Input */}
         <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Delivery Time
@@ -261,7 +252,6 @@ export default function BranchRateEditor() {
             )}
         </div>
 
-        {/* Dynamic Amount Fields */}
         <div className="space-y-4">
           <label className="block text-sm font-semibold text-gray-700 -mb-2">
             Rate Details
@@ -297,7 +287,6 @@ export default function BranchRateEditor() {
           ))}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
           <button
             type="button"
