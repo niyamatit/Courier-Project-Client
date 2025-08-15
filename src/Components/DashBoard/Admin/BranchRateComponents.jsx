@@ -21,7 +21,7 @@ export default function BranchRateEditor() {
     },
   });
 
-  const FilterProducts = selectedBranch?.products || [];
+  const FilterProducts = BranchesForRate[0]?.products || [];
 
   // Fetch all users (hosts)
   const { data: Allusers = [] } = useQuery({
@@ -66,11 +66,13 @@ export default function BranchRateEditor() {
   const mutation = useMutation({
     mutationFn: async (updatedData) => {
       const res = await axiosSecure.post(
-        `/int-add-products/${selectedBranch._id}`,
+        `/rate`,
         updatedData
       );
       return res.data;
+      
     },
+    
     onSuccess: () => {
       queryClient.invalidateQueries(["BranchesForRate"]);
       Swal.fire("Success!", "Branch updated successfully!", "success");
@@ -88,7 +90,9 @@ export default function BranchRateEditor() {
     mutation.mutate({
       ...data,
       products: selectedProducts,
-      branchId: selectedBranch.branchId,
+
+      
+      branchId: selectedBranch,
       date : new Date().toISOString(),
       who_Added:verifiedUser?.email,
       Who_Added_Name:verifiedUser?.name,
@@ -109,16 +113,11 @@ export default function BranchRateEditor() {
         </label>
         <select
           className="border border-blue-400 p-2 sm:p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={(e) => {
-            const branch = Allusers.find((b) => b._id === e.target.value);
-            setSelectedBranch(branch || null);
-            setSelectedProducts("");
-            reset();
-          }}
+         onChange={(e) => setSelectedBranch(e.target.value)}
         >
           <option value="">-- Select Branch --</option>
           {Allusers.filter((b) => b.role === "host").map((branch) => (
-            <option key={branch._id} value={branch._id}>
+            <option key={branch._id} value={branch?.email}>
               {branch?.email}
             </option>
           ))}
