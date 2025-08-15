@@ -84,6 +84,16 @@ export default function BranchRateEditor() {
 
     mutation.mutate(updatedData);
   };
+ const {  data: Allusers = [], isLoading} = useQuery({
+        queryKey: ['Allusers'],
+        queryFn: async() => {
+            const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+            return res.data;
+        }
+
+    });
+ 
+
 
   return (
     <div className="p-6 bg-white shadow-xl rounded-lg border border-blue-200">
@@ -103,40 +113,16 @@ export default function BranchRateEditor() {
           }}
         >
           <option value="">-- Select Branch --</option>
-          {BranchesForRate.map((branch) => (
-            <option key={branch._id} value={branch._id}>
-              {branch.branchId}
+          {Allusers.filter(branches=>branches.role === 'host').map((branch) => (
+            <option key={branch._id} value={branch?.email}>
+              {branch?.email}
             </option>
           ))}
         </select>
       </div>
 
       {/* Show products table */}
-      {selectedBranch && (
-        <div className="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-300">
-          <h3 className="text-xl font-bold text-blue-800 mb-4">Products for {selectedBranch.branchId}</h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-blue-400 text-sm">
-              <thead className="bg-blue-600 text-white">
-                <tr>
-                  <th className="p-3 border border-blue-400">Name</th>
-                  <th className="p-3 border border-blue-400">Unit</th>
-                  <th className="p-3 border border-blue-400">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedBranch.products.map((prod, i) => (
-                  <tr key={i} className="odd:bg-white even:bg-blue-100 transition-colors duration-200">
-                    <td className="p-3 border border-blue-300 text-center">{prod.name}</td>
-                    <td className="p-3 border border-blue-300 text-center">{prod.unit}</td>
-                    <td className="p-3 border border-blue-300 text-center">{prod.price}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      
 
       {/* Form for new fields and amounts */}
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">

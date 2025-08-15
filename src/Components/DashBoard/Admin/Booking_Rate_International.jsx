@@ -34,7 +34,7 @@ const Booking_Rate_International = () => {
   const [selectedBranch, setSelectedBranch] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
 const [productFields, setProductFields] = useState([
-  { name: "", unit: "", price: "" }
+  { name: "", unit: "", maxWeight: "" }
 ]);
 // Add these new state variables at the top of the component
 const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,7 +44,7 @@ const handleViewBranch = (branch) => {
   setIsModalOpen(true);
 };
 const addProductField = () => {
-  setProductFields([...productFields, { name: "", unit: "", price: "" }]);
+  setProductFields([...productFields, { name: "", unit: "", maxWeight: "" }]);
 };
 
 const removeProductField = (index) => {
@@ -129,11 +129,11 @@ const handleProductChange = (index, field, value) => {
   try {
     const response = await axiosSecure.post("/api/products/bulk", ProductsInfo);
     setSelectedBranch("");
-    setProductFields([{ name: "",}]);
+    setProductFields([{ name: "", unit: "", maxWeight: "" }]);
     if (response.status === 201) {
       Swal.fire("✅ Success!", "Products added successfully.", "success");
       setSelectedBranch("");
-      setProductFields([{ name: "", }]);
+      setProductFields([{ name: "",unit: "", maxWeight: "" }]);
       fetchProducts();
     }
     refetch();
@@ -445,21 +445,21 @@ const {  data: BranchesForRate = [] , refetch} = useQuery({
         className="border p-2 rounded"
         required
       />
-      {/* <input
+      <input
         placeholder="Unit"
         value={field.unit}
         onChange={(e) => handleProductChange(index, "unit", e.target.value)}
         className="border p-2 rounded"
         required
-      /> */}
-      {/* <input
-        placeholder="Price"
+      />
+      <input
+        placeholder="Max Weight"
         type="number"
         value={field.price}
-        onChange={(e) => handleProductChange(index, "price", e.target.value)}
+        onChange={(e) => handleProductChange(index, "maxWeight", e.target.value)}
         className="border p-2 rounded"
         required
-      /> */}
+      />
       <div className="flex items-center justify-center space-x-2">
         {index === productFields.length - 1 && (
           <button
