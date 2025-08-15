@@ -75,9 +75,17 @@ export default function BranchRateEditor() {
     
     onSuccess: () => {
       queryClient.invalidateQueries(["BranchesForRate"]);
-      Swal.fire("Success!", "Branch updated successfully!", "success");
+      Swal.fire("Success!", "Branch Rate updated successfully!", "success");
     },
     onError: (err) => {
+      if (err?.response.status === 409) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Branch Rate Data Already exists',
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
       Swal.fire("Error", err?.response?.data?.message || "Something went wrong", "error");
     },
   });
@@ -92,7 +100,8 @@ export default function BranchRateEditor() {
       products: selectedProducts,
 
       
-      branchId: selectedBranch,
+      branchId: selectedBranch?.email,
+      branch_Name: selectedBranch?.name,
       date : new Date().toISOString(),
       who_Added:verifiedUser?.email,
       Who_Added_Name:verifiedUser?.name,
@@ -232,7 +241,7 @@ export default function BranchRateEditor() {
           disabled={mutation.isLoading}
           className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-blue-400"
         >
-          {mutation.isLoading ? "Updating..." : "Update Branch"}
+          {mutation.isLoading ? "Updating Branch Rate..." : "Update Branch Rate"}
         </button>
       </form>
     </div>
