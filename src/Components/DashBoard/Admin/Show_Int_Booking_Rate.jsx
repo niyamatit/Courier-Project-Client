@@ -67,7 +67,7 @@ export default function Show_Int_Booking_Rate() {
       // Construct the payload with only the fields that can be updated
       const updatedData = {
         deliveryTime: selectedRate.deliveryTime,
-        products: selectedRate.products,
+        // products: selectedRate.products,
         amounts: selectedRate.amounts.map(amt => ({
           ProductWeight: amt.ProductWeight,
           customAmount: amt.customAmount,
@@ -103,11 +103,11 @@ export default function Show_Int_Booking_Rate() {
 
 
   return (
-    <div className="p-4 md:p-8 bg-gray-100 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-100 ">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
             <h2 className="text-3xl font-bold text-gray-800">International Booking Rates</h2>
-            <p className="text-gray-500 mt-1">Manage and view rates for international shipments.</p>
+            
         </div>
         
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -115,6 +115,8 @@ export default function Show_Int_Booking_Rate() {
             <table className="min-w-full text-sm">
               <thead className="bg-blue-600 text-white">
                 <tr>
+                  <th className="py-3 px-6 text-left font-semibold">SL</th>
+                  <th className="py-3 px-6 text-left font-semibold">Date</th>
                   <th className="py-3 px-6 text-left font-semibold">From</th>
                   <th className="py-3 px-6 text-left font-semibold">To</th>
                   <th className="py-3 px-6 text-left font-semibold">Product</th>
@@ -130,8 +132,12 @@ export default function Show_Int_Booking_Rate() {
                         <td colSpan="7" className="text-center p-10 text-gray-500">Loading rates...</td>
                     </tr>
                 ) : BranchesForRate_Int.length > 0 ? (
-                  BranchesForRate_Int.map((rate) => (
+                  BranchesForRate_Int.map((rate,index) => (
                     <tr key={rate._id} className="hover:bg-blue-50 transition-colors duration-200">
+                      <td className="py-4 px-6 whitespace-nowrap">{index+1}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">
+  {rate.date ? new Date(rate.date).toLocaleString() : ""}
+</td>
                       <td className="py-4 px-6 whitespace-nowrap">{rate.From_Country}</td>
                       <td className="py-4 px-6 whitespace-nowrap">{rate.To_Country}</td>
                       <td className="py-4 px-6 whitespace-nowrap">{rate.products}</td>
@@ -193,7 +199,7 @@ export default function Show_Int_Booking_Rate() {
             {/* Modal Body */}
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Product</label>
                   <input
                     type="text"
@@ -201,7 +207,7 @@ export default function Show_Int_Booking_Rate() {
                     onChange={(e) => setSelectedRate({ ...selectedRate, products: e.target.value })}
                     className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   />
-                </div>
+                </div> */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Time</label>
                   <input
@@ -216,12 +222,13 @@ export default function Show_Int_Booking_Rate() {
               {/* Amounts Editing */}
               <div className="space-y-4">
                 <h4 className="font-bold text-lg text-gray-800 border-b pb-2">Pricing Tiers</h4>
-                <div className="grid grid-cols-5 gap-x-3 text-center text-sm font-medium text-gray-600 px-2">
+                <div className="grid grid-cols-6 gap-x-3 text-center text-sm font-medium text-gray-600 px-2">
                     <span>Weight (kg)</span>
                     <span>Custom</span>
                     <span>Others Co.</span>
                     <span>Agent</span>
                     <span>Customer</span>
+                    <span>Merchant</span>
                 </div>
                 {selectedRate.amounts.map((amt, index) => (
                   <div key={index} className="grid grid-cols-5 gap-x-3 items-center">
