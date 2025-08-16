@@ -254,7 +254,7 @@ const InterNational_Booking_Branch = () => {
         Product_Quantity: parseFloat(data?.productQuantity) || "",
         Product_Details: data?.productDetails || "",
         Product_Remark: data?.remark || "",
-        Product_Price : SelectedProduct?.price || 0,
+        Product_Price : parseFloat(productPrice) || 0,
         Cod_Perchent: 0 || "",
         Weight_Charge: 0 || "",
         Cod_Charge: 0 || "",
@@ -514,34 +514,39 @@ console.log("AllfindProducts", AllfindProducts);
 
 //   console.log(selectedRate, "selectedRate");
 useEffect(() => {
-  if (!ItemType || !WeightPackage) return; // don't run if not selected
+  if (!ItemType || !WeightPackage) return;
 
   const selectedRate = AllfindProducts?.find(
     (a) => a?.products === ItemType
   );
 
-
-
   if (selectedRate) {
-    
-
-    const weightObj = selectedRate.amounts.find(
+    // Find exact weight
+    let weightObj = selectedRate.amounts.find(
       (amt) => Number(amt.ProductWeight) === Number(WeightPackage)
     );
 
+    if (!weightObj) {
+      // fallback: find the maximum weight available
+      const sortedWeights = selectedRate.amounts
+        .map((amt) => Number(amt.ProductWeight))
+        .sort((a, b) => b - a); // descending
+      const maxWeight = sortedWeights[0];
+      weightObj = selectedRate.amounts.find(
+        (amt) => Number(amt.ProductWeight) === maxWeight
+      );
+    }
+
     if (weightObj) {
-      const price = weightObj.customerAmount;
-      setProductPrice(price);
-      
+      setProductPrice(weightObj.customerAmount);
     } else {
-      
       setProductPrice(null);
     }
   } else {
-   
     setProductPrice(null);
   }
 }, [ItemType, WeightPackage, AllfindProducts]);
+
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -788,6 +793,7 @@ useEffect(() => {
     }`}
     onChange={(e) => setWeightPackage(e.target.value)}
     placeholder="Enter weight (kg)"
+    min={0}
   />
   {errors.weightPackage && (
     <span className="text-red-500">This field is required</span>
@@ -977,7 +983,7 @@ useEffect(() => {
       <div className="text-gray-700">Cod Charge</div>
       <div className="text-gray-500 text-right">0.00</div>
       <div className="text-gray-700">Product Price</div>
-      <div className="text-gray-500 text-right">{productPrice || 0}</div>
+      <div className="text-gray-500 text-right">{productPrice || 0} Tk</div>
 
       <div className="text-gray-700">Delivery Charge</div>
       <div className="text-gray-500 text-right">0.00</div>
