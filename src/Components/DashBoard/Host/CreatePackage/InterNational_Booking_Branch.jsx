@@ -47,6 +47,7 @@ const InterNational_Booking_Branch = () => {
   const [lot, setLot] = useState();
   const [PaymentOption , setSelectedPayment] = useState('');
   const [isManualTotal, setIsManualTotal] = useState(false);
+  const [productPrice, setProductPrice] = useState(0);
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -253,7 +254,7 @@ const InterNational_Booking_Branch = () => {
         Product_Quantity: parseFloat(data?.productQuantity) || "",
         Product_Details: data?.productDetails || "",
         Product_Remark: data?.remark || "",
-        Product_Price : SelectedProduct?.price || 0,
+        Product_Price : parseFloat(productPrice) || 0,
         Cod_Perchent: 0 || "",
         Weight_Charge: 0 || "",
         Cod_Charge: 0 || "",
@@ -344,17 +345,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
   
       }
     } catch (error) {
-      // if (error.response?.status === 409) {  
-      //                 Swal.fire({
-      //                     position: "top-end",
-      //                     icon: "error",
-      //                     title: 'Duplicate CN! Refreshing...',
-      //                     showConfirmButton: false,
-      //                     timer: 2000
-      //                 }).then(() => {
-      //                     window.location.reload();
-      //                 });
-      //             }
+     
       console.error("Error adding parcel:", error);
       Swal.fire({
         icon: "error",
@@ -475,28 +466,87 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
       return res.data;
     }
   })
-const { data: usersProducstData = [] } = useQuery({
-    queryKey: ['usersProducstData'],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/int-add-products");
-      return res.data;
-    }
-  })
-const { data: CN_Number_Collection = [] } = useQuery({
+  const { data: CN_Number_Collection = [] } = useQuery({
     queryKey: ['CN_Number_Collection'],
     queryFn: async () => {
       const res = await axiosSecure.get("/number");
       return res.data;
     }
   })
+const { data: BranchesForRate_Int = [], refetch, isLoading } = useQuery({
+    queryKey: ["BranchesForRate_Int"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/rate");
+      // console.log("API Response:", res.data);
+      return res.data;
+      
+    },
+  });
+  // console.log(BranchesForRate_Int, "BranchesForRate_Int");
 
 
-  const AllfindProducts = usersProducstData?.find(
+
+  const AllfindProducts = BranchesForRate_Int?.filter(
   (product) => product?.branchId === verifiedUser?.email
 );
-
+console.log("AllfindProducts", AllfindProducts);
 // Since AllfindProducts is an object, not an array, just access .products directly
-const findProducts = AllfindProducts?.products || [];
+//  const selectedRate = AllfindProducts?.find(
+//   (a) => a?.products === ItemType
+  
+// );
+// console.log(ItemType, "ItemType");
+// console.log(selectedRate, "selectedRate");
+// if (selectedRate) {
+//   const weightObj = selectedRate.amounts.find(
+//     (amt) => Number(amt.ProductWeight) === Number(WeightPackage)
+//   );
+
+//   if (weightObj) {
+//     const productPrice = weightObj.customerAmount;
+//     console.log("Matched Product Price:", productPrice);
+//   } else {
+//     console.log("❌ No matching weight found!");
+//   }
+// } else {
+//   console.log("❌ No matching product found!");
+// }
+
+//   console.log(selectedRate, "selectedRate");
+useEffect(() => {
+  if (!ItemType || !WeightPackage) return;
+
+  const selectedRate = AllfindProducts?.find(
+    (a) => a?.products === ItemType
+  );
+
+  if (selectedRate) {
+    // Find exact weight
+    let weightObj = selectedRate.amounts.find(
+      (amt) => Number(amt.ProductWeight) === Number(WeightPackage)
+    );
+
+    if (!weightObj) {
+      // fallback: find the maximum weight available
+      const sortedWeights = selectedRate.amounts
+        .map((amt) => Number(amt.ProductWeight))
+        .sort((a, b) => b - a); // descending
+      const maxWeight = sortedWeights[0];
+      weightObj = selectedRate.amounts.find(
+        (amt) => Number(amt.ProductWeight) === maxWeight
+      );
+    }
+
+    if (weightObj) {
+      setProductPrice(weightObj.customerAmount);
+    } else {
+      setProductPrice(null);
+    }
+  } else {
+    setProductPrice(null);
+  }
+}, [ItemType, WeightPackage, AllfindProducts]);
+
 
   return (
     <div className="p-4 sm:p-8 md:p-8 bg-gradient-to-r from-gray-200 to-gray-200 min-h-screen flex items-center justify-center">
@@ -610,66 +660,7 @@ const findProducts = AllfindProducts?.products || [];
 
             </Section>
 
-            {/* Reference Section */}
-            {/* <Section>
-              <InputField
-                watchValues={watchValues}
-                register={register}
-                name={"reference"}
-                errors={errors}
-                label="Reference"
-                placeholder="reference"
-
-              />
-              <div className="flex gap-2 mt-4">
-  <input
-    type="checkbox"
-    className="checkbox mt-1"
-    {...register("hd")} // Register for "H/D"
-  />
-  <h2 className="text-blue-800 font-semibold text-xl">H/D</h2>
-  <input
-    type="checkbox"
-    className="checkbox mt-1"
-    {...register("exchange")} // Register for "Exchange"
-  />
-  <h2 className="text-blue-800 font-semibold text-xl">Exchange</h2>
-  <input
-    type="checkbox"
-    className="checkbox mt-1"
-    {...register("od")} // Register for "Exchange"
-  />
-  <h2 className="text-blue-800 font-semibold text-xl">O/D</h2>
-</div>
-
-            </Section> */}
-            {/* <Section additionalClasses="mt-4">
-              
-              <div className="col-span-2 md:col-span-2 lg:col-span-1">
-                <label className="label-text ml-1 text-gray-500 font-semibold">
-                  Select Dest. Branch*
-                </label>
-                <select
-                  {...register('branch', { required: true })}
-                  className={`select select-bordered mt-2  bg-[#E8F0FE] text-black w-full p-2 rounded-lg border ${errors.branch ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  required
-                >
-                  <option value="123">Select Dest. Branch</option>
-                  {
-                    users.filter(user => user?.role === 'host').map(user => (
-                      <option key={user._id} value={user?.name}>
-                        {user?.name || "No Name Found"}
-                      </option>
-                    ))
-                  }
-
-                </select>
-                {errors.select_branch_name && (
-                  <span className="text-red-500">This field is required</span>
-                )}
-              </div>
-            </Section> */}
+           
 
             {/* Sender Information Section */}
             <Section title="Sender Information" additionalClasses="mt-6">
@@ -802,6 +793,7 @@ const findProducts = AllfindProducts?.products || [];
     }`}
     onChange={(e) => setWeightPackage(e.target.value)}
     placeholder="Enter weight (kg)"
+    min={0}
   />
   {errors.weightPackage && (
     <span className="text-red-500">This field is required</span>
@@ -860,15 +852,14 @@ const findProducts = AllfindProducts?.products || [];
     errors.itemType ? "border-red-500" : "border-gray-300"
   }`}
   onChange={(e) => {
-    const product = findProducts.find((p) => p.name === e.target.value);
-    setSelectedProduct(product || null);
+   
     setItemType(e.target.value);
   }}
 >
   <option value="">Select Item Type</option>
-  {findProducts.map((p) => (
-    <option key={p.name} value={p.name}>
-      {p.name} (Price: {p.price})
+  {AllfindProducts.map((p) => (
+    <option key={p._id} value={p?.products}>
+      {p?.products} 
     </option>
   ))}
 </select>
@@ -992,7 +983,7 @@ const findProducts = AllfindProducts?.products || [];
       <div className="text-gray-700">Cod Charge</div>
       <div className="text-gray-500 text-right">0.00</div>
       <div className="text-gray-700">Product Price</div>
-      <div className="text-gray-500 text-right">{SelectedProduct?.price || 0}</div>
+      <div className="text-gray-500 text-right">{productPrice || 0} Tk</div>
 
       <div className="text-gray-700">Delivery Charge</div>
       <div className="text-gray-500 text-right">0.00</div>

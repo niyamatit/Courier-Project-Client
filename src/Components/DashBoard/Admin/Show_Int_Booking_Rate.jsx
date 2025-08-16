@@ -231,7 +231,7 @@ export default function Show_Int_Booking_Rate() {
                     <span>Merchant</span>
                 </div>
                 {selectedRate.amounts.map((amt, index) => (
-                  <div key={index} className="grid grid-cols-5 gap-x-3 items-center">
+                  <div key={index} className="grid grid-cols-6 gap-x-3 items-center">
                     <input type="text" value={amt.ProductWeight} onChange={(e) => handleAmountChange(index, 'ProductWeight', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
                     <input type="text" value={amt.customAmount} onChange={(e) => handleAmountChange(index, 'customAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
                     <input type="text" value={amt.othersCompanyAmount} onChange={(e) => handleAmountChange(index, 'othersCompanyAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
