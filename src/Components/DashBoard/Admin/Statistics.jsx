@@ -36,6 +36,22 @@ const AdminStatistics = () => {
   })
 
   const totalMerchant = users.filter(user => user.role === 'merchant');
+
+const { data: totalOfflineBookings = [] } = useQuery({
+    queryKey: ['totalOfflineBookings'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/offlinejjfjbvfbv44");
+      return res.data;
+    }
+  })
+const { data: totalOnlineBookings = [] } = useQuery({
+    queryKey: ['totalOnlineBookings'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
+      return res.data;
+    }
+  })
+
   const [verifiedUser] = useUsersData();
   const { data: parcelDataus = [] } = useQuery({
     queryKey: ["parcelData", verifiedUser?.email],
@@ -153,16 +169,16 @@ const AdminStatistics = () => {
             color="bg-[#F5FFFA]"
           />
           <StatisticsCard
-            title="Total Online Bookings"
+            title="Total Online Bookings (Branch)"
             icon={<FaUserAlt />}
-            value={statData?.bookingCount || 0}
+            value={totalOnlineBookings?.length || 0}
             color="bg-[#B0E0E6]"
           />
           {/* Total Rooms */}
           <StatisticsCard
-            title="Total Offline Booking"
+            title="Total Offline Booking (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ totalOfflineBookings?.length || 0}
             color="bg-[#FFD1DC]"
           />
           <StatisticsCard
