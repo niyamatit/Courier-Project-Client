@@ -34,6 +34,8 @@ const AdminStatistics = () => {
       return res.data;
     }
   })
+
+  const totalMerchant = users.filter(user => user.role === 'merchant');
   const [verifiedUser] = useUsersData();
   const { data: parcelDataus = [] } = useQuery({
     queryKey: ["parcelData", verifiedUser?.email],
@@ -172,7 +174,7 @@ const AdminStatistics = () => {
           <StatisticsCard
             title="Total Marchant"
             icon={<BsFillHouseDoorFill />}
-            value={totalMarchant?.length || 0}
+            value={totalMerchant?.length || 0}
             color="bg-[#FFFACD]"
           />
           <StatisticsCard

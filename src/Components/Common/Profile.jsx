@@ -130,9 +130,9 @@ const obfuscatePassword = (password) => {
               </p>
 
               <div>
-                <button className='bg-[#F43F5E] px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053] block mb-1'>
+                {/* <button className='bg-[#F43F5E] px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-[#af4053] block mb-1'>
                   Update Profile
-                </button>
+                </button> */}
                 <div>
                 <div className="relative inline-block">
                   {/* Hover Window Button */}
