@@ -51,6 +51,15 @@ const { data: totalOnlineBookings = [] } = useQuery({
       return res.data;
     }
   })
+const { data: MerchantBookings = [] ,isLoading , isError } = useQuery({
+    queryKey: ['MerchantBookings'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/parcels/all");
+      return res.data;
+    }
+  })
+
+ 
 
   const [verifiedUser] = useUsersData();
   const { data: parcelDataus = [] } = useQuery({
@@ -196,7 +205,7 @@ const { data: totalOnlineBookings = [] } = useQuery({
           <StatisticsCard
             title="Total Marchant Booking"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ MerchantBookings.length || 0}
             color="bg-[#E0FFFF]"
           />
           <StatisticsCard
@@ -245,7 +254,7 @@ const { data: totalOnlineBookings = [] } = useQuery({
           <StatisticsCard
             title="Total Marchant parcel"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={MerchantBookings.length || 0}
             color="bg-[#E6E6FA]"
           />
           <StatisticsCard
