@@ -8,7 +8,7 @@ import {
 } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 
-import SelectField from "./BookingForm/SelectField";
+
 import InputField from "./BookingForm/InputField";
 import axiosSecure from "../../../../api/axiosSecure";
 import Swal from "sweetalert2";
@@ -76,11 +76,11 @@ const InterNational_Booking_Branch = () => {
     const validQuantity = parseFloat(quantity) || 0;
     const validOtpCharge = parseFloat(OtpCharge) || 0;
     const validHDCharge = parseFloat(HDCharge) || 0;
-    const ParcelCharge = parseFloat(SelectedProduct?.price || 0);
+    const ParcelCharge = parseFloat((productPrice) || 0);
     const total = validRate * validQuantity + validOtpCharge + validHDCharge + ParcelCharge;
     setTotalCharge(total);
   }
-}, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge, SelectedProduct?.price]); // Add SelectedProduct?.price as a dependency
+}, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge, productPrice]); // Add SelectedProduct?.price as a dependency
 
   
 
@@ -1005,13 +1005,13 @@ useEffect(() => {
               />
             ) : (
               <span className="text-gray-500 font-semibold">
-                {totalCharge.toFixed(2)}
+                {totalCharge.toFixed(2)} Tk
               </span>
             )}
             <button
               type="button"
               onClick={() => setIsManualTotal(!isManualTotal)}
-              className="text-blue-500 text-sm hover:underline"
+              className="text-blue-500 hover:underline"
             >
               {isManualTotal ? "Lock" : "Edit"}
             </button>
