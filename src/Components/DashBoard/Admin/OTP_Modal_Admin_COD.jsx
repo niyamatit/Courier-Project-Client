@@ -1,4 +1,4 @@
-const OTP_Modal_Admin_COD = ({ show, onClose, onSubmit, otpEntered, setOtpEntered }) => {
+const OTP_Modal_Admin_COD = ({ show, onClose, onSubmit, otpEntered, setOtpEntered ,isVerifying}) => {
   if (!show) return null;
 
   return (
@@ -21,9 +21,14 @@ const OTP_Modal_Admin_COD = ({ show, onClose, onSubmit, otpEntered, setOtpEntere
           </button>
           <button
             onClick={onSubmit}
-            className="px-4 py-2 bg-green-500 text-white rounded"
+            disabled={isVerifying || !otpEntered.trim()}
+            className={`px-4 py-2 rounded text-white ${
+              isVerifying 
+                ? "bg-green-300 cursor-not-allowed" 
+                : "bg-green-500 hover:bg-green-600"
+            }`}
           >
-            Verify & Save
+            {isVerifying ? "Verifying..." : "Verify & Save"}
           </button>
         </div>
       </div>

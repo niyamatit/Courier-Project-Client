@@ -97,50 +97,55 @@ const [isVerifying, setIsVerifying] = useState(false);
 
   // Step 3: Verify OTP & Save Payment
   const handleOtpSubmit = async () => {
-    try {
-      const response = await axiosSecure.post("/otp/verify/cod/admin", {
-        otp: otpEntered,
-        number: enteredNumber,
-      });
+  setIsVerifying(true); // loader শুরু
+  try {
+    const response = await axiosSecure.post("/otp/verify/cod/admin", {
+      otp: otpEntered,
+      number: enteredNumber,
+    });
 
-      if (response.data.valid) {
-        const paymentData = {
-          id: selectedBooking._id,
-          cnNumber: selectedBooking.CnNumber,
-          Admin_Accept_Payment_Amount:
-            parseFloat(selectedBooking.condition) ||
-            selectedBooking.senderReceive ||
-            0,
-          note: note,
-          Received_Payment_Admin_Name: verifiedUser?.name,
-          Received_Payment_Admin_Email: verifiedUser?.email,
-          Admin_Accept_Payment_Time: new Date(),
-        };
+    if (response.data.valid) {
+      const paymentData = {
+        id: selectedBooking._id,
+        cnNumber: selectedBooking.CnNumber,
+        Admin_Accept_Payment_Amount:
+          parseFloat(selectedBooking.condition) ||
+          selectedBooking.senderReceive ||
+          0,
+        note: note,
+        Received_Payment_Admin_Name: verifiedUser?.name,
+        Received_Payment_Admin_Email: verifiedUser?.email,
+        Admin_Accept_Payment_Time: new Date(),
+      };
 
-        const res = await axiosSecure.patch(
-          "/update-payment/hello/bhai/kaj/kor",
-          paymentData
-        );
+      const res = await axiosSecure.patch(
+        "/update-payment/hello/bhai/kaj/kor",
+        paymentData
+      );
 
-        if (res.status === 200) {
-          await queryClient.invalidateQueries(["OnlineBookings"]);
-          await queryClient.invalidateQueries(["OfflineBookings"]);
-          Swal.fire("Success!", "Payment updated successfully!", "success");
-          setSelectedBooking(null);
-          setNote("");
-        } else {
-          Swal.fire("Error!", "Failed to update payment!", "error");
-        }
+      if (res.status === 200) {
+        await queryClient.invalidateQueries(["OnlineBookings"]);
+        await queryClient.invalidateQueries(["OfflineBookings"]);
+
+        Swal.fire("Success!", "Payment updated successfully!", "success");
+
+        setSelectedBooking(null);
+        setNote("");
       } else {
-        Swal.fire("Error!", "Invalid OTP", "error");
+        Swal.fire("Error!", "Failed to update payment!", "error");
       }
-    } catch (error) {
-      console.error("OTP Verify Error:", error);
-      Swal.fire("Error!", "OTP verification failed", "error");
-    } finally {
-      setShowOtpModal(false);
+    } else {
+      Swal.fire("Error!", "Invalid OTP", "error");
     }
-  };
+  } catch (error) {
+    console.error("OTP Verify Error:", error);
+    Swal.fire("Error!", "OTP verification failed", "error");
+  } finally {
+    setIsVerifying(false); // loader বন্ধ
+    setShowOtpModal(false);
+  }
+};
+
 
   return (
     <div className="p-4">
@@ -375,6 +380,7 @@ const [isVerifying, setIsVerifying] = useState(false);
           onSubmit={handleOtpSubmit}
           otpEntered={otpEntered}
           setOtpEntered={setOtpEntered}
+          isVerifying={isVerifying} 
         />
       )}
     </div>
