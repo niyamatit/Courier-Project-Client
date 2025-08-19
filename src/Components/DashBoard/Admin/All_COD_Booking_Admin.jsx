@@ -32,7 +32,7 @@ const All_COD_Booking_Admin = () => {
   const [enteredNumber, setEnteredNumber] = useState("");
   const [otpEntered, setOtpEntered] = useState("");
   const [serverOtpID, setServerOtpID] = useState(null);
-
+const [isVerifying, setIsVerifying] = useState(false);
   const [showNumberModal, setShowNumberModal] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
 
