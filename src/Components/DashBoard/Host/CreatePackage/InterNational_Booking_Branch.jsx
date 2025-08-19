@@ -322,7 +322,7 @@ For Tracking visit: https://www.niyamatexpress.com/tracking
 const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data?.SenderContactINT)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
 
       const [senderRes, receiverRes] = await Promise.all([
-    axios.get(senderUrl),
+    await axios.get(senderUrl),
    
     
   ]); 
