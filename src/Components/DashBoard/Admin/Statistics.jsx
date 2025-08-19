@@ -8,6 +8,7 @@ import StatisticsCard from './StatisticsCard'
 import axiosSecure from '../../../api/axiosSecure'
 import { useQuery } from '@tanstack/react-query'
 import useUsersData from '../../../hooks/useUsersData/useUsersData'
+import { getOffline, getPackage } from '../../../api/auth'
 
 
 const AdminStatistics = () => {
@@ -34,6 +35,36 @@ const AdminStatistics = () => {
       return res.data;
     }
   })
+
+  const totalMerchant = users.filter(user => user.role === 'merchant');
+  const totalRider = users.filter(user => user.role === 'rider');
+const { data: totalOfflineBookings = [] } = useQuery({
+    queryKey: ['totalOfflineBookings'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/offlinejjfjbvfbv44");
+      return res.data;
+    }
+  })
+const { data: totalOnlineBookings = [] } = useQuery({
+    queryKey: ['totalOnlineBookings'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
+      return res.data;
+    }
+  })
+
+  const totalUsersOnlineBookings = totalOnlineBookings.filter(booking => booking?.email ==='Booking_By_User');
+
+const { data: MerchantBookings = [] ,isLoading , isError } = useQuery({
+    queryKey: ['MerchantBookings'],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/parcels/all");
+      return res.data;
+    }
+  })
+
+ 
+
   const [verifiedUser] = useUsersData();
   const { data: parcelDataus = [] } = useQuery({
     queryKey: ["parcelData", verifiedUser?.email],
@@ -114,7 +145,54 @@ const AdminStatistics = () => {
       .then(data => setStatData(data))
   }, [])
   // console.log(statData)
+  const { data: OnlineBookings = [], isLoading: isOnlineLoading } = useQuery({
+        queryKey: ["OnlineBookings"],
+        queryFn: async () => await getPackage(),
+    });
+    console.log("OnlineBookings", OnlineBookings);
 
+    const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
+        queryKey: ["OfflineBookings"],
+        queryFn: async () => await getOffline(),
+    });
+    console.log("OfflineBookings", OfflineBookings);
+
+    const allBookings = [...OnlineBookings, ...OfflineBookings];
+    const totalAmountCodBranch = allBookings.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.condition || 0) || parseFloat(booking.senderReceive || 0) || parseFloat(booking.amount || 0);
+  return total + amount;
+}, 0);
+
+// paymentOption
+// paymentMethod
+
+const totalBookingsToPay = allBookings.reduce((total, booking) => {
+  if (booking.paymentMethod === 'To Pay' || booking.paymentOption === 'To Pay') {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+const totalBookings_Cash = allBookings.reduce((total, booking) => {
+  if (booking.paymentMethod === 'Cash' || booking.paymentOption === 'Cash') {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+const totalBookings_Credit = allBookings.reduce((total, booking) => {
+  if (booking.paymentMethod === 'Credit' || booking.paymentOption === 'Credit') {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+
+// amount
+// totalCharge
+const totalAmount_Booking_Branch = allBookings.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.amount || 0) || parseFloat(booking.totalCharge || 0) || parseFloat(booking.amount || 0);
+  return total + amount;
+}, 0);
 
   return (
     <div>
@@ -151,16 +229,16 @@ const AdminStatistics = () => {
             color="bg-[#F5FFFA]"
           />
           <StatisticsCard
-            title="Total Online Bookings"
+            title="Total Online Bookings (Branch)"
             icon={<FaUserAlt />}
-            value={statData?.bookingCount || 0}
+            value={totalOnlineBookings?.length || 0}
             color="bg-[#B0E0E6]"
           />
           {/* Total Rooms */}
           <StatisticsCard
-            title="Total Offline Booking"
+            title="Total Offline Booking (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ totalOfflineBookings?.length || 0}
             color="bg-[#FFD1DC]"
           />
           <StatisticsCard
@@ -172,74 +250,74 @@ const AdminStatistics = () => {
           <StatisticsCard
             title="Total Marchant"
             icon={<BsFillHouseDoorFill />}
-            value={totalMarchant?.length || 0}
+            value={totalMerchant?.length || 0}
             color="bg-[#FFFACD]"
           />
           <StatisticsCard
             title="Total Marchant Booking"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ MerchantBookings.length || 0}
             color="bg-[#E0FFFF]"
           />
           <StatisticsCard
             title="Total Normal Customer Booking"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ totalUsersOnlineBookings.length || 0}
             color="bg-[#F3E5F5]"
           />
           <StatisticsCard
             title="Total Rider"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ totalRider?.length || 0}
             color="bg-[#D5F3E5]"
           />
           <StatisticsCard
-            title="Total Condition"
+            title="Total Condition (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={`${totalAmountCodBranch || 0} Tk`}
             color="bg-[#F7E7CE]"
           />
           <StatisticsCard
-            title="Total To Pay"
+            title="Total To Pay (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ totalBookingsToPay || 0}
             color="bg-[#F0FFF0]"
           />
           <StatisticsCard
-            title="Total Cash Booking"
+            title="Total Cash Booking (Branch)"
             icon={<FaUserAlt />}
-            value={ 0}
+            value={ totalBookings_Cash || 0}
             color="bg-[#F5FFFA]"
           />
           <StatisticsCard
             title="Total Credit Booking"
             icon={<FaUserAlt />}
-            value={ 0}
+            value={ totalBookings_Credit || 0}
             color="bg-[#B0E0E6]"
           />
           {/* Total Rooms */}
           <StatisticsCard
-            title="Total Parcel Booking"
+            title="Total Parcel Booking Amount (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ `${totalAmount_Booking_Branch || 0} Tk`}
             color="bg-[#FFD1DC]"
           />
           <StatisticsCard
             title="Total Marchant parcel"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={MerchantBookings.length || 0}
             color="bg-[#E6E6FA]"
           />
           <StatisticsCard
-            title="Total online Branch Booking Percel"
+            title="Total online Branch Booking Percel (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ OnlineBookings.length || 0}
             color="bg-[#FFFACD]"
           />
           <StatisticsCard
-            title="Total offline Branch Booking Percel"
+            title="Total offline Branch Booking Percel (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ OfflineBookings.length || 0}
             color="bg-[#E0FFFF]"
           />
           <StatisticsCard
