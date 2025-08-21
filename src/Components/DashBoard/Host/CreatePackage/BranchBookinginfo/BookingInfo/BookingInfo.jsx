@@ -5,6 +5,7 @@ import BookingModal from "../BookingModal";
 import TableBooking from "../TableBooking";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUsersData from "../../../../../../hooks/useUsersData/useUsersData";
+import BookingModal_Branch from "../BookingModal_Branch";
 
 const BookingInfo = () => {
     const { loading } = useAuth();
@@ -141,7 +142,7 @@ const BookingInfo = () => {
             </div>
 
             {selectedBooking && (
-                <BookingModal
+                <BookingModal_Branch
                     booking={selectedBooking}
                     onClose={handleCloseModal}
                     onSave={handleSave}

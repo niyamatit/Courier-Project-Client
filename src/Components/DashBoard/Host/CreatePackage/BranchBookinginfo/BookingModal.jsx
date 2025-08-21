@@ -123,7 +123,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                             />
                         </label>
                         <label className="block mb-2">
-                            <span className="text-gray-700">Selected District:</span>
+                            <span className="text-gray-700">Product Details:</span>
                             <input
                                 type="text"
                                 name="productDetails"

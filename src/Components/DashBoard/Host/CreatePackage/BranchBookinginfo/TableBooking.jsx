@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PrintModal from "../PrintModal";
 import MotherHubModal from "./MotherHubModal";
+import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 
 
 const TableBooking = ({ booking, onView ,onSave }) => {
@@ -10,6 +11,7 @@ const TableBooking = ({ booking, onView ,onSave }) => {
     const [isHubModalOpen, setIsHubModalOpen] = useState(false);
     const closeHubModal = () => setIsHubModalOpen(false);
     const openHubModal = () => setIsHubModalOpen(true);
+    const [verifiedUser] = useUsersData();
     const closeModal = () => {
         setIsOpen(false);
     };
@@ -62,6 +64,33 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <p className='text-gray-900 whitespace-no-wrap'>{booking?.CnNumber}</p>
                 </td>
+               {
+                verifiedUser?.role === 'admin' &&  <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                    {/* <p className='text-gray-900 whitespace-no-wrap'>{booking?.requestStatus || 'No Request'}</p> */}
+                    {
+    booking?.requestStatus === "pending" ? 
+    <button
+        onClick={() => onSave({ ...booking, requestStatus: "accept" })}
+        className='text-blue-500 hover:underline'
+    >
+        Accept
+    </button>
+    :
+   <>
+   {
+    booking?.requestStatus === "accept" ? <p className='text-green-500'>
+  
+  accepted
+
+    </p>
+    :
+     'No Request'
+   }
+   
+   </>
+}
+                </td>
+               }
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <button
                         onClick={() => onView(booking)}
