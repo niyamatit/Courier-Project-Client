@@ -140,13 +140,13 @@ const BookingInfo = () => {
                 </div>
             </div>
 
-            {selectedBooking && (
+            {/* {selectedBooking && (
                 <BookingModal
                     booking={selectedBooking}
                     onClose={handleCloseModal}
                     onSave={handleSave}
                 />
-            )}
+            )} */}
         </div>
     );
 };
