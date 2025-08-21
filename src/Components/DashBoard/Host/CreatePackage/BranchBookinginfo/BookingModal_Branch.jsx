@@ -24,7 +24,7 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
         requestAmount: requestAmount,
         
       });
-      window.reload(); // Reload to reflect changes
+     
     }
   } else {
     // If not accepted, show the actualAmount
