@@ -3,9 +3,11 @@ import { useState } from "react";
 const BookingModal_Branch = ({ booking, onClose, onSave }) => {
   const [amount, setAmount] = useState(booking?.amount || 0);
 
+  const actualAmount = booking?.amount || 0;
+  const requestStatus = booking?.requestStatus || null; // ✅ FIX
+
   // ✅ Define only the fields you want to show
   const visibleFields = [
-    "packageTrackingNumber",
     "senderName",
     "senderMobile",
     "recipientName",
@@ -38,11 +40,26 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
     "Booking_Staff_ID",
     "Booking_Staff_Post",
     "Booking_Staff_Number",
+    "amount",
+    "requestStatus"
   ];
 
+  // 🟢 Save handler (for normal / increase case)
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({ ...booking, amount });
+    if (amount >= actualAmount) {
+      onSave({ ...booking, amount });
+      onClose();
+    }
+  };
+
+  // 🟡 Request handler (for decrease case)
+  const handleRequest = () => {
+    onSave({
+      ...booking,
+      amount,
+      requestStatus: "pending" // <-- Add request status field
+    });
     onClose();
   };
 
@@ -68,7 +85,13 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
 
         {/* Editable amount */}
         <form onSubmit={handleSubmit} className="mt-4">
-          <label className="block mb-2 font-medium">Amount</label>
+          <label className="block mb-2 font-medium">
+            Edit Amount (
+            <span className="text-red-500">
+              NB: If you want to decrease amount need admin approval
+            </span>
+            )
+          </label>
           <input
             type="number"
             value={amount}
@@ -84,12 +107,31 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
             >
               Close
             </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Save
-            </button>
+
+            {/* If amount < actual → show Request, else show Save */}
+            {amount < actualAmount ? (
+              <button
+                type="button"
+                onClick={handleRequest}
+                className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+              >
+                Request
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={requestStatus === "pending"}
+                title={requestStatus === "pending" ? "Wait for admin approval" : ""}
+                className={`px-4 py-2 rounded 
+                  ${
+                    requestStatus === "pending"
+                      ? "bg-white border border-gray-400 text-gray-500 cursor-not-allowed"
+                      : "bg-blue-600 text-white hover:bg-blue-700"
+                  }`}
+              >
+                {requestStatus === "pending" ? "Pending..." : "Save"}
+              </button>
+            )}
           </div>
         </form>
       </div>
