@@ -194,6 +194,18 @@ const totalAmount_Booking_Branch = allBookings.reduce((total, booking) => {
   return total + amount;
 }, 0);
 
+// Tracking_Destination_Branch_Delivery_Parcel
+// Tracking_Destination_Branch_Delivery_Parcel_Offline
+// Tracking_Destination_Branch_Delivery_Parcel_Int
+const totalDelivered_Branch = allBookings.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Destination_Branch_Delivery_Parcel_Offline || booking?.Tracking_Destination_Branch_Delivery_Parcel_Int) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+
+const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch;
+
   return (
     <div>
       <div className='mt-12 text-gray-500'>
@@ -320,18 +332,22 @@ const totalAmount_Booking_Branch = allBookings.reduce((total, booking) => {
             value={ OfflineBookings.length || 0}
             color="bg-[#E0FFFF]"
           />
+
+
+          
           <StatisticsCard
-            title="Total Delivery Percel"
+            title="Total Delivery Percel (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={ 0}
+            value={ totalDelivered_Branch || 0}
             color="bg-[#D7E3FC]"
           />
           <StatisticsCard
             title="Pending Parcel"
             icon={<BsFillHouseDoorFill />}
-            value={0}
+            value={totalPending_Parcel_Branch || 0}
             color="bg-[#FFF1F3]"
           />
+          {/* Now Working */}
           <StatisticsCard
             title="Total Exchange"
             icon={<BsFillHouseDoorFill />}
