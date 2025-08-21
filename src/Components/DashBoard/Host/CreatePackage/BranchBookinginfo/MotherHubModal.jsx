@@ -47,7 +47,7 @@ const MotherHubModal = ({ isOpen, onClose, onSave, booking }) => {
 {
     users.filter(user => user?.role === 'host').map(user => (
         <option key={user._id} value={user?.email}>
-            {/* {`${user?.name || "No Name Found"} (${user?.email})`} */}
+            
             {`${user?.name || "No Name Found"} (${user?.email})`}
         </option>
     ))
