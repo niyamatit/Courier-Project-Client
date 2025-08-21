@@ -4,9 +4,9 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
   const [amount, setAmount] = useState(booking?.amount || 0);
 
   const actualAmount = booking?.amount || 0;
-  const requestStatus = booking?.requestStatus || null; // ✅ FIX
+  const requestStatus = booking?.requestStatus || null;
 
-  // ✅ Define only the fields you want to show
+  // Fields to display
   const visibleFields = [
     "senderName",
     "senderMobile",
@@ -41,24 +41,25 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
     "Booking_Staff_Post",
     "Booking_Staff_Number",
     "amount",
-    "requestStatus"
+    "requestStatus",
+    "requestAmount",
   ];
 
-  // 🟢 Save handler (for normal / increase case)
+  // Save handler (increase or same)
   const handleSubmit = (e) => {
     e.preventDefault();
     if (amount >= actualAmount) {
-      onSave({ ...booking, amount });
+      onSave({ ...booking, amount }); // update actual amount
       onClose();
     }
   };
 
-  // 🟡 Request handler (for decrease case)
+  // Request handler (decrease)
   const handleRequest = () => {
     onSave({
       ...booking,
-      amount,
-      requestStatus: "pending" // <-- Add request status field
+      requestAmount: amount,       // <-- separate requested amount
+      requestStatus: "pending",    // <-- mark as pending
     });
     onClose();
   };
@@ -108,26 +109,30 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
               Close
             </button>
 
-            {/* If amount < actual → show Request, else show Save */}
             {amount < actualAmount ? (
               <button
                 type="button"
                 onClick={handleRequest}
-                className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+                disabled={requestStatus === "pending"}
+                title={requestStatus === "pending" ? "Request already sent, wait for admin approval" : ""}
+                className={`px-4 py-2 rounded ${
+                  requestStatus === "pending"
+                    ? "bg-white border border-gray-400 text-gray-500 cursor-not-allowed"
+                    : "bg-yellow-600 text-white hover:bg-yellow-700"
+                }`}
               >
-                Request
+                {requestStatus === "pending" ? "Pending..." : "Request"}
               </button>
             ) : (
               <button
                 type="submit"
                 disabled={requestStatus === "pending"}
                 title={requestStatus === "pending" ? "Wait for admin approval" : ""}
-                className={`px-4 py-2 rounded 
-                  ${
-                    requestStatus === "pending"
-                      ? "bg-white border border-gray-400 text-gray-500 cursor-not-allowed"
-                      : "bg-blue-600 text-white hover:bg-blue-700"
-                  }`}
+                className={`px-4 py-2 rounded ${
+                  requestStatus === "pending"
+                    ? "bg-white border border-gray-400 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-600 text-white hover:bg-blue-700"
+                }`}
               >
                 {requestStatus === "pending" ? "Pending..." : "Save"}
               </button>
