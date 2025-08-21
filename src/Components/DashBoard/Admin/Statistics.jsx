@@ -36,8 +36,10 @@ const AdminStatistics = () => {
     }
   })
 
-  const totalMerchant = users.filter(user => user.role === 'merchant');
-  const totalRider = users.filter(user => user.role === 'rider');
+  const totalMerchant = users?.filter(user => user?.role === 'merchant') || [];
+  const totalRider = users?.filter(user => user?.role === 'rider') || [];
+  const totalBranch = users?.filter(user => user?.role === 'host') 
+    || [];
 const { data: totalOfflineBookings = [] } = useQuery({
     queryKey: ['totalOfflineBookings'],
     queryFn: async () => {
@@ -348,16 +350,16 @@ const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch
             color="bg-[#FFF1F3]"
           />
           {/* Now Working */}
-          <StatisticsCard
+          {/* <StatisticsCard
             title="Total Exchange"
             icon={<BsFillHouseDoorFill />}
             value={0}
             color="bg-[#F3E5AB]"
-          />
+          /> */}
           <StatisticsCard
             title="Total Branch"
             icon={<BsFillHouseDoorFill />}
-            value={0}
+            value={totalBranch.length || 0}
             color="bg-[#BCD4E6]"
           />
           <StatisticsCard
