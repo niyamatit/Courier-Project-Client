@@ -1,12 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const BookingModal_Branch = ({ booking, onClose, onSave }) => {
-  const [amount, setAmount] = useState(booking?.amount || 0);
-
   const actualAmount = booking?.amount || 0;
   const requestStatus = booking?.requestStatus || null;
+  const requestAmount = booking?.requestAmount || null;
 
-  // Fields to display
+  // If admin accepted the request, set the amount to requestAmount
+  const [amount, setAmount] = useState(
+    requestStatus === "accept" && requestAmount ? requestAmount : actualAmount
+  );
+
+  // Sync local amount if booking updates from outside
+  useEffect(() => {
+  if (requestStatus === "accept" && requestAmount != null) {
+    // Sync the input amount to requestAmount
+    setAmount(requestAmount);
+
+    // Update booking object to ensure amount = requestAmount
+    if (booking.amount !== requestAmount) {
+      onSave({
+        ...booking,
+        amount: requestAmount,
+        requestAmount: requestAmount,
+        
+      });
+      window.reload(); // Reload to reflect changes
+    }
+  } else {
+    // If not accepted, show the actualAmount
+    setAmount(actualAmount);
+  }
+}, [booking, requestStatus, requestAmount, actualAmount,onSave]);
+
+
+
   const visibleFields = [
     "senderName",
     "senderMobile",
@@ -49,17 +76,22 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (amount >= actualAmount) {
-      onSave({ ...booking, amount }); // update actual amount
+      onSave({
+      ...booking,
+       amount, // use requestAmount if accepted
+      
+    }); // update actual amount
       onClose();
     }
+    
   };
 
   // Request handler (decrease)
   const handleRequest = () => {
     onSave({
       ...booking,
-      requestAmount: amount,       // <-- separate requested amount
-      requestStatus: "pending",    // <-- mark as pending
+      requestAmount: amount, // requested amount
+      requestStatus: "pending", // pending admin approval
     });
     onClose();
   };
@@ -113,28 +145,48 @@ const BookingModal_Branch = ({ booking, onClose, onSave }) => {
               <button
                 type="button"
                 onClick={handleRequest}
-                disabled={requestStatus === "pending"}
-                title={requestStatus === "pending" ? "Request already sent, wait for admin approval" : ""}
-                className={`px-4 py-2 rounded ${
+                disabled={requestStatus === "pending" || requestStatus === "accept"}
+                title={
                   requestStatus === "pending"
+                    ? "Request already sent, wait for admin approval"
+                    : requestStatus === "accept"
+                    ? "Request already accepted by admin"
+                    : ""
+                }
+                className={`px-4 py-2 rounded ${
+                  requestStatus === "pending" || requestStatus === "accept"
                     ? "bg-white border border-gray-400 text-gray-500 cursor-not-allowed"
                     : "bg-yellow-600 text-white hover:bg-yellow-700"
                 }`}
               >
-                {requestStatus === "pending" ? "Pending..." : "Request"}
+                {requestStatus === "pending"
+                  ? "Pending..."
+                  : requestStatus === "accept"
+                  ? "Accepted"
+                  : "Request"}
               </button>
             ) : (
               <button
                 type="submit"
-                disabled={requestStatus === "pending"}
-                title={requestStatus === "pending" ? "Wait for admin approval" : ""}
-                className={`px-4 py-2 rounded ${
+                disabled={requestStatus === "pending" || requestStatus === "accept"}
+                title={
                   requestStatus === "pending"
+                    ? "Wait for admin approval"
+                    : requestStatus === "accept"
+                    ? "Amount already updated by admin"
+                    : ""
+                }
+                className={`px-4 py-2 rounded ${
+                  requestStatus === "pending" || requestStatus === "accept"
                     ? "bg-white border border-gray-400 text-gray-500 cursor-not-allowed"
                     : "bg-blue-600 text-white hover:bg-blue-700"
                 }`}
               >
-                {requestStatus === "pending" ? "Pending..." : "Save"}
+                {requestStatus === "pending"
+                  ? "Pending..."
+                  : requestStatus === "accept"
+                  ? "Updated"
+                  : "Save"}
               </button>
             )}
           </div>
