@@ -22,20 +22,20 @@ const StickerDetails = ({ bookingInfo }) => {
                 <img
                     src="https://i.ibb.co/LCJvnRB/logo.png"
                     alt="Logo"
-                    className="h-20 mx-auto mb-2"
+                    className="h-24 mx-auto mb-2"
                 />
-                <h1 className="text-3xl font-bold text-gray-800">Niyamat Express</h1>
+                <h1 className="text-4xl font-bold text-gray-800 mb-1">Niyamat Express</h1>
                 <p className="text-xs text-gray-500">Head Office: Chittagong Road, Narayanganj 1430</p>
             </div>
 
             {/* Barcode Section */}
             <div className="my-2 text-center">
                 <Barcode className="h-[40px] w-full" value={bookingInfo?.CnNumber} />
-                <p className="text-xs text-gray-600 mt-1">{bookingInfo?.CnNumber}/{bookingInfo?.qty}</p>
+                <p className="text-sm text-gray-600 mt-1">{bookingInfo?.CnNumber}/{bookingInfo?.qty}</p>
             </div>
 
             {/* Sender & Receiver Information */}
-            <div className=" text-xs text-gray-700 mt-2">
+            <div className=" text-sm text-gray-700 mt-2">
                 {/* Sender Info */}
                 {/* <div className="w-1/2 pr-2 border-r border-gray-300">
                     <p><strong>Sender:</strong> {bookingInfo?.senderName}</p>
@@ -53,19 +53,19 @@ const StickerDetails = ({ bookingInfo }) => {
 
             {/* Booking Info */}
             <div className="mt-2">
-                <p className="text-xs text-gray-700">
+                <p className="text-sm text-gray-700">
                     <strong>Payment:</strong> {bookingInfo?.paymentOption} - {bookingInfo?.deliveryOption}
                 </p>
-                <p className="text-xs text-gray-700">
+                <p className="text-sm text-gray-700">
                     <strong>Booking Date:</strong> {formattedBookingTime}
                 </p>
-                <p className='font-bold text-[14px] mt-4'>{bookingInfo?.sender_Full_Adress} to {bookingInfo?.selectedArea}</p>
+                <p className='font-bold text-base mt-4'>{bookingInfo?.sender_Full_Adress} to {bookingInfo?.selectedArea}</p>
             </div>
 
             {/* Package Info */}
             <div className="mt-2 border-t pt-2">
                  {/* <p className="text-xs text-gray-700"><strong>Product:</strong> {bookingInfo?.productDetails}</p> */}
-                <p className="text-xs text-gray-700"><strong>Condition Charge:</strong> {bookingInfo?.conditionCharge} BDT</p>
+                <p className="text-sm text-gray-700"><strong>Condition Charge:</strong> {bookingInfo?.conditionCharge} BDT</p>
                 {/* <p className="text-xs text-gray-700"><strong>Total Amount:</strong> {bookingInfo?.amount} BDT ({bookingInfo?.wordAmount})</p> */}
             </div>
 
@@ -75,7 +75,7 @@ const StickerDetails = ({ bookingInfo }) => {
             </div>
 
             {/* Footer */}
-            <div className="mt-2 text-xs text-gray-500 text-center">
+            <div className="mt-2 text-sm text-gray-500 text-center">
                 <p>Print Time: {new Date().toLocaleString("en-US", { timeZone: userTimeZone })}</p>
                 <p>-----------------------------</p>
             </div>
