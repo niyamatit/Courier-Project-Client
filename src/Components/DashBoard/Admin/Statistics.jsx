@@ -205,9 +205,47 @@ const totalDelivered_Branch = allBookings.reduce((total, booking) => {
   }
   return total;  // If not 'cod', return the total unchanged
 }, 0);
+const Total_COD_Accept = allBookings.reduce((total, booking) => {
+  if (booking?.Admin_Accept_Payment_Amount) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
 
 const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch;
 
+
+const { data: InterNational_Parcel_Branch = [] } = useQuery({
+    queryKey: ["InterNational_Parcel_Branch",],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/int");
+      return res.data;
+    },
+    
+  });
+const { data: Total_Branch_Request = [] } = useQuery({
+    queryKey: ["Total_Branch_Request",],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/recharge");
+      return res.data;
+    },
+    
+  });
+
+  const totalAmount_Branch_Request = Total_Branch_Request.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.Branch_Request_Amount || 0) || parseFloat(booking.Branch_Request_Amount || 0) || parseFloat(booking.Branch_Request_Amount || 0);
+  return total + amount;
+}, 0);
+// Accept_Account_Name
+
+
+const totalAmount_Branch_Request_Accept = Total_Branch_Request.reduce((total, booking) => {
+  if (booking?.Accept_Account_Name) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
   return (
     <div>
       <div className='mt-12 text-gray-500'>
@@ -349,7 +387,7 @@ const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch
             value={totalPending_Parcel_Branch || 0}
             color="bg-[#FFF1F3]"
           />
-          {/* Now Working */}
+         
           {/* <StatisticsCard
             title="Total Exchange"
             icon={<BsFillHouseDoorFill />}
@@ -362,42 +400,44 @@ const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch
             value={totalBranch.length || 0}
             color="bg-[#BCD4E6]"
           />
+           
           <StatisticsCard
-            title="Total Internation Booking"
+            title="Total International Booking (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={0}
+            value={InterNational_Parcel_Branch.length || 0}
             color="bg-[#FFE5B4]"
           />
           <StatisticsCard
             title="Total Branch Recharge Request"
             icon={<BsFillHouseDoorFill />}
-            value={0}
+            value={`${totalAmount_Branch_Request || 0} Tk`}
             color="bg-[#DCD0FF]"
           />
+          {/* Now Working */}
           <StatisticsCard
             title="Total Branch Accepted Recharge Request"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount || 0}
+            value={totalAmount_Branch_Request_Accept || 0}
             color="bg-[#FFFDD0]"
           />
-          <StatisticsCard
+          {/* <StatisticsCard
             title="Total Branch Request Amount"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount || 0}
             color="bg-[#DFFFE2]"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Total Branch Given Amount"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount || 0}
             color="bg-[#EBD4EF]"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Total COD"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount || 0}
             color="bg-[#FADADD]"
-          />
+          /> */}
           <StatisticsCard
             title="Total Condition Pending"
             icon={<BsFillHouseDoorFill />}
@@ -407,7 +447,7 @@ const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch
           <StatisticsCard
             title="Total Condition Paid"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount || 0}
+            value={Total_COD_Accept || 0}
             color="bg-[#BCD4E6]"
           />
           <StatisticsCard
