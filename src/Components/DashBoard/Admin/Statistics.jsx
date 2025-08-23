@@ -9,8 +9,22 @@ import axiosSecure from '../../../api/axiosSecure'
 import { useQuery } from '@tanstack/react-query'
 import useUsersData from '../../../hooks/useUsersData/useUsersData'
 import { getOffline, getPackage } from '../../../api/auth'
+import { all } from 'axios'
+import Chart from 'react-google-charts'
+
+// **********
+// 
 
 
+
+
+
+
+
+
+
+
+// 
 const AdminStatistics = () => {
   const [statData, setStatData] = useState({})
   const [pickupRequestData, setPickupRequestData] = useState([]);
@@ -39,6 +53,8 @@ const AdminStatistics = () => {
   const totalMerchant = users?.filter(user => user?.role === 'merchant') || [];
   const totalRider = users?.filter(user => user?.role === 'rider') || [];
   const totalBranch = users?.filter(user => user?.role === 'host') 
+    || [];
+  const totalAdmin = users?.filter(user => user?.role === 'admin') 
     || [];
 const { data: totalOfflineBookings = [] } = useQuery({
     queryKey: ['totalOfflineBookings'],
@@ -205,9 +221,220 @@ const totalDelivered_Branch = allBookings.reduce((total, booking) => {
   }
   return total;  // If not 'cod', return the total unchanged
 }, 0);
+const Total_COD_Accept = allBookings.reduce((total, booking) => {
+  if (booking?.Admin_Accept_Payment_Amount) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+// parseFloat(booking.condition) || booking.senderReceive
+const Total_COD_Accept_Pending = allBookings.reduce((total, booking) => {
+  if (booking?.condition || booking?.senderReceive) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+// {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date_Int )
+const Total_Pickup_Pending = allBookings.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // "2025-08-23"
+
+  const adminDate = booking?.Tracking_Admin_Select_Online_MotherHub_Branch_Date
+    ? new Date(booking.Tracking_Admin_Select_Online_MotherHub_Branch_Date).toISOString().split("T")[0]
+    : null;
+
+  const branchDate = booking?.Tracking_Booking_Branch_Select_MotherHub_Date
+    ? new Date(booking.Tracking_Booking_Branch_Select_MotherHub_Date).toISOString().split("T")[0]
+    : null;
+
+  if (adminDate === today || branchDate === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+//    Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline || searchResult?
+const Total_Pickup_Done_Today = allBookings.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // "2025-08-23"
+
+  const adminDate = booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time
+    ? new Date(booking.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time).toISOString().split("T")[0]
+    : null;
+
+  const branchDate = booking?.Tracking_Destination_Branch_Received_Parcel_Time_Offline
+    ? new Date(booking.Tracking_Destination_Branch_Received_Parcel_Time_Offline).toISOString().split("T")[0]
+    : null;
+
+  if (adminDate === today || branchDate === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
+const Total_Pickup_Done = allBookings.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || booking?.Tracking_Destination_Branch_Received_Parcel_Time_Offline) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+// {(searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Merchant)
+const Total_Hub_Transfer = allBookings.reduce((total, booking) => {
+  if (booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+
+
+// booking
+// Date
+
+const Total_Booking_Today = allBookings.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // "2025-08-23"
+
+  const adminDate = booking?.booking
+    ? new Date(booking.booking).toISOString().split("T")[0]
+    : null;
+
+  const branchDate = booking?.Date
+    
+
+  if (adminDate === today || branchDate === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+const formatDate = (dateStr) => {
+  if (!dateStr) return null; // null or undefined
+  const d = new Date(dateStr);
+  return isNaN(d) ? null : d.toISOString().split("T")[0];
+};
+const Total_Delivery_Complete_Today = allBookings.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-08-23"
+
+  const adminDate = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time);
+  const branchDate = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time);
+  const adminDate1 = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time);
+  const branchDate1 = formatDate(booking?.Tracking_Destination_Branch_Delivery_Parcel_Time);
+
+  if (adminDate === today || branchDate === today || adminDate1 === today || branchDate1 === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
+// Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || 
+// Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Return_Time) || searchResult?.Tracking_Destination_Branch_Returned_Parcel_Time ||
+
+const Total_Return_Today = allBookings.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-08-23"
+
+  const adminDate = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time);
+  const branchDate = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time);
+  const adminDate1 = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time);
+  const branchDate1 = formatDate(booking?.Tracking_Destination_Branch_Returned_Parcel_Time);
+
+  if (adminDate === today || branchDate === today || adminDate1 === today || branchDate1 === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
+
+
+const Total_Delivey_Complete = allBookings.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time || booking?.Tracking_Destination_Branch_Delivery_Parcel_Time) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+const Total_Return_Complete = allBookings.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || booking?.Tracking_Destination_Branch_Returned_Parcel_Time) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+
+const Total_Delivery_Pending = (allBookings.length) - Total_Delivey_Complete;
+
+
+// ----------------------------------------------------------
+
+
+
+
 
 const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch;
 
+
+const { data: InterNational_Parcel_Branch = [] } = useQuery({
+    queryKey: ["InterNational_Parcel_Branch",],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/int");
+      return res.data;
+    },
+    
+  });
+const { data: Total_Branch_Request = [] } = useQuery({
+    queryKey: ["Total_Branch_Request",],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/recharge");
+      return res.data;
+    },
+    
+  });
+
+  const totalAmount_Branch_Request = Total_Branch_Request.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.Branch_Request_Amount || 0) || parseFloat(booking.Branch_Request_Amount || 0) || parseFloat(booking.Branch_Request_Amount || 0);
+  return total + amount;
+}, 0);
+// Accept_Account_Name
+
+
+const totalAmount_Branch_Request_Accept = Total_Branch_Request.reduce((total, booking) => {
+  if (booking?.Accept_Account_Name) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+
+const { data: Total_Cost = [] } = useQuery({
+    queryKey: ["Total_Cost",],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/cost");
+      return res.data;
+    },
+    
+  });
+const Total_Cost_Amount = Total_Cost.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.amount || 0);
+  return total + amount;
+}, 0);
+
+const chartData = [
+        ["Category", "Amount (BDT)", { role: "style" }],
+        ["Total Costs", Total_Cost_Amount ?? 0, "#EF4444"],   // Red
+        ["Total Sales", totalAmount_Booking_Branch ?? 0, "#10B981"],   // Green
+        
+    ];
+ const chartOptions = {
+        title: "Financial Overview",
+        titleTextStyle: { fontSize: 20, bold: true },
+        is3D: true,
+          legend: { position: "none" },
+        backgroundColor: "#F9FAFB",
+        chartArea: { width: "80%", height: "70%" },
+        hAxis: {
+            title: "Category",
+            titleTextStyle: { italic: false, fontSize: 14 }
+        },
+         vAxis: {
+            title: "Amount (BDT)",
+            titleTextStyle: { italic: false, fontSize: 14 },
+            format: "short"
+        },
+        bar: { groupWidth: "50%" }
+ }
   return (
     <div>
       <div className='mt-12 text-gray-500'>
@@ -349,7 +576,7 @@ const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch
             value={totalPending_Parcel_Branch || 0}
             color="bg-[#FFF1F3]"
           />
-          {/* Now Working */}
+         
           {/* <StatisticsCard
             title="Total Exchange"
             icon={<BsFillHouseDoorFill />}
@@ -362,179 +589,197 @@ const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch
             value={totalBranch.length || 0}
             color="bg-[#BCD4E6]"
           />
+           
           <StatisticsCard
-            title="Total Internation Booking"
+            title="Total International Booking (Branch)"
             icon={<BsFillHouseDoorFill />}
-            value={0}
+            value={InterNational_Parcel_Branch.length || 0}
             color="bg-[#FFE5B4]"
           />
           <StatisticsCard
             title="Total Branch Recharge Request"
             icon={<BsFillHouseDoorFill />}
-            value={0}
+            value={`${totalAmount_Branch_Request || 0} Tk`}
             color="bg-[#DCD0FF]"
           />
+         
           <StatisticsCard
             title="Total Branch Accepted Recharge Request"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount || 0}
+            value={totalAmount_Branch_Request_Accept || 0}
             color="bg-[#FFFDD0]"
           />
-          <StatisticsCard
+          {/* <StatisticsCard
             title="Total Branch Request Amount"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount || 0}
             color="bg-[#DFFFE2]"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Total Branch Given Amount"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount || 0}
             color="bg-[#EBD4EF]"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Total COD"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount || 0}
             color="bg-[#FADADD]"
-          />
+          /> */}
           <StatisticsCard
             title="Total Condition Pending"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount || 0}
+            value={Total_COD_Accept_Pending || 0}
             color="bg-[#FADADD]"
           />
           <StatisticsCard
             title="Total Condition Paid"
             icon={<BsFillHouseDoorFill />}
-            value={statData?.packageCount || 0}
+            value={Total_COD_Accept || 0}
             color="bg-[#BCD4E6]"
           />
-          <StatisticsCard
+           
+          {/* <StatisticsCard
             title="Total CN Company"
             icon={<BsFillHouseDoorFill />}
             value={statData?.packageCount || 0}
             color="bg-[#FFE5B4]"
-          />
+          /> */}
+
+          
           <StatisticsCard
             title="Total Admin"
             icon={<BsFillHouseDoorFill />}
-            value={0}
+            value={totalAdmin.length || 0}
             color="bg-[#DCD0FF]"
           />
-          <StatisticsCard
+          {/* <StatisticsCard
             title="Total Stape"
             icon={<BsFillHouseDoorFill />}
             value={0}
             color="bg-[#FFFDD0]"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Total Manager"
             icon={<BsFillHouseDoorFill />}
             value={0}
             color="bg-[#DFFFE2]"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Total IT-Department"
             icon={<BsFillHouseDoorFill />}
             value={0}
             color="bg-[#EBD4EF]"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Total International Booking Parcel"
             icon={<BsFillHouseDoorFill />}
             value={0}
             color="bg-[#FADADD]"
-          />
+          /> */}
 
           <StatisticsCard
-            title="Today Pickup Request"
+            title="Today Pickup Request (Branch)"
             icon={<FaTruckPickup />}
-            value={pickupRequestData?.length}
+            value={Total_Pickup_Pending || 0}
             color="bg-blue-100"
           />
           <StatisticsCard
-            title="Today Pickup Done"
+            title="Today Pickup Done (Branch)"
             icon={<FaTruckPickup />}
-            value={pickupDonetData?.length}
+            value={Total_Pickup_Done_Today || 0}
             color="bg-green-100"
           />
           <StatisticsCard
-            title="Total Pickup Done"
+            title="Total Pickup Done (Branch)"
             icon={<FaTruckPickup />}
-            value={totalPickupDonetData?.length}
+            value={Total_Pickup_Done || 0}
             color="bg-red-100"
           />
           <StatisticsCard
             title="Total Hub Transfer Complete"
             icon={<FaTruckPickup />}
-            value="0"
+            value={Total_Hub_Transfer || 0}
             color="bg-red-100"
           />
           <StatisticsCard
             title="Today New Parcel"
             icon={<FaTruckPickup />}
-            value={todayNewParcelData?.length}
+            value={Total_Booking_Today || 0}
             color="bg-green-100"
           />
-          <StatisticsCard
+          {/* <StatisticsCard
             title="Previous Pending Parcel"
             icon={<FaTruckPickup />}
             value="20"
             color="bg-orange-100"
-          />
+          /> */}
           <StatisticsCard
             title="Today Parcel For Delivery"
             icon={<FaTruckPickup />}
-            value={pickupReadyForDeliveryData?.length}
+            value={Total_Booking_Today || 0}
             color="bg-yellow-100"
           />
           <StatisticsCard
             title="Total Parcel For Delivery"
             icon={<FaTruckPickup />}
-            value={totalPickupReadyForDeliveryData?.length}
+            value={allBookings?.length || 0}
             color="bg-pink-100"
           />
+          {/* Now Working */}
           <StatisticsCard
             title="Today Delivery Complete"
             icon={<FaTruckPickup />}
-            value={deliveryCompleteData?.length}
+            value={Total_Delivery_Complete_Today || 0}
             color="bg-cyan-100"
           />
           <StatisticsCard
-            title="Today Delivery Pending"
+            title="Total Delivery Pending"
             icon={<FaTruckPickup />}
-            value={pendingDeliveryData?.length}
+            value={Total_Delivery_Pending || 0}
             color="bg-sky-100"
           />
-          <StatisticsCard
+          {/* <StatisticsCard
             title="Today Hub Transfer"
             icon={<FaTruckPickup />}
             value={todayHubTransferData?.length}
             color="bg-indigo-100"
-          />
-          <StatisticsCard
+          /> */}
+          {/* <StatisticsCard
             title="Todays Cancel Parcel"
             icon={<FaTruckPickup />}
             value={cancledDeliveryData?.length}
             color="bg-violet-100"
-          />
+          /> */}
           <StatisticsCard
             title="Total Delivery Complete"
             icon={<FaTruckPickup />}
-            value={totalDeliveryCompleteData?.length}
+            value={Total_Delivey_Complete || 0}
             color="bg-purple-100"
           />
           <StatisticsCard
             title="Total Return Parcel"
             icon={<FaTruckPickup />}
-            value={totalCancledDeliveryData?.length}
+            value={Total_Return_Complete || 0}
+            color="bg-rose-100"
+          />
+          <StatisticsCard
+            title="Today Return Parcel"
+            icon={<FaTruckPickup />}
+            value={Total_Return_Today || 0}
             color="bg-rose-100"
           />
           <StatisticsCard
             title="Todays Collection Amount"
             icon={<FaTruckPickup />}
             value={totalAmount}
+            color="bg-blue-100"
+          />
+          <StatisticsCard
+            title="Total Cost"
+            icon={<FaTruckPickup />}
+            value={`${Total_Cost_Amount || 0} Tk`}
             color="bg-blue-100"
           />
         </div>
@@ -545,7 +790,14 @@ const totalPending_Parcel_Branch = (allBookings?.length) - totalDelivered_Branch
         {/* Total Sales Graph */}
 
         <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2'>
-          <SalesLineChart data={statData?.chartData} />
+          {/* <SalesLineChart data={statData?.chartData} /> */}
+          <Chart
+                        chartType="ColumnChart"
+                        width="100%"
+                        height="500px"
+                        data={chartData}
+                        options={chartOptions}
+                    />
         </div>
         {/* Calender */}
 
