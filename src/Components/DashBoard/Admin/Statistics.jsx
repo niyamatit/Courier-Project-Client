@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import useUsersData from '../../../hooks/useUsersData/useUsersData'
 import { getOffline, getPackage } from '../../../api/auth'
 import { all } from 'axios'
+import Chart from 'react-google-charts'
 
 // **********
 // 
@@ -395,6 +396,45 @@ const totalAmount_Branch_Request_Accept = Total_Branch_Request.reduce((total, bo
   }
   return total;  // If not 'cod', return the total unchanged
 }, 0);
+
+const { data: Total_Cost = [] } = useQuery({
+    queryKey: ["Total_Cost",],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/cost");
+      return res.data;
+    },
+    
+  });
+const Total_Cost_Amount = Total_Cost.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.amount || 0);
+  return total + amount;
+}, 0);
+
+const chartData = [
+        ["Category", "Amount (BDT)", { role: "style" }],
+        ["Total Costs", Total_Cost_Amount ?? 0, "#EF4444"],   // Red
+        ["Total Sales", totalAmount_Booking_Branch ?? 0, "#10B981"],   // Green
+        
+    ];
+ const chartOptions = {
+        title: "Financial Overview",
+        titleTextStyle: { fontSize: 20, bold: true },
+        is3D: true,
+          legend: { position: "none" },
+        backgroundColor: "#F9FAFB",
+        chartArea: { width: "80%", height: "70%" },
+        hAxis: {
+            title: "Category",
+            titleTextStyle: { italic: false, fontSize: 14 }
+        },
+         vAxis: {
+            title: "Amount (BDT)",
+            titleTextStyle: { italic: false, fontSize: 14 },
+            format: "short"
+        },
+        bar: { groupWidth: "50%" }
+ }
   return (
     <div>
       <div className='mt-12 text-gray-500'>
@@ -736,6 +776,12 @@ const totalAmount_Branch_Request_Accept = Total_Branch_Request.reduce((total, bo
             value={totalAmount}
             color="bg-blue-100"
           />
+          <StatisticsCard
+            title="Total Cost"
+            icon={<FaTruckPickup />}
+            value={`${Total_Cost_Amount || 0} Tk`}
+            color="bg-blue-100"
+          />
         </div>
       </div>
 
@@ -744,7 +790,14 @@ const totalAmount_Branch_Request_Accept = Total_Branch_Request.reduce((total, bo
         {/* Total Sales Graph */}
 
         <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2'>
-          <SalesLineChart data={statData?.chartData} />
+          {/* <SalesLineChart data={statData?.chartData} /> */}
+          <Chart
+                        chartType="ColumnChart"
+                        width="100%"
+                        height="500px"
+                        data={chartData}
+                        options={chartOptions}
+                    />
         </div>
         {/* Calender */}
 
