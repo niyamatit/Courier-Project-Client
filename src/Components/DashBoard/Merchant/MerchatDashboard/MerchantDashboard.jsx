@@ -44,7 +44,18 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
     queryKey: ['parcels', verifiedUser?.email],
     queryFn: fetchParcels,
   });
-
+const TotalReturned = parcels.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Merchant_Delivary_Update_Return_Time) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+const TotalDeliveryPending = parcels.reduce((total, booking) => {
+  if (!booking?.Tracking_Rider_Merchant_Delivary_Update_Return_Time || !booking?.Tracking_Rider_Merchant_Delivary_Update_Time) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
 
   // --------------------------------------For Today delivery-------------------------
     
@@ -139,6 +150,10 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
     pickUpPending: parcelData.filter(item => item.deliveryStatus !== "Delivered"),
   };
 
+
+
+  // parcelsMerchnat
+
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-8">Merchant Dashboard</h1>
@@ -176,8 +191,8 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
         /> */}
         <StatsCard
   title="Total Returned"
-  value={filteredPieData?.returned || 0} 
-  percentage={getPercentage(filteredPieData?.returned, filteredPieData?.parcelBooking)}
+  value={TotalReturned || 0} 
+  // percentage={getPercentage(filteredPieData?.returned, filteredPieData?.parcelBooking)}
   icon={<FaUndo />}
   color="bg-red-100"
   percentageColor="text-red-600"
@@ -185,8 +200,8 @@ const { data: parcels = [], isLoading,refetch } = useQuery({
 
         <StatsCard
   title="Total Delivery Pending"
-  value={0} 
-  percentage={getPercentage(0)}
+  value={TotalDeliveryPending ||0} 
+  // percentage={getPercentage(0)}
   icon={<FaClock />}
   color="bg-yellow-100"
   percentageColor="text-blue-600"
