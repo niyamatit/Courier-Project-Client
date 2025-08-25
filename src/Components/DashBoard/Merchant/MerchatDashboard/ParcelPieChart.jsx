@@ -2,15 +2,17 @@ import React from 'react';
 import { Chart } from 'react-google-charts';
 
 const ParcelPieChart = ({ data }) => {
-    const chartData = [
-        ['Category', 'Value'],
-        ['Parcel Booking', data?.parcelBooking],
-        ['Delivered', data?.delivered],
-        ['Partially Delivered', data?.partiallyDelivered],
-        ['Processing', data?.processing],
-        ['Cancelled', data?.cancelled],
-        ['Deleted', data?.deleted],
-    ];
+     const chartData = [
+    ['Category', 'Value'],
+    ['Parcel Booking', data.parcelBooking],
+    ['Delivered', data.delivered],
+    ['Partially Delivered', data.partiallyDelivered],
+    ['Processing', data.processing],
+    ['Cancelled', data.cancelled],
+    // ['Deleted', data.deleted],
+    ['Pending Deliveries', data.pendingDeliveries],
+    ['Returned', data.returned],
+  ];
 
     const chartOptions = {
         pieSliceText: 'label',
@@ -77,9 +79,9 @@ const ParcelPieChart = ({ data }) => {
                 <div className="flex items-center mr-2 mb-2">
                     <span className="block w-4 h-4 mr-2" style={{ backgroundColor: '#e74c3c' }}></span> Cancelled
                 </div>
-                <div className="flex items-center mb-2">
+                {/* <div className="flex items-center mb-2">
                     <span className="block w-4 h-4 mr-2" style={{ backgroundColor: '#95a5a6' }}></span> Deleted
-                </div>
+                </div> */}
             </div>
         </div>
     );

@@ -288,7 +288,7 @@ const Total_Hub_Transfer = allBookings.reduce((total, booking) => {
 // Date
 
 const Total_Booking_Today = allBookings.reduce((total, booking) => {
-  const today = new Date().toISOString().split("T")[0]; // "2025-08-23"
+  const today = new Date().toISOString().split("T")[0]; 
 
   const adminDate = booking?.booking
     ? new Date(booking.booking).toISOString().split("T")[0]
