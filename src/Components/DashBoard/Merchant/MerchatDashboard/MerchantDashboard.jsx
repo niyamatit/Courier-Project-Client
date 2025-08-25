@@ -216,7 +216,7 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-8">Merchant Dashboard</h1>
       <div className="mb-8 flex items-center">
-        <div className="flex-grow flex">
+        {/* <div className="flex-grow flex">
           <input
             type="text"
             placeholder="Enter Order ID or Customer Name for Search..."
@@ -225,7 +225,7 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
           <button className="p-3 bg-blue-500 text-white rounded-r-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-blue-500">
             <FaSearch />
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
@@ -324,17 +324,17 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
       <div className="flex gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
   <DeliveryCard 
     title="Out for Delivery" 
-    items={parcels.filter(item => item.Tracking_Destination_Branch_Select_Rider_Merchant)}
+    items={parcels.filter(item => item?.Tracking_Destination_Branch_Select_Rider_Merchant)}
   />
   <DeliveryCard 
     title="Pick up Pending" 
-    items={parcels.filter(item => item.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant)}
+    items={parcels.filter(item => item?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant)}
   />
 </div>
 
-      {/* <div className="mb-8 border-[2px] hover:shadow-2xl rounded hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
-        <OrdersTable orders={orders} />
-      </div> */}
+      <div className="mb-8 border-[2px] hover:shadow-2xl rounded hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
+        <OrdersTable parcels={parcels} />
+      </div>
       {/* Filter */}
       {/* <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
         <div className="flex gap-6 mb-4">
