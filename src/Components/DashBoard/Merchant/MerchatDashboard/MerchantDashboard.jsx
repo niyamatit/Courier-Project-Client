@@ -327,9 +327,12 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
     items={parcels.filter(item => item?.Tracking_Destination_Branch_Select_Rider_Merchant)}
   />
   <DeliveryCard 
-    title="Pick up Pending" 
-    items={parcels.filter(item => item?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant)}
-  />
+  title="Pick up Pending" 
+  items={parcels.filter(item => 
+    !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
+    !item?.Tracking_Rider_Merchant_Delivary_Update_Time
+  )}
+/>
 </div>
 
       <div className="mb-8 border-[2px] hover:shadow-2xl rounded hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
