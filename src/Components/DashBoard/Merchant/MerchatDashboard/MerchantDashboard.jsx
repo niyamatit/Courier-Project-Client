@@ -162,17 +162,20 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
       setFilteredChartData(chartData);
   
       const pieData = {
-        parcelBooking: totalWeight,
-        delivered: deliveredWeight,
-        partiallyDelivered: filteredData.filter(item => item.deliveryStatus === "Partial").reduce((sum, item) => sum + item.Parcel_Weight, 0),
-        processing: processingWeight,
-        cancelled: cancelledWeight,
-        deleted: 0,
-        pendingDeliveries, 
-        returned: returnedWeight
-      };
-  
-      setFilteredPieData(pieData);
+  parcelBooking: parcels.length,
+  delivered: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time).length,
+  partiallyDelivered: parcels.filter(item => item.Tracking_MotherHub_Branch_Received_Parcel_Merchant).length,
+  processing: parcels.length,
+  cancelled: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
+  deleted: 0,
+  pendingDeliveries: parcels.filter(item => 
+    !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
+    !item?.Tracking_Rider_Merchant_Delivary_Update_Time
+  ).length,
+  returned: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
+};
+setFilteredPieData(pieData);
+
   
       const paymentInvoice = filteredData.reduce((sum, item) => sum + item.Total_Charge, 0);
       const totalCollected = filteredData.reduce((sum, item) => sum + item.Total_Collection_Amount, 0);
@@ -367,7 +370,18 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
           </div>
           <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
             <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
-            <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
+            <ParcelPieChart 
+  data={filteredPieData || { 
+    parcelBooking: 0, 
+    delivered: 0, 
+    partiallyDelivered: 0, 
+    processing: 0, 
+    cancelled: 0, 
+    deleted: 0, 
+    pendingDeliveries: 0,
+    returned: 0
+  }} 
+/>
           </div>
         </div>
       </div>
