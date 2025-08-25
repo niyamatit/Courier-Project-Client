@@ -57,6 +57,64 @@ const TotalDeliveryPending = parcels.reduce((total, booking) => {
   return total;  // If not 'cod', return the total unchanged
 }, 0);
 
+const formatDate = (dateStr) => {
+  if (!dateStr) return null; // null or undefined
+  const d = new Date(dateStr);
+  return isNaN(d) ? null : d.toISOString().split("T")[0];
+};
+const Total_Delivery_Complete_Today = parcels.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-08-23"
+
+  const adminDate = formatDate(booking?.Tracking_Rider_Merchant_Delivary_Update_Return_Time);
+  // const branchDate = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time);
+  // const adminDate1 = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time);
+  // const branchDate1 = formatDate(booking?.Tracking_Destination_Branch_Delivery_Parcel_Time);
+
+  if (adminDate === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+const Total_Delivery_Cancel_Today = parcels.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; 
+
+  const adminDate = formatDate(booking?.Tracking_Rider_Merchant_Delivary_Update_Time);
+  // const branchDate = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time);
+  // const adminDate1 = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time);
+  // const branchDate1 = formatDate(booking?.Tracking_Destination_Branch_Delivery_Parcel_Time);
+
+  if (adminDate === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
+
+// Total_Collection_Amount
+const total_Collection_Amount_Booking_Branch = parcels.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.Total_Collection_Amount || 0);
+  return total + amount;
+}, 0);
+const total_COD_Charge = parcels.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.Cod_Charge || 0);
+  return total + amount;
+}, 0);
+
+
+
+
+const Total_Return_COD = parcels.reduce((total, booking) => {
+  // Check if Tracking_Rider_Merchant_Delivary_Update_Return_Time exists
+  const amount = booking.Tracking_Rider_Merchant_Delivary_Update_Return_Time
+    && parseFloat(booking.Cod_Charge || 0)  // If exists, calculate Cod_Charge
+    
+  
+  return total + amount;
+}, 0);
+
+
   // --------------------------------------For Today delivery-------------------------
     
   const fetchMerchantParcels = (key,url,dataField)=>{
@@ -208,13 +266,13 @@ const TotalDeliveryPending = parcels.reduce((total, booking) => {
 />
         <StatsCard
           title="Today Delivered"
-          value={0}
+          value={Total_Delivery_Complete_Today ||0}
           icon={<FaCheckCircle />}
           color="bg-green-100"
         />
         <StatsCard
           title="Today Cancelled"
-          value={0}
+          value={Total_Delivery_Cancel_Today || 0}
           icon={<FaTimesCircle />}
           color="bg-red-100"
         />
@@ -226,17 +284,18 @@ const TotalDeliveryPending = parcels.reduce((total, booking) => {
         />
         <StatsCard
           title="Total Collected"
-          value={0}
+          value={`${total_Collection_Amount_Booking_Branch ||0} Tk`}
           icon={<FaMoneyBillWave />}
           color="bg-blue-100"
         />
+        {/* Now */}
         <StatsCard
-          title="Total Service Charge"
-          value={0}
+          title="Total COD Charge"
+          value={total_COD_Charge || 0}
           icon={<FaMoneyBillWave />}
           color="bg-purple-100"
         />
-        <StatsCard
+        {/* <StatsCard
           title="Total Paid"
           value={0}
           icon={<FaMoneyBillWave />}
@@ -247,26 +306,32 @@ const TotalDeliveryPending = parcels.reduce((total, booking) => {
           value={0}
           icon={<FaMoneyCheckAlt />}
           color="bg-red-100"
-        />
+        /> */}
         <StatsCard
           title="All Parcel COD"
-          value={0} 
+          value={total_COD_Charge || 0} 
           icon={<FaBoxOpen />}
           color="bg-blue-100"
         />
         <StatsCard
           title="Return Parcel COD"
-          value={0} 
+          value={Total_Return_COD || 0} 
           icon={<FaUndo />}
           color="bg-red-100"
         />
       </div>
 
-      {/* <div className="flex  gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
-        <DeliveryCard title="Out for Delivery" items={DeliveryData.outForDelivery} />
-        <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} />
-        <DeliveryCard title="Pick up Pending" items={DeliveryData.pickUpPending} />
-      </div> */}
+      <div className="flex gap-10 flex-col md:flex-col lg:flex-row justify-center items-start mb-10 bg-gray-100">
+  <DeliveryCard 
+    title="Out for Delivery" 
+    items={parcels.filter(item => item.Tracking_Destination_Branch_Select_Rider_Merchant)}
+  />
+  <DeliveryCard 
+    title="Pick up Pending" 
+    items={parcels.filter(item => item.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant)}
+  />
+</div>
+
       {/* <div className="mb-8 border-[2px] hover:shadow-2xl rounded hover:border-blue-400 sm:overflow-x-auto md:overflow-x-auto">
         <OrdersTable orders={orders} />
       </div> */}

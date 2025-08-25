@@ -17,7 +17,7 @@ const DeliveryCard = ({ title, items }) => {
             >
               <div>
                 <h3 className="font-medium text-lg">{item.Customer_Name}</h3>
-                <p className="text-gray-500">Order ID: {item?._id.slice(-6)}</p>
+                <p className="text-gray-500">Order ID: {item?.CnNumber}</p>
               </div>
               <div className="text-right">
                 <p className="flex items-center justify-end text-gray-600">
