@@ -134,9 +134,9 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
 
 
   useEffect(() => {
-    if (parcelData.length > 0) {
-      const filteredData = parcelData.filter((item) => {
-        const itemDate = new Date(item.Date);
+    if (parcels.length > 0) {
+      const filteredData = parcels.filter((item) => {
+        const itemDate = new Date(item?.Date);
         const isAfterStartDate = fromDate ? itemDate >= fromDate : true;
         const isBeforeEndDate = toDate ? itemDate <= toDate : true;
         return isAfterStartDate && isBeforeEndDate;
@@ -153,9 +153,10 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
       const returnedWeight = filteredData.filter(item => item.deliveryStatus === "Cancel").reduce((sum, item) => sum + item.Parcel_Weight, 0);
   
       const chartData = {
-        labels: filteredData.map(item => item.Date),
-        pickup: filteredData.map(item => item.Parcel_Weight),
-        delivered: filteredData.map(item => (item.deliveryStatus === "Delivered" ? item.Parcel_Weight : 0)),
+        labels: parcels.map(item => item.Date),
+        pickup: parcels.map(item =>   !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
+    !item?.Tracking_Rider_Merchant_Delivary_Update_Time),
+        delivered: parcels.map(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time),
       };
   
       setFilteredChartData(chartData);
@@ -291,7 +292,7 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
         {/* Now */}
         <StatsCard
           title="Total COD Charge"
-          value={total_COD_Charge || 0}
+          value={`${total_COD_Charge || 0} Tk` }
           icon={<FaMoneyBillWave />}
           color="bg-purple-100"
         />
@@ -309,13 +310,13 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
         /> */}
         <StatsCard
           title="All Parcel COD"
-          value={total_COD_Charge || 0} 
+          value={`${total_COD_Charge || 0} Tk`} 
           icon={<FaBoxOpen />}
           color="bg-blue-100"
         />
         <StatsCard
           title="Return Parcel COD"
-          value={Total_Return_COD || 0} 
+          value={`${Total_Return_COD || 0} Tk`} 
           icon={<FaUndo />}
           color="bg-red-100"
         />
@@ -339,7 +340,7 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
         <OrdersTable parcels={parcels} />
       </div>
       {/* Filter */}
-      {/* <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
+      <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
         <div className="flex gap-6 mb-4">
           <div>
             <label className="font-semibold text-gray-700">From: </label>
@@ -369,7 +370,7 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
             <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
