@@ -117,101 +117,118 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
 
   // --------------------------------------For Today delivery-------------------------
     
-  const fetchMerchantParcels = (key,url,dataField)=>{
-
-    const{ data = []} = useQuery({
-      queryKey:[key, verifiedUser?.email],
-      enabled: !!verifiedUser?.email,
-      queryFn: async () =>{
-        const res = axiosSecure.get(url);
-        return Array.isArray(res.data) ? res.data : [res.data]
-      }
-    }) 
-
-  }
+ 
 
 
 
 
-  useEffect(() => {
-    if (parcels.length > 0) {
-      const filteredData = parcels.filter((item) => {
-        const itemDate = new Date(item?.Date);
-        const isAfterStartDate = fromDate ? itemDate >= fromDate : true;
-        const isBeforeEndDate = toDate ? itemDate <= toDate : true;
-        return isAfterStartDate && isBeforeEndDate;
-      });
-  
-      const totalWeight = filteredData.reduce((sum, item) => sum + item.Parcel_Weight, 0);
-      const deliveredWeight = filteredData.filter(item => item.deliveryStatus === "Delivered").reduce((sum, item) => sum + item.Parcel_Weight, 0);
-      const cancelledWeight = filteredData.filter(item => item.deliveryStatus === "Cancel").reduce((sum, item) => sum + item.Parcel_Weight, 0);
-      const processingWeight = filteredData.filter(item => item.deliveryStatus === "Processing").reduce((sum, item) => sum + item.Parcel_Weight, 0);
-      
+//   useEffect(() => {
+//     if (parcels.length > 0) {
+//     const filteredData = parcels.filter((item) => {
+//       const itemDate = new Date(item?.Date).toISOString().split("T")[0]; // parcel date (YYYY-MM-DD)
+//       const startDate = fromDate ? new Date(fromDate).toISOString().split("T")[0] : null;
+//       const endDate = toDate ? new Date(toDate).toISOString().split("T")[0] : null;
+
+//       const isAfterStartDate = startDate ? itemDate >= startDate : true;
+//       const isBeforeEndDate = endDate ? itemDate <= endDate : true;
+
+//       return isAfterStartDate && isBeforeEndDate;
+//     });
+
+//     setFilteredChartData(filteredData);
   
      
-      const pendingDeliveries = filteredData.filter(item => item.deliveryStatus !== "Delivered").length;
-      const returnedWeight = filteredData.filter(item => item.deliveryStatus === "Cancel").reduce((sum, item) => sum + item.Parcel_Weight, 0);
   
-      const chartData = {
-        labels: parcels.map(item => item.Date),
-        pickup: parcels.map(item =>   !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
-    !item?.Tracking_Rider_Merchant_Delivary_Update_Time),
-        delivered: parcels.map(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time),
-      };
+//       const chartData = {
+//          labels: filteredData.map(item => {
+//         const d = new Date(item.Date);
+//         const day = d.getDate().toString().padStart(2, "0");
+//         const month = (d.getMonth() + 1).toString().padStart(2, "0");
+//         const year = d.getFullYear().toString().slice(-2); // last 2 digits
+//         return `${day}-${month}-${year}`; // Example: 25-08-25
+//       }),
+//         pickup: parcels.map(item =>   !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
+//     !item?.Tracking_Rider_Merchant_Delivary_Update_Time),
+//         delivered: parcels.map(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time),
+//       };
   
-      setFilteredChartData(chartData);
+//       setFilteredChartData(chartData);
   
-      const pieData = {
-  parcelBooking: parcels.length,
-  delivered: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time).length,
-  partiallyDelivered: parcels.filter(item => item.Tracking_MotherHub_Branch_Received_Parcel_Merchant).length,
-  processing: parcels.length,
-  cancelled: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
-  deleted: 0,
-  pendingDeliveries: parcels.filter(item => 
-    !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
-    !item?.Tracking_Rider_Merchant_Delivary_Update_Time
-  ).length,
-  returned: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
-};
-setFilteredPieData(pieData);
+//       const pieData = {
+//   parcelBooking: parcels.length,
+//   delivered: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time).length,
+//   partiallyDelivered: parcels.filter(item => item.Tracking_MotherHub_Branch_Received_Parcel_Merchant).length,
+//   processing: parcels.length,
+//   cancelled: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
+//   deleted: 0,
+//   pendingDeliveries: parcels.filter(item => 
+//     !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
+//     !item?.Tracking_Rider_Merchant_Delivary_Update_Time
+//   ).length,
+//   returned: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
+// };
+// setFilteredPieData(pieData);
 
   
-      const paymentInvoice = filteredData.reduce((sum, item) => sum + item.Total_Charge, 0);
-      const totalCollected = filteredData.reduce((sum, item) => sum + item.Total_Collection_Amount, 0);
-      const totalServiceCharge = paymentInvoice;
-      const totalPaid = totalCollected;
-      const unpaidAmount = paymentInvoice - totalCollected;
-      const allParcelCOD = filteredData.reduce((sum, item) => sum + item.Product_Value, 0); 
-      const returnParcelCOD = filteredData.filter(item => item.deliveryStatus === "Cancel").reduce((sum, item) => sum + item.Product_Value, 0);
+      
   
-      setFinancialStats({
-        paymentInvoice,
-        totalCollected,
-        totalServiceCharge,
-        totalPaid,
-        unpaidAmount,
-        allParcelCOD,
-        returnParcelCOD,
-      });
-    }
-  }, [parcelData, fromDate, toDate]);
+      
+//     }
+//   }, [parcels, fromDate, toDate]);
+  
+useEffect(() => {
+  if (parcels.length > 0) {
+    const filteredData = parcels.filter((item) => {
+      const itemDate = new Date(item?.Date).toISOString().split("T")[0]; // parcel date (YYYY-MM-DD)
+      const startDate = fromDate ? new Date(fromDate).toISOString().split("T")[0] : null;
+      const endDate = toDate ? new Date(toDate).toISOString().split("T")[0] : null;
+
+      const isAfterStartDate = startDate ? itemDate >= startDate : true;
+      const isBeforeEndDate = endDate ? itemDate <= endDate : true;
+
+      return isAfterStartDate && isBeforeEndDate;
+    });
+
+    // ---- Chart Data ----
+    const chartData = {
+      labels: filteredData.map(item => {
+        const d = new Date(item.Date);
+        const day = d.getDate().toString().padStart(2, "0");
+        const month = (d.getMonth() + 1).toString().padStart(2, "0");
+        const year = d.getFullYear().toString().slice(-2); // last 2 digits
+        return `${day}-${month}-${year}`; // Example: 25-08-25
+      }),
+      pickup: filteredData.map(item => 
+        !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time && 
+        !item?.Tracking_Rider_Merchant_Delivary_Update_Time ? 1 : 0
+      ),
+      delivered: filteredData.map(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time ? 1 : 0),
+    };
+
+    setFilteredChartData(chartData);
+
+    // ---- Pie Data ----
+    const pieData = {
+      parcelBooking: filteredData.length,
+      delivered: filteredData.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time).length,
+      partiallyDelivered: filteredData.filter(item => item.Tracking_MotherHub_Branch_Received_Parcel_Merchant).length,
+      processing: filteredData.length,
+      cancelled: filteredData.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
+      deleted: 0,
+      pendingDeliveries: filteredData.filter(item => 
+        !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time && 
+        !item?.Tracking_Rider_Merchant_Delivary_Update_Time
+      ).length,
+      returned: filteredData.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
+    };
+
+    setFilteredPieData(pieData);
+  }
+}, [parcels, fromDate, toDate]);
+
   
 
-  const getPercentage = (part, total) => total > 0 ? `(${((part / total) * 100).toFixed(2)}%)` : "(0%)";
-
-  const orders = parcelData.map(item => ({
-    id: item.Merchant_Order_ID,
-    customerName: item.Customer_Name,
-    phone: item.Customer_Contact_Number,
-    status: item.deliveryStatus,
-  }));
-
-  const DeliveryData = {
-    outForDelivery: parcelData.filter(item => item.deliveryStatus === "Out For Delivery"),
-    pickUpPending: parcelData.filter(item => item.deliveryStatus !== "Delivered"),
-  };
-
+  
 
 
   // parcelsMerchnat
