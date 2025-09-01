@@ -1,6 +1,6 @@
 import { FaTruckPickup } from "react-icons/fa";
 import HostStatsCard from "./HostStatsCard";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ParcelPieChart from "../../Merchant/MerchatDashboard/ParcelPieChart";
 import ParcelChart from "../../Merchant/MerchatDashboard/ParcelChart";
 import axiosSecure from "../../../../api/axiosSecure";
@@ -120,8 +120,17 @@ const HostDashboard = () => {
         },
         enabled: !!verifiedUser?.email,
     });
+     const { data: Int_Booking_History, isLoading, error } = useQuery({
+        queryKey: ['Int_Booking_History', verifiedUser?.email],
+        queryFn: async () => {
+            const response = await axiosSecure.get(`/int/${verifiedUser?.email}`);
+            return response.data;
+        },
+    });
 
-    const parcelData = [...Offline_Booking_Data, ...Online_Booking_Data];
+    const parcelData = useMemo(() => {
+  return [...Offline_Booking_Data, ...Online_Booking_Data, ...Int_Booking_History];
+}, [Offline_Booking_Data, Online_Booking_Data, Int_Booking_History]);
 
     // --------------------------For Today Pickup Parcels-------------
 
