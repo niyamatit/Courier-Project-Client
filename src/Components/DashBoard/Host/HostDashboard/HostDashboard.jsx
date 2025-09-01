@@ -96,14 +96,32 @@ const HostDashboard = () => {
 
 
     const [verifiedUser] = useUsersData();
-    const { data: parcelData = [] } = useQuery({
-        queryKey: ["parcelData", verifiedUser?.email],
+    // const { data: parcelData = [] } = useQuery({
+    //     queryKey: ["parcelData", verifiedUser?.email],
+    //     queryFn: async () => {
+    //         const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
+    //         return res.data;
+    //     },
+    //     enabled: !!verifiedUser?.email,
+    // });
+    const { data: Offline_Booking_Data = [] } = useQuery({
+        queryKey: ["Offline_Booking_Data", verifiedUser?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
+            const res = await axiosSecure.get(`/offline/${verifiedUser?.email}`);
             return res.data;
         },
         enabled: !!verifiedUser?.email,
     });
+    const { data: Online_Booking_Data = [] } = useQuery({
+        queryKey: ["Online_Booking_Data", verifiedUser?.email],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${verifiedUser?.email}`);
+            return res.data;
+        },
+        enabled: !!verifiedUser?.email,
+    });
+
+    const parcelData = [...Offline_Booking_Data, ...Online_Booking_Data];
 
     // --------------------------For Today Pickup Parcels-------------
 
@@ -187,6 +205,27 @@ const HostDashboard = () => {
         }
     }, [parcelData, fromDate, toDate]);
 
+const Total_Pickup_Done_Today = parcelData.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // "2025-08-23"
+
+  const adminDate = booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time
+    ? new Date(booking.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time).toISOString().split("T")[0]
+    : null;
+  const Offline = booking?.Tracking_Destination_Branch_Received_Parcel_Time_Offline
+    ? new Date(booking.Tracking_Destination_Branch_Received_Parcel_Time_Offline).toISOString().split("T")[0]
+    : null;
+  const INT = booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int
+    ? new Date(booking.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int).toISOString().split("T")[0]
+    : null;
+
+ 
+
+  if (adminDate === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
 
 
     return (
@@ -235,7 +274,10 @@ const HostDashboard = () => {
                 <HostStatsCard
                     title="Today Pickup Done"
                     icon={<FaTruckPickup />}
-                    value={pickupDonetData?.length}
+                    value={Total_Pickup_Done_Today 
+
+                        ||0
+                    }
                     color="bg-green-100"
                 />
                 <HostStatsCard
