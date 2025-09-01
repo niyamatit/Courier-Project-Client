@@ -240,6 +240,61 @@ const Total_Pickup_Done = parcelData.reduce((total, booking) => {
   }
   return total;  // If not 'cod', return the total unchanged
 }, 0);
+const Total_Hub_Transfer = parcelData.reduce((total, booking) => {
+  if (booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Name_Offline || booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name_Int) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+const Total_Booking_Today = parcelData.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; 
+
+  const adminDate = booking?.booking
+    ? new Date(booking.booking).toISOString().split("T")[0]
+    : null;
+
+  const branchDate = booking?.Date
+  const INT = booking?.bookingDate
+    
+
+  if (adminDate === today || branchDate === today || INT === today) {
+    return total + 1;
+  }
+  return total;
+
+
+}, 0);
+
+const formatDate = (dateStr) => {
+  if (!dateStr) return null; // null or undefined
+  const d = new Date(dateStr);
+  return isNaN(d) ? null : d.toISOString().split("T")[0];
+};
+
+const Total_Delivery_Complete_Today = parcelData.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-08-23"
+
+  const adminDate = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time);
+  const branchDate = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time);
+  const adminDate1 = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time);
+  const branchDate1 = formatDate(booking?.Tracking_Destination_Branch_Delivery_Parcel_Time);
+  const Int = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int);
+  const Int_direct = formatDate(booking?.Tracking_Destination_Branch_Delivery_Parcel_Int);
+
+  if (adminDate === today || branchDate === today || adminDate1 === today || branchDate1 === today || Int === today || Int_direct === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
+
+const Today_Delivery_Pending = Total_Booking_Today - Total_Delivery_Complete_Today;
+const Total_Delivey_Complete = parcelData.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time || booking?.Tracking_Destination_Branch_Delivery_Parcel_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int || booking?.Tracking_Destination_Branch_Delivery_Parcel_Int) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
 
 
     return (
@@ -303,13 +358,13 @@ const Total_Pickup_Done = parcelData.reduce((total, booking) => {
                 <HostStatsCard
                     title="Total Hub Transfer Complete"
                     icon={<FaTruckPickup />}
-                    value="0"
+                    value={Total_Hub_Transfer || 0}
                     color="bg-red-100"
                 />
                 <HostStatsCard
                     title="Today New Parcel"
                     icon={<FaTruckPickup />}
-                    value={todayNewParcelData?.length}
+                    value={Total_Booking_Today || 0}
                     color="bg-green-100"
                 />
                 <HostStatsCard
@@ -333,13 +388,13 @@ const Total_Pickup_Done = parcelData.reduce((total, booking) => {
                 <HostStatsCard
                     title="Today Delivery Complete"
                     icon={<FaTruckPickup />}
-                    value={deliveryCompleteData?.length}
+                    value={Total_Delivery_Complete_Today || 0}
                     color="bg-cyan-100"
                 />
                 <HostStatsCard
                     title="Today Delivery Pending"
                     icon={<FaTruckPickup />}
-                    value={pendingDeliveryData?.length}
+                    value={Today_Delivery_Pending || 0}
                     color="bg-sky-100"
                 />
                 <HostStatsCard
@@ -357,7 +412,7 @@ const Total_Pickup_Done = parcelData.reduce((total, booking) => {
                 <HostStatsCard
                     title="Total Delivery Complete"
                     icon={<FaTruckPickup />}
-                    value={totalDeliveryCompleteData?.length}
+                    value={Total_Delivey_Complete || 0}
                     color="bg-purple-100"
                 />
                 <HostStatsCard
