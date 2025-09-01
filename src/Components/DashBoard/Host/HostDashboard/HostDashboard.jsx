@@ -120,7 +120,7 @@ const HostDashboard = () => {
         },
         enabled: !!verifiedUser?.email,
     });
-     const { data: Int_Booking_History, isLoading, error } = useQuery({
+     const { data: Int_Booking_History } = useQuery({
         queryKey: ['Int_Booking_History', verifiedUser?.email],
         queryFn: async () => {
             const response = await axiosSecure.get(`/int/${verifiedUser?.email}`);
@@ -217,7 +217,7 @@ const HostDashboard = () => {
 const Total_Pickup_Done_Today = parcelData.reduce((total, booking) => {
   const today = new Date().toISOString().split("T")[0]; // "2025-08-23"
 
-  const adminDate = booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time
+  const Online = booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time
     ? new Date(booking.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time).toISOString().split("T")[0]
     : null;
   const Offline = booking?.Tracking_Destination_Branch_Received_Parcel_Time_Offline
@@ -229,12 +229,17 @@ const Total_Pickup_Done_Today = parcelData.reduce((total, booking) => {
 
  
 
-  if (adminDate === today) {
+  if (Online === today || Offline === today || INT === today) {
     return total + 1;
   }
   return total;
 }, 0);
-
+const Total_Pickup_Done = parcelData.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int || booking?.Tracking_Destination_Branch_Received_Parcel_Time_Offline) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
 
 
     return (
@@ -275,9 +280,9 @@ const Total_Pickup_Done_Today = parcelData.reduce((total, booking) => {
 
               <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
                 <HostStatsCard
-                    title="Today Pickup Request"
+                    title="Total Booking Parcel"
                     icon={<FaTruckPickup />}
-                    value={Total_Today_Pickup_Parcel || 0}
+                    value={parcelData.length || 0}
                     color="bg-blue-100"
                 />
                 <HostStatsCard
@@ -292,7 +297,7 @@ const Total_Pickup_Done_Today = parcelData.reduce((total, booking) => {
                 <HostStatsCard
                     title="Total Pickup Done"
                     icon={<FaTruckPickup />}
-                    value={totalPickupDonetData?.length}
+                    value={Total_Pickup_Done || 0}
                     color="bg-red-100"
                 />
                 <HostStatsCard
