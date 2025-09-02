@@ -182,45 +182,7 @@ const parcelData = useMemo(() => {
      // ---------------------------------------For Today Pickup Done End---------------------------
 
 
-    useEffect(() => {
-        if (parcelData.length > 0) {
-            const filteredData = parcelData.filter((item) => {
-                const itemDate = item?.booking ? new Date(item.booking).toISOString().split('T')[0] : null;
-                const isAfterStartDate = fromDate ? itemDate >= fromDate : true;
-                const isBeforeEndDate = toDate ? itemDate <= toDate : true;
-                return isAfterStartDate && isBeforeEndDate;
-            });
-
-            const totalWeight = filteredData.reduce((sum, item) => sum + Number(item?.qty || 0), 0);
-            const deliveredWeight = filteredData.filter(item => item.update === "delivered").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
-            const cancelledWeight = filteredData.filter(item => item.update === "canceled").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
-            const processingWeight = filteredData.filter(item => item.update === "Processing").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
-
-            const pendingDeliveries = filteredData.filter(item => item.update !== "delivered").length;
-            const returnedWeight = filteredData.filter(item => item.update === "canceled").reduce((sum, item) => sum + Number(item.qty || 0), 0);
-
-            const chartData = {
-                labels: filteredData.map(item => item?.booking ? new Date(item.booking).toISOString().split('T')[0] : null),
-                pickup: filteredData.map(item => Number(item?.qty || 0)),
-                delivered: filteredData.reduce((sum, item) => sum + Number(item?.qty || 0), 0),
-            };
-
-            setFilteredChartData(chartData);
-
-            const pieData = {
-                parcelBooking: totalWeight,
-                delivered: deliveredWeight,
-                partiallyDelivered: filteredData.filter(item => item.update === "Partial").reduce((sum, item) => sum + item.qty, 0),
-                processing: processingWeight,
-                cancelled: cancelledWeight,
-                deleted: 0,
-                pendingDeliveries,
-                returned: returnedWeight
-            };
-
-            setFilteredPieData(pieData);
-        }
-    }, [parcelData, fromDate, toDate]);
+ 
 
 const Total_Pickup_Done_Today = parcelData.reduce((total, booking) => {
   const today = new Date().toISOString().split("T")[0]; // "2025-08-23"
@@ -332,6 +294,93 @@ const totalAmount_Booking_Branch = parcelData.reduce((total, booking) => {
   const amount = parseFloat(booking.amount || 0) || parseFloat(booking.totalCharge || 0) || parseFloat(booking.Total_Charge || 0);
   return total + amount;
 }, 0);
+
+
+
+
+  useEffect(() => {
+  if (parcelData.length > 0) {
+    // ---- Filter by date range ----
+    const filteredData = parcelData.filter((item) => {
+      const rawDate = item?.Date || item?.booking || item?.bookingDate;
+      if (!rawDate) return false;
+
+      const itemDate = new Date(rawDate).toISOString().split("T")[0];
+      const startDate = fromDate ? new Date(fromDate).toISOString().split("T")[0] : null;
+      const endDate = toDate ? new Date(toDate).toISOString().split("T")[0] : null;
+
+      const isAfterStartDate = startDate ? itemDate >= startDate : true;
+      const isBeforeEndDate = endDate ? itemDate <= endDate : true;
+
+      return isAfterStartDate && isBeforeEndDate;
+    });
+
+    // ---- Restrict to last 7 days ----
+    const today = new Date();
+    const cutoff = new Date();
+    cutoff.setDate(today.getDate() - 7);
+
+    const last7Days = filteredData.filter((item) => {
+      const rawDate = item?.Date || item?.booking || item?.bookingDate;
+      if (!rawDate) return false;
+      const d = new Date(rawDate);
+      return d >= cutoff && d <= today;
+    });
+
+    // ---- Chart Data ----
+    const chartData = {
+      labels: last7Days.map((item) => {
+        const d = new Date(item?.Date || item?.booking || item?.bookingDate);
+        const day = d.getDate().toString().padStart(2, "0");
+        const month = (d.getMonth() + 1).toString().padStart(2, "0");
+        const year = d.getFullYear().toString().slice(-2);
+        return `${day}-${month}-${year}`;
+      }),
+
+      pickup: last7Days.map((item) =>
+        (!item.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time &&
+         !item.Tracking_Destination_Branch_Received_Parcel_Time_Offline &&
+         !item.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int)
+          ? 1 : 0
+      ),
+
+      delivered: last7Days.map((item) =>
+        (item?.Tracking_Rider_Online_Booking_Delivary_Update_Time ||
+         item?.Tracking_Rider_Offline_Booking_Delivary_Update_Time ||
+         item?.Tracking_Destination_Branch_Delivery_Parcel_Time ||
+         item?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int ||
+         item?.Tracking_Destination_Branch_Delivery_Parcel_Int)
+          ? 1 : 0
+      ),
+    };
+
+    setFilteredChartData(chartData);
+
+    // ---- Pie Data ----
+    const pieData = {
+      parcelBooking: filteredData.length,
+      delivered: Total_Delivey_Complete,
+      partiallyDelivered: Total_Pickup_Done,
+      processing: totalPending_Parcel_Branch,
+      cancelled: Total_Return_Complete,
+      deleted: 0,
+      pendingDeliveries: totalPending_Parcel_Branch,
+      returned: Total_Return_Complete,
+    };
+
+    setFilteredPieData(pieData);
+  }
+}, [
+  parcelData,
+  fromDate,
+  toDate,
+  Total_Return_Complete,
+  Total_Delivey_Complete,
+  Total_Pickup_Done,
+  totalPending_Parcel_Branch,
+]);
+
+
 
 
     return (
@@ -458,11 +507,22 @@ const totalAmount_Booking_Branch = parcelData.reduce((total, booking) => {
                 <div className="flex flex-col lg:flex-row gap-6">
                     <div className="flex-1 hover:border-blue-400 border-[2px] bg-white border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
                         <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
-                        <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
+                          <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
                     </div>
                     <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
                         <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
-                        <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
+                        <ParcelPieChart 
+  data={filteredPieData || { 
+    parcelBooking: 0, 
+    delivered: 0, 
+    partiallyDelivered: 0, 
+    processing: 0, 
+    cancelled: 0, 
+    deleted: 0, 
+    pendingDeliveries: 0,
+    returned: 0
+  }} 
+/>
                     </div>
                 </div>
             </div>
