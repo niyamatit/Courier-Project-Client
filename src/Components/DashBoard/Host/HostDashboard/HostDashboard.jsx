@@ -1,6 +1,6 @@
 import { FaTruckPickup } from "react-icons/fa";
 import HostStatsCard from "./HostStatsCard";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ParcelPieChart from "../../Merchant/MerchatDashboard/ParcelPieChart";
 import ParcelChart from "../../Merchant/MerchatDashboard/ParcelChart";
 import axiosSecure from "../../../../api/axiosSecure";
@@ -96,14 +96,49 @@ const HostDashboard = () => {
 
 
     const [verifiedUser] = useUsersData();
-    const { data: parcelData = [] } = useQuery({
-        queryKey: ["parcelData", verifiedUser?.email],
-        queryFn: async () => {
-            const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
-            return res.data;
-        },
-        enabled: !!verifiedUser?.email,
-    });
+    // const { data: parcelData = [] } = useQuery({
+    //     queryKey: ["parcelData", verifiedUser?.email],
+    //     queryFn: async () => {
+    //         const res = await axiosSecure.get("/packagfhguieormbncdmnn44ge");
+    //         return res.data;
+    //     },
+    //     enabled: !!verifiedUser?.email,
+    // });
+   const { data: Offline_Booking_Data = [] } = useQuery({
+  queryKey: ["Offline_Booking_Data", verifiedUser?.email],
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/offline/${verifiedUser?.email}`);
+    return res.data;
+  },
+  enabled: !!verifiedUser?.email,
+});
+
+const { data: Online_Booking_Data = [] } = useQuery({
+  queryKey: ["Online_Booking_Data", verifiedUser?.email],
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${verifiedUser?.email}`);
+    return res.data;
+  },
+  enabled: !!verifiedUser?.email,
+});
+
+const { data: Int_Booking_History = [] } = useQuery({
+  queryKey: ['Int_Booking_History', verifiedUser?.email],
+  queryFn: async () => {
+    const response = await axiosSecure.get(`/int/${verifiedUser?.email}`);
+    return response.data;
+  },
+  enabled: !!verifiedUser?.email,
+});
+
+const parcelData = useMemo(() => {
+  return [
+    ...Offline_Booking_Data,
+    ...Online_Booking_Data,
+    ...Int_Booking_History,
+  ];
+}, [Offline_Booking_Data, Online_Booking_Data, Int_Booking_History]);
+
 
     // --------------------------For Today Pickup Parcels-------------
 
@@ -147,52 +182,309 @@ const HostDashboard = () => {
      // ---------------------------------------For Today Pickup Done End---------------------------
 
 
-    useEffect(() => {
-        if (parcelData.length > 0) {
-            const filteredData = parcelData.filter((item) => {
-                const itemDate = item?.booking ? new Date(item.booking).toISOString().split('T')[0] : null;
-                const isAfterStartDate = fromDate ? itemDate >= fromDate : true;
-                const isBeforeEndDate = toDate ? itemDate <= toDate : true;
-                return isAfterStartDate && isBeforeEndDate;
-            });
+ 
 
-            const totalWeight = filteredData.reduce((sum, item) => sum + Number(item?.qty || 0), 0);
-            const deliveredWeight = filteredData.filter(item => item.update === "delivered").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
-            const cancelledWeight = filteredData.filter(item => item.update === "canceled").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
-            const processingWeight = filteredData.filter(item => item.update === "Processing").reduce((sum, item) => sum + Number(item?.qty || 0), 0);
+const Total_Pickup_Done_Today = parcelData.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // "2025-08-23"
 
-            const pendingDeliveries = filteredData.filter(item => item.update !== "delivered").length;
-            const returnedWeight = filteredData.filter(item => item.update === "canceled").reduce((sum, item) => sum + Number(item.qty || 0), 0);
+  const Online = booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time
+    ? new Date(booking.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time).toISOString().split("T")[0]
+    : null;
+  const Offline = booking?.Tracking_Destination_Branch_Received_Parcel_Time_Offline
+    ? new Date(booking.Tracking_Destination_Branch_Received_Parcel_Time_Offline).toISOString().split("T")[0]
+    : null;
+  const INT = booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int
+    ? new Date(booking.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int).toISOString().split("T")[0]
+    : null;
 
-            const chartData = {
-                labels: filteredData.map(item => item?.booking ? new Date(item.booking).toISOString().split('T')[0] : null),
-                pickup: filteredData.map(item => Number(item?.qty || 0)),
-                delivered: filteredData.reduce((sum, item) => sum + Number(item?.qty || 0), 0),
-            };
+ 
 
-            setFilteredChartData(chartData);
+  if (Online === today || Offline === today || INT === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+const Total_Pickup_Done = parcelData.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || booking?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int || booking?.Tracking_Destination_Branch_Received_Parcel_Time_Offline) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+const Total_Hub_Transfer = parcelData.reduce((total, booking) => {
+  if (booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name || booking?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Name_Offline || booking?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name_Int) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+const Total_Booking_Today = parcelData.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; 
 
-            const pieData = {
-                parcelBooking: totalWeight,
-                delivered: deliveredWeight,
-                partiallyDelivered: filteredData.filter(item => item.update === "Partial").reduce((sum, item) => sum + item.qty, 0),
-                processing: processingWeight,
-                cancelled: cancelledWeight,
-                deleted: 0,
-                pendingDeliveries,
-                returned: returnedWeight
-            };
+  const adminDate = booking?.booking
+    ? new Date(booking.booking).toISOString().split("T")[0]
+    : null;
 
-            setFilteredPieData(pieData);
-        }
-    }, [parcelData, fromDate, toDate]);
+  const branchDate = booking?.Date
+  const INT = booking?.bookingDate
+    
+
+  if (adminDate === today || branchDate === today || INT === today) {
+    return total + 1;
+  }
+  return total;
+
+
+}, 0);
+
+const formatDate = (dateStr) => {
+  if (!dateStr) return null; // null or undefined
+  const d = new Date(dateStr);
+  return isNaN(d) ? null : d.toISOString().split("T")[0];
+};
+
+const Total_Delivery_Complete_Today = parcelData.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-08-23"
+
+  const adminDate = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time);
+  const branchDate = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time);
+  const adminDate1 = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time);
+  const branchDate1 = formatDate(booking?.Tracking_Destination_Branch_Delivery_Parcel_Time);
+  const Int = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int);
+  const Int_direct = formatDate(booking?.Tracking_Destination_Branch_Delivery_Parcel_Int);
+
+  if (adminDate === today || branchDate === today || adminDate1 === today || branchDate1 === today || Int === today || Int_direct === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
+
+const Today_Delivery_Pending = Total_Booking_Today - Total_Delivery_Complete_Today;
+const Total_Delivey_Complete = parcelData.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time || booking?.Tracking_Destination_Branch_Delivery_Parcel_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int || booking?.Tracking_Destination_Branch_Delivery_Parcel_Int) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+
+const totalPending_Parcel_Branch = (parcelData?.length) - Total_Delivey_Complete;
+const Total_Return_Complete = parcelData.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || booking?.Tracking_Destination_Branch_Returned_Parcel_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time_Int) {
+    return total + 1;  // Assuming codAmount is the field to sum
+  }
+  return total;  // If not 'cod', return the total unchanged
+}, 0);
+
+const Total_Return_Today = parcelData.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-08-23"
+
+  const adminDate = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time);
+  const branchDate = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time);
+  const adminDate1 = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time);
+  const branchDate1 = formatDate(booking?.Tracking_Destination_Branch_Returned_Parcel_Time);
+  const Int = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time_Int);
+
+  if (adminDate === today || branchDate === today || adminDate1 === today || branchDate1 === today || Int === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
+const totalAmount_Booking_Branch = parcelData.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.amount || 0) || parseFloat(booking.totalCharge || 0) || parseFloat(booking.Total_Charge || 0);
+  return total + amount;
+}, 0);
+
+
+
+
+  useEffect(() => {
+  if (parcelData.length > 0) {
+    // ---- Filter by date range ----
+    const filteredData = parcelData.filter((item) => {
+      const rawDate = item?.Date || item?.booking || item?.bookingDate;
+      if (!rawDate) return false;
+
+      const itemDate = new Date(rawDate).toISOString().split("T")[0];
+      const startDate = fromDate ? new Date(fromDate).toISOString().split("T")[0] : null;
+      const endDate = toDate ? new Date(toDate).toISOString().split("T")[0] : null;
+
+      const isAfterStartDate = startDate ? itemDate >= startDate : true;
+      const isBeforeEndDate = endDate ? itemDate <= endDate : true;
+
+      return isAfterStartDate && isBeforeEndDate;
+    });
+
+    // ---- Restrict to last 7 days ----
+    const today = new Date();
+    const cutoff = new Date();
+    cutoff.setDate(today.getDate() - 7);
+
+    const last7Days = filteredData.filter((item) => {
+      const rawDate = item?.Date || item?.booking || item?.bookingDate;
+      if (!rawDate) return false;
+      const d = new Date(rawDate);
+      return d >= cutoff && d <= today;
+    });
+
+    // ---- Chart Data ----
+    const chartData = {
+      labels: last7Days.map((item) => {
+        const d = new Date(item?.Date || item?.booking || item?.bookingDate);
+        const day = d.getDate().toString().padStart(2, "0");
+        const month = (d.getMonth() + 1).toString().padStart(2, "0");
+        const year = d.getFullYear().toString().slice(-2);
+        return `${day}-${month}-${year}`;
+      }),
+
+      pickup: last7Days.map((item) =>
+        (!item.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time &&
+         !item.Tracking_Destination_Branch_Received_Parcel_Time_Offline &&
+         !item.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int)
+          ? 1 : 0
+      ),
+
+      delivered: last7Days.map((item) =>
+        (item?.Tracking_Rider_Online_Booking_Delivary_Update_Time ||
+         item?.Tracking_Rider_Offline_Booking_Delivary_Update_Time ||
+         item?.Tracking_Destination_Branch_Delivery_Parcel_Time ||
+         item?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int ||
+         item?.Tracking_Destination_Branch_Delivery_Parcel_Int)
+          ? 1 : 0
+      ),
+    };
+
+    setFilteredChartData(chartData);
+
+    // ---- Pie Data ----
+    const pieData = {
+      parcelBooking: filteredData.length,
+      delivered: Total_Delivey_Complete,
+      partiallyDelivered: Total_Pickup_Done,
+      processing: totalPending_Parcel_Branch,
+      cancelled: Total_Return_Complete,
+      deleted: 0,
+      pendingDeliveries: totalPending_Parcel_Branch,
+      returned: Total_Return_Complete,
+    };
+
+    setFilteredPieData(pieData);
+  }
+}, [
+  parcelData,
+  fromDate,
+  toDate,
+  Total_Return_Complete,
+  Total_Delivey_Complete,
+  Total_Pickup_Done,
+  totalPending_Parcel_Branch,
+]);
+
 
 
 
     return (
         <div>
 
-            <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
+            
+
+
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
+                <HostStatsCard
+                    title="Total Booking Parcel"
+                    icon={<FaTruckPickup />}
+                    value={parcelData.length || 0}
+                    color="bg-blue-100"
+                />
+                <HostStatsCard
+                    title="Today Pickup Done"
+                    icon={<FaTruckPickup />}
+                    value={Total_Pickup_Done_Today 
+
+                        ||0
+                    }
+                    color="bg-green-100"
+                />
+                <HostStatsCard
+                    title="Total Pickup Done"
+                    icon={<FaTruckPickup />}
+                    value={Total_Pickup_Done || 0}
+                    color="bg-red-100"
+                />
+                <HostStatsCard
+                    title="Total Hub Transfer Complete"
+                    icon={<FaTruckPickup />}
+                    value={Total_Hub_Transfer || 0}
+                    color="bg-red-100"
+                />
+                <HostStatsCard
+                    title="Today New Parcel"
+                    icon={<FaTruckPickup />}
+                    value={Total_Booking_Today || 0}
+                    color="bg-green-100"
+                />
+                <HostStatsCard
+                    title="Total Pending Parcel"
+                    icon={<FaTruckPickup />}
+                    value={totalPending_Parcel_Branch || 0}
+                    color="bg-orange-100"
+                />
+                <HostStatsCard
+                    title="Today Parcel For Delivery"
+                    icon={<FaTruckPickup />}
+                    value={Total_Booking_Today || 0}
+                    color="bg-yellow-100"
+                />
+                <HostStatsCard
+                    title="Total Parcel For Delivery"
+                    icon={<FaTruckPickup />}
+                    value={parcelData.length || 0}
+                    color="bg-pink-100"
+                />
+                <HostStatsCard
+                    title="Today Delivery Complete"
+                    icon={<FaTruckPickup />}
+                    value={Total_Delivery_Complete_Today || 0}
+                    color="bg-cyan-100"
+                />
+                <HostStatsCard
+                    title="Today Delivery Pending"
+                    icon={<FaTruckPickup />}
+                    value={Today_Delivery_Pending || 0}
+                    color="bg-sky-100"
+                />
+                <HostStatsCard
+                    title="Total Hub Transfer"
+                    icon={<FaTruckPickup />}
+                    value={Total_Hub_Transfer || 0}
+                    color="bg-indigo-100"
+                />
+                <HostStatsCard
+                    title="Todays Cancel Parcel"
+                    icon={<FaTruckPickup />}
+                    value={Total_Return_Today || 0}
+                    color="bg-violet-100"
+                />
+                <HostStatsCard
+                    title="Total Delivery Complete"
+                    icon={<FaTruckPickup />}
+                    value={Total_Delivey_Complete || 0}
+                    color="bg-purple-100"
+                />
+                <HostStatsCard
+                    title="Total Return Parcel"
+                    icon={<FaTruckPickup />}
+                    value={Total_Return_Complete || 0}
+                    color="bg-rose-100"
+                />
+                <HostStatsCard
+                    title="Total Booking Amount"
+                    icon={<FaTruckPickup />}
+                    value={`${totalAmount_Booking_Branch} Tk` || 0}
+                    color="bg-blue-100"
+                />
+            </div>
+<div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
                 <div className="flex gap-6 mb-4">
                     <div>
                         <label className="font-semibold text-gray-700">From: </label>
@@ -215,109 +507,25 @@ const HostDashboard = () => {
                 <div className="flex flex-col lg:flex-row gap-6">
                     <div className="flex-1 hover:border-blue-400 border-[2px] bg-white border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
                         <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
-                        <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
+                          <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
                     </div>
                     <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
                         <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
-                        <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
+                        <ParcelPieChart 
+  data={filteredPieData || { 
+    parcelBooking: 0, 
+    delivered: 0, 
+    partiallyDelivered: 0, 
+    processing: 0, 
+    cancelled: 0, 
+    deleted: 0, 
+    pendingDeliveries: 0,
+    returned: 0
+  }} 
+/>
                     </div>
                 </div>
             </div>
-
-
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
-                <HostStatsCard
-                    title="Today Pickup Request"
-                    icon={<FaTruckPickup />}
-                    value={Total_Today_Pickup_Parcel || 0}
-                    color="bg-blue-100"
-                />
-                <HostStatsCard
-                    title="Today Pickup Done"
-                    icon={<FaTruckPickup />}
-                    value={pickupDonetData?.length}
-                    color="bg-green-100"
-                />
-                <HostStatsCard
-                    title="Total Pickup Done"
-                    icon={<FaTruckPickup />}
-                    value={totalPickupDonetData?.length}
-                    color="bg-red-100"
-                />
-                <HostStatsCard
-                    title="Total Hub Transfer Complete"
-                    icon={<FaTruckPickup />}
-                    value="0"
-                    color="bg-red-100"
-                />
-                <HostStatsCard
-                    title="Today New Parcel"
-                    icon={<FaTruckPickup />}
-                    value={todayNewParcelData?.length}
-                    color="bg-green-100"
-                />
-                <HostStatsCard
-                    title="Previous Pending Parcel"
-                    icon={<FaTruckPickup />}
-                    value="0"
-                    color="bg-orange-100"
-                />
-                <HostStatsCard
-                    title="Today Parcel For Delivery"
-                    icon={<FaTruckPickup />}
-                    value={pickupReadyForDeliveryData?.length}
-                    color="bg-yellow-100"
-                />
-                <HostStatsCard
-                    title="Total Parcel For Delivery"
-                    icon={<FaTruckPickup />}
-                    value={totalPickupReadyForDeliveryData?.length}
-                    color="bg-pink-100"
-                />
-                <HostStatsCard
-                    title="Today Delivery Complete"
-                    icon={<FaTruckPickup />}
-                    value={deliveryCompleteData?.length}
-                    color="bg-cyan-100"
-                />
-                <HostStatsCard
-                    title="Today Delivery Pending"
-                    icon={<FaTruckPickup />}
-                    value={pendingDeliveryData?.length}
-                    color="bg-sky-100"
-                />
-                <HostStatsCard
-                    title="Today Hub Transfer"
-                    icon={<FaTruckPickup />}
-                    value={todayHubTransferData?.length}
-                    color="bg-indigo-100"
-                />
-                <HostStatsCard
-                    title="Todays Cancel Parcel"
-                    icon={<FaTruckPickup />}
-                    value={cancledDeliveryData?.length}
-                    color="bg-violet-100"
-                />
-                <HostStatsCard
-                    title="Total Delivery Complete"
-                    icon={<FaTruckPickup />}
-                    value={totalDeliveryCompleteData?.length}
-                    color="bg-purple-100"
-                />
-                <HostStatsCard
-                    title="Total Return Parcel"
-                    icon={<FaTruckPickup />}
-                    value={totalCancledDeliveryData?.length}
-                    color="bg-rose-100"
-                />
-                <HostStatsCard
-                    title="Todays Collection Amount"
-                    icon={<FaTruckPickup />}
-                    value={totalAmount}
-                    color="bg-blue-100"
-                />
-            </div>
-
 
         </div>
     );

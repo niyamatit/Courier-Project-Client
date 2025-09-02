@@ -2,12 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 import { useState } from "react"; // Import useState for modal state
 import InterNationalPrintModal_Branch from "./InterNationalPrintModal_Branch";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const InterNational_Booking_Branch_History = () => {
+    const [verifiedUser] = useUsersData();
     const { data: Int_Booking_History, isLoading, error } = useQuery({
-        queryKey: ['Int_Booking_History'],
+        queryKey: ['Int_Booking_History', verifiedUser?.email],
         queryFn: async () => {
-            const response = await axiosSecure.get('/int');
+            const response = await axiosSecure.get(`/int/${verifiedUser?.email}`);
             return response.data;
         },
     });

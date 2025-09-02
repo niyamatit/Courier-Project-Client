@@ -189,20 +189,31 @@ useEffect(() => {
       return isAfterStartDate && isBeforeEndDate;
     });
 
+     const today = new Date();
+    const cutoff = new Date();
+    cutoff.setDate(today.getDate() - 7);
+
+    const last7Days = filteredData.filter((item) => {
+      const rawDate = item?.Date;
+      if (!rawDate) return false;
+      const d = new Date(rawDate);
+      return d >= cutoff && d <= today;
+    });
+
     // ---- Chart Data ----
     const chartData = {
-      labels: filteredData.map(item => {
+      labels: last7Days.map(item => {
         const d = new Date(item.Date);
         const day = d.getDate().toString().padStart(2, "0");
         const month = (d.getMonth() + 1).toString().padStart(2, "0");
         const year = d.getFullYear().toString().slice(-2); // last 2 digits
         return `${day}-${month}-${year}`; // Example: 25-08-25
       }),
-      pickup: filteredData.map(item => 
+      pickup: last7Days.map(item => 
         !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time && 
         !item?.Tracking_Rider_Merchant_Delivary_Update_Time ? 1 : 0
       ),
-      delivered: filteredData.map(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time ? 1 : 0),
+      delivered: last7Days.map(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time ? 1 : 0),
     };
 
     setFilteredChartData(chartData);
@@ -382,7 +393,7 @@ useEffect(() => {
 
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="flex-1 hover:border-blue-400 border-[2px] bg-white border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcels Charts</h2>
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days </h2>
             <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
           </div>
           <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
