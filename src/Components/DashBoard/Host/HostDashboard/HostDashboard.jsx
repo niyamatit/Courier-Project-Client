@@ -104,33 +104,41 @@ const HostDashboard = () => {
     //     },
     //     enabled: !!verifiedUser?.email,
     // });
-    const { data: Offline_Booking_Data = [] } = useQuery({
-        queryKey: ["Offline_Booking_Data", verifiedUser?.email],
-        queryFn: async () => {
-            const res = await axiosSecure.get(`/offline/${verifiedUser?.email}`);
-            return res.data;
-        },
-        enabled: !!verifiedUser?.email,
-    });
-    const { data: Online_Booking_Data = [] } = useQuery({
-        queryKey: ["Online_Booking_Data", verifiedUser?.email],
-        queryFn: async () => {
-            const res = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${verifiedUser?.email}`);
-            return res.data;
-        },
-        enabled: !!verifiedUser?.email,
-    });
-     const { data: Int_Booking_History } = useQuery({
-        queryKey: ['Int_Booking_History', verifiedUser?.email],
-        queryFn: async () => {
-            const response = await axiosSecure.get(`/int/${verifiedUser?.email}`);
-            return response.data;
-        },
-    });
+   const { data: Offline_Booking_Data = [] } = useQuery({
+  queryKey: ["Offline_Booking_Data", verifiedUser?.email],
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/offline/${verifiedUser?.email}`);
+    return res.data;
+  },
+  enabled: !!verifiedUser?.email,
+});
 
-    const parcelData = useMemo(() => {
-  return [...Offline_Booking_Data, ...Online_Booking_Data, ...Int_Booking_History];
+const { data: Online_Booking_Data = [] } = useQuery({
+  queryKey: ["Online_Booking_Data", verifiedUser?.email],
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${verifiedUser?.email}`);
+    return res.data;
+  },
+  enabled: !!verifiedUser?.email,
+});
+
+const { data: Int_Booking_History = [] } = useQuery({
+  queryKey: ['Int_Booking_History', verifiedUser?.email],
+  queryFn: async () => {
+    const response = await axiosSecure.get(`/int/${verifiedUser?.email}`);
+    return response.data;
+  },
+  enabled: !!verifiedUser?.email,
+});
+
+const parcelData = useMemo(() => {
+  return [
+    ...Offline_Booking_Data,
+    ...Online_Booking_Data,
+    ...Int_Booking_History,
+  ];
 }, [Offline_Booking_Data, Online_Booking_Data, Int_Booking_History]);
+
 
     // --------------------------For Today Pickup Parcels-------------
 
@@ -291,46 +299,45 @@ const Total_Delivery_Complete_Today = parcelData.reduce((total, booking) => {
 const Today_Delivery_Pending = Total_Booking_Today - Total_Delivery_Complete_Today;
 const Total_Delivey_Complete = parcelData.reduce((total, booking) => {
   if (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time || booking?.Tracking_Destination_Branch_Delivery_Parcel_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int || booking?.Tracking_Destination_Branch_Delivery_Parcel_Int) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+
+const totalPending_Parcel_Branch = (parcelData?.length) - Total_Delivey_Complete;
+const Total_Return_Complete = parcelData.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || booking?.Tracking_Destination_Branch_Returned_Parcel_Time || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time_Int) {
     return total + 1;  // Assuming codAmount is the field to sum
   }
   return total;  // If not 'cod', return the total unchanged
+}, 0);
+
+const Total_Return_Today = parcelData.reduce((total, booking) => {
+  const today = new Date().toISOString().split("T")[0]; // e.g. "2025-08-23"
+
+  const adminDate = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time);
+  const branchDate = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time);
+  const adminDate1 = formatDate(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time);
+  const branchDate1 = formatDate(booking?.Tracking_Destination_Branch_Returned_Parcel_Time);
+  const Int = formatDate(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time_Int);
+
+  if (adminDate === today || branchDate === today || adminDate1 === today || branchDate1 === today || Int === today) {
+    return total + 1;
+  }
+  return total;
+}, 0);
+
+const totalAmount_Booking_Branch = parcelData.reduce((total, booking) => {
+  
+  const amount = parseFloat(booking.amount || 0) || parseFloat(booking.totalCharge || 0) || parseFloat(booking.Total_Charge || 0);
+  return total + amount;
 }, 0);
 
 
     return (
         <div>
 
-            <div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
-                <div className="flex gap-6 mb-4">
-                    <div>
-                        <label className="font-semibold text-gray-700">From: </label>
-                        <DatePicker
-                            selected={fromDate}
-                            onChange={(date) => setFromDate(date)}
-                            className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-                    <div>
-                        <label className="font-semibold text-gray-700">To: </label>
-                        <DatePicker
-                            selected={toDate}
-                            onChange={(date) => setToDate(date)}
-                            className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-6">
-                    <div className="flex-1 hover:border-blue-400 border-[2px] bg-white border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
-                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
-                        <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
-                    </div>
-                    <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
-                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
-                        <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
-                    </div>
-                </div>
-            </div>
+            
 
 
               <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
@@ -368,21 +375,21 @@ const Total_Delivey_Complete = parcelData.reduce((total, booking) => {
                     color="bg-green-100"
                 />
                 <HostStatsCard
-                    title="Previous Pending Parcel"
+                    title="Total Pending Parcel"
                     icon={<FaTruckPickup />}
-                    value="0"
+                    value={totalPending_Parcel_Branch || 0}
                     color="bg-orange-100"
                 />
                 <HostStatsCard
                     title="Today Parcel For Delivery"
                     icon={<FaTruckPickup />}
-                    value={pickupReadyForDeliveryData?.length}
+                    value={Total_Booking_Today || 0}
                     color="bg-yellow-100"
                 />
                 <HostStatsCard
                     title="Total Parcel For Delivery"
                     icon={<FaTruckPickup />}
-                    value={totalPickupReadyForDeliveryData?.length}
+                    value={parcelData.length || 0}
                     color="bg-pink-100"
                 />
                 <HostStatsCard
@@ -398,15 +405,15 @@ const Total_Delivey_Complete = parcelData.reduce((total, booking) => {
                     color="bg-sky-100"
                 />
                 <HostStatsCard
-                    title="Today Hub Transfer"
+                    title="Total Hub Transfer"
                     icon={<FaTruckPickup />}
-                    value={todayHubTransferData?.length}
+                    value={Total_Hub_Transfer || 0}
                     color="bg-indigo-100"
                 />
                 <HostStatsCard
                     title="Todays Cancel Parcel"
                     icon={<FaTruckPickup />}
-                    value={cancledDeliveryData?.length}
+                    value={Total_Return_Today || 0}
                     color="bg-violet-100"
                 />
                 <HostStatsCard
@@ -418,17 +425,47 @@ const Total_Delivey_Complete = parcelData.reduce((total, booking) => {
                 <HostStatsCard
                     title="Total Return Parcel"
                     icon={<FaTruckPickup />}
-                    value={totalCancledDeliveryData?.length}
+                    value={Total_Return_Complete || 0}
                     color="bg-rose-100"
                 />
                 <HostStatsCard
-                    title="Todays Collection Amount"
+                    title="Total Booking Amount"
                     icon={<FaTruckPickup />}
-                    value={totalAmount}
+                    value={`${totalAmount_Booking_Branch} Tk` || 0}
                     color="bg-blue-100"
                 />
             </div>
+<div className="border-[2px] hover:shadow-2xl rounded-md hover:border-blue-400 p-2 md:p-3 lg:p-10">
+                <div className="flex gap-6 mb-4">
+                    <div>
+                        <label className="font-semibold text-gray-700">From: </label>
+                        <DatePicker
+                            selected={fromDate}
+                            onChange={(date) => setFromDate(date)}
+                            className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+                    <div>
+                        <label className="font-semibold text-gray-700">To: </label>
+                        <DatePicker
+                            selected={toDate}
+                            onChange={(date) => setToDate(date)}
+                            className="border w-full rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+                </div>
 
+                <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex-1 hover:border-blue-400 border-[2px] bg-white border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
+                        <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
+                    </div>
+                    <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
+                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
+                        <ParcelPieChart data={filteredPieData || { parcelBooking: 0, delivered: 0, partiallyDelivered: 0, processing: 0, cancelled: 0, deleted: 0 }} />
+                    </div>
+                </div>
+            </div>
 
         </div>
     );
