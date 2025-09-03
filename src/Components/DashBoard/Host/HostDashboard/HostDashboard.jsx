@@ -506,11 +506,11 @@ const totalAmount_Booking_Branch = parcelData.reduce((total, booking) => {
 
                 <div className="flex flex-col lg:flex-row gap-6">
                     <div className="flex-1 hover:border-blue-400 border-[2px] bg-white border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
-                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Parcel</h2>
+                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Last 7 Days Booking</h2>
                           <ParcelChart data={filteredChartData || { labels: [], pickup: [], delivered: [] }} />
                     </div>
                     <div className="flex-1 bg-white border-[2px] hover:border-blue-400 border-gray-200 rounded-lg shadow-lg hover:shadow-2xl p-6">
-                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Parcel Statistics</h2>
+                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Booking Statistics</h2>
                         <ParcelPieChart 
   data={filteredPieData || { 
     parcelBooking: 0, 
