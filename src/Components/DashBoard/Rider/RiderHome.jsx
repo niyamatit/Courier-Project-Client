@@ -6,7 +6,7 @@ import { Chart } from "react-google-charts";
 function Card({ info }) {
   const { numbers, title, bg } = info;
   return (
-    <div className="rounded-2xl shadow-md hover:shadow-xl transition duration-300 ease-in-out bg-white p-4">
+    <div className="rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 ease-in-out bg-gradient-to-br from-blue-50 to-blue-100 p-4">
       <div className="rounded-xl p-6 text-center" style={{ backgroundColor: bg }}>
         <h2 className="font-bold text-3xl text-gray-800">{numbers}</h2>
         <h2 className="font-semibold text-lg text-gray-700 mt-2">{title}</h2>
@@ -219,68 +219,68 @@ const RiderHome = () => {
   }
 
   const infos = [
-    { id: 1, bg: "#ace1f6", numbers: 0, title: "Today Pickup Percel" },
+    { id: 1, bg: "#e0f2fe", numbers: 0, title: "Today Pickup Percel" },
     {
       id: 2,
-      bg: "#f9a4a4",
+      bg: "#bfdbfe",
       numbers: Total_Pickup_Done_Today || 0,
       title: "Today Pickup Done",
     },
     {
       id: 3,
-      bg: "#c4f6c4",
+      bg: "#93c5fd",
       numbers: TotalDeliverPending_Today || 0,
       title: "Today Pickup Pending",
     },
-    { id: 4, bg: "#E6E6FA", numbers: 0, title: "Today Pickup Cancel" },
-    { id: 5, bg: "#F5FFFA", numbers: 0, title: "Today Delivery Parcel" },
+    { id: 4, bg: "#60a5fa", numbers: 0, title: "Today Pickup Cancel" },
+    { id: 5, bg: "#3b82f6", numbers: 0, title: "Today Delivery Parcel" },
     {
       id: 6,
-      bg: "#F0F8FF",
+      bg: "#2563eb",
       numbers: Total_Delivery_Complete_Today || 0,
       title: "Today Delivery Done",
     },
-    { id: 7, bg: "#FFF0F5", numbers: 0, title: "Today Delivery Pending" },
+    { id: 7, bg: "#1d4ed8", numbers: 0, title: "Today Delivery Pending" },
     {
       id: 8,
-      bg: "#F0FFF0",
+      bg: "#1e40af",
       numbers: Total_Return_Today || 0,
       title: "Today Return",
     },
     {
       id: 9,
-      bg: "#fca79e",
+      bg: "#38bdf8",
       numbers: TotalRiderData?.length || 0,
       title: "Total Pickup Percel",
     },
     {
       id: 10,
-      bg: "#caf8ca",
+      bg: "#0ea5e9",
       numbers: TotalRiderData?.length || 0,
       title: "Total Pickup Done",
     },
-    { id: 11, bg: "#87CEFA", numbers: 0, title: "Total Pickup Cancel" },
+    { id: 11, bg: "#0284c7", numbers: 0, title: "Total Pickup Cancel" },
     {
       id: 12,
-      bg: "#D8BFD8",
+      bg: "#0369a1",
       numbers: Total_Return_Complete || 0,
       title: "Total Return",
     },
     {
       id: 14,
-      bg: "#FFE4E1",
+      bg: "#075985",
       numbers: Total_Delivey_Complete || 0,
       title: "Total Delivery Done",
     },
     {
       id: 15,
-      bg: "#E6E6FA",
+      bg: "#0c4a6e",
       numbers: Total_Delivery_Pending || 0,
       title: "Total Delivery Pending",
     },
     {
       id: 17,
-      bg: "#FFDAB9",
+      bg: "#082f49",
       numbers: `${totalAmount_Booking_Branch || 0} Tk`,
       title: "Total Collection Amount",
     },
@@ -304,8 +304,8 @@ const RiderHome = () => {
   ];
 
   return (
-    <div className="text-black p-6">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">
+    <div className="text-black p-6 bg-gradient-to-b from-blue-50 to-blue-100 min-h-screen">
+      <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
         Today Parcel Pickup and Delivery Information
       </h2>
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
@@ -314,7 +314,7 @@ const RiderHome = () => {
         ))}
       </div>
 
-      <h2 className="text-3xl font-bold mt-10 mb-6 text-gray-800">
+      <h2 className="text-3xl font-bold mt-10 mb-6 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
         Total Parcel Pickup and Delivery Information
       </h2>
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
@@ -332,8 +332,8 @@ const RiderHome = () => {
       {/* Charts Section */}
       <div className="grid lg:grid-cols-2 gap-8 mt-16">
         {/* Pie Chart (3D) */}
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
+          <h3 className="text-xl font-semibold mb-4 text-blue-700">
             Parcel Distribution
           </h3>
           <Chart
@@ -341,13 +341,13 @@ const RiderHome = () => {
             width="100%"
             height="300px"
             data={pieData}
-            options={{ is3D: true }}
+            options={{ is3D: true, colors: ["#2563eb", "#38bdf8", "#93c5fd"] }}
           />
         </div>
 
         {/* Column Chart (3D effect) */}
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
+          <h3 className="text-xl font-semibold mb-4 text-blue-700">
             Today Trend
           </h3>
           <Chart
@@ -357,9 +357,9 @@ const RiderHome = () => {
             data={lineData}
             options={{
               is3D: true,
-              hAxis: { title: "Type" },
-              vAxis: { title: "Count" },
-              colors: ["#8884d8", "#4CAF50", "#FF6384"],
+              hAxis: { title: "Type", textStyle: { color: "#2563eb" } },
+              vAxis: { title: "Count", textStyle: { color: "#2563eb" } },
+              colors: ["#2563eb", "#38bdf8", "#60a5fa"],
             }}
           />
         </div>
