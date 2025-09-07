@@ -2,37 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../api/axiosSecure";
 import { Chart } from "react-google-charts";
-import {
-  FaBoxOpen,
-  FaShippingFast,
-  FaUndoAlt,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaHourglassHalf,
-  FaClipboardList,
-  FaMoneyBillWave,
-  FaTasks,
-} from "react-icons/fa";
 
-// Updated Card Component for a more modern look
 function Card({ info }) {
-  const { numbers, title, icon: Icon, color } = info;
+  const { numbers, title, bg } = info;
   return (
-    <div
-      className="bg-white rounded-xl shadow-md p-5 hover:shadow-2xl transition-shadow duration-300 ease-in-out"
-      style={{ borderLeft: `5px solid ${color}` }}
-    >
-      <div className="flex justify-between items-center">
-        <div>
-          <p className="text-3xl font-bold text-gray-800">{numbers}</p>
-          <h3 className="text-gray-500 font-medium mt-1">{title}</h3>
-        </div>
-        <div
-          className="p-4 rounded-full"
-          style={{ backgroundColor: `${color}20` }} // Use a transparent version of the color
-        >
-          <Icon className="text-2xl" style={{ color: color }} />
-        </div>
+    <div className="rounded-2xl shadow-md hover:shadow-xl transition duration-300 ease-in-out bg-white p-4">
+      <div className="rounded-xl p-6 text-center" style={{ backgroundColor: bg }}>
+        <h2 className="font-bold text-3xl text-gray-800">{numbers}</h2>
+        <h2 className="font-semibold text-lg text-gray-700 mt-2">{title}</h2>
       </div>
     </div>
   );
@@ -41,7 +18,6 @@ function Card({ info }) {
 const RiderHome = () => {
   const [verifiedUser] = useUsersData();
 
-  // --- Data fetching hooks remain unchanged ---
   const { data: RiderPickupOnline = [] } = useQuery({
     queryKey: ["RiderPickupOnline", verifiedUser?.email],
     queryFn: async () => {
@@ -82,7 +58,6 @@ const RiderHome = () => {
     },
   });
 
-  // --- Data aggregation and calculations remain unchanged ---
   const TotalRiderData = [
     ...RiderPickupOnline,
     ...RiderPickup_Offline,
@@ -90,6 +65,7 @@ const RiderHome = () => {
     ...RiderPickupMerchant,
   ];
 
+  // ---------------- Existing calculations unchanged ----------------
   const Total_Delivey_Complete = TotalRiderData.reduce((total, booking) => {
     if (
       booking?.Tracking_Rider_Online_Booking_Delivary_Update_Time ||
@@ -239,35 +215,77 @@ const RiderHome = () => {
   }, 0);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h2 className="text-2xl">Loading...</h2>
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
-  // Updated infos array with icons and a new color scheme
   const infos = [
-    // Today's Stats
-    { id: 1, color: "#0EA5E9", numbers: 0, title: "Today Pickup Parcel", icon: FaBoxOpen },
-    { id: 2, color: "#10B981", numbers: Total_Pickup_Done_Today || 0, title: "Today Pickup Done", icon: FaCheckCircle },
-    { id: 3, color: "#F59E0B", numbers: TotalDeliverPending_Today || 0, title: "Today Pickup Pending", icon: FaHourglassHalf },
-    { id: 4, color: "#EF4444", numbers: 0, title: "Today Pickup Cancel", icon: FaTimesCircle },
-    { id: 5, color: "#3B82F6", numbers: 0, title: "Today Delivery Parcel", icon: FaShippingFast },
-    { id: 6, color: "#22C55E", numbers: Total_Delivery_Complete_Today || 0, title: "Today Delivery Done", icon: FaCheckCircle },
-    { id: 7, color: "#F97316", numbers: 0, title: "Today Delivery Pending", icon: FaHourglassHalf },
-    { id: 8, color: "#F43F5E", numbers: Total_Return_Today || 0, title: "Today Return", icon: FaUndoAlt },
-    
-    // Total Stats
-    { id: 9, color: "#0EA5E9", numbers: TotalRiderData?.length || 0, title: "Total Pickup Parcel", icon: FaClipboardList },
-    { id: 10, color: "#10B981", numbers: TotalRiderData?.length || 0, title: "Total Pickup Done", icon: FaTasks },
-    { id: 11, color: "#EF4444", numbers: 0, title: "Total Pickup Cancel", icon: FaTimesCircle },
-    { id: 12, color: "#F43F5E", numbers: Total_Return_Complete || 0, title: "Total Return", icon: FaUndoAlt },
-    { id: 14, color: "#22C55E", numbers: Total_Delivey_Complete || 0, title: "Total Delivery Done", icon: FaCheckCircle },
-    { id: 15, color: "#F59E0B", numbers: Total_Delivery_Pending || 0, title: "Total Delivery Pending", icon: FaHourglassHalf },
-    { id: 17, color: "#8B5CF6", numbers: `${totalAmount_Booking_Branch || 0} Tk`, title: "Total Collection Amount", icon: FaMoneyBillWave },
+    { id: 1, bg: "#ace1f6", numbers: 0, title: "Today Pickup Percel" },
+    {
+      id: 2,
+      bg: "#f9a4a4",
+      numbers: Total_Pickup_Done_Today || 0,
+      title: "Today Pickup Done",
+    },
+    {
+      id: 3,
+      bg: "#c4f6c4",
+      numbers: TotalDeliverPending_Today || 0,
+      title: "Today Pickup Pending",
+    },
+    { id: 4, bg: "#E6E6FA", numbers: 0, title: "Today Pickup Cancel" },
+    { id: 5, bg: "#F5FFFA", numbers: 0, title: "Today Delivery Parcel" },
+    {
+      id: 6,
+      bg: "#F0F8FF",
+      numbers: Total_Delivery_Complete_Today || 0,
+      title: "Today Delivery Done",
+    },
+    { id: 7, bg: "#FFF0F5", numbers: 0, title: "Today Delivery Pending" },
+    {
+      id: 8,
+      bg: "#F0FFF0",
+      numbers: Total_Return_Today || 0,
+      title: "Today Return",
+    },
+    {
+      id: 9,
+      bg: "#fca79e",
+      numbers: TotalRiderData?.length || 0,
+      title: "Total Pickup Percel",
+    },
+    {
+      id: 10,
+      bg: "#caf8ca",
+      numbers: TotalRiderData?.length || 0,
+      title: "Total Pickup Done",
+    },
+    { id: 11, bg: "#87CEFA", numbers: 0, title: "Total Pickup Cancel" },
+    {
+      id: 12,
+      bg: "#D8BFD8",
+      numbers: Total_Return_Complete || 0,
+      title: "Total Return",
+    },
+    {
+      id: 14,
+      bg: "#FFE4E1",
+      numbers: Total_Delivey_Complete || 0,
+      title: "Total Delivery Done",
+    },
+    {
+      id: 15,
+      bg: "#E6E6FA",
+      numbers: Total_Delivery_Pending || 0,
+      title: "Total Delivery Pending",
+    },
+    {
+      id: 17,
+      bg: "#FFDAB9",
+      numbers: `${totalAmount_Booking_Branch || 0} Tk`,
+      title: "Total Collection Amount",
+    },
   ];
-  
+
   const pieData = [
     ["Status", "Count"],
     ["Delivery Done", Total_Delivey_Complete],
@@ -275,74 +293,75 @@ const RiderHome = () => {
     ["Pending", Total_Delivery_Pending],
   ];
 
-  const pieOptions = {
-    title: "Overall Parcel Distribution",
-    titleTextStyle: { color: "#334155", fontSize: 18, bold: false },
-    pieHole: 0.4, // Creates a donut chart
-    colors: ["#3B82F6", "#EF4444", "#F59E0B"], // Blue, Red, Amber
-    backgroundColor: "transparent",
-    legend: { position: "bottom" },
-    chartArea: { left: 10, top: 40, width: "90%", height: "75%" },
-  };
-
-  const columnData = [
-    ["Status", "Count", { role: "style" }],
-    ["Pickup Done", Total_Pickup_Done_Today, "#60A5FA"], // Light Blue
-    ["Delivery Done", Total_Delivery_Complete_Today, "#34D399"], // Green
-    ["Return", Total_Return_Today, "#F87171"], // Light Red
+  const lineData = [
+    ["Type", "Pickup Done", "Delivery Done", "Return"],
+    [
+      "Today",
+      Total_Pickup_Done_Today,
+      Total_Delivery_Complete_Today,
+      Total_Return_Today,
+    ],
   ];
 
-  const columnOptions = {
-    title: "Today's Performance Summary",
-    titleTextStyle: { color: "#334155", fontSize: 18, bold: false },
-    hAxis: { title: "Status", textStyle: { color: "#334155" } },
-    vAxis: { title: "Count", minValue: 0, textStyle: { color: "#334155" } },
-    legend: { position: "none" },
-    backgroundColor: "transparent",
-    chartArea: { left: 60, top: 40, width: "85%", height: "70%" },
-  };
-
   return (
-    <div className="text-black p-4 md:p-8 bg-slate-50 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold mb-6 text-slate-800">
-          Today's Dashboard
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {infos?.slice(0, 8).map((info) => (
-            <Card key={info.id} info={info} />
-          ))}
+    <div className="text-black p-6">
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">
+        Today Parcel Pickup and Delivery Information
+      </h2>
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
+        {infos?.slice(0, 8).map((info) => (
+          <Card key={info.id} info={info} />
+        ))}
+      </div>
+
+      <h2 className="text-3xl font-bold mt-10 mb-6 text-gray-800">
+        Total Parcel Pickup and Delivery Information
+      </h2>
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
+        {infos?.slice(8, 16).map((info) => (
+          <Card key={info.id} info={info} />
+        ))}
+      </div>
+
+      <div className="grid mt-12 lg:grid-cols-3 md:grid-cols-2 gap-6">
+        {infos?.slice(16, 19).map((info) => (
+          <Card key={info.id} info={info} />
+        ))}
+      </div>
+
+      {/* Charts Section */}
+      <div className="grid lg:grid-cols-2 gap-8 mt-16">
+        {/* Pie Chart (3D) */}
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+            Parcel Distribution
+          </h3>
+          <Chart
+            chartType="PieChart"
+            width="100%"
+            height="300px"
+            data={pieData}
+            options={{ is3D: true }}
+          />
         </div>
 
-        <h2 className="text-3xl font-bold mt-12 mb-6 text-slate-800">
-          Overall Statistics
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {infos?.slice(8, 15).map((info) => (
-            <Card key={info.id} info={info} />
-          ))}
-        </div>
-
-        {/* Charts Section */}
-        <div className="grid lg:grid-cols-2 gap-8 mt-12">
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <Chart
-              chartType="PieChart"
-              width="100%"
-              height="350px"
-              data={pieData}
-              options={pieOptions}
-            />
-          </div>
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <Chart
-              chartType="ColumnChart"
-              width="100%"
-              height="350px"
-              data={columnData}
-              options={columnOptions}
-            />
-          </div>
+        {/* Column Chart (3D effect) */}
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+            Today Trend
+          </h3>
+          <Chart
+            chartType="ColumnChart"
+            width="100%"
+            height="300px"
+            data={lineData}
+            options={{
+              is3D: true,
+              hAxis: { title: "Type" },
+              vAxis: { title: "Count" },
+              colors: ["#8884d8", "#4CAF50", "#FF6384"],
+            }}
+          />
         </div>
       </div>
     </div>
