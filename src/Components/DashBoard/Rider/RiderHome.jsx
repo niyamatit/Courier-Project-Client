@@ -2,16 +2,27 @@ import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../api/axiosSecure";
 import { Chart } from "react-google-charts";
+import { motion } from "framer-motion";
 
 function Card({ info }) {
   const { numbers, title, bg } = info;
   return (
-    <div className="rounded-2xl shadow-md hover:shadow-xl transition duration-300 ease-in-out bg-white p-4">
-      <div className="rounded-xl p-6 text-center" style={{ backgroundColor: bg }}>
-        <h2 className="font-bold text-3xl text-gray-800">{numbers}</h2>
-        <h2 className="font-semibold text-lg text-gray-700 mt-2">{title}</h2>
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 ease-in-out bg-gradient-to-br from-white to-blue-50"
+    >
+      <div
+        className="rounded-xl p-6 text-center"
+        style={{ backgroundColor: bg }}
+      >
+        <h2 className="font-bold text-4xl text-gray-900 drop-shadow-sm">
+          {numbers}
+        </h2>
+        <h2 className="font-semibold text-lg text-gray-700 mt-2">
+          {title}
+        </h2>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -99,7 +110,9 @@ const RiderHome = () => {
   const totalAmount_Booking_Branch = TotalRiderData.reduce((total, booking) => {
     const amount =
       parseFloat(booking.Tracking_Rider_Merchant_Delivary_Update_amount || 0) ||
-      parseFloat(booking.Tracking_Rider_Online_Booking_Delivary_Update_amount_Int || 0) ||
+      parseFloat(
+        booking.Tracking_Rider_Online_Booking_Delivary_Update_amount_Int || 0
+      ) ||
       parseFloat(
         booking.Tracking_Rider_Online_Booking_Delivary_Update_amount ||
           parseFloat(booking?.Tracking_Rider_Offline_Booking_Delivary_Update_amount) ||
@@ -219,43 +232,43 @@ const RiderHome = () => {
   }
 
   const infos = [
-    { id: 1, bg: "#ace1f6", numbers: 0, title: "Today Pickup Percel" },
+    { id: 1, bg: "#d0ebff", numbers: 0, title: "Today Pickup Percel" },
     {
       id: 2,
-      bg: "#f9a4a4",
+      bg: "#ffccd5",
       numbers: Total_Pickup_Done_Today || 0,
       title: "Today Pickup Done",
     },
     {
       id: 3,
-      bg: "#c4f6c4",
+      bg: "#d3f9d8",
       numbers: TotalDeliverPending_Today || 0,
       title: "Today Pickup Pending",
     },
-    { id: 4, bg: "#E6E6FA", numbers: 0, title: "Today Pickup Cancel" },
-    { id: 5, bg: "#F5FFFA", numbers: 0, title: "Today Delivery Parcel" },
+    { id: 4, bg: "#f3e8ff", numbers: 0, title: "Today Pickup Cancel" },
+    { id: 5, bg: "#e0f7fa", numbers: 0, title: "Today Delivery Parcel" },
     {
       id: 6,
-      bg: "#F0F8FF",
+      bg: "#e6f7ff",
       numbers: Total_Delivery_Complete_Today || 0,
       title: "Today Delivery Done",
     },
-    { id: 7, bg: "#FFF0F5", numbers: 0, title: "Today Delivery Pending" },
+    { id: 7, bg: "#ffe4ec", numbers: 0, title: "Today Delivery Pending" },
     {
       id: 8,
-      bg: "#F0FFF0",
+      bg: "#f0fff4",
       numbers: Total_Return_Today || 0,
       title: "Today Return",
     },
     {
       id: 9,
-      bg: "#fca79e",
+      bg: "#ffe0e0",
       numbers: TotalRiderData?.length || 0,
       title: "Total Pickup Percel",
     },
     {
       id: 10,
-      bg: "#caf8ca",
+      bg: "#caffbf",
       numbers: TotalRiderData?.length || 0,
       title: "Total Pickup Done",
     },
@@ -268,19 +281,19 @@ const RiderHome = () => {
     },
     {
       id: 14,
-      bg: "#FFE4E1",
+      bg: "#ffe4e1",
       numbers: Total_Delivey_Complete || 0,
       title: "Total Delivery Done",
     },
     {
       id: 15,
-      bg: "#E6E6FA",
+      bg: "#e0e7ff",
       numbers: Total_Delivery_Pending || 0,
       title: "Total Delivery Pending",
     },
     {
       id: 17,
-      bg: "#FFDAB9",
+      bg: "#ffd6a5",
       numbers: `${totalAmount_Booking_Branch || 0} Tk`,
       title: "Total Collection Amount",
     },
@@ -304,8 +317,8 @@ const RiderHome = () => {
   ];
 
   return (
-    <div className="text-black p-6">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">
+    <div className="text-black p-6 bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen">
+      <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 drop-shadow-sm">
         Today Parcel Pickup and Delivery Information
       </h2>
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
@@ -314,7 +327,7 @@ const RiderHome = () => {
         ))}
       </div>
 
-      <h2 className="text-3xl font-bold mt-10 mb-6 text-gray-800">
+      <h2 className="text-4xl font-extrabold mt-16 mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 drop-shadow-sm">
         Total Parcel Pickup and Delivery Information
       </h2>
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
@@ -323,17 +336,22 @@ const RiderHome = () => {
         ))}
       </div>
 
-      <div className="grid mt-12 lg:grid-cols-3 md:grid-cols-2 gap-6">
+      <div className="grid mt-16 lg:grid-cols-3 md:grid-cols-2 gap-6">
         {infos?.slice(16, 19).map((info) => (
           <Card key={info.id} info={info} />
         ))}
       </div>
 
       {/* Charts Section */}
-      <div className="grid lg:grid-cols-2 gap-8 mt-16">
+      <div className="grid lg:grid-cols-2 gap-8 mt-20">
         {/* Pie Chart (3D) */}
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl"
+        >
+          <h3 className="text-2xl font-semibold mb-6 text-gray-800">
             Parcel Distribution
           </h3>
           <Chart
@@ -341,13 +359,18 @@ const RiderHome = () => {
             width="100%"
             height="300px"
             data={pieData}
-            options={{ is3D: true }}
+            options={{ is3D: true, colors: ["green", "red", "#F59E0B"] }}
           />
-        </div>
+        </motion.div>
 
-        {/* Column Chart (3D effect) */}
-        <div className="bg-white rounded-2xl shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+        {/* Column Chart */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl"
+        >
+          <h3 className="text-2xl font-semibold mb-6 text-gray-800">
             Today Trend
           </h3>
           <Chart
@@ -356,13 +379,13 @@ const RiderHome = () => {
             height="300px"
             data={lineData}
             options={{
-              is3D: true,
               hAxis: { title: "Type" },
               vAxis: { title: "Count" },
-              colors: ["#8884d8", "#4CAF50", "#FF6384"],
+              colors: ["#3B82F6", "#10B981", "#F43F5E"],
+              legend: { position: "bottom" },
             }}
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   );
