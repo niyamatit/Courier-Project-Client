@@ -146,7 +146,7 @@ const [isVerifying, setIsVerifying] = useState(false);
   }
 };
 
-
+const ReturnStatus = allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_Returned || allBookings?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned || allBookings?.Tracking_Rider_Merchant_Delivary_Update_Returned || allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_Successful_Int || allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int ||  allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int
   return (
     <div className="p-4">
       <h2 className="text-3xl font-bold mb-10 text-center mt-5">
@@ -258,23 +258,34 @@ const [isVerifying, setIsVerifying] = useState(false);
                       parseFloat(booking?.receiverPay) ||
                       0}
                   </td>
-                  {booking?.conditionCharge ||
-                  parseFloat(booking?.receiverPay) ? (
-                    booking?.Admin_Accept_Payment_Amount ? (
-                      <td className="border px-4 text-green-500 py-2">Paid</td>
-                    ) : (
-                      <td className="border px-4 py-2 text-red-600">Due</td>
-                    )
-                  ) : (
-                    <td className="border px-4 py-2">N/A</td>
-                  )}
+                 {(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned ||
+  booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned ||
+  booking?.Tracking_Rider_Merchant_Delivary_Update_Returned ||
+  booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful_Int ||
+  booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int) ? (
+  <td className="border px-4 py-2 text-yellow-600">Returned</td>
+) : booking?.conditionCharge || parseFloat(booking?.receiverPay) ? (
+  booking?.Admin_Accept_Payment_Amount ? (
+    <td className="border px-4 text-green-500 py-2">Paid</td>
+  ) : (
+    <td className="border px-4 py-2 text-red-600">Due</td>
+  )
+) : (
+  <td className="border px-4 py-2">N/A</td>
+)}
+
+
                   <td className="border px-4 py-2">
                     <button
                       className="bg-blue-500 text-white px-4 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={
                         !(booking?.conditionCharge ||
                           parseFloat(booking?.receiverPay)) ||
-                        booking?.Admin_Accept_Payment_Amount
+                        booking?.Admin_Accept_Payment_Amount || booking?.ReturnStatus ||(booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned ||
+  booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned ||
+  booking?.Tracking_Rider_Merchant_Delivary_Update_Returned ||
+  booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful_Int ||
+  booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int)
                       }
                       onClick={() => setSelectedBooking(booking)}
                     >
