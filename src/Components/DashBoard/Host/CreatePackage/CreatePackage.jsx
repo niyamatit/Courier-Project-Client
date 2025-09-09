@@ -489,7 +489,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
 
     const fetchDeliveryRetrunData = async (recipientMobile)=>{
         try{
-           const res = await axiosSecure.get(`package/search/for/info/${recipientMobile}`)
+           const res = await axiosSecure.get(`package/search/for/info/again/and/again/${recipientMobile}`)
            const data = res.data
 
            const Total_Delivey_Complete = data.reduce((total, booking) => {
