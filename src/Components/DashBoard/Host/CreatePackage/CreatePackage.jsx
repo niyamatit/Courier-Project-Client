@@ -55,6 +55,7 @@ const [autoRateOverride, setAutoRateOverride] = useState(false);
     const [DeliveryComplete, setDeliveryComplete] = useState(0);
     const [DeliveryPending, setDeliveryPending] = useState(0);
     const [ReNumber, SetNumber] = useState(0);
+    const [TotalReturned, setReturned] = useState(0);
     
     // Update weightCharge effect
     useEffect(() => {
@@ -497,10 +498,18 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
   }
   return total; 
 }, 0);
-const DeliveryPending = data.length - (Total_Delivey_Complete)
+           const Total_Returned = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+
+const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
 
 setDeliveryComplete(Total_Delivey_Complete)
 setDeliveryPending(DeliveryPending)
+setReturned(Total_Returned)
 
            console.log(data,"Receiver  Data");
         }catch(err){
@@ -726,8 +735,9 @@ useEffect(() => {
 {
    ReNumber.length > 10 &&
         <div className="flex gap-2">
-            <p className="text-green-500 mt-1"> Delivery Complete: {DeliveryComplete},</p>
+            <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
         <p className="text-yellow-800 mt-1"> Delivery Pending: {DeliveryPending}</p>
+        <p className="text-red-800 mt-1"> Returned: {TotalReturned}</p>
         </div>
     
 }
