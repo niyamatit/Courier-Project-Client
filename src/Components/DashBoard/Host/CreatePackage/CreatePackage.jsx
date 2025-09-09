@@ -52,6 +52,10 @@ const CreatePackage = () => {
     const [qty, setQty] = useState('');
 const [autoRateOverride, setAutoRateOverride] = useState(false);
     const [userModified, setUserModified] = useState(false);
+    const [DeliveryComplete, setDeliveryComplete] = useState(0);
+    const [DeliveryPending, setDeliveryPending] = useState(0);
+    const [ReNumber, SetNumber] = useState(0);
+    const [TotalReturned, setReturned] = useState(0);
     
     // Update weightCharge effect
     useEffect(() => {
@@ -482,6 +486,36 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
         form.reset();
         setAmount('');
     };
+
+    const fetchDeliveryRetrunData = async (recipientMobile)=>{
+        try{
+           const res = await axiosSecure.get(`package/search/for/info/${recipientMobile}`)
+           const data = res.data
+
+           const Total_Delivey_Complete = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+           const Total_Returned = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+
+const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
+
+setDeliveryComplete(Total_Delivey_Complete)
+setDeliveryPending(DeliveryPending)
+setReturned(Total_Returned)
+
+           console.log(data,"Receiver  Data");
+        }catch(err){
+console.log(err);
+        }
+    }
     const fetchUserData = async (senderMobile) => {
         try {
             const response = await axiosSecure.get(`packagfhguieormbncdmnn44ge/sender/${senderMobile}`);
@@ -500,8 +534,10 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
     
     const handleSenderMobileChange = (e) => {
         const senderMobile = e.target.value;
+        
         if (senderMobile.length === 11) { 
             fetchUserData(senderMobile);
+           
         }
     };
     const fetchUserDataReceiver = async (recipientMobile) => {
@@ -522,8 +558,10 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
     
     const handleReceiverMobileChange = (e) => {
         const recipientMobile = e.target.value;
+        SetNumber(recipientMobile)
         if (recipientMobile.length === 11) { 
             fetchUserDataReceiver(recipientMobile);
+             fetchDeliveryRetrunData(recipientMobile)
         }
     };
     
@@ -694,7 +732,15 @@ useEffect(() => {
                         //minLength={11}={11}
                         ////minLength={11}={11}
                         required />
-
+{
+   ReNumber.length > 10 &&
+        <div className="flex gap-2">
+            <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
+        <p className="text-yellow-800 mt-1"> Delivery Pending: {DeliveryPending}</p>
+        <p className="text-red-800 mt-1"> Returned: {TotalReturned}</p>
+        </div>
+    
+}
                     </div>
                     <div className="form-control md:w-1/2">
                         <label className="label">

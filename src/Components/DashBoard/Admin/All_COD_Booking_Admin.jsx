@@ -67,23 +67,24 @@ const [isVerifying, setIsVerifying] = useState(false);
 
   // Step 2: Send OTP
   const handleSendOtp = async () => {
-    const otpGenerated = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
     const SMS_API = "https://bulksmsbd.net/api/smsapi";
     const API_KEY = "VSkytluAnQbG0vsCEbHQ";
     const SENDER_ID = "8809617624950";
 
-    const senderMessage = `Your OTP is ${otpGenerated}\nThanks Niyamat Express.`;
+    const senderMessage = `Your COD Amount ${selectedBooking.condition ||
+                  selectedBooking.senderReceive} TK.\nYour OTP is ${otpGenerated}\n Niyamat Express Courier and Parcel Service`;
 
     try {
       await axios.get(
-        `${SMS_API}?api_key=${API_KEY}&type=text&number=${enteredNumber}&senderid=${SENDER_ID}&message=${encodeURIComponent(
+        `${SMS_API}?api_key=${API_KEY}&type=text&number=${selectedBooking.senderMobile || selectedBooking.senderContactNo}&senderid=${SENDER_ID}&message=${encodeURIComponent(
           senderMessage
         )}`
       );
 
       const res = await axiosSecure.post("/otp/save", {
         otp: otpGenerated,
-        number: enteredNumber,
+        number: selectedBooking.senderMobile || selectedBooking.senderContactNo,
       });
 
       setServerOtpID(res.data.id);
@@ -356,13 +357,14 @@ const ReturnStatus = allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg">
             <h3 className="text-lg font-bold mb-3">
-              Enter Number to Send OTP
+              The Number to Send OTP
             </h3>
             <input
               type="text"
               className="w-full border p-2 mb-4"
-              value={enteredNumber}
-              onChange={(e) => setEnteredNumber(e.target.value)}
+              value={selectedBooking.senderMobile || selectedBooking.senderContactNo}
+              readOnly
+              onChange={(e) => setEnteredNumber(selectedBooking.senderMobile || selectedBooking.senderContactNo)}
               placeholder="Enter mobile number"
             />
             <div className="flex justify-end gap-2">
