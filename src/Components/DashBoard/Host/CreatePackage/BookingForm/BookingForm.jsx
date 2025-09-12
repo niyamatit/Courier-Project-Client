@@ -36,6 +36,11 @@ const BookingForm = () => {
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
   const [lot, setLot] = useState();
   const [PaymentOption , setSelectedPayment] = useState('');
+  const [DeliveryStatusNumber , setForDeliveryContact] = useState('');
+  const [DeliveryComplete , setDeliveryComplete] = useState(0);
+  const [DeliveryPending , setDeliveryPending] = useState(0);
+  const [Returned , setReturned] = useState(0);
+  // const [receiverContactNo, setReceiverContactNo] = useState("");
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -438,7 +443,43 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
     fetchReceiverDetails();
   }, [receiverContactNo]);
 
+useEffect(()=>{
 
+const fetchDeliveryRetrunData = async (DeliveryStatusNumber)=>{
+        try{
+           const res = await axiosSecure.get(`/offline/for/search/${DeliveryStatusNumber}`)
+           const data = res.data
+        console.log(data,"data");
+           const Total_Delivey_Complete = data.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || booking?.Tracking_Rider_Offline_Booking_Delivary_Update) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+           const Total_Returned = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned) {
+    return total + 1; 
+  }
+  
+  return total; 
+}, 0);
+
+const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
+
+setDeliveryComplete(Total_Delivey_Complete)
+setDeliveryPending(DeliveryPending)
+setReturned(Total_Returned)
+console.log(DeliveryComplete,"Delivery complete");
+console.log(Returned,"retun complete");
+
+           console.log(data,"Receiver  Data");
+        }catch(err){
+console.log(err);
+        }
+    }
+fetchDeliveryRetrunData()
+
+},[DeliveryStatusNumber])
 
 
   const { data: users = [] } = useQuery({
@@ -627,7 +668,9 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 errors={errors}
                 label="Contact No."
                 placeholder="receiver contact no."
-                onChange={(e) => setReceiverContactNo(e.target.value)}
+                onChange={(e) => {setReceiverContactNo(e.target.value);
+                  setForDeliveryContact(e.target.value) 
+                }}
                 type="number"
                 //minLength={11}={11}
                 minLength={11}
