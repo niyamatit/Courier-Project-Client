@@ -684,7 +684,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 {
    DeliveryStatusNumber.length > 10 &&
         <div className="flex gap-3 mt-1">
-            <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
+        <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
         <p className="text-yellow-800 mt-1"> Delivery Pending: {DeliveryPending}</p>
         <p className="text-red-800 mt-1"> Returned: {Returned}</p>
         </div>

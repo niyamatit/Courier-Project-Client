@@ -730,7 +730,7 @@ const MerchantAddParcel = () => {
     } else if (selectedDistrict) {
       setDeliveryCharge(parseInt(verifiedUser?.overallBangladeshCharge) || 120)
     }
-  }, [selectedDistrict])
+  }, [selectedDistrict, verifiedUser]);
   // For Wight Charge 
   useEffect(() => {
     if (selectedDistrict === verifiedUser?.Merchant_District_ID || selectedDistrict === "47") {
@@ -738,7 +738,7 @@ const MerchantAddParcel = () => {
     } else if (selectedDistrict) {
       setweightCharge(parseInt(verifiedUser?.overallBangladeshWeightCharge) || 25)
     }
-  }, [selectedDistrict])
+  }, [selectedDistrict,verifiedUser])
 // Merchant Cn Number
 const [MerchantCnNumber, setMerchantCnNumber] = useState("");
 
