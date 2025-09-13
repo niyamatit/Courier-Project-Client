@@ -62,9 +62,7 @@ const fetchDeliveryRetrunData = async ()=>{
         try{
            const res = await axiosSecure.get(`/offline/for/search/${DeliveryStatusNumber}`)
            const data = res.data
-           console.log(res.data,"res data");
-        console.log(data,"data");
-        console.log(DeliveryStatusNumber,"receiverContactNo2");
+         
            const Total_Delivey_Complete = data.reduce((total, booking) => {
   if (booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || booking?.Tracking_Rider_Offline_Booking_Delivary_Update) {
     return total + 1; 
@@ -84,11 +82,9 @@ const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
 setDeliveryComplete(Total_Delivey_Complete)
 setDeliveryPending(DeliveryPending)
 setReturned(Total_Returned)
-console.log(DeliveryComplete,"Delivery complete");
-console.log(Returned,"retun complete");
-console.log(DeliveryPending,"Delivery pending");
 
-           console.log(data,"Receiver  Data");
+
+           
         }catch(err){
 console.log(err);
 console.log(err.message,"error message");

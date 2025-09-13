@@ -24,6 +24,10 @@ const MerchantAddParcel = () => {
     address: '',
 
   });
+   const [DeliveryStatusNumber , setForDeliveryContact] = useState('');
+  const [DeliveryComplete , setDeliveryComplete] = useState(0);
+  const [DeliveryPending , setDeliveryPending] = useState(0);
+  const [Returned , setReturned] = useState(0);
   const [collected, setCollected] = useState("");
   const [verifiedUser] = useUsersData();
   const closeModal = () => {
@@ -799,7 +803,7 @@ const incrementCnNumber = (cnNumber) => {
     
      
     const ParcelProductDetails = await axiosSecure.post("/Parcel", PercelInformation);
-    console.log(ParcelProductDetails.data);
+    // console.log(ParcelProductDetails.data);
     if (ParcelProductDetails.data.insertedId) {
       Swal.fire({
         position: "top-end",
@@ -839,6 +843,45 @@ const incrementCnNumber = (cnNumber) => {
 
     fetchCustomerDetails();
   }, [contactNumber]);
+
+
+  useEffect(()=>{
+
+const fetchDeliveryRetrunData = async ()=>{
+        try{
+           const res = await axiosSecure.get(`/parcel/for/search/${contactNumber}`)
+           const data = res.data
+            // console.log(data,"data from parcel for search")
+           const Total_Delivey_Complete = data.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Merchant_Delivary_Update_Successful || booking?.Tracking_Rider_Merchant_Delivary_Update) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+           const Total_Returned = data.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Merchant_Delivary_Update_Return_Time || booking?.Tracking_Rider_Merchant_Delivary_Update_Returned) {
+    return total + 1; 
+  }
+  
+  return total; 
+}, 0);
+
+const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
+
+setDeliveryComplete(Total_Delivey_Complete)
+setDeliveryPending(DeliveryPending)
+setReturned(Total_Returned)
+
+
+           
+        }catch(err){
+console.log(err);
+// console.log(err.message,"error message");
+        }
+    }
+fetchDeliveryRetrunData()
+
+},[contactNumber,DeliveryComplete,Returned,DeliveryPending])
 
   const codCharge = 0;
 
@@ -888,6 +931,15 @@ const incrementCnNumber = (cnNumber) => {
                         }`}
                       onChange={(e) => setContactNumber(e.target.value)}
                     />
+                    {
+   contactNumber.length > 10 &&
+        <div className="flex gap-3 mt-1">
+            <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
+        <p className="text-yellow-800 mt-1"> Delivery Pending: {DeliveryPending}</p>
+        <p className="text-red-800 mt-1"> Returned: {Returned}</p>
+        </div>
+    
+}
                     {errors.contactNumber && (
                       <span className="text-red-500">This field is required</span>
                     )}
