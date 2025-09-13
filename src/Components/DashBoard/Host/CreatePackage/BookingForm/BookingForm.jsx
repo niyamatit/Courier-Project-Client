@@ -36,6 +36,11 @@ const BookingForm = () => {
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
   const [lot, setLot] = useState();
   const [PaymentOption , setSelectedPayment] = useState('');
+  const [DeliveryStatusNumber , setForDeliveryContact] = useState('');
+  const [DeliveryComplete , setDeliveryComplete] = useState(0);
+  const [DeliveryPending , setDeliveryPending] = useState(0);
+  const [Returned , setReturned] = useState(0);
+  // const [receiverContactNo, setReceiverContactNo] = useState("");
   const [senderInfo, setSenderInfo] = useState({
     name: "",
     address: "",
@@ -51,7 +56,43 @@ const BookingForm = () => {
   };
   const queryClient = useQueryClient();
 
+useEffect(()=>{
 
+const fetchDeliveryRetrunData = async ()=>{
+        try{
+           const res = await axiosSecure.get(`/offline/for/search/${DeliveryStatusNumber}`)
+           const data = res.data
+         
+           const Total_Delivey_Complete = data.reduce((total, booking) => {
+  if (booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || booking?.Tracking_Rider_Offline_Booking_Delivary_Update) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+           const Total_Returned = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned) {
+    return total + 1; 
+  }
+  
+  return total; 
+}, 0);
+
+const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
+
+setDeliveryComplete(Total_Delivey_Complete)
+setDeliveryPending(DeliveryPending)
+setReturned(Total_Returned)
+
+
+           
+        }catch(err){
+console.log(err);
+console.log(err.message,"error message");
+        }
+    }
+fetchDeliveryRetrunData()
+
+},[DeliveryStatusNumber,DeliveryComplete,Returned,receiverContactNo])
 
 
   useEffect(() => {
@@ -428,6 +469,9 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
 
             setReceiverInfo({ ReceiverName: "", ReceiverAddress: "" });
           }
+
+
+          
         } catch (error) {
           console.error("Error fetching receiver details:", error);
           setReceiverInfo({ ReceiverName: "", ReceiverAddress: "" });
@@ -627,11 +671,25 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 errors={errors}
                 label="Contact No."
                 placeholder="receiver contact no."
-                onChange={(e) => setReceiverContactNo(e.target.value)}
+               onChange={(e) => {
+  setReceiverContactNo(e.target.value);
+  setForDeliveryContact(e.target.value);
+}}
+
                 type="number"
                 //minLength={11}={11}
                 minLength={11}
+              
               />
+                {
+   DeliveryStatusNumber.length > 10 &&
+        <div className="flex gap-3 mt-1">
+            <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
+        <p className="text-yellow-800 mt-1"> Delivery Pending: {DeliveryPending}</p>
+        <p className="text-red-800 mt-1"> Returned: {Returned}</p>
+        </div>
+    
+}
               <InputField
                 watchValues={watchValues}
                 register={register}
