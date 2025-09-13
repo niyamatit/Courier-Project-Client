@@ -445,9 +445,9 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
 
 useEffect(()=>{
 
-const fetchDeliveryRetrunData = async (DeliveryStatusNumber)=>{
+const fetchDeliveryRetrunData = async (receiverContactNo)=>{
         try{
-           const res = await axiosSecure.get(`/offline/for/search/${DeliveryStatusNumber}`)
+           const res = await axiosSecure.get(`/offline/for/search/${receiverContactNo}`)
            const data = res.data
         console.log(data,"data");
            const Total_Delivey_Complete = data.reduce((total, booking) => {
@@ -475,11 +475,12 @@ console.log(Returned,"retun complete");
            console.log(data,"Receiver  Data");
         }catch(err){
 console.log(err);
+console.log(err.message,"error message");
         }
     }
 fetchDeliveryRetrunData()
 
-},[DeliveryStatusNumber])
+},[DeliveryStatusNumber,DeliveryComplete,Returned,receiverContactNo])
 
 
   const { data: users = [] } = useQuery({
@@ -668,9 +669,11 @@ fetchDeliveryRetrunData()
                 errors={errors}
                 label="Contact No."
                 placeholder="receiver contact no."
-                onChange={(e) => {setReceiverContactNo(e.target.value);
-                  setForDeliveryContact(e.target.value) 
-                }}
+               onChange={(e) => {
+  setReceiverContactNo(e.target.value);
+  setForDeliveryContact(e.target.value);
+}}
+
                 type="number"
                 //minLength={11}={11}
                 minLength={11}
