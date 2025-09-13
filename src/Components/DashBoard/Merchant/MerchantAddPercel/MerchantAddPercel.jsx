@@ -890,14 +890,7 @@ fetchDeliveryRetrunData()
   const totalCharge = ParcelweightCharge + codCharge + CustomerdeliveryCharge;
   const codPercentage = (collected * ((verifiedUser?.subDistrictCharge)/100)) || 0;
   const finalCharge = totalCharge + codPercentage;
-  // const date = new Date();
-  // console.log("Cod Charge",codPercentage)
-
-  // const datePart = `MER-${date.getDate().toString().padStart(2, '0')}${date.getFullYear().toString().slice(-2)}${(date.getMonth() + 1).toString().padStart(2, '0')}`;
-
   
-  // const timePart = `${date.getHours()}`;
-  // const MerchantCnNumber = datePart + timePart;
   const { data: shopDatassss = []} = useQuery({
     queryKey: ["shopDatassss", verifiedUser?.email],
     queryFn: async () => {
