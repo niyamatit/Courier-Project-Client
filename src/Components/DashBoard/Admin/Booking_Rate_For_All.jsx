@@ -11,6 +11,7 @@ import BranchViewModal from "./BranchViewModal";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import Show_Int_Booking_Rate from "./Show_Int_Booking_Rate";
 import DocumentManager from "./DocumentManager";
+import DocumentRate_All from "./DocumentRate_All";
 
 const Booking_Rate_For_All = () => {
 
@@ -279,7 +280,7 @@ const {  data: Doc_Added = [] , refetch} = useQuery({
           {/* Add Branch Rate Form */}
           {activeSection === "branchRate" && (
             
-            <BranchRateComponents/>
+            <DocumentRate_All/>
           )}
 
           {/* Show Branch Table */}
