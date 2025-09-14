@@ -119,7 +119,7 @@ const handleProductChange = (index, field, value) => {
 
 
   const ProductsInfo = {
-    // branchId: selectedBranch,
+    
       products: productFields,
       date: new Date().toISOString(),
       Who_Added: verifiedUser.email,
@@ -128,7 +128,7 @@ const handleProductChange = (index, field, value) => {
       Status: "International",
   }
   try {
-    const response = await axiosSecure.post("/api/products/bulk", ProductsInfo);
+    const response = await axiosSecure.post("/api/products/bulk/doc", ProductsInfo);
     setSelectedBranch("");
     setProductFields([{ name: "", unit: "", maxWeight: "" }]);
     if (response.status === 201) {
@@ -205,10 +205,10 @@ const handleProductChange = (index, field, value) => {
 
     const branches = Branch.filter(branch => branch?.role === "host");
 
-const {  data: BranchesForRate = [] , refetch} = useQuery({
-        queryKey: ['BranchesForRate'],
+const {  data: Doc_Added = [] , refetch} = useQuery({
+        queryKey: ['Doc_Added'],
         queryFn: async() => {
-            const res = await axiosSecure.get("/int-add-products");
+            const res = await axiosSecure.get("/int-add-products-doc");
             return res.data;
         }
 
@@ -277,82 +277,7 @@ const {  data: BranchesForRate = [] , refetch} = useQuery({
 
           {/* Add Branch Rate Form */}
           {activeSection === "branchRate" && (
-            // <div>
-            //   <h2 className="text-2xl font-bold text-gray-800 mb-6">
-            //     {editId ? "Edit Branch Rate" : "Add a New Branch Rate"}
-            //   </h2>
-            //   <form onSubmit={handleSubmit(onSubmitBranch)} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            //     <div className="col-span-1">
-            //       <label className="block text-gray-700 font-medium mb-1">From Country</label>
-            //       <input
-            //         placeholder="e.g., USA"
-            //         {...register("from", { required: "From Country is required" })}
-            //         className={`w-full border ${errors.from ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-            //       />
-            //       {errors.from && (
-            //         <p className="text-red-500 text-sm mt-1">{errors.from.message}</p>
-            //       )}
-            //     </div>
-            //     <div className="col-span-1">
-            //       <label className="block text-gray-700 font-medium mb-1">To Country</label>
-            //       <input
-            //         placeholder="e.g., Canada"
-            //         {...register("to", { required: "To Country is required" })}
-            //         className={`w-full border ${errors.to ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-            //       />
-            //       {errors.to && (
-            //         <p className="text-red-500 text-sm mt-1">{errors.to.message}</p>
-            //       )}
-            //     </div>
-            //     <div className="col-span-1">
-            //       <label className="block text-gray-700 font-medium mb-1">Delivery Time</label>
-            //       <input
-            //         placeholder="e.g., 2-3 Days"
-            //         {...register("deliveryTime", { required: "Delivery Time is required" })}
-            //         className={`w-full border ${errors.deliveryTime ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-            //       />
-            //       {errors.deliveryTime && (
-            //         <p className="text-red-500 text-sm mt-1">{errors.deliveryTime.message}</p>
-            //       )}
-            //     </div>
-            //     <div className="col-span-1">
-            //       <label className="block text-gray-700 font-medium mb-1">Courier Company</label>
-            //       <input
-            //         placeholder="e.g., FedEx"
-            //         {...register("courier", { required: "Courier Company is required" })}
-            //         className={`w-full border ${errors.courier ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-            //       />
-            //       {errors.courier && (
-            //         <p className="text-red-500 text-sm mt-1">{errors.courier.message}</p>
-            //       )}
-            //     </div>
-            //     <div className="col-span-1">
-            //       <label className="block text-gray-700 font-medium mb-1">Amount</label>
-            //       <input
-            //         placeholder="e.g., 50.00"
-            //         {...register("amount", {
-            //           required: "Amount is required",
-            //           valueAsNumber: true,
-            //           min: { value: 0, message: "Amount must be a positive number" },
-            //         })}
-            //         type="number"
-            //         className={`w-full border ${errors.amount ? "border-red-500" : "border-gray-300"} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-            //       />
-            //       {errors.amount && (
-            //         <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>
-            //       )}
-            //     </div>
-            //     <div className="col-span-full md:col-span-1 md:col-start-3 self-end">
-            //       <button
-            //         type="submit"
-            //         className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold shadow-lg"
-            //         disabled={loading}
-            //       >
-            //         {loading ? "Processing..." : editId ? "Update Branch" : "Save Branch"}
-            //       </button>
-            //     </div>
-            //   </form>
-            // </div>
+            
             <BranchRateComponents/>
           )}
 
@@ -362,46 +287,8 @@ const {  data: BranchesForRate = [] , refetch} = useQuery({
               <h2 className="text-2xl font-bold text-gray-800 mb-6">All Branches</h2>
               {loading ? (
                 <p className="text-center text-gray-500 py-8">Loading branches...</p>
-              ) : BranchesForRate.length > 0 ? (
-                // <div className="overflow-x-auto rounded-lg shadow-sm">
-                //   <table className="w-full table-auto">
-                //     <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
-                //       <tr className="border-b border-gray-200">
-                //         <th className="py-4 px-6 text-left">From</th>
-                //         <th className="py-4 px-6 text-left">To</th>
-                //         <th className="py-4 px-6 text-left">Delivery Time</th>
-                //         <th className="py-4 px-6 text-left">Courier</th>
-                //         <th className="py-4 px-6 text-left">Custom Amount</th>
-                //         <th className="py-4 px-6 text-center">Actions</th>
-                //       </tr>
-                //     </thead>
-                //     <tbody className="bg-white text-gray-700 text-sm">
-                //       {BranchesForRate.map((b) => (
-                //         <tr key={b._id} className="border-b border-gray-100 hover:bg-gray-50">
-                //           <td className="py-4 px-6 font-medium whitespace-nowrap">{b.fromCountry}</td>
-                //           <td className="py-4 px-6">{b.toCountry}</td>
-                //           <td className="py-4 px-6">{b.deliveryTime}</td>
-                //           <td className="py-4 px-6">{b.deliveryCompany}</td>
-                //           <td className="py-4 px-6">৳{b.customAmount}</td>
-                //           <td className="py-4 px-6 text-center space-x-2">
-                //             {/* <button
-                //               onClick={() => handleEditBranch(b)}
-                //               className="bg-yellow-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-yellow-600 transition-colors shadow-sm"
-                //             >
-                //               Edit
-                //             </button> */}
-                //             <button
-                //               onClick={() => handleViewBranch(b)}
-                //               className="bg-green-500 text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-green-600 transition-colors shadow-sm"
-                //             >
-                //               view
-                //             </button>
-                //           </td>
-                //         </tr>
-                //       ))}
-                //     </tbody>
-                //   </table>
-                // </div>
+              ) : Doc_Added.length > 0 ? (
+               
                 <Show_Int_Booking_Rate/>
               ) : (
                 <p className="text-center text-gray-500 py-8">No branches found. Add a new branch rate to get started.</p>
@@ -416,23 +303,7 @@ const {  data: BranchesForRate = [] , refetch} = useQuery({
               <div className="bg-gray-50 p-6 rounded-xl mb-8 border border-gray-200">
                 <h3 className="text-xl font-bold text-gray-700 mb-4">Add a New Product</h3>
                 <form onSubmit={onSubmitProducts} className="space-y-4">
-  {/* Select Branch */}
-  {/* <div>
-    <label className="block font-medium mb-1">Select Branch</label>
-    <select
-      value={selectedBranch}
-      onChange={(e) => setSelectedBranch(e.target.value)}
-      required
-      className="border p-2 rounded w-full"
-    >
-      <option value="">-- Choose Branch --</option>
-      {branches.map((branch) => (
-        <option key={branch.id} value={branch.email}>
-          {branch.name}({branch.email})
-        </option>
-      ))}
-    </select>
-  </div> */}
+ 
 
   {/* Dynamic Product Fields */}
   {productFields.map((field, index) => (
@@ -441,27 +312,27 @@ const {  data: BranchesForRate = [] , refetch} = useQuery({
       className="grid grid-cols-4 gap-4 items-center border p-3 rounded-lg bg-gray-50"
     >
       <input
-        placeholder="Product Name"
+        placeholder="Products Name"
         value={field.name}
         onChange={(e) => handleProductChange(index, "name", e.target.value)}
         className="border p-2 rounded"
         required
       />
-      <input
+      {/* <input
         placeholder="Unit"
         value={field.unit}
         onChange={(e) => handleProductChange(index, "unit", e.target.value)}
         className="border p-2 rounded"
         required
-      />
-      <input
+      /> */}
+      {/* <input
         placeholder="Max Weight"
         type="number"
         value={field.price}
         onChange={(e) => handleProductChange(index, "maxWeight", e.target.value)}
         className="border p-2 rounded"
         required
-      />
+      /> */}
       <div className="flex items-center justify-center space-x-2">
         {index === productFields.length - 1 && (
           <button
@@ -489,14 +360,14 @@ const {  data: BranchesForRate = [] , refetch} = useQuery({
   <button
   type="submit"
   onClick={() => window.reload()}
-  disabled={BranchesForRate?.some(pro => pro.Status === "International")}
+  disabled={Doc_Added?.some(pro => pro.Status === "International")}
   title={
-    BranchesForRate.some(pro => pro.Status === "International")
+    Doc_Added.some(pro => pro.Status === "International")
       ? "Already Added"
       : ""
   }
   className={`py-2 px-6 rounded-lg text-white 
-    ${BranchesForRate.some(pro => pro.Status === "International")
+    ${Doc_Added.some(pro => pro.Status === "International")
       ? "bg-gray-400 cursor-not-allowed"
       : "bg-blue-600 hover:bg-blue-700"}`}
 >

@@ -14,7 +14,7 @@ export default function BranchProductManager() {
 
   const fetchBranches = async () => {
     try {
-      const { data } = await axiosSecure.get("/int-add-products");
+      const { data } = await axiosSecure.get("/int-add-products-doc");
       setBranchList(data);
     } catch (err) {
       console.error(err);
@@ -40,7 +40,7 @@ export default function BranchProductManager() {
 
     if (confirm.isConfirmed) {
       try {
-        await axiosSecure.delete(`/api/products/delete/${id}`);
+        await axiosSecure.delete(`/api/products/delete/doc/${id}`);
         Swal.fire({
           title: "Deleted!",
           text: "Branch data removed.",
@@ -98,7 +98,7 @@ export default function BranchProductManager() {
 
   const saveEditedBranch = async () => {
     try {
-      await axiosSecure.patch(`/api/products/updated/${editingBranch._id}`, {
+      await axiosSecure.patch(`/api/products/updated/doc/${editingBranch._id}`, {
         products: editingBranch.products,
       });
       Swal.fire({
@@ -181,7 +181,7 @@ export default function BranchProductManager() {
                     <td className="px-4 py-4 sm:px-6 text-sm text-gray-600">
                       {branch.products.map((prod, idx) => (
                         <div key={idx} className="mb-1">
-                          <span className="font-medium text-gray-800">{prod.name} - (Max Weight {prod.maxWeight}) - {prod.unit}</span>
+                          <span className="font-medium text-gray-800">{prod.name}</span>
                         </div>
                       ))}
                     </td>
