@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { FaPlus, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
 import axiosSecure from "../../../api/axiosSecure";
 
-export default function BranchProductManager() {
+export default function DocumentManager() {
   const [branchList, setBranchList] = useState([]);
   const [editingBranch, setEditingBranch] = useState(null);
 
@@ -14,7 +14,7 @@ export default function BranchProductManager() {
 
   const fetchBranches = async () => {
     try {
-      const { data } = await axiosSecure.get("/int-add-products");
+      const { data } = await axiosSecure.get("/int-add-products-doc");
       setBranchList(data);
     } catch (err) {
       console.error(err);
@@ -40,7 +40,7 @@ export default function BranchProductManager() {
 
     if (confirm.isConfirmed) {
       try {
-        await axiosSecure.delete(`/api/products/delete/${id}`);
+        await axiosSecure.delete(`/api/products/delete/doc/${id}`);
         Swal.fire({
           title: "Deleted!",
           text: "Branch data removed.",
@@ -98,7 +98,7 @@ export default function BranchProductManager() {
 
   const saveEditedBranch = async () => {
     try {
-      await axiosSecure.patch(`/api/products/updated/${editingBranch._id}`, {
+      await axiosSecure.patch(`/api/products/updated/doc/${editingBranch._id}`, {
         products: editingBranch.products,
       });
       Swal.fire({
@@ -181,7 +181,7 @@ export default function BranchProductManager() {
                     <td className="px-4 py-4 sm:px-6 text-sm text-gray-600">
                       {branch.products.map((prod, idx) => (
                         <div key={idx} className="mb-1">
-                          <span className="font-medium text-gray-800">{prod.name} - (Max Weight {prod.maxWeight}) - {prod.unit}</span>
+                          <span className="font-medium text-gray-800">{prod.name}</span>
                         </div>
                       ))}
                     </td>
@@ -238,21 +238,21 @@ export default function BranchProductManager() {
                     placeholder="Product Name"
                     className="col-span-1 sm:col-span-2 border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                   />
-                  <input
+                  {/* <input
                     value={prod.unit}
                     onChange={(e) => handleProductChange(idx, "unit", e.target.value)}
                     placeholder="Unit"
                     className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                  />
+                  /> */}
                   <div className="relative flex items-center">
                     {/* <span className="absolute left-3 text-gray-400 font-mono">৳</span> */}
-                    <input
+                    {/* <input
                       value={prod.maxWeight}
                       type="number"
                       onChange={(e) => handleProductChange(idx, "maxWeight", e.target.value)}
                       placeholder="Max Weight"
                       className="w-full border border-gray-300 p-3 pl-8 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                    />
+                    /> */}
                   </div>
                   <button
                     onClick={() => removeProductField(idx)}

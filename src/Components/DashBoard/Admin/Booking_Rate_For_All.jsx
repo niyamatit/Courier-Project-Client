@@ -10,6 +10,7 @@ import BranchRateComponents from "./BranchRateComponents";
 import BranchViewModal from "./BranchViewModal";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import Show_Int_Booking_Rate from "./Show_Int_Booking_Rate";
+import DocumentManager from "./DocumentManager";
 
 const Booking_Rate_For_All = () => {
 
@@ -381,7 +382,7 @@ const {  data: Doc_Added = [] , refetch} = useQuery({
               {loading ? (
                 <p className="text-center text-gray-500 py-8">Loading products...</p>
               ) : productList.length > 0 ? (
-                <BranchProductManager />
+                <DocumentManager/>
               ) : (
                 <p className="text-center text-gray-500 py-8">No products found. Add a new product to get started.</p>
               )}
