@@ -189,6 +189,12 @@ const AdminMenu = () => {
         label='Add International Booking Rate'
         address='add-booking-rate-international'
       />
+       <MenuItem
+        icon={GoPlus}
+
+        label='Add Rate'
+        address='add-booking-rate-For-All'
+      />
 
          
          </>
