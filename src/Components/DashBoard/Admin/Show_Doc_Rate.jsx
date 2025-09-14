@@ -9,13 +9,14 @@ export default function Show_Doc_Rate() {
   const [selectedRate, setSelectedRate] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { data: BranchesForRate_Int = [], refetch, isLoading } = useQuery({
-    queryKey: ["BranchesForRate_Int"],
+  const { data: Doc_Rate_ALL_Alone = [], refetch, isLoading } = useQuery({
+    queryKey: ["Doc_Rate_ALL_Alone"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/rate");
+      const res = await axiosSecure.get("/rate-doc");
       return res.data;
     },
   });
+  
 
   // View Popup - Styled with a more professional look
   const handleView = (rate) => {
@@ -24,12 +25,11 @@ export default function Show_Doc_Rate() {
       html: `
         <div class="text-left p-4 space-y-4">
           <div class="grid grid-cols-2 gap-4 bg-blue-50 p-3 rounded-lg">
-            <p><strong>From:</strong></p><p>${rate.From_Country}</p>
-            <p><strong>To:</strong></p><p>${rate.To_Country}</p>
+           
             <p><strong>Product:</strong></p><p>${rate.products}</p>
-            <p><strong>Delivery Time:</strong></p><p>${rate.deliveryTime}</p>
-            <p><strong>Branch:</strong></p><p>${rate.branch_Name}</p>
-            <p><strong>Support Co:</strong></p><p>${rate.Support_Company}</p>
+            <p><strong>Who Added Email:</strong></p><p>${rate.who_Added}</p>
+            <p><strong>Who Added Name:</strong></p><p>${rate.Who_Added_Name}</p>
+            
           </div>
           <hr/>
           <h3 class="mt-2 mb-1 font-bold text-lg text-gray-700">Pricing Tiers</h3>
@@ -38,11 +38,10 @@ export default function Show_Doc_Rate() {
               .map(
                 (a) => `
               <div class="grid grid-cols-2 gap-x-4 p-2 border rounded-md">
-                <p><strong>Weight:</strong></p><p>${a.ProductWeight} </p>
-                <p><strong>Custom:</strong></p><p>৳${a.customAmount}</p>
-                <p><strong>Merchant:</strong></p><p>৳${a.merchantAmount}</p>
-                <p><strong>Customer:</strong></p><p>৳${a.customerAmount}</p>
-                <p><strong>Others Company:</strong></p><p>৳${a.othersCompanyAmount}</p>
+                <p><strong>Product Quantity:</strong></p><p>${a.ProductQuantity} </p>
+                <p><strong>Home Delivery:</strong></p><p>৳${a.Home_Delivery}</p>
+                <p><strong>Office Delivery:</strong></p><p>৳${a.Office_Delivery}</p>
+               
               </div>`
               )
               .join("")}
@@ -69,16 +68,14 @@ export default function Show_Doc_Rate() {
         deliveryTime: selectedRate.deliveryTime,
         // products: selectedRate.products,
         amounts: selectedRate.amounts.map(amt => ({
-          ProductWeight: amt.ProductWeight,
-          customAmount: amt.customAmount,
-          othersCompanyAmount: amt.othersCompanyAmount,
-          agentAmount: amt.agentAmount,
-          customerAmount: amt.customerAmount,
-          merchantAmount: amt.merchantAmount,
+          ProductQuantity: amt.ProductQuantity,
+          Home_Delivery: amt.Home_Delivery,
+          Office_Delivery: amt.Office_Delivery,
+          
         })),
       };
 
-      await axiosSecure.put(`/rate/${selectedRate._id}`, updatedData);
+      await axiosSecure.put(`/rate/doc/${selectedRate._id}`, updatedData);
       
       Swal.fire({
         icon: "success",
@@ -117,12 +114,12 @@ export default function Show_Doc_Rate() {
                 <tr>
                   <th className="py-3 px-6 text-left font-semibold">SL</th>
                   <th className="py-3 px-6 text-left font-semibold">Date</th>
-                  <th className="py-3 px-6 text-left font-semibold">From</th>
-                  <th className="py-3 px-6 text-left font-semibold">To</th>
+                  <th className="py-3 px-6 text-left font-semibold">Home Delivery Rate</th>
+                  <th className="py-3 px-6 text-left font-semibold">Office Delivery Rate</th>
                   <th className="py-3 px-6 text-left font-semibold">Product</th>
-                  <th className="py-3 px-6 text-left font-semibold">Delivery Time</th>
+                  
                   <th className="py-3 px-6 text-left font-semibold">Branch</th>
-                  <th className="py-3 px-6 text-left font-semibold">Support Company</th>
+                  
                   <th className="py-3 px-6 text-center font-semibold">Actions</th>
                 </tr>
               </thead>
@@ -131,19 +128,19 @@ export default function Show_Doc_Rate() {
                     <tr>
                         <td colSpan="7" className="text-center p-10 text-gray-500">Loading rates...</td>
                     </tr>
-                ) : BranchesForRate_Int.length > 0 ? (
-                  BranchesForRate_Int.map((rate,index) => (
+                ) : Doc_Rate_ALL_Alone.length > 0 ? (
+                  Doc_Rate_ALL_Alone.map((rate,index) => (
                     <tr key={rate._id} className="hover:bg-blue-50 transition-colors duration-200">
                       <td className="py-4 px-6 whitespace-nowrap">{index+1}</td>
                       <td className="py-4 px-6 whitespace-nowrap">
   {rate.date ? new Date(rate.date).toLocaleString() : ""}
 </td>
-                      <td className="py-4 px-6 whitespace-nowrap">{rate.From_Country}</td>
-                      <td className="py-4 px-6 whitespace-nowrap">{rate.To_Country}</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{rate.amounts.map(a=>a.Home_Delivery || 0) }</td>
+                      <td className="py-4 px-6 whitespace-nowrap">{rate.amounts.map(a=>a.Office_Delivery || 0)}</td>
                       <td className="py-4 px-6 whitespace-nowrap">{rate.products}</td>
-                      <td className="py-4 px-6 whitespace-nowrap">{rate.deliveryTime}</td>
+                    
                       <td className="py-4 px-6 whitespace-nowrap">{rate.branch_Name}</td>
-                      <td className="py-4 px-6 whitespace-nowrap">{rate.Support_Company}</td>
+                     
                       <td className="py-4 px-6">
                         <div className="flex justify-center items-center gap-3">
                            <button
@@ -208,7 +205,7 @@ export default function Show_Doc_Rate() {
                     className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div> */}
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Time</label>
                   <input
                     type="text"
@@ -216,28 +213,24 @@ export default function Show_Doc_Rate() {
                     onChange={(e) => setSelectedRate({ ...selectedRate, deliveryTime: e.target.value })}
                     className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   />
-                </div>
+                </div> */}
               </div>
 
               {/* Amounts Editing */}
               <div className="space-y-4">
                 <h4 className="font-bold text-lg text-gray-800 border-b pb-2">Pricing Tiers</h4>
                 <div className="grid grid-cols-6 gap-x-3 text-center text-sm font-medium text-gray-600 px-2">
-                    <span>Weight (kg)</span>
-                    <span>Custom</span>
-                    <span>Others Co.</span>
-                    <span>Agent</span>
-                    <span>Customer</span>
-                    <span>Merchant</span>
+                    <span>Weight</span>
+                    <span>Home Deliver Charge</span>
+                    <span>Office Delivery Charge</span>
+                    
                 </div>
                 {selectedRate.amounts.map((amt, index) => (
                   <div key={index} className="grid grid-cols-6 gap-x-3 items-center">
-                    <input type="text" value={amt.ProductWeight} onChange={(e) => handleAmountChange(index, 'ProductWeight', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
-                    <input type="text" value={amt.customAmount} onChange={(e) => handleAmountChange(index, 'customAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
-                    <input type="text" value={amt.othersCompanyAmount} onChange={(e) => handleAmountChange(index, 'othersCompanyAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
-                    <input type="text" value={amt.agentAmount} onChange={(e) => handleAmountChange(index, 'agentAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
-                    <input type="text" value={amt.customerAmount} onChange={(e) => handleAmountChange(index, 'customerAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
-                    <input type="text" value={amt.merchantAmount} onChange={(e) => handleAmountChange(index, 'merchantAmount', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
+                    <input type="text" value={amt.ProductQuantity} onChange={(e) => handleAmountChange(index, 'ProductQuantity', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
+                    <input type="text" value={amt.Home_Delivery} onChange={(e) => handleAmountChange(index, 'Home_Delivery', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
+                    <input type="text" value={amt.Office_Delivery} onChange={(e) => handleAmountChange(index, 'Office_Delivery', e.target.value)} className="w-full text-center border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"/>
+                   
                   </div>
                 ))}
               </div>
