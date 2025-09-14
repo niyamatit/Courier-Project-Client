@@ -222,7 +222,7 @@ const {  data: Doc_Added = [] , refetch} = useQuery({
     <div className="bg-gray-50 min-h-screen w-full p-4 md:p-8 font-sans">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center md:text-left">
-          International Booking Rate Management
+          Documents Rate Management
         </h1>
 
         {/* Top Navigation Buttons */}
