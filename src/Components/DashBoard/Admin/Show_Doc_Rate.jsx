@@ -49,7 +49,7 @@ export default function Show_Doc_Rate() {
         </div>
       `,
       confirmButtonText: "Close",
-      confirmButtonColor: "#3B82F6", // Blue-500
+      confirmButtonColor: "#3B82F6", 
       width: '600px',
     });
   };
