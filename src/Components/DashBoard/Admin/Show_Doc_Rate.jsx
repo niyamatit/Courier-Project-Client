@@ -103,7 +103,7 @@ export default function Show_Doc_Rate() {
     <div className="p-4 md:p-8 bg-gray-100 ">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-800">International Booking Rates</h2>
+            <h2 className="text-3xl font-bold text-gray-800">Delivery Rates</h2>
             
         </div>
         

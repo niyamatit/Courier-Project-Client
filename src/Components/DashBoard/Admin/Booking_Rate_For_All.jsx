@@ -251,7 +251,7 @@ const {  data: Doc_Added = [] , refetch} = useQuery({
                 : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
             }`}
           >
-            View All Branches
+            View All 
           </button>
           <button
             onClick={() => setActiveSection("addProduct")}
@@ -287,9 +287,9 @@ const {  data: Doc_Added = [] , refetch} = useQuery({
           {/* Show Branch Table */}
           {activeSection === "showBranch" && (
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">All Branches</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">All Users</h2>
               {loading ? (
-                <p className="text-center text-gray-500 py-8">Loading branches...</p>
+                <p className="text-center text-gray-500 py-8">Loading rates...</p>
               ) : Doc_Added.length > 0 ? (
                
                 <Show_Doc_Rate/>
