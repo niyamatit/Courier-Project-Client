@@ -33,6 +33,7 @@ const handleSignUp = async e => {
       password,
       role,
       imageUrl: imageData?.data?.display_url,
+      date: new Date()
     });
 
     if (response.status === 201) {

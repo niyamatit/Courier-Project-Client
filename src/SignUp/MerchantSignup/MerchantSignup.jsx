@@ -18,6 +18,7 @@ const MerchantSignup = () => {
 const [showOtpModal, setShowOtpModal] = useState(false);
 const [tempFormData, setTempFormData] = useState(null);
 const [serverOtpID, setServerOtpID] = useState(null);
+const [DEmail, setDuplicateEmail] = useState("");
 
   const [filteredAreas, setFilteredAreas] = useState([]);
   const obfuscatePassword = (password) => {
@@ -815,9 +816,10 @@ const handleSignUp = async (data) => {
 
     const res = await axiosSecure.post("/otp/save", {
       otp: otpGenerated,
+      
       number: data.email,
     });
-
+console.log(otpGenerated, "genrated otp");
     setServerOtpID(res.data.id);
     setShowOtpModal(true);
   } catch (error) {
@@ -842,7 +844,8 @@ const saveUserToDatabase = async (formData, merchantID) => {
     Merchant_District_ID: formData?.districtID || "",
     Merchant_Area: formData?.area || "",
     Merchant_Full_Address: formData?.customerAddress || "",
-    Merchant_Branch: formData?.branch || ""
+    Merchant_Branch: formData?.branch || "",
+    date: new Date()
   });
 
   return response;
@@ -857,6 +860,8 @@ const {  data: users = []} = useQuery({
     }
     
 });
+
+const findUsersEmail = users.find(user => user.email === DEmail);
 // const handleOtpSubmit = async (otpEntered) => {
 //   try {
 //     // Check OTP
@@ -880,6 +885,7 @@ const {  data: users = []} = useQuery({
 
 const handleOtpSubmit = async (otpEntered) => {
   try {
+    console.log(otpEntered, "entered otp");
     const response = await axiosSecure.post('/otp/verify', {
       otp: otpEntered,
       number: tempFormData.email,
@@ -1005,8 +1011,13 @@ return (
               {...register('email', { required: 'Email or phone number is required' })}
               className="w-full px-4 py-3 border rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-gray-100"
               minLength={11}
+            onChange={(e) => setDuplicateEmail(e.target.value)}
             />
-            {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+            {
+            findUsersEmail ? <span className="text-red-500">This number already exists</span> :
+            
+            errors.email && <span className="text-red-500">{errors.email.message}</span>
+            }
           </div>
           <div className="col-span-2 md:col-span-2 lg:col-span-1">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
