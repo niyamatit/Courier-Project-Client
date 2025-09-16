@@ -57,6 +57,48 @@ const [autoRateOverride, setAutoRateOverride] = useState(false);
     const [ReNumber, SetNumber] = useState(0);
     const [TotalReturned, setReturned] = useState(0);
     
+     const [selectedProduct, setSelectedProduct] = useState(null);
+//   const [deliveryOption, setDeliveryOption] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [deliveryPrice, setDeliveryPrice] = useState(0);
+ const handleProductChange = (productId) => {
+    const product = AllfindProducts.find((p) => p.products === productId);
+    setSelectedProduct(product);
+    console.log(product.products, "Selected Product");
+    setDeliveryOption(null); // reset option
+    setDeliveryPrice(0);
+    setQuantity(1); // reset quantity
+  };
+
+  // Select delivery option
+ const handleDeliveryChange = (option) => {
+  setDeliveryOption(option);
+};
+
+// recalculate price whenever option, qty, or product changes
+useEffect(() => {
+  if (!deliveryOption || !selectedProduct?.amounts) {
+    setDeliveryPrice(0);
+    return;
+  }
+
+  let basePrice = 0;
+
+  if (deliveryOption === "Home_Delivery") {
+    basePrice = parseInt(selectedProduct.amounts[0]?.Home_Delivery || 0);
+  } else if (deliveryOption === "Office_Delivery") {
+    basePrice = parseInt(selectedProduct.amounts[0]?.Office_Delivery || 0);
+  }
+
+  setDeliveryPrice(basePrice * qty);
+  setWeightCharge(deliveryPrice)
+}, [deliveryOption, qty, selectedProduct,deliveryPrice]);
+
+
+
+  // Change quantity
+  
+    
     // Update weightCharge effect
     useEffect(() => {
     if (!userModified && !autoRateOverride) {
@@ -147,28 +189,7 @@ const handleDivisionChange = (e) => {
         });
     }, []);
 
-    // useEffect(() => {
-    //     if (condition && parseInt(condition) !== 0) {
-    //         const conditionValue = parseInt(condition);
-    //         let calculatedCod = 0;
-
-    //         if (conditionValue <= 1000) {
-    //             calculatedCod = conditionValue + 20;
-    //         } else {
-    //             const first1000Cod = 20;
-    //             const remaining = conditionValue - 1000;
-
-
-    //             const Extra1000 = Math.ceil(remaining / 1000);
-    //             const extraCod = Extra1000 * 10;
-    //             calculatedCod = conditionValue + first1000Cod + extraCod;
-    //         }
-
-    //         setCod(calculatedCod);
-    //     } else {
-    //         setCod(null);
-    //     }
-    // }, [condition]);
+   
     const [conditionCharge, setConditionCharge] = useState(0);
 
     // Calculate condition charge based on condition value
@@ -208,22 +229,22 @@ const handleDivisionChange = (e) => {
             // Get rate for selected division or default
             const rate = divisionRates[selectedDivision] || divisionRates.default;
     
-            if (deliveryOption === 'Home Delivery') {
+            if (deliveryOption === 'Home_Delivery') {
                 if (weightValue <= 1) {
-                    calculatedWeightCharge = 150;
+                    calculatedWeightCharge = (selectedProduct ? parseInt(selectedProduct.amounts.map(a=>a.Home_Delivery)) : 0)  * qty;
                 } else {
                     const remainingWeight = weightValue - 1;
                     const remainingCeil = Math.ceil(remainingWeight);
                     calculatedWeightCharge = 150 + (remainingCeil * rate.home);
                 }
             } 
-            else if (deliveryOption === 'Office Delivery') {
-                calculatedWeightCharge = Math.ceil(weightValue) * rate.office;
+            else if (deliveryOption === 'Office_Delivery') {
+              calculatedWeightCharge = (selectedProduct ? parseInt(selectedProduct.amounts.map(a=>a.Office_Delivery)) : 0)  * qty;
             }
         }
     
-        setWeightCharge(calculatedWeightCharge);
-    }, [deliveryOption, weight, selectedDivision]);
+        // setWeightCharge(calculatedWeightCharge);
+    }, [deliveryOption, weight, selectedDivision, qty, selectedProduct]);
     
     // Calculate total COD
     useEffect(() => {
@@ -594,6 +615,24 @@ useEffect(() => {
 
     const formRef = useRef();
 
+    const { data: BranchesForRate_DOC = [], refetch, isLoading } = useQuery({
+        queryKey: ["BranchesForRate_DOC"],
+        queryFn: async () => {
+          const res = await axiosSecure.get("/rate-doc");
+          // console.log("API Response:", res.data);
+          return res.data;
+          
+        },
+      });
+      // console.log(BranchesForRate_Int, "BranchesForRate_Int");
+    
+    
+    
+      const AllfindProducts = BranchesForRate_DOC?.filter(
+      (product) => product?.branchId === verifiedUser?.email
+    );
+    // console.log("AllfindProducts", AllfindProducts);
+
     return (
         <div>
             <div className="flex justify-center">
@@ -830,11 +869,20 @@ useEffect(() => {
                 </div>
                 <div className='md:flex md:px-24 mt-5 gap-5 mb-2'>
                     <div className="form-control md:w-1/2">
-                        <select onChange={handleSelectChange} className="select select-bordered text-xl w-full ">
-                            <option disabled selected>Pick Up System</option>
-                            <option>Office Delivery</option>
-                            <option>Home Delivery</option>
+                        <select onChange={(e) => handleDeliveryChange(e.target.value)} className="select select-bordered text-xl w-full ">
+                            <option value="">Select Delivery</option>
+          <option value="Home_Delivery">Home Delivery</option>
+          <option value="Office_Delivery">Office Delivery</option>
                         </select>
+                        {/* <select >
+          
+        </select> */}
+        {/*
+        onChange={handleSelectChange}
+        <option disabled selected>Pick Up System</option>
+                            <option>Office Delivery</option>
+                            <option>Home Delivery</option> */}
+
                     </div>
                     <div className="form-control md:w-1/2">
                         <select onChange={handlePaymentOptionChange} className="select select-bordered text-xl w-full ">
@@ -856,23 +904,23 @@ useEffect(() => {
                 <label className="label">
                         <span className="label-text font-rancho text-xl">Select Department*</span>
                     </label>
-                        <select onChange={handlePaymentOptionChange_dept} className="select select-bordered text-xl w-full ">
+                    {/*  onChange={handlePaymentOptionChange_dept} */}
+                        <select onChange={(e) => handleProductChange(e.target.value)} className="select select-bordered text-xl w-full ">
                             <option disabled selected>Select Department</option>
-                            <option value="Document">Document</option>
-                            <option value="Parcel">Parcel</option>
-                            <option value="Food item">Food item</option>
-                            <option value="Mobile">Mobile</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Electrical">Electrical</option>
-                            <option value="Home/Office Accessories">Home/Office Accessories</option>
+                           {AllfindProducts.map((p) => (
+    <option key={p._id} value={p?.products}>
+      {p?.products} 
+    </option>
+  ))}
                         </select>
                     </div>
                 </div>
 
-                <div className="flex md:px-24 mt-5 mb-5 justify-between">
+                <div className=" md:px-24 mt-5 mb-5 justify-between">
                     <div className=''>
                     <p className="text-xl">
             Condition + Charge  = Total COD: {cod || 0} TK
+            Delivery Charge = {deliveryPrice} TK
         </p>
                     </div>
                     {/* <div>

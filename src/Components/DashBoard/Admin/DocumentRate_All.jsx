@@ -103,13 +103,7 @@ export default function DocumentRate_All() {
     },
   });
 
-  const { data: SupportCompanyList = [] } = useQuery({
-    queryKey: ["SupportCompanyList"],
-    queryFn: async () => {
-      const response = await axiosSecure.get("/Company");
-      return response.data || [];
-    },
-  });
+  
 
   // Change: Updated onSubmit to manually build the payload
   const onSubmit = (data) => {
