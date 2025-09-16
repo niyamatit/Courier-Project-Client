@@ -60,8 +60,8 @@ const BookingForm = () => {
 const [deliveryPrice, setDeliveryPrice] = useState(0);
 const [weightCharge, setWeightCharge] = useState(0);
 const [qty, setQty] = useState(1); // default quantity is 1
-  const { data: BranchesForRate_DOC = [], refetch, isLoading } = useQuery({
-        queryKey: ["BranchesForRate_DOC"],
+  const { data: BranchesForRate_DOC_Offline = [], refetch, isLoading } = useQuery({
+        queryKey: ["BranchesForRate_DOC_Offline"],
         queryFn: async () => {
           const res = await axiosSecure.get("/rate-doc");
           // console.log("API Response:", res.data);
@@ -73,7 +73,7 @@ const [qty, setQty] = useState(1); // default quantity is 1
     
     
     
-      const AllfindProducts = BranchesForRate_DOC?.filter(
+      const AllfindProducts = BranchesForRate_DOC_Offline?.filter(
       (product) => product?.branchId === verifiedUser?.email
     );
  const handleProductChange = (productId) => {
