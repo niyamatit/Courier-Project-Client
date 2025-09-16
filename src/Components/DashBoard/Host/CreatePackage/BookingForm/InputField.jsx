@@ -52,10 +52,10 @@ const InputField = ({
           ...registerOptions,
           onChange: (e) => {
             if (registerOptions?.onChange) {
-              registerOptions.onChange(e); // keep RHF rules working
+              registerOptions.onChange(e); 
             }
             if (customOnChange) {
-              customOnChange(e); // call your extra handler
+              customOnChange(e); 
             }
           },
         })}

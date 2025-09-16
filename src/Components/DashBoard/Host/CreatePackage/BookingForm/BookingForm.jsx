@@ -20,7 +20,7 @@ const BookingForm = () => {
     formState: { errors },
   } = useForm();
   const watchValues = watch();
-
+ const [verifiedUser] = useUsersData();
   const [cnNumber, setCnNumber] = useState("");
   const [codCharge, setCodCharge] = useState(0);
   const [serviceCharge, setServiceCharge] = useState(0);
@@ -55,7 +55,62 @@ const BookingForm = () => {
     setIsOpen(false);
   };
   const queryClient = useQueryClient();
+  const [deliveryOption, setDeliveryOption] = useState('');
+   const [selectedProduct, setSelectedProduct] = useState(null);
+const [deliveryPrice, setDeliveryPrice] = useState(0);
+const [weightCharge, setWeightCharge] = useState(0);
+const [qty, setQty] = useState(1); // default quantity is 1
+  const { data: BranchesForRate_DOC_Offline = [], refetch, isLoading } = useQuery({
+        queryKey: ["BranchesForRate_DOC_Offline"],
+        queryFn: async () => {
+          const res = await axiosSecure.get("/rate-doc");
+          // console.log("API Response:", res.data);
+          return res.data;
+          
+        },
+      });
+      // console.log(BranchesForRate_Int, "BranchesForRate_Int");
+    
+    
+    
+      const AllfindProducts = BranchesForRate_DOC_Offline?.filter(
+      (product) => product?.branchId === verifiedUser?.email
+    );
+ const handleProductChange = (productId) => {
+    const product = AllfindProducts.find((p) => p.products === productId);
+    setSelectedProduct(product);
+    console.log(product.products, "Selected Product");
+    setDeliveryOption(null); // reset option
+    setDeliveryPrice(0);
+    setQuantity(1); // reset quantity
+  };
 
+  // Select delivery option
+ const handleDeliveryChange = (option) => {
+  setDeliveryOption(option);
+};
+
+// recalculate price whenever option, qty, or product changes
+useEffect(() => {
+  if (!deliveryOption || !selectedProduct?.amounts) {
+    setDeliveryPrice(0);
+    return;
+  }
+
+  let basePrice = 0;
+
+  if (deliveryOption === "Home_Delivery") {
+    basePrice = parseInt(selectedProduct.amounts[0]?.Home_Delivery || 0);
+  } else if (deliveryOption === "Office_Delivery") {
+    basePrice = parseInt(selectedProduct.amounts[0]?.Office_Delivery || 0);
+  }
+
+  setDeliveryPrice(basePrice * quantity);
+  // setWeightCharge(deliveryPrice)
+}, [deliveryOption, quantity, selectedProduct,deliveryPrice]);
+
+
+// console.log(deliveryPrice, "Delivery Price");
 useEffect(()=>{
 
 const fetchDeliveryRetrunData = async ()=>{
@@ -102,10 +157,10 @@ fetchDeliveryRetrunData()
       const validOtpCharge = parseFloat(OtpCharge) || 0;
       const validHDCharge = parseFloat(HDCharge) || 0;
   
-      const total = validRate * validQuantity + validOtpCharge + validHDCharge;
+      const total = validRate * validQuantity + validOtpCharge + validHDCharge + deliveryPrice;
       setTotalCharge(total);
     }
-  }, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge]);
+  }, [rate, quantity, isManuallyEditing, OtpCharge, HDCharge,deliveryPrice]);
   
 
 
@@ -278,7 +333,7 @@ fetchDeliveryRetrunData()
         "H/D":data.hd,
         "Exchange":data.exchange,
         "O/D":data.od,
-
+        Delivery_Price: deliveryPrice || 0,
         totalCharge: data.totalCharge || totalCharge,
         hdCharge: data.hdCharge,
         othCharge: data.othCharge,
@@ -492,7 +547,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
       return res.data;
     }
   })
-  const [verifiedUser] = useUsersData();
+ 
   // Amount 
   const { data: Branch_Balance = [] } = useQuery({
     queryKey: ['Branch_Balance', verifiedUser?.email],
@@ -684,7 +739,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 {
    DeliveryStatusNumber.length > 10 &&
         <div className="flex gap-3 mt-1">
-            <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
+        <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
         <p className="text-yellow-800 mt-1"> Delivery Pending: {DeliveryPending}</p>
         <p className="text-red-800 mt-1"> Returned: {Returned}</p>
         </div>
@@ -774,7 +829,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                   placeholder="Department name"
                   required
                 /> */}
-                <SelectField
+                {/* <SelectField
                   watchValues={watchValues}
                   register={register}
                   name={"department"}
@@ -782,7 +837,21 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                   errors={errors}
                   label="Select Department"
                   options={["Document", "Parcel", "Food item", "Mobile/Laptop", "Electrical", "Home/Office Accessories"]}
-                />
+                /> */}
+                <div className="form-control ">
+                <label className="label">
+                        <span className="label-text text-gray-500 font-semibold">Select Department*</span>
+                    </label>
+                    {/*  onChange={handlePaymentOptionChange_dept} */}
+                        <select onChange={(e) => handleProductChange(e.target.value)} className="select select-bordered  w-full  bg-[#E8F0FE] text-black">
+                            <option disabled selected>Select Department</option>
+                           {AllfindProducts.map((p) => (
+    <option key={p._id} value={p?.products}>
+      {p?.products} 
+    </option>
+  ))}
+                        </select>
+                    </div>
                 {/* <InputField
                   watchValues={watchValues}
                   register={register}
@@ -811,6 +880,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                   label="Service Type"
                   options={["Regular delivery", "Express delivery"]}
                 />
+                
                 {/* Payment Method Dropdown */}
                 <SelectField
                   watchValues={watchValues}
@@ -827,6 +897,39 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                   required
                 />
               </div>
+              <div className="form-control ">
+                <label className="label">
+        <span className="label-text text-gray-500 font-semibold">Select Delivery Option</span>
+      </label>
+                        <select onChange={(e) => handleDeliveryChange(e.target.value)} className="select select-bordered  w-full   bg-[#E8F0FE] text-black">
+                            <option value="">Select Delivery</option>
+          <option value="Home_Delivery">Home Delivery</option>
+          <option value="Office_Delivery">Office Delivery</option>
+                        </select>
+                        {/* <select >
+          
+        </select> */}
+        {/*
+        onChange={handleSelectChange}
+        <option disabled selected>Pick Up System</option>
+                            <option>Office Delivery</option>
+                            <option>Home Delivery</option> */}
+
+                    </div>
+                    <InputField
+                watchValues={watchValues}
+                register={register}
+                name={"DeliveryPrice"}
+                registerOptions={{ required: true }}
+                errors={errors}
+                label="Delivery Price"
+                placeholder="Must Be 50 Taka"
+                required
+                value={deliveryPrice || 0}
+                minValue={50}
+                
+                readOnly
+              />
             </Section>
             {/* Product Section */}
             <Section title="Product" additionalClasses="mt-4">

@@ -120,6 +120,7 @@ import Add_Costing from "../Components/DashBoard/Admin/AllBranch/Add_Costing";
 import Costing_Amount_Add from "../Components/DashBoard/Admin/AllBranch/Costing_Amount_Add";
 import Cost_History from "../Components/DashBoard/Admin/AllBranch/Cost_History";
 import Booking_Rate_International from "../Components/DashBoard/Admin/Booking_Rate_International";
+import Booking_Rate_For_All from "../Components/DashBoard/Admin/Booking_Rate_For_All";
 
 
 
@@ -485,6 +486,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <Booking_Rate_International />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "add-booking-rate-For-All",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <Booking_Rate_For_All/>
             </AdminRoute>
           </PrivateRoute>
         ),

@@ -67,6 +67,7 @@ const AllMerchantList = () => {
                 <table className="w-full bg-white">
                     <thead className="bg-blue-600 text-white text-left">
                         <tr>
+                            <th className="px-6 py-4 font-semibold">Date</th>
                             <th className="px-6 py-4 font-semibold">Image</th>
                             <th className="px-6 py-4 font-semibold">Merchant ID</th>
                             <th className="px-6 py-4 font-semibold">Name</th>
@@ -88,6 +89,7 @@ const AllMerchantList = () => {
                     <tbody className="text-gray-700 divide-y divide-gray-200">
                         {merchants.map((merchant) => (
                             <tr key={merchant._id} className="hover:bg-gray-100">
+                                <td className="px-6 py-4">  {merchant.date ? new Date(merchant.date).toLocaleDateString() : 'N/A'}</td>
                                 <td className="px-6 py-4">
                                     <img
                                         src={merchant.imageUrl}

@@ -1,0 +1,404 @@
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { FaPlus, FaTimes } from "react-icons/fa";
+import axiosSecure from "../../../api/axiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import BranchProductManager from "./BranchProductManager";
+import BranchRateComponents from "./BranchRateComponents";
+import BranchViewModal from "./BranchViewModal";
+import useUsersData from "../../../hooks/useUsersData/useUsersData";
+import Show_Int_Booking_Rate from "./Show_Int_Booking_Rate";
+import DocumentManager from "./DocumentManager";
+import DocumentRate_All from "./DocumentRate_All";
+import Show_Doc_Rate from "./Show_Doc_Rate";
+
+const Booking_Rate_For_All = () => {
+
+  const [verifiedUser] = useUsersData();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const {
+    register: registerProduct,
+    handleSubmit: handleProductSubmit,
+    reset: resetProduct,
+    formState: { errors: productErrors },
+  } = useForm();
+
+  const [activeSection, setActiveSection] = useState("branchRate");
+  const [branchList, setBranchList] = useState([]);
+  const [productList, setProductList] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+const [productFields, setProductFields] = useState([
+  { name: "", unit: "", maxWeight: "" }
+]);
+// Add these new state variables at the top of the component
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedBranchData, setSelectedBranchData] = useState(null);
+const handleViewBranch = (branch) => {
+  setSelectedBranchData(branch);
+  setIsModalOpen(true);
+};
+const addProductField = () => {
+  setProductFields([...productFields, { name: "", unit: "", maxWeight: "" }]);
+};
+
+const removeProductField = (index) => {
+  const updatedFields = productFields.filter((_, i) => i !== index);
+  setProductFields(updatedFields);
+};
+const handleProductChange = (index, field, value) => {
+  const updatedFields = [...productFields];
+  updatedFields[index][field] = value;
+  setProductFields(updatedFields);
+};
+ const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedBranchData(null);
+  };
+
+  // Fetch Branch Data
+  const fetchBranches = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get("/api/branches");
+      setBranchList(res.data);
+    } catch (error) {
+      console.error("Failed to fetch branches:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch Products
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get("/api/products");
+      setProductList(res.data);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeSection === "showBranch") fetchBranches();
+    if (activeSection === "addProduct") fetchProducts();
+  }, [activeSection]);
+
+  // Save or Update Branch Rate
+  const onSubmitBranch = async (formData) => {
+    setLoading(true);
+    try {
+      if (editId) {
+        await axios.put(`/api/branches/${editId}`, formData);
+        setEditId(null);
+      } else {
+        await axios.post("/api/branches", formData);
+      }
+      reset();
+      setSubmitSuccess(true);
+      fetchBranches();
+    } catch (error) {
+      console.error("Failed to save/update branch:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Save Product
+  const onSubmitProducts = async (e) => {
+  e.preventDefault();
+
+
+  const ProductsInfo = {
+    
+      products: productFields,
+      date: new Date().toISOString(),
+      Who_Added: verifiedUser.email,
+      Who_Added_Role: verifiedUser.role,
+      Who_Added_Name: verifiedUser.name,
+      Status: "International",
+  }
+  try {
+    const response = await axiosSecure.post("/api/products/bulk/doc", ProductsInfo);
+    setSelectedBranch("");
+    setProductFields([{ name: "", unit: "", maxWeight: "" }]);
+    if (response.status === 201) {
+      Swal.fire("✅ Success!", "Products added successfully.", "success");
+      setSelectedBranch("");
+      setProductFields([{ name: "",unit: "", maxWeight: "" }]);
+      fetchProducts();
+    }
+    refetch();
+  } catch (error) {
+   if (error.response) {
+      if (error.response.status === 409) {
+        Swal.fire("⚠️ Duplicate!", "Branch data already exists.", "warning");
+      } else if (error.response.status === 500) {
+        Swal.fire("❌ Error!", "Failed to add products. Please try again.", "error");
+      } else {
+        Swal.fire("❌ Error!", "Unexpected error occurred.", "error");
+      }
+    } else {
+      Swal.fire("❌ Error!", "Network error. Please check your connection.", "error");
+    }
+  }
+};
+
+
+
+  // Edit Branch
+  const handleEditBranch = (branch) => {
+    setEditId(branch._id);
+    reset(branch);
+    setActiveSection("branchRate");
+  };
+
+  // Delete Branch
+  const handleDeleteBranch = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          await axios.delete(`/api/branches/${id}`);
+          fetchBranches();
+          Swal.fire("Deleted!", "Your branch rate has been deleted.", "success");
+        } catch (error) {
+          console.error("Failed to delete branch:", error);
+          Swal.fire("Error!", "Failed to delete the branch rate.", "error");
+        } finally {
+          setLoading(false);
+        }
+      }
+    });
+  };
+
+  // Delete Product
+  
+
+
+   const {  data: Branch = []} = useQuery({
+        queryKey: ['Branch'],
+        queryFn: async() => {
+            const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+            return res.data;
+        }
+
+    });
+  
+
+    const branches = Branch.filter(branch => branch?.role === "host");
+
+const {  data: Doc_Added = [] , refetch} = useQuery({
+        queryKey: ['Doc_Added'],
+        queryFn: async() => {
+            const res = await axiosSecure.get("/int-add-products-doc");
+            return res.data;
+        }
+
+    });
+
+
+     
+
+  return (
+    <div className="bg-gray-50 min-h-screen w-full p-4 md:p-8 font-sans">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center md:text-left">
+          Documents Rate Management
+        </h1>
+
+        {/* Top Navigation Buttons */}
+        <div className="flex flex-wrap justify-center md:justify-start gap-4 mb-10">
+          <button
+            onClick={() => {
+              setActiveSection("branchRate");
+              setEditId(null);
+              reset();
+            }}
+            className={`flex-1 md:flex-none px-8 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 ${
+              activeSection === "branchRate"
+                ? "bg-blue-600 text-white font-semibold"
+                : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+            }`}
+          >
+            Add Branch Rate
+          </button>
+          <button
+            onClick={() => setActiveSection("showBranch")}
+            className={`flex-1 md:flex-none px-8 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 ${
+              activeSection === "showBranch"
+                ? "bg-blue-600 text-white font-semibold"
+                : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+            }`}
+          >
+            View All 
+          </button>
+          <button
+            onClick={() => setActiveSection("addProduct")}
+            className={`flex-1 md:flex-none px-8 py-3 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 ${
+              activeSection === "addProduct"
+                ? "bg-blue-600 text-white font-semibold"
+                : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+            }`}
+          >
+            Manage Products
+          </button>
+        </div>
+
+        {/* Dynamic Section Content */}
+        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl">
+          {/* Success Message */}
+          {submitSuccess && (
+            <div
+              className="bg-green-50 border-l-4 border-green-400 text-green-700 p-4 mb-6 rounded-lg"
+              role="alert"
+            >
+              <p className="font-bold">Success!</p>
+              <p>Your data has been saved successfully.</p>
+            </div>
+          )}
+
+          {/* Add Branch Rate Form */}
+          {activeSection === "branchRate" && (
+            
+            <DocumentRate_All/>
+          )}
+
+          {/* Show Branch Table */}
+          {activeSection === "showBranch" && (
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">All Users</h2>
+              {loading ? (
+                <p className="text-center text-gray-500 py-8">Loading rates...</p>
+              ) : Doc_Added.length > 0 ? (
+               
+                <Show_Doc_Rate/>
+              ) : (
+                <p className="text-center text-gray-500 py-8">No branches found. Add a new branch rate to get started.</p>
+              )}
+            </div>
+          )}
+
+          {/* Add Product Form and List */}
+          {activeSection === "addProduct" && (
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">Manage Products</h2>
+              <div className="bg-gray-50 p-6 rounded-xl mb-8 border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-700 mb-4">Add a New Product</h3>
+                <form onSubmit={onSubmitProducts} className="space-y-4">
+ 
+
+  {/* Dynamic Product Fields */}
+  {productFields.map((field, index) => (
+    <div
+      key={index}
+      className="grid grid-cols-4 gap-4 items-center border p-3 rounded-lg bg-gray-50"
+    >
+      <input
+        placeholder="Products Name"
+        value={field.name}
+        onChange={(e) => handleProductChange(index, "name", e.target.value)}
+        className="border p-2 rounded"
+        required
+      />
+      {/* <input
+        placeholder="Unit"
+        value={field.unit}
+        onChange={(e) => handleProductChange(index, "unit", e.target.value)}
+        className="border p-2 rounded"
+        required
+      /> */}
+      {/* <input
+        placeholder="Max Weight"
+        type="number"
+        value={field.price}
+        onChange={(e) => handleProductChange(index, "maxWeight", e.target.value)}
+        className="border p-2 rounded"
+        required
+      /> */}
+      <div className="flex items-center justify-center space-x-2">
+        {index === productFields.length - 1 && (
+          <button
+            type="button"
+            onClick={addProductField}
+            className="bg-green-500 text-white p-2 rounded-full"
+          >
+            <FaPlus />
+          </button>
+        )}
+        {productFields.length > 1 && (
+          <button
+            type="button"
+            onClick={() => removeProductField(index)}
+            className="bg-red-500 text-white p-2 rounded-full"
+          >
+            <FaTimes />
+          </button>
+        )}
+      </div>
+    </div>
+  ))}
+
+  {/* Submit */}
+  <button
+  type="submit"
+  onClick={() => window.reload()}
+  disabled={Doc_Added?.some(pro => pro.Status === "International")}
+  title={
+    Doc_Added.some(pro => pro.Status === "International")
+      ? "Already Added"
+      : ""
+  }
+  className={`py-2 px-6 rounded-lg text-white 
+    ${Doc_Added.some(pro => pro.Status === "International")
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700"}`}
+>
+  Save All Products
+</button>
+
+</form>
+              </div>
+
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Product List</h3>
+              {loading ? (
+                <p className="text-center text-gray-500 py-8">Loading products...</p>
+              ) : productList.length > 0 ? (
+                <DocumentManager/>
+              ) : (
+                <p className="text-center text-gray-500 py-8">No products found. Add a new product to get started.</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+      <BranchViewModal 
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              branchData={selectedBranchData}
+            />
+    </div>
+  );
+};
+
+export default Booking_Rate_For_All;

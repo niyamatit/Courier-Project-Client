@@ -13,7 +13,7 @@ const Footer = () => {
   return (
     <footer className="bg-blue-400 text-white">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <div className="md:flex md:justify-between">
+        <div className="md:flex justify-between">
           <div className="mb-6 md:mb-0">
             <a href="" className="flex items-center">
               <img src={logoImg} className="h-20 rounded-lg mr-3" alt="" />
@@ -24,7 +24,7 @@ const Footer = () => {
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-12 text-white sm:gap-6 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2 text-white sm:gap-6 sm:grid-cols-4">
             <div>
               <h2 className="mb-6 text-sm font-semibold  uppercase dark:text-white">
                 Our Services
@@ -72,14 +72,25 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold  uppercase dark:text-white">
-                Contact US
-              </h2>
-              <ul className="text-white dark:text-gray-300 font-medium">
-                <p className="mt-4 flex flex-col  md:flex-row lg:flex-row gap-2">Email: <span>support@niyamatexpress.com</span></p>
-                <p>Tel: 09697687401, 09638840680</p>
-              </ul>
-            </div>
+  <h2 className="mb-6 text-sm font-semibold uppercase dark:text-white">
+    Contact Us
+  </h2>
+  <div className="text-white dark:text-gray-300 font-medium space-y-2">
+    <div className="font-semibold">
+      <span className="font-semibold">Email:</span>{" "}
+      
+        <span className="block sm:inline">support@<br/>niyamatexpress.com</span>
+    
+    </div>
+    <div>
+      <span className="font-semibold">Tel:</span>{" "}
+      <span className="block sm:inline">
+        09697687401, 09638840680
+      </span>
+    </div>
+  </div>
+</div>
+
           </div>
         </div>
 

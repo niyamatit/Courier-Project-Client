@@ -286,7 +286,7 @@ const InterNational_Booking_Branch = () => {
         Branch_District_Name:verifiedUser?.Branch_District_Name,
         Branch_Area:verifiedUser?.Branch_Area,
       };
-   console.log("Bookinginfo", Bookinginfo);
+  
       // Submit booking information
       const ParcelProductDetails = await axiosSecure.post("/int", Bookinginfo);
   

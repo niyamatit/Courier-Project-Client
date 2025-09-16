@@ -40,7 +40,7 @@ const MerchantAddParcel = () => {
     formState: { errors },
   } = useForm();
 
-
+const [deliveryOption, setDeliveryOption] = useState('');
   // All District Name 
   const Districts = [
     { "id": "1", "division_id": "1", "name": "Comilla", "bn_name": "কুমিল্লা", "lat": "23.4682747", "lon": "91.1788135", "url": "www.comilla.gov.bd" },
@@ -698,6 +698,60 @@ const MerchantAddParcel = () => {
     {"id":"493","district_id":"39","name":"Madhyanagar","bn_name":"মধ্যনগর","url":"null"},
     {"id":"494","district_id":"50","name":"Dasar","bn_name":"ডাসার","url":"null"}
     ]
+
+     const { data: BranchesForRate_DOC_Merhant = [], refetch, isLoading } = useQuery({
+            queryKey: ["BranchesForRate_DOC_Merhant"],
+            queryFn: async () => {
+              const res = await axiosSecure.get("/rate-doc");
+              // console.log("API Response:", res.data);
+              return res.data;
+              
+            },
+          });
+          // console.log(BranchesForRate_Int, "BranchesForRate_Int");
+        
+        
+        
+          const AllfindProducts = BranchesForRate_DOC_Merhant?.filter(
+          (product) => product?.branchId === verifiedUser?.email
+        );
+
+        const [selectedProduct, setSelectedProduct] = useState(null);
+//   const [deliveryOption, setDeliveryOption] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [deliveryPrice, setDeliveryPrice] = useState(0);
+ const handleProductChange = (productId) => {
+    const product = AllfindProducts.find((p) => p.products === productId);
+    setSelectedProduct(product);
+    console.log(product.products, "Selected Product");
+    setDeliveryOption(null); // reset option
+    setDeliveryPrice(0);
+    setQuantity(1); // reset quantity
+  };
+
+  // Select delivery option
+ const handleDeliveryChange = (option) => {
+  setDeliveryOption(option);
+};
+
+// recalculate price whenever option, qty, or product changes
+useEffect(() => {
+  if (!deliveryOption || !selectedProduct?.amounts) {
+    setDeliveryPrice(0);
+    return;
+  }
+
+  let basePrice = 0;
+
+  if (deliveryOption === "Home_Delivery") {
+    basePrice = parseInt(selectedProduct.amounts[0]?.Home_Delivery || 0);
+  } else if (deliveryOption === "Office_Delivery") {
+    basePrice = parseInt(selectedProduct.amounts[0]?.Office_Delivery || 0);
+  }
+
+  setDeliveryPrice(basePrice * quantity);
+  // setWeightCharge(deliveryPrice)
+}, [deliveryOption, quantity, selectedProduct,deliveryPrice]);
   useEffect(() => {
     if (selectedDistrict) {
       setFilteredAreas(Areas.filter(area => area.district_id === selectedDistrict));
@@ -730,7 +784,7 @@ const MerchantAddParcel = () => {
     } else if (selectedDistrict) {
       setDeliveryCharge(parseInt(verifiedUser?.overallBangladeshCharge) || 120)
     }
-  }, [selectedDistrict])
+  }, [selectedDistrict, verifiedUser]);
   // For Wight Charge 
   useEffect(() => {
     if (selectedDistrict === verifiedUser?.Merchant_District_ID || selectedDistrict === "47") {
@@ -738,7 +792,7 @@ const MerchantAddParcel = () => {
     } else if (selectedDistrict) {
       setweightCharge(parseInt(verifiedUser?.overallBangladeshWeightCharge) || 25)
     }
-  }, [selectedDistrict])
+  }, [selectedDistrict,verifiedUser])
 // Merchant Cn Number
 const [MerchantCnNumber, setMerchantCnNumber] = useState("");
 
@@ -794,7 +848,10 @@ const incrementCnNumber = (cnNumber) => {
       Total_Charge: finalCharge || 0,
       isProcessed:false,
        Calculate_Charge_Merchant: parseFloat(finalCharge)  - parseFloat(formData?.totalAmount),
-      
+      deliveryCharge: deliveryPrice || 0,
+      Delivery_Option: deliveryOption || "",
+      Quantity: quantity || 1,
+     
       Merchant_Branch_Name: verifiedUser?.Merchant_Branch || "",
       Date: new Date() || ""
 
@@ -889,15 +946,8 @@ fetchDeliveryRetrunData()
   const ParcelweightCharge = WeightPackage > 1 ? (weightCharge*WeightPackage) : 0;
   const totalCharge = ParcelweightCharge + codCharge + CustomerdeliveryCharge;
   const codPercentage = (collected * ((verifiedUser?.subDistrictCharge)/100)) || 0;
-  const finalCharge = totalCharge + codPercentage;
-  // const date = new Date();
-  // console.log("Cod Charge",codPercentage)
-
-  // const datePart = `MER-${date.getDate().toString().padStart(2, '0')}${date.getFullYear().toString().slice(-2)}${(date.getMonth() + 1).toString().padStart(2, '0')}`;
-
+  const finalCharge = totalCharge + codPercentage + deliveryPrice;
   
-  // const timePart = `${date.getHours()}`;
-  // const MerchantCnNumber = datePart + timePart;
   const { data: shopDatassss = []} = useQuery({
     queryKey: ["shopDatassss", verifiedUser?.email],
     queryFn: async () => {
@@ -1138,28 +1188,61 @@ fetchDeliveryRetrunData()
                       {...register('itemType', { required: true })}
                       className={`select select-bordered w-full p-2 rounded-lg border ${errors.itemType ? 'border-red-500' : 'border-gray-300'
                         }`}
-                      onChange={(e) => setItemType(e.target.value)}
+                      onChange={(e) => {
+                        setItemType(e.target.value);
+                        handleProductChange(e.target.value)
+                      }}
                     >
-                      <option value="">Select Item Type</option>
-                      <option value="Parcel">Parcel</option>
-                      <option value="Documents">Documents</option>
-                      <option value="Fragile">Fragile</option>
-                      <option value="Medicine">Medicine</option>
-                      <option value="Food">Food</option>
-                      <option value="Mobile">Mobile</option>
-                      <option value="Laptop">Laptop</option>
-                      <option value="Other Device">Other Device</option>
+                      <option className="disabled">Select Item Type</option>
+                     {AllfindProducts.map((p) => (
+    <option key={p._id} value={p?.products}>
+      {p?.products} 
+    </option>
+  ))}
                     </select>
                     {errors.itemType && (
                       <span className="text-red-500">This field is required</span>
                     )}
                   </div>
+                  {/* For Delivery Optiopn */}
                   <div className="col-span-2 md:col-span-2 lg:col-span-1">
                     <label className="block text-gray-700 font-medium mb-1">
-                      Product Value*
+                      Delivery Option*
+                    </label>
+                     <select onChange={(e) => handleDeliveryChange(e.target.value)} className="select select-bordered  w-full ">
+                            <option value="">Select Delivery</option>
+          <option value="Home_Delivery">Home Delivery</option>
+          <option value="Office_Delivery">Office Delivery</option>
+                        </select>
+                    {errors.serviceType && (
+                      <span className="text-red-500">This field is required</span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Delivery Charge*
                     </label>
                     <input
-                      type="text"
+                      {...register('deliveryCharge', { required: true })}
+                      className={` w-full p-2 rounded-lg border ${errors.itemType ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                      value={deliveryPrice || 0}
+                      readOnly
+                      min={50}
+                    />
+                    
+                      
+                    {errors.deliveryCharge && (
+                      <span className="text-red-500">Value must be bigger than 50</span>
+                    )}
+                  </div>
+                  <div className="col-span-2 md:col-span-2 lg:col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Product Quanity*
+                    </label>
+                    <input
+                    onChange={(e) => setQuantity(e.target.value)}
+                      type="number"
                       {...register('productValue', { required: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.productValue ? 'border-red-500' : 'border-gray-300'
                         }`}
