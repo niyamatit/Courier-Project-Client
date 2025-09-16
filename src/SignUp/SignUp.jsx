@@ -2,17 +2,26 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { TbFidgetSpinner } from 'react-icons/tb';
 import { imageUpload } from '../api/utils'; 
-import React from 'react'; 
+import React, { useState } from 'react'; 
 import axiosSecure from '../api/axiosSecure';
 import Swal from 'sweetalert2'; // Import sweetalert2
+import { useQuery } from '@tanstack/react-query';
 const SignUp = () => {
   const [loading, setLoading] = React.useState(false);
    const navigate = useNavigate();
 
-  
+  const [DEmail, setDuplicateEmail] = useState("");
 
 const handleSignUp = async e => {
   e.preventDefault();
+    if (findUsersEmail) {
+    Swal.fire({
+      icon: "error",
+      title: "Duplicate Email",
+      text: "This email is already registered. Please use another one.",
+    });
+    return;
+  }
   const form = e.target;
   const name = form.name.value;
   const email = form.email.value;
@@ -66,7 +75,17 @@ const handleSignUp = async e => {
     setLoading(false);
   }
 };
+const {  data: users = []} = useQuery({
+    queryKey: ['users'],
+    queryFn: async() => {
+        const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+        return res.data;
+       
+    }
+    
+});
 
+const findUsersEmail = users.find(user => user.email === DEmail);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -102,18 +121,27 @@ const handleSignUp = async e => {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block mb-2 text-sm">
-                Email address or Phone Number
-              </label>
-              <input
-                type="text"
-                name="email"
-                id="email"
-                required
-                placeholder="Enter Your Email or Phone Number Here"
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
-              />
-            </div>
+  <label htmlFor="email" className="block mb-2 text-sm">
+    Email address or Phone Number
+  </label>
+  <input
+    type="text"
+    name="email"
+    id="email"
+    required
+    placeholder="Enter Your Email or Phone Number Here"
+    className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
+    onChange={(e) => setDuplicateEmail(e.target.value)} 
+  />
+
+  {/* Show error if email exists */}
+  {(findUsersEmail && DEmail.length > 0) && (
+    <p className="text-red-500 text-sm mt-1">
+      This email is already registered. Please use another one.
+    </p>
+  )}
+</div>
+
             <div>
               <label htmlFor="password" className="block mb-2 text-sm">
                 Password

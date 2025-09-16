@@ -1014,7 +1014,7 @@ return (
             onChange={(e) => setDuplicateEmail(e.target.value)}
             />
             {
-            findUsersEmail ? <span className="text-red-500">This number already exists</span> :
+            (findUsersEmail && DEmail.length > 0) ? <span className="text-red-500">This number already exists</span> :
             
             errors.email && <span className="text-red-500">{errors.email.message}</span>
             }
