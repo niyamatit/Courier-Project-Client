@@ -97,6 +97,34 @@ export default function Show_Doc_Rate() {
     updatedAmounts[index][field] = value;
     setSelectedRate({ ...selectedRate, amounts: updatedAmounts });
   };
+// Delete rate function
+const handleDelete = (rateId) => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "This will permanently delete the rate!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await axiosSecure.delete(`/rate/doc/${rateId}`);
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'Rate has been deleted.',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        refetch(); // Refresh the data
+      } catch (err) {
+        Swal.fire('Error', 'Failed to delete rate. Please try again.', 'error');
+      }
+    }
+  });
+};
 
 
   return (
@@ -157,6 +185,13 @@ export default function Show_Doc_Rate() {
                           >
                             <FaEdit size={18} />
                           </button>
+                          <button
+      onClick={() => handleDelete(rate._id)}
+      className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-100 transition-colors duration-200"
+      title="Delete Rate"
+    >
+      <FaTimes size={18} />
+    </button>
                         </div>
                       </td>
                     </tr>
@@ -250,6 +285,7 @@ export default function Show_Doc_Rate() {
               >
                 Save Changes
               </button>
+              
             </div>
           </div>
         </div>

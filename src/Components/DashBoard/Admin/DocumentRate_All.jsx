@@ -11,7 +11,7 @@ import {
   StateSelect,
 } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
-
+import { FaTrash } from "react-icons/fa";
 export default function DocumentRate_All() {
   const queryClient = useQueryClient();
   const [selectedBranch, setSelectedBranch] = useState(null);
@@ -91,7 +91,7 @@ export default function DocumentRate_All() {
         Swal.fire({
           icon: "error",
           title: "Conflict!",
-          text: "This branch rate data already exists.",
+          text: "This  rate data already exists.",
         });
       } else {
         Swal.fire({
@@ -102,7 +102,30 @@ export default function DocumentRate_All() {
       }
     },
   });
-
+// Add delete mutation
+const deleteMutation = useMutation({
+  mutationFn: async (id) => {
+    const res = await axiosSecure.delete(`/rate/doc/${id}`);
+    return res.data;
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["Doc_Rate_ALL"] });
+    Swal.fire({
+      icon: "success",
+      title: "Deleted!",
+      text: "Rate deleted successfully.",
+      timer: 1200,
+      showConfirmButton: false,
+    });
+  },
+  onError: (err) => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete Failed",
+      text: err?.response?.data?.message || "Something went wrong!",
+    });
+  },
+});
   
 
   // Change: Updated onSubmit to manually build the payload
