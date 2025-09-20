@@ -444,7 +444,7 @@ const chartData = [
           <StatisticsCard
             title="Total Sales"
             icon={<FaSalesforce />}
-            value={statData?.totalSale}
+            value={totalAmount_Booking_Branch}
             color="bg-[#FFE5D9]"
           />
           {/* Users Card */}
