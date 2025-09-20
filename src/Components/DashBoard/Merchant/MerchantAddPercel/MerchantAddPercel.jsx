@@ -703,12 +703,12 @@ const [deliveryOption, setDeliveryOption] = useState('');
             queryKey: ["BranchesForRate_DOC_Merhant"],
             queryFn: async () => {
               const res = await axiosSecure.get("/rate-doc");
-              // console.log("API Response:", res.data);
+              // \\\\\\console.log("API Response:", res.data);
               return res.data;
               
             },
           });
-          // console.log(BranchesForRate_Int, "BranchesForRate_Int");
+          // \\\\\\console.log(BranchesForRate_Int, "BranchesForRate_Int");
         
         
         
@@ -718,12 +718,13 @@ const [deliveryOption, setDeliveryOption] = useState('');
 
         const [selectedProduct, setSelectedProduct] = useState(null);
 //   const [deliveryOption, setDeliveryOption] = useState(null);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState('');
+  
   const [deliveryPrice, setDeliveryPrice] = useState(0);
  const handleProductChange = (productId) => {
     const product = AllfindProducts.find((p) => p.products === productId);
     setSelectedProduct(product);
-    console.log(product.products, "Selected Product");
+    
     setDeliveryOption(null); // reset option
     setDeliveryPrice(0);
     setQuantity(1); // reset quantity
@@ -751,7 +752,7 @@ useEffect(() => {
 
   setDeliveryPrice(basePrice * quantity);
   // setWeightCharge(deliveryPrice)
-}, [deliveryOption, quantity, selectedProduct,deliveryPrice]);
+}, [deliveryOption, quantity, selectedProduct]);
   useEffect(() => {
     if (selectedDistrict) {
       setFilteredAreas(Areas.filter(area => area.district_id === selectedDistrict));
@@ -856,11 +857,11 @@ const incrementCnNumber = (cnNumber) => {
       Date: new Date() || ""
 
     }
-    // console.log("Parcel Information:", PercelInformation)
+    // \\\\\\console.log("Parcel Information:", PercelInformation)
     
      
     const ParcelProductDetails = await axiosSecure.post("/Parcel", PercelInformation);
-    // console.log(ParcelProductDetails.data);
+    // \\\\\\console.log(ParcelProductDetails.data);
     if (ParcelProductDetails.data.insertedId) {
       Swal.fire({
         position: "top-end",
@@ -908,7 +909,7 @@ const fetchDeliveryRetrunData = async ()=>{
         try{
            const res = await axiosSecure.get(`/parcel/for/search/${contactNumber}`)
            const data = res.data
-            // console.log(data,"data from parcel for search")
+            // \\\\\\console.log(data,"data from parcel for search")
            const Total_Delivey_Complete = data.reduce((total, booking) => {
   if (booking?.Tracking_Rider_Merchant_Delivary_Update_Successful || booking?.Tracking_Rider_Merchant_Delivary_Update) {
     return total + 1; 
@@ -932,8 +933,8 @@ setReturned(Total_Returned)
 
            
         }catch(err){
-console.log(err);
-// console.log(err.message,"error message");
+
+// \\\\\\console.log(err.message,"error message");
         }
     }
 fetchDeliveryRetrunData()
@@ -941,13 +942,13 @@ fetchDeliveryRetrunData()
 },[contactNumber,DeliveryComplete,Returned,DeliveryPending])
 
   const codCharge = 0;
-
+// \\\\\\\\console.log(WeightPackage, "WeightPackage");
   const CustomerdeliveryCharge = deliveryCharge;
   const ParcelweightCharge = WeightPackage > 1 ? (weightCharge*WeightPackage) : 0;
   const totalCharge = ParcelweightCharge + codCharge + CustomerdeliveryCharge;
   const codPercentage = (collected * ((verifiedUser?.subDistrictCharge)/100)) || 0;
   const finalCharge = totalCharge + codPercentage + deliveryPrice;
-  
+
   const { data: shopDatassss = []} = useQuery({
     queryKey: ["shopDatassss", verifiedUser?.email],
     queryFn: async () => {
@@ -1241,12 +1242,14 @@ fetchDeliveryRetrunData()
                       Product Quanity*
                     </label>
                     <input
-                    onChange={(e) => setQuantity(e.target.value)}
+                    
                       type="number"
                       {...register('productValue', { required: true })}
                       className={`input input-bordered w-full p-2 rounded-lg border ${errors.productValue ? 'border-red-500' : 'border-gray-300'
                         }`}
+                        onChange={(e) => setQuantity(e.target.value)}
                     />
+                    
                     {errors.productValue && (
                       <span className="text-red-500">This field is required</span>
                     )}
