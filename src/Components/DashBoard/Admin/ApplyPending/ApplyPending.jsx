@@ -1,9 +1,11 @@
 import axiosSecure from "../../../../api/axiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import Modal from "./Modal"; 
+import Swal from "sweetalert2";
 
 const ApplyPending = () => {
+  const queryClient = useQueryClient();
   const { data: pendings = [], isLoading } = useQuery({
     queryKey: ["pendings"],
     queryFn: async () => {
@@ -13,9 +15,32 @@ const ApplyPending = () => {
   });
 
   const [selectedDetails, setSelectedDetails] = useState(null);
+  const [note, setNote] = useState("");
 
   const handleViewDetails = (details) => {
     setSelectedDetails(details);
+    setNote(details.Note || ""); // Load existing note if any
+  };
+
+  const handleSaveNote = async () => {
+    try {
+      await axiosSecure.patch(`/hdfjkshfjjkcxcbmbxbcb1/${selectedDetails._id}`, {
+        Note: note,
+      });
+
+      // Update local cache to reflect new note
+      queryClient.setQueryData(["pendings"], (oldData) =>
+        oldData.map((item) =>
+          item._id === selectedDetails._id ? { ...item, Note: note } : item
+        )
+      );
+
+      alert("Note saved successfully!");
+      setSelectedDetails({ ...selectedDetails, Note: note });
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save note.");
+    }
   };
 
   return (
@@ -38,11 +63,8 @@ const ApplyPending = () => {
                 <th className="border border-blue-300 px-4 py-2">Customer Name</th>
                 <th className="border border-blue-300 px-4 py-2">Company Name</th>
                 <th className="border border-blue-300 px-4 py-2">Contact</th>
-                {/* <th className="border border-blue-300 px-4 py-2">Email</th> */}
                 <th className="border border-blue-300 px-4 py-2">District</th>
-                {/* <th className="border border-blue-300 px-4 py-2">Role</th> */}
                 <th className="border border-blue-300 px-4 py-2">Apply For</th>
-                
                 <th className="border border-blue-300 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -54,17 +76,17 @@ const ApplyPending = () => {
                 >
                   <td className="border border-blue-300 px-4 py-2">{index + 1}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Date}</td>
-                  <td className="border border-blue-300 px-4 py-2"><img
-            src={pending.Customer_Image}
-            alt="Customer Image"
-            className="w-12 h-12 rounded-full object-cover"
-          /></td>
+                  <td className="border border-blue-300 px-4 py-2">
+                    <img
+                      src={pending.Customer_Image}
+                      alt="Customer Image"
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                  </td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Company_Name}</td>
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Contact_Number}</td>
-                  {/* <td className="border border-blue-300 px-4 py-2">{pending.Customer_Email}</td> */}
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_District_Name}</td>
-                  {/* <td className="border border-blue-300 px-4 py-2">{pending.Role}</td> */}
                   <td className="border border-blue-300 px-4 py-2">{pending.Customer_Apply_For}</td>
                   <td className="border border-blue-300 px-4 py-2">
                     <button
@@ -80,10 +102,11 @@ const ApplyPending = () => {
           </table>
         </div>
       )}
+
       {selectedDetails && (
         <Modal
-           title="Application Details"
-           onClose={() => setSelectedDetails(null)}
+          title="Application Details"
+          onClose={() => setSelectedDetails(null)}
         >
           <div className="text-gray-700 ">
             <p><strong>Customer Name:</strong> {selectedDetails.Customer_Name}</p>
@@ -102,27 +125,62 @@ const ApplyPending = () => {
             <p><strong>TIN/BIN:</strong> {selectedDetails.TIN_BIN}</p>
             <p><strong>Reference:</strong> {selectedDetails.Reference}</p>
             <p><strong>Business Address:</strong> {selectedDetails.Business_Address}</p>
-            {/* <p><strong>Role:</strong> {selectedDetails.Role}</p> */}
             <p><strong>Date:</strong> {selectedDetails.Date}</p>
-            <div className="mt-4 ml-5  grid grid-cols-2 gap-4">
-  <div>
-    <p><strong>Customer Images:</strong></p>
-    <img src={selectedDetails.Customer_Image} alt="Customer" className="w-64 h-64 rounded mt-2" />
-  </div>
-  <div>
-    <p><strong>NID Front:</strong></p>
-    <img src={selectedDetails.NID_Front_Image} alt="NID Front" className="w-64 h-64 rounded mt-2" />
-  </div>
-  <div>
-    <p><strong>NID Back:</strong></p>
-    <img src={selectedDetails.NID_Back_Image} alt="NID Back" className="w-64 h-64 rounded mt-2" />
-  </div>
-  <div>
-    <p><strong>Trade License:</strong></p>
-    <img src={selectedDetails.TradeLicense_Image} alt="Trade License" className="w-64 h-64 rounded mt-2" />
-  </div>
-</div>
 
+            {/* Editable Note */}
+            <div className="mt-4">
+              <label className="block font-semibold mb-1">Note:</label>
+              <textarea
+                className="w-full border border-gray-300 rounded p-2"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={3}
+              />
+              <button
+                onClick={async () => {
+                  try {
+                    await axiosSecure.patch(`/hdfjkshfjjkcxcbmbxbcb1/${selectedDetails._id}`, { Note: note });
+                     Swal.fire({
+    icon: "success",
+    title: "Saved!",
+    text: "Note saved successfully!",
+    timer: 2000,
+    showConfirmButton: false,
+  });
+                    setSelectedDetails({ ...selectedDetails, Note: note });
+                  } catch (err) {
+                    console.error(err);
+                    Swal.fire({
+    icon: "error",
+    title: "Failed!",
+    text: "Failed to save note",
+  });
+                  }
+                }}
+                className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded"
+              >
+                Save Note
+              </button>
+            </div>
+
+            <div className="mt-4 ml-5 grid grid-cols-2 gap-4">
+              <div>
+                <p><strong>Customer Images:</strong></p>
+                <img src={selectedDetails.Customer_Image} alt="Customer" className="w-64 h-64 rounded mt-2" />
+              </div>
+              <div>
+                <p><strong>NID Front:</strong></p>
+                <img src={selectedDetails.NID_Front_Image} alt="NID Front" className="w-64 h-64 rounded mt-2" />
+              </div>
+              <div>
+                <p><strong>NID Back:</strong></p>
+                <img src={selectedDetails.NID_Back_Image} alt="NID Back" className="w-64 h-64 rounded mt-2" />
+              </div>
+              <div>
+                <p><strong>Trade License:</strong></p>
+                <img src={selectedDetails.TradeLicense_Image} alt="Trade License" className="w-64 h-64 rounded mt-2" />
+              </div>
+            </div>
           </div>
         </Modal>
       )}
