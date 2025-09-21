@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 export default function Show_Doc_Rate() {
   const [selectedRate, setSelectedRate] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+ const [searchTerm, setSearchTerm] = useState("");
   const { data: Doc_Rate_ALL_Alone = [], refetch, isLoading } = useQuery({
     queryKey: ["Doc_Rate_ALL_Alone"],
     queryFn: async () => {
@@ -125,14 +125,26 @@ const handleDelete = (rateId) => {
     }
   });
 };
-
+ const filteredRates = Doc_Rate_ALL_Alone.filter(
+    (rate) =>
+      rate.branch_Name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      rate.products.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="p-4 md:p-8 bg-gray-100 ">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
             <h2 className="text-3xl font-bold text-gray-800">Delivery Rates</h2>
-            
+             <div className="mt-4">
+            <input
+              type="text"
+              placeholder="Search by Branch or Product......."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full  border-blue-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
+            />
+          </div>
         </div>
         
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -156,8 +168,8 @@ const handleDelete = (rateId) => {
                     <tr>
                         <td colSpan="7" className="text-center p-10 text-gray-500">Loading rates...</td>
                     </tr>
-                ) : Doc_Rate_ALL_Alone.length > 0 ? (
-                  Doc_Rate_ALL_Alone.map((rate,index) => (
+                ) : filteredRates.length > 0 ? (
+                  filteredRates.map((rate,index) => (
                     <tr key={rate._id} className="hover:bg-blue-50 transition-colors duration-200">
                       <td className="py-4 px-6 whitespace-nowrap">{index+1}</td>
                       <td className="py-4 px-6 whitespace-nowrap">
