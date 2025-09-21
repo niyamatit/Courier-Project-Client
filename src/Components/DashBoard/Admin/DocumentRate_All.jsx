@@ -11,7 +11,8 @@ import {
   StateSelect,
 } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
-
+import { FaTrash } from "react-icons/fa";
+import Select from "react-select";
 export default function DocumentRate_All() {
   const queryClient = useQueryClient();
   const [selectedBranch, setSelectedBranch] = useState(null);
@@ -91,7 +92,7 @@ export default function DocumentRate_All() {
         Swal.fire({
           icon: "error",
           title: "Conflict!",
-          text: "This branch rate data already exists.",
+          text: "This  rate data already exists.",
         });
       } else {
         Swal.fire({
@@ -102,7 +103,30 @@ export default function DocumentRate_All() {
       }
     },
   });
-
+// Add delete mutation
+const deleteMutation = useMutation({
+  mutationFn: async (id) => {
+    const res = await axiosSecure.delete(`/rate/doc/${id}`);
+    return res.data;
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["Doc_Rate_ALL"] });
+    Swal.fire({
+      icon: "success",
+      title: "Deleted!",
+      text: "Rate deleted successfully.",
+      timer: 1200,
+      showConfirmButton: false,
+    });
+  },
+  onError: (err) => {
+    Swal.fire({
+      icon: "error",
+      title: "Delete Failed",
+      text: err?.response?.data?.message || "Something went wrong!",
+    });
+  },
+});
   
 
   // Change: Updated onSubmit to manually build the payload
@@ -133,7 +157,7 @@ export default function DocumentRate_All() {
 
   const inputStyle =
     "border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-200 bg-blue-50/50";
-
+const [searchText, setSearchText] = useState("");
   return (
     <div className="p-4 sm:p-6 bg-white shadow-lg rounded-xl border border-gray-200">
       <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 border-b-2 pb-3 border-blue-500">
@@ -142,25 +166,42 @@ export default function DocumentRate_All() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Select Branch/Merchant
-          </label>
-          <select
-            className={inputStyle}
-            value={selectedBranch?.email || ""}
-            onChange={(e) => {
-              const branch = Allusers.find((b) => b.email === e.target.value);
-              setSelectedBranch(branch || null);
-            }}
-          >
-            <option value="">-- Select a Branch --</option>
-            {Allusers.map((branch) => (
-              <option key={branch._id} value={branch.email}>
-                {branch.name} ({branch.email})-({branch.role})
-              </option>
-            ))}
-          </select>
-        </div>
+  <label className="block text-sm font-semibold text-gray-700 mb-2">
+    Select Branch/Merchant
+  </label>
+
+  <Select
+    options={Allusers
+      .filter(r => r.role === 'host' || r.role === 'merchant')
+      .map(branch => ({
+        value: branch.email,
+        label: `${branch.name} (${branch.email}) - ${branch.role === 'host' ? 'Branch' : 'Merchant'}`
+      }))
+    }
+    value={
+      selectedBranch
+        ? { value: selectedBranch.email, label: `${selectedBranch.name} (${selectedBranch.email}) - ${selectedBranch.role === 'host' ? 'Branch' : 'Merchant'}` }
+        : null
+    }
+    onChange={(option) => {
+      const branch = Allusers.find(b => b.email === option.value);
+      setSelectedBranch(branch || null);
+    }}
+    className="text-sm"
+    placeholder="-- Select a Branch --"
+    isClearable
+  />
+</div>
+
+
+
+
+
+
+
+
+
+
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Select Product

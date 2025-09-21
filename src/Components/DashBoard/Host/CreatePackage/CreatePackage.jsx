@@ -56,7 +56,7 @@ const [autoRateOverride, setAutoRateOverride] = useState(false);
     const [DeliveryPending, setDeliveryPending] = useState(0);
     const [ReNumber, SetNumber] = useState(0);
     const [TotalReturned, setReturned] = useState(0);
-    
+    const [ExraCharge, setExraCharge] = useState(0);
      const [selectedProduct, setSelectedProduct] = useState(null);
 //   const [deliveryOption, setDeliveryOption] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -91,10 +91,12 @@ useEffect(() => {
   }
 
   setDeliveryPrice(basePrice * qty);
-  setWeightCharge(deliveryPrice)
-}, [deliveryOption, qty, selectedProduct,deliveryPrice]);
+  setWeightCharge(deliveryPrice + ExraCharge);
+}, [deliveryOption, qty, selectedProduct,deliveryPrice,ExraCharge]);
 
-
+console.log(weightCharge,"weightCharge");
+console.log(deliveryPrice,"deliveryPrice");
+console.log(ExraCharge,"ExraCharge");
 
   // Change quantity
   
@@ -229,19 +231,27 @@ const handleDivisionChange = (e) => {
             // Get rate for selected division or default
             const rate = divisionRates[selectedDivision] || divisionRates.default;
     
-            if (deliveryOption === 'Home_Delivery') {
+          if (deliveryOption === 'Home_Delivery') {
                 if (weightValue <= 1) {
-                    calculatedWeightCharge = (selectedProduct ? parseInt(selectedProduct.amounts.map(a=>a.Home_Delivery)) : 0)  * qty;
+                    calculatedWeightCharge = 180;
                 } else {
                     const remainingWeight = weightValue - 1;
                     const remainingCeil = Math.ceil(remainingWeight);
-                    calculatedWeightCharge = 150 + (remainingCeil * rate.home);
+                    calculatedWeightCharge = 180 + (remainingCeil * rate.home);
                 }
             } 
             else if (deliveryOption === 'Office_Delivery') {
-              calculatedWeightCharge = (selectedProduct ? parseInt(selectedProduct.amounts.map(a=>a.Office_Delivery)) : 0)  * qty;
+                
+                if (weightValue <= 1) {
+                    calculatedWeightCharge = 150;
+                } else {
+                    const remainingWeight = weightValue - 1;
+                    const remainingCeil = Math.ceil(remainingWeight);
+                    calculatedWeightCharge = 150 + (remainingCeil * rate.office);
+                }
             }
         }
+        setExraCharge(calculatedWeightCharge);
     
         // setWeightCharge(calculatedWeightCharge);
     }, [deliveryOption, weight, selectedDivision, qty, selectedProduct]);

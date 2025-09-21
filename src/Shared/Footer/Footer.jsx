@@ -18,7 +18,7 @@ const Footer = () => {
             <a href="" className="flex items-center">
               <img src={logoImg} className="h-20 rounded-lg mr-3" alt="" />
             </a>
-            <div className="md:w-[600px] lg:w-[700px] md:mr-10">
+            <div className="md:w-[500px] lg:w-[500px] md:mr-10">
               <p className="text-justify">
                 We fuse our global network with our depth of expertise in air freight, ocean freight, railway transportation, trucking, and multimode transportation, also we are providing sourcing, warehousing, E-commercial fulfillment, and value-added service to our customers including kitting, assembly, customized package and business inserts, etc.
               </p>
@@ -79,7 +79,7 @@ const Footer = () => {
     <div className="font-semibold">
       <span className="font-semibold">Email:</span>{" "}
       
-        <span className="block sm:inline">support@<br/>niyamatexpress.com</span>
+        <span className="block sm:inline">support@niyamatexpress.com</span>
     
     </div>
     <div>

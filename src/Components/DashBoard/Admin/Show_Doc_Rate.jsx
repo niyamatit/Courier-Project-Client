@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 export default function Show_Doc_Rate() {
   const [selectedRate, setSelectedRate] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+ const [searchTerm, setSearchTerm] = useState("");
   const { data: Doc_Rate_ALL_Alone = [], refetch, isLoading } = useQuery({
     queryKey: ["Doc_Rate_ALL_Alone"],
     queryFn: async () => {
@@ -97,14 +97,54 @@ export default function Show_Doc_Rate() {
     updatedAmounts[index][field] = value;
     setSelectedRate({ ...selectedRate, amounts: updatedAmounts });
   };
-
+// Delete rate function
+const handleDelete = (rateId) => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "This will permanently delete the rate!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await axiosSecure.delete(`/rate/doc/${rateId}`);
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'Rate has been deleted.',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        refetch(); // Refresh the data
+      } catch (err) {
+        Swal.fire('Error', 'Failed to delete rate. Please try again.', 'error');
+      }
+    }
+  });
+};
+ const filteredRates = Doc_Rate_ALL_Alone.filter(
+    (rate) =>
+      rate.branch_Name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      rate.products.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="p-4 md:p-8 bg-gray-100 ">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
             <h2 className="text-3xl font-bold text-gray-800">Delivery Rates</h2>
-            
+             <div className="mt-4">
+            <input
+              type="text"
+              placeholder="Search by Branch or Product......."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full  border-blue-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
+            />
+          </div>
         </div>
         
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -128,8 +168,8 @@ export default function Show_Doc_Rate() {
                     <tr>
                         <td colSpan="7" className="text-center p-10 text-gray-500">Loading rates...</td>
                     </tr>
-                ) : Doc_Rate_ALL_Alone.length > 0 ? (
-                  Doc_Rate_ALL_Alone.map((rate,index) => (
+                ) : filteredRates.length > 0 ? (
+                  filteredRates.map((rate,index) => (
                     <tr key={rate._id} className="hover:bg-blue-50 transition-colors duration-200">
                       <td className="py-4 px-6 whitespace-nowrap">{index+1}</td>
                       <td className="py-4 px-6 whitespace-nowrap">
@@ -157,6 +197,13 @@ export default function Show_Doc_Rate() {
                           >
                             <FaEdit size={18} />
                           </button>
+                          <button
+      onClick={() => handleDelete(rate._id)}
+      className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-100 transition-colors duration-200"
+      title="Delete Rate"
+    >
+      <FaTimes size={18} />
+    </button>
                         </div>
                       </td>
                     </tr>
@@ -250,6 +297,7 @@ export default function Show_Doc_Rate() {
               >
                 Save Changes
               </button>
+              
             </div>
           </div>
         </div>
