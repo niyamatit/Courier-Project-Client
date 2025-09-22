@@ -167,13 +167,13 @@ const { data: MerchantBookings = [] ,isLoading , isError } = useQuery({
         queryKey: ["OnlineBookings"],
         queryFn: async () => await getPackage(),
     });
-    console.log("OnlineBookings", OnlineBookings);
+    
 
     const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
         queryKey: ["OfflineBookings"],
         queryFn: async () => await getOffline(),
     });
-    console.log("OfflineBookings", OfflineBookings);
+   
      const { data: Int_Booking_History_Admin, } = useQuery({
         queryKey: ['Int_Booking_History_Admin', verifiedUser?.email],
         queryFn: async () => {

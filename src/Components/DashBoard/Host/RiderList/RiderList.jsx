@@ -1,75 +1,25 @@
 import { useQuery } from "@tanstack/react-query"
 import RiderDataRow from "../../../../Table/RiderDataRow"
 import { getAllUsers } from "../../../../api/auth"
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import axiosSecure from "../../../../api/axiosSecure";
 
 
 
 const RiderList = () => {
-
-    const { data: users = [], refetch } = useQuery({
-        queryKey: ['users'],
-        queryFn: async () => await getAllUsers(),
-      });
-      
-      // Filter the users to only include those with the role of 'rider'
-      const riders = users.filter(user => user.role === 'rider');
+const [verifiedUser] = useUsersData();
+    const { data: My_Rider, } = useQuery({
+        queryKey: ['My_Rider', verifiedUser?.email],
+        queryFn: async () => {
+            const response = await axiosSecure.get(`/rider/hgfhdsfghdfkfdgfhdhfdhhdgf/${verifiedUser?.name}`);
+            return response.data;
+        },
+    });
       
 
   return (
     <>
-      <div className='container mx-auto px-4 sm:px-8'>
-       
-        <div className='py-8'>
-          <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
-            <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
-              <table className='min-w-full leading-normal'>
-                <thead>
-                  <tr>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Rider Name
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Email
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Role
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Status
-                    </th>
-
-                   
-                  </tr>
-                </thead>
-                <tbody>
-                    {/* User data table row */}
-                    {riders &&
-                    riders.map(user => (
-                      <RiderDataRow
-                        key={user._id}
-                        user={user}
-                        refetch={refetch}
-                      />
-                    ))}
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </>
   )
 }
