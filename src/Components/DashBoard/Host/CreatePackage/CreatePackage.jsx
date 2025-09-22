@@ -224,7 +224,7 @@ const handleDivisionChange = (e) => {
                 'Chattogram': { home: 50, office: 50 },
                 'Dhaka': { home: 30, office: 30 },
                 'Rangpur': { home: 30, office: 30 },
-                'Rajshahi': { home: 15, office: 15 },
+                'Rajshahi': { home: 30, office: 30 },
                 'default': { home: 30, office: 30 }
             };
     
