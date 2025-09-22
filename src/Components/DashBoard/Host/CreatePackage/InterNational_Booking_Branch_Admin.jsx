@@ -1,14 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { useState } from "react"; // Import useState for modal state
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
+import axiosSecure from "../../../../api/axiosSecure";
+import InterNationalPrintModal_Branch from "./InterNationalPrintModal_Branch";
 
 
 const InterNational_Booking_Branch_Admin = () => {
     const [verifiedUser] = useUsersData();
-    const { data: Int_Booking_History, isLoading, error } = useQuery({
-        queryKey: ['Int_Booking_History', verifiedUser?.email],
+    const { data: Int_Booking_History_Admin, isLoading, error } = useQuery({
+        queryKey: ['Int_Booking_History_Admin', verifiedUser?.email],
         queryFn: async () => {
-            const response = await axiosSecure.get(`/int/${verifiedUser?.email}`);
+            const response = await axiosSecure.get(`/int`);
             return response.data;
         },
     });
@@ -58,7 +61,7 @@ const [isOpen, setIsOpen] = useState(false);
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {Int_Booking_History.map((item,index) => (
+                        {Int_Booking_History_Admin.map((item,index) => (
                             <tr key={item._id} className="hover:bg-blue-50 transition duration-200 ease-in-out">
                                 <td className="py-4 px-6 whitespace-nowrap text-sm font-medium text-gray-900">{index+1}</td>
                                 <td className="py-4 px-6 whitespace-nowrap text-sm font-medium text-gray-900">{item.CnNumber}</td>
