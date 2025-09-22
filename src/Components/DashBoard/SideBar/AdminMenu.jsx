@@ -170,6 +170,12 @@ const AdminMenu = () => {
         label='Offline Booking view'
         address='offline-booking'
       />
+      <MenuItem
+        icon={MdBookOnline}
+
+        label='International Booking view (Branch)'
+        address='int-booking'
+      />
       
        <MenuItem
         icon={MdBookOnline}
