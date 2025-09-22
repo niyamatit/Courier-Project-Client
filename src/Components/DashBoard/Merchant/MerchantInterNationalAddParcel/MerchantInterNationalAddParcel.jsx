@@ -73,13 +73,13 @@ const MerchantInterNationalAddParcel = () => {
       Sender_Purpose:formData?.SenderPurpose || "",
       Tax_Number:formData?.TaxNumber || "",
     };
-    console.log("Parcel Information:", PercelInformation);
+    // console.log("Parcel Information:", PercelInformation);
 
     const ParcelProductDetails = await axiosSecure.post(
       "/parcel",
       PercelInformation
     );
-    console.log(ParcelProductDetails.data);
+    // console.log(ParcelProductDetails.data);
     if (ParcelProductDetails.data.insertedId) {
       Swal.fire({
         position: "top-end",

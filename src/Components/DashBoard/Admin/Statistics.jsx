@@ -174,18 +174,25 @@ const { data: MerchantBookings = [] ,isLoading , isError } = useQuery({
         queryFn: async () => await getOffline(),
     });
    
-     const { data: Int_Booking_History_Admin, } = useQuery({
+     const { data: Int_Booking_History_Admin = [], } = useQuery({
         queryKey: ['Int_Booking_History_Admin', verifiedUser?.email],
         queryFn: async () => {
             const response = await axiosSecure.get(`/int`);
             return response.data;
         },
     });
+     const { data: Int_Booking_Merchant = [], } = useQuery({
+        queryKey: ['Int_Booking_Merchant', verifiedUser?.email],
+        queryFn: async () => {
+            const response = await axiosSecure.get(`/int`);
+            return response.data;
+        },
+    });
 
-    const allBookings = [...OnlineBookings, ...OfflineBookings , ...Int_Booking_History_Admin];
+    const allBookings = [...OnlineBookings, ...OfflineBookings , ...Int_Booking_History_Admin , ...Int_Booking_Merchant];
     const totalAmountCodBranch = allBookings.reduce((total, booking) => {
   
-  const amount = parseFloat(booking.condition || 0) || parseFloat(booking.senderReceive || 0) || parseFloat(booking.amount || 0) || parseFloat (booking?.Cod_Charge || 0);
+  const amount = parseFloat(booking.condition || 0) || parseFloat(booking.senderReceive || 0) || parseFloat(booking.amount || 0) || parseFloat (booking?.Cod_Charge || 0) || parseFloat (booking?.Cod_Charge || 0);
   return total + amount;
 }, 0);
 
@@ -215,7 +222,7 @@ const totalBookings_Credit = allBookings.reduce((total, booking) => {
 // totalCharge
 const totalAmount_Booking_Branch = allBookings.reduce((total, booking) => {
   
-  const amount = parseFloat(booking.amount || 0) || parseFloat(booking.totalCharge || 0) || parseFloat(booking.amount || 0) || parseFloat(booking.Total_Charge || 0);
+  const amount = parseFloat(booking.amount || 0) || parseFloat(booking.totalCharge || 0) || parseFloat(booking.amount || 0) || parseFloat(booking.Total_Charge || 0) || parseFloat(booking.Total_Charge || 0);
   return total + amount;
 }, 0);
 
