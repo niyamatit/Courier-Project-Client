@@ -222,10 +222,10 @@ const handleDivisionChange = (e) => {
             const divisionRates = {
                 'Barisal': { home: 45, office: 45 },
                 'Chattogram': { home: 50, office: 50 },
-                'Dhaka': { home: 20, office: 20 },
-                'Rangpur': { home: 25, office: 25 },
-                'Rajshahi': { home: 15, office: 15 },
-                'default': { home: 20, office: 20 }
+                'Dhaka': { home: 30, office: 30 },
+                'Rangpur': { home: 30, office: 30 },
+                'Rajshahi': { home: 30, office: 30 },
+                'default': { home: 30, office: 30 }
             };
     
             // Get rate for selected division or default

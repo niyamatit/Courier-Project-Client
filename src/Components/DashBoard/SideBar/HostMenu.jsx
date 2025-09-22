@@ -140,21 +140,21 @@ const HostMenu = () => {
             label='Offline Booking'
             address='booking-form'
           /></li>
-          <li><MenuItem
+          {/* <li><MenuItem
             icon={FaList}
             label='Offline Data List'
             address='offline-booking-list'
-          /></li>
+          /></li> */}
           <li><MenuItem
             icon={FaList}
             label='Online Data List'
             address='booking-info'
           /></li>
-          <li><MenuItem
+          {/* <li><MenuItem
             icon={FaList}
             label='International Booking List'
             address='international-booking-list'
-          /></li>
+          /></li> */}
         </ul>
       </div>
       <div className="dropdown">
