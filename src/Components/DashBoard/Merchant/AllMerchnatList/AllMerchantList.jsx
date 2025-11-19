@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosSecure from '../../../../api/axiosSecure';
 import Swal from 'sweetalert2';
+import useUsersData from '../../../../hooks/useUsersData/useUsersData';
 
 const AllMerchantList = () => {
+const[verifiedUser] = useUsersData();
 
-    
     const deobfuscatePassword = (obfuscatedPassword) => {
         let actualPassword = "";
         for (let i = 0; i < obfuscatedPassword.length; i += 21) {
@@ -68,8 +69,7 @@ const AllMerchantList = () => {
             const current = parseFloat(merchant?.Merchant_Balance) || 0;
             
             const newBalance = parseFloat((current + amount).toFixed(2));
-            console.log(current);
-            console.log(amount);
+           
             // Patch the Merchant_Balance field on the server
             return axiosSecure.patch(`/users/admin/${id}`, { Merchant_Balance: newBalance });
         },
@@ -133,13 +133,16 @@ const AllMerchantList = () => {
             Merchant_Image: FindMerchantNameEmail?.imageUrl || '',
             Amount_Added: amount,
             Admin_Note: noteRes.value || '',
+            Added_By_Admin: verifiedUser?.name || 'Admin',
+            date: new Date().toISOString(),
 
 
         }
+      
 
                     // You may also want to log the reference/note on the server by calling a transaction endpoint
                     // Example (uncomment & implement on server if available):
-                    axiosSecure.post(`/users/${id}/transactions`, { type: 'credit', id ,MerchantInfo, amount, note: noteRes.value || '' });
+                    axiosSecure.post(`/mer-add-balance-admin/${id}/transactions/history`, MerchantInfo);
 
 
                 });
