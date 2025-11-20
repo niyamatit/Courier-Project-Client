@@ -1,15 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosSecure from '../../../../api/axiosSecure';
 import Swal from 'sweetalert2';
+import useUsersData from '../../../../hooks/useUsersData/useUsersData';
 
 const AllMerchantList = () => {
+const[verifiedUser] = useUsersData();
+
     const deobfuscatePassword = (obfuscatedPassword) => {
         let actualPassword = "";
         for (let i = 0; i < obfuscatedPassword.length; i += 21) {
-          actualPassword += obfuscatedPassword[i]; 
+            actualPassword += obfuscatedPassword[i];
         }
         return actualPassword;
-      };
+    };
     const queryClient = useQueryClient();
 
     const { data: merchants, isLoading, error } = useQuery({
@@ -19,11 +22,11 @@ const AllMerchantList = () => {
             return response.data;
         },
     });
-   
+
 
     const updateChargeMutation = useMutation({
-        mutationFn: ({ id,  inDistrictCharge, subDistrictCharge, overallBangladeshCharge, inDistrictWeightCharge, subDistrictWeightCharge, overallBangladeshWeightCharge }) =>
-            axiosSecure.patch(`/users/${id}`, {  inDistrictCharge, subDistrictCharge, overallBangladeshCharge, inDistrictWeightCharge, subDistrictWeightCharge, overallBangladeshWeightCharge }),
+        mutationFn: ({ id, inDistrictCharge, subDistrictCharge, overallBangladeshCharge, inDistrictWeightCharge, subDistrictWeightCharge, overallBangladeshWeightCharge }) =>
+            axiosSecure.patch(`/users/${id}`, { inDistrictCharge, subDistrictCharge, overallBangladeshCharge, inDistrictWeightCharge, subDistrictWeightCharge, overallBangladeshWeightCharge }),
         onSuccess: () => queryClient.invalidateQueries(['merchants']),
     });
 
@@ -38,6 +41,8 @@ const AllMerchantList = () => {
             Swal.fire('Error deleting merchant. Please try again.', '', 'error');
         },
     });
+
+
 
     const handleRemove = (id) => {
         Swal.fire({
@@ -56,6 +61,94 @@ const AllMerchantList = () => {
             }
         });
     };
+
+    const addBalanceMutation = useMutation({
+        mutationFn: ({ id, amount }) => {
+
+            const merchant = merchants.find((m) => m._id === id);
+            const current = parseFloat(merchant?.Merchant_Balance) || 0;
+            
+            const newBalance = parseFloat((current + amount).toFixed(2));
+           
+            // Patch the Merchant_Balance field on the server
+            return axiosSecure.patch(`/users/admin/${id}`, { Merchant_Balance: newBalance });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['merchants']);
+            Swal.fire('Success', 'Balance added successfully.', 'success');
+        },
+        onError: (err) => {
+            console.error('Add balance error:', err);
+            Swal.fire('Error', 'Failed to add balance. Please try again.', 'error');
+        },
+    });
+
+    const handleAddBalance = (id) => {
+        // Ask for amount to add using SweetAlert2 input
+        const FindMerchantNameEmail = merchants.find((m) => m._id === id)
+         
+        
+
+        Swal.fire({
+            title: 'Add Balance to Merchant',
+            text: 'Enter the amount you want to add (BDT)',
+            input: 'number',
+            inputAttributes: {
+                min: 0.01,
+                step: '0.01',
+                inputmode: 'decimal',
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Add',
+            preConfirm: (value) => {
+                const amount = parseFloat(value);
+                if (isNaN(amount) || amount <= 0) {
+                    Swal.showValidationMessage('Please enter a valid positive amount');
+                }
+                return amount;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const amount = result.value;
+                if (!amount || isNaN(amount) || amount <= 0) {
+                    Swal.fire('Invalid amount', 'Please enter a positive number.', 'error');
+                    return;
+                }
+
+
+                // optional: ask for a note/reference
+                Swal.fire({
+                    title: 'Optional note',
+                    input: 'text',
+                    inputPlaceholder: 'Reference or note (optional)',
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirm',
+                }).then((noteRes) => {
+                    // perform mutation to add balance
+                    addBalanceMutation.mutate({ id, amount });
+             const MerchantInfo ={
+                id: id,
+            Merchant_name: FindMerchantNameEmail?.name || 'No Name Found',
+            Merchant_email: FindMerchantNameEmail?.email || 'No Email Found',
+            Merchant_Image: FindMerchantNameEmail?.imageUrl || '',
+            Amount_Added: amount,
+            Admin_Note: noteRes.value || '',
+            Added_By_Admin: verifiedUser?.name || 'Admin',
+            date: new Date().toISOString(),
+
+
+        }
+      
+
+                    // You may also want to log the reference/note on the server by calling a transaction endpoint
+                    // Example (uncomment & implement on server if available):
+                    axiosSecure.post(`/mer-add-balance-admin/${id}/transactions/history`, MerchantInfo);
+
+
+                });
+            }
+        });
+    }
 
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Error loading merchants.</p>;
@@ -102,7 +195,7 @@ const AllMerchantList = () => {
                                 <td className="px-6 py-4">{merchant.email}</td>
                                 <td className="px-6 py-4">{merchant?.info ? deobfuscatePassword(merchant.info) : "N/A"}</td>
                                 <td className="px-6 py-4">{merchant.Merchant_District || 'N/A'},{merchant.Merchant_Area || 'N/A'}<br></br>
-                                ({merchant.Merchant_Full_Address || 'N/A'}) 
+                                    ({merchant.Merchant_Full_Address || 'N/A'})
                                 </td>
                                 <td className="px-6 py-4">{merchant.Merchant_Branch || 'N/A'}</td>
                                 <td className="px-6 py-4">
@@ -238,14 +331,21 @@ const AllMerchantList = () => {
                                         className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                                     />
                                 </td>
-                                 <td className="px-6 py-4">{merchant?.Merchant_Balance}</td>
-                                <td className="px-6 py-4 text-center">
+                                <td className="px-6 py-4">{merchant?.Merchant_Balance}</td>
+                                <td className="px-6 py-4 text-center flex items-center gap-2">
+                                    <button
+                                        onClick={() => handleAddBalance(merchant._id)}
+                                        className="bg-green-600 text-white px-4 py-2 text-sm rounded-lg hover:bg-green-700 transition duration-150 ease-in-out"
+                                    >
+                                        Add Balance
+                                    </button>
                                     <button
                                         onClick={() => handleRemove(merchant._id)}
                                         className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-150 ease-in-out"
                                     >
                                         Remove
                                     </button>
+
                                 </td>
                             </tr>
                         ))}
