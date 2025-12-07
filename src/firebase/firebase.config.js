@@ -13,7 +13,7 @@
 //   appId: "1:413409752719:web:b5ad70e7beaf1f6b7062fa"
 // };
 
-// // Initialize Firebase
+
 // export const app = initializeApp(firebaseConfig);
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
