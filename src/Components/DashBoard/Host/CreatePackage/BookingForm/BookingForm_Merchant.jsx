@@ -33,7 +33,7 @@ const BookingForm_Merchant = () => {
   const [HDCharge, setHDCharge] = useState(0);
   const [senderContactNo, setSenderContactNo] = useState("");
   const [isManuallyEditing, setIsManuallyEditing] = useState(false);
-  const [lot, setLot] = useState();
+  
   const [PaymentOption , setSelectedPayment] = useState('');
   const [Merchant , setMerchantID] = useState('');
   const [senderInfo, setSenderInfo] = useState({
