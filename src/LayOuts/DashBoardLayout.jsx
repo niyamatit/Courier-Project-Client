@@ -6,7 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 
 
 const DashboardLayout = () => {
-  const [verifiedUser] = useUsersData();
+  const [verifiedUser] =  useUsersData();
+  // const [verifiedUser] =  useUsersData();
   const { data: Branches = [], isLoading } = useQuery({
     queryKey: ['Branches'],
     queryFn: async () => {
