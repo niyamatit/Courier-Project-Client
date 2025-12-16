@@ -40,7 +40,7 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                     <p className='text-gray-900 whitespace-no-wrap'>{booking?.idx}</p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-blue-500 whitespace-no-wrap'>{booking?.Merchant_ID ? "Merchant Booking" : "Branch Booking"}</p>
+                    <p className='text-blue-500 whitespace-no-wrap'>{booking?.Merchant_ID ? `Merchant Booking (ID: ${booking?.Merchant_ID}` : "Branch Booking"}</p>
                 </td>
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <p className='text-gray-900 whitespace-no-wrap'>{formatTime(booking?.booking)}</p>
