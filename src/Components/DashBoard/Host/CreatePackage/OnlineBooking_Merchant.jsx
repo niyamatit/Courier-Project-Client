@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { addMerchantPackage, addPackage } from "../../../../api/package";
+import {  addPackage } from "../../../../api/package";
 import toast from "react-hot-toast";
 import PrintModal from "./PrintModal";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
@@ -38,9 +38,9 @@ const OnlineBooking_Merchant = () => {
     const [amount, setAmount] = useState('');
     const [amountError, setAmountError] = useState('');
     const [paymentOption, setPaymentOption] = useState('');
-    const [cod, setCod] = useState(null); // New state for cod value
+    const [cod, setCod] = useState(null);
     const [condition, setCondition] = useState('')
-    const [balance, setBalance] = useState(20000); // Initial branch balance
+    const [balance, setBalance] = useState(20000); 
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
     const [CnNumber, SetCnNumber] = useState("");
     const [verifiedStaff] = UseStaffVerify();
@@ -172,7 +172,7 @@ const OnlineBooking_Merchant = () => {
         } else {
             setFilteredAreas([]);
         }
-    }, [selectedDistrict]);
+    }, [selectedDistrict,allAreas]);
 
     useEffect(() => {
 
@@ -599,9 +599,9 @@ const OnlineBooking_Merchant = () => {
 <div className=''>
     <p className="text-xl">Condition + charge : {cod || 0}</p>
 </div>
-<div>
+{/* <div>
     <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
-</div>
+</div> */}
 </div>
 
 <div className="form-control md:px-24 w-full">

@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-// Reusable component for package details
+
 import Barcode from 'react-barcode';
 import './CourierSlip.css';
 import { PiScissorsLight } from 'react-icons/pi';
-// import QRCode from 'react-qr-code';
+
 import logoImg from '../../../../assets/nexp-update.png'
 import QRCode from 'react-qr-code';
 export const PackageDetails = ({ bookingInfo }) => (
@@ -38,9 +38,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                         <p>Tel - 09697687401, 09638840680
                         </p>
                     </div>
-                    {/* <div className="logo border flex-1">
-                    <img className='h-[70px] w-[80px]' src={logoImg} alt="Niyamat Express" />
-                </div> */}
+                    
                 </div>
                 
             </header>
@@ -103,11 +101,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                     condition+charge: {bookingInfo?.conditionCharge || 0}
                 </div>
                 <div>
-                    {/* {
-                        bookingInfo?.paymentOption === 'Cash'
-                            ? <strong>Cash - {bookingInfo?.deliveryOption}</strong>
-                            : <strong>Payment - {bookingInfo?.deliveryOption}</strong>
-                    } */}
+                   
                    <strong className='text-sm'>{`${bookingInfo?.paymentOption} - ${bookingInfo?.deliveryOption}`}</strong>
                    <div>
                     <strong className='text-xs'>Booking Date: </strong>

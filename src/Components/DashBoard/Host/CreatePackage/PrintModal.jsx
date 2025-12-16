@@ -6,8 +6,8 @@ import { PackageDetails } from './PackageDetails';
 import StickerDetails from './StickerDetails';
 
 const PrintModal = ({ closeModal, isOpen, bookingInfo }) => {
-    const packageRef = useRef(); // For PackageDetails
-    const stickerRef = useRef(); // For StickerDetails
+    const packageRef = useRef(); 
+    const stickerRef = useRef(); 
 
     const handlePrintPackage = useReactToPrint({
         content: () => packageRef.current,
