@@ -857,11 +857,11 @@ const incrementCnNumber = (cnNumber) => {
       Date: new Date() || ""
 
     }
-    // \\\\\\console.log("Parcel Information:", PercelInformation)
+    
     
      
     const ParcelProductDetails = await axiosSecure.post("/Parcel", PercelInformation);
-    // \\\\\\console.log(ParcelProductDetails.data);
+    
     if (ParcelProductDetails.data.insertedId) {
       Swal.fire({
         position: "top-end",

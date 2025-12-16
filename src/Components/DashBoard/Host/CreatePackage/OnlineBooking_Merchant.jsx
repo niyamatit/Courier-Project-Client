@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { addMerchantPackage, addPackage } from "../../../../api/package";
+import {  addPackage } from "../../../../api/package";
 import toast from "react-hot-toast";
 import PrintModal from "./PrintModal";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
@@ -7,6 +7,7 @@ import axiosSecure from "../../../../api/axiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -32,15 +33,16 @@ const numberToWords = (num) => {
 
 const OnlineBooking_Merchant = () => {
     const [packageTrackingNumber, setPackageTrackingNumber] = useState([]);
+    const naviGate = useNavigate();
     const [bookingInfo, setBookingInfo] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [deliveryOption, setDeliveryOption] = useState('');
     const [amount, setAmount] = useState('');
     const [amountError, setAmountError] = useState('');
     const [paymentOption, setPaymentOption] = useState('');
-    const [cod, setCod] = useState(null); // New state for cod value
+    const [cod, setCod] = useState(null);
     const [condition, setCondition] = useState('')
-    const [balance, setBalance] = useState(20000); // Initial branch balance
+    const [balance, setBalance] = useState(20000); 
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
     const [CnNumber, SetCnNumber] = useState("");
     const [verifiedStaff] = UseStaffVerify();
@@ -172,7 +174,7 @@ const OnlineBooking_Merchant = () => {
         } else {
             setFilteredAreas([]);
         }
-    }, [selectedDistrict]);
+    }, [selectedDistrict,allAreas]);
 
     useEffect(() => {
 
@@ -196,7 +198,7 @@ const OnlineBooking_Merchant = () => {
 
     const handleMerchantChange = (event) => {
         setSelectedMerchant(event.target.value);
-        // console.log("Selected Merchant ID:", event.target.value); 
+       
     };
 
     const handleSubmit = async (e) => {
@@ -295,6 +297,10 @@ const OnlineBooking_Merchant = () => {
     
             setBookingInfo(packageData);
             setIsOpen(true);
+            setTimeout(() => {
+  naviGate('/dashboard/booking-info');
+}, 2000);
+
             
             const response = await addPackage(packageData);
     
@@ -319,7 +325,7 @@ const OnlineBooking_Merchant = () => {
                 error.message ||
                 "An error occurred while creating the package.";
         
-            if (error.response?.status === 409) {  // CN conflict error
+            if (error.response?.status === 409) {  
                 Swal.fire({
                     position: "top-end",
                     icon: "error",
@@ -402,7 +408,7 @@ const OnlineBooking_Merchant = () => {
             </div>
             <div>
                 <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Merchant Online Booking</h1>
-                {/* <h1 className="text-2xl font-bold font-rancho text-secondary text-center mb-5">Branch Balance: {balance}</h1> */}
+               
             </div>
             <hr />
 
@@ -599,9 +605,7 @@ const OnlineBooking_Merchant = () => {
 <div className=''>
     <p className="text-xl">Condition + charge : {cod || 0}</p>
 </div>
-<div>
-    <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
-</div>
+
 </div>
 
 <div className="form-control md:px-24 w-full">
