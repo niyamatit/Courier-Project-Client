@@ -426,10 +426,11 @@ const handleDivisionChange = (e) => {
             setIsOpen(true);
     
             const response = await addPackage(packageData);
-            //  console.log("packageData",packageData)
+            
             if (response?.insertedId) {
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
                 SetCnNumber(cnUpdateResponse.data.nextNumber);
+
     // ----------------------------------------
                 Swal.fire({
                     position: "top-end",
@@ -933,9 +934,9 @@ useEffect(() => {
             Delivery Charge = {deliveryPrice} TK
         </p>
                     </div>
-                    {/* <div>
+                    <div>
                         <p className="text-xl text-blue-400">CnNumber: {CnNumber}</p>
-                    </div> */}
+                    </div>
                 </div>
 
                 <div className="form-control md:px-24 w-full">
