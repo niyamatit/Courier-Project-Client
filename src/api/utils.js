@@ -17,4 +17,8 @@ export const getAdminStat = async () => {
   const { data } = await axiosSecure(`/admin-stat`)
   return data
 }
+export const getAdminStataaaa = async () => {
+  const { data } = await axiosSecure(`/admiaaaaan-saaaaaaatat`)
+  return data
+}
 
