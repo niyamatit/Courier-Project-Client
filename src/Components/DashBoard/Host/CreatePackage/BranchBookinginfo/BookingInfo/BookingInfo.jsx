@@ -109,7 +109,7 @@ const BookingInfo = () => {
                                         Date
                                     </th>
                                     <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
-                                        Sender Name
+                                        Print
                                     </th>
                                     <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
                                         Recipient Name
@@ -130,7 +130,7 @@ const BookingInfo = () => {
                                         Actions
                                     </th>
                                     <th className='px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal'>
-                                        Print
+                                        Sender Name
                                     </th>
                                 </tr>
                             </thead>
