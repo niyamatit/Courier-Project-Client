@@ -295,6 +295,7 @@ export const Areas =[
     {"id":"204","district_id":"26","name":"Magura Sadar","bn_name":"মাগুরা সদর","url":"magurasadar.magura.gov.bd"},
     {"id":"205","district_id":"26","name":"Mohammadpur","bn_name":"মহম্মদপুর","url":"mohammadpur.magura.gov.bd"},
     {"id":"206","district_id":"27","name":"Paikgasa","bn_name":"পাইকগাছা","url":"paikgasa.khulna.gov.bd"},
+    {"id":"206ex","district_id":"27","name":"Khulna Sadar","bn_name":"খুলনা সদর","url":"KhulnaSadar.khulna.gov.bd"},
     {"id":"207","district_id":"27","name":"Fultola","bn_name":"ফুলতলা","url":"fultola.khulna.gov.bd"},
     {"id":"208","district_id":"27","name":"Digholia","bn_name":"দিঘলিয়া","url":"digholia.khulna.gov.bd"},
     {"id":"209","district_id":"27","name":"Rupsha","bn_name":"রূপসা","url":"rupsha.khulna.gov.bd"},
