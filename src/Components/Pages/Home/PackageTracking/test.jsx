@@ -530,6 +530,7 @@ const Areas =[
   {"id":"363","district_id":"46","name":"Doulatpur","bn_name":"দৌলতপুর","url":"doulatpur.manikganj.gov.bd"},
   {"id":"364","district_id":"46","name":"Singiar","bn_name":"সিংগাইর","url":"singiar.manikganj.gov.bd"},
   {"id":"365","district_id":"47","name":"Savar","bn_name":"সাভার","url":"savar.dhaka.gov.bd"},
+  {"id":"365ex","district_id":"47","name":"AbdullahPur","bn_name":"আব্দুল্লাহপুর","url":"AbdullahPur.dhaka.gov.bd"},
   {"id":"366","district_id":"47","name":"Dhamrai","bn_name":"ধামরাই","url":"dhamrai.dhaka.gov.bd"},
   {"id":"367","district_id":"47","name":"Keraniganj","bn_name":"কেরাণীগঞ্জ","url":"keraniganj.dhaka.gov.bd"},
   {"id":"368","district_id":"47","name":"Nawabganj","bn_name":"নবাবগঞ্জ","url":"nawabganj.dhaka.gov.bd"},
