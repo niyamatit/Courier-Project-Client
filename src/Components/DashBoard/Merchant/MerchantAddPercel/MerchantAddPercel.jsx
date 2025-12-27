@@ -453,6 +453,7 @@ const [deliveryOption, setDeliveryOption] = useState('');
     {"id":"319","district_id":"41","name":"Kapasia","bn_name":"কাপাসিয়া","url":"kapasia.gazipur.gov.bd"},
     {"id":"320","district_id":"41","name":"Gazipur Sadar","bn_name":"গাজীপুর সদর","url":"sadar.gazipur.gov.bd"},
     {"id":"320ex","district_id":"41","name":"Joydebpur","bn_name":"জয়দেবপুর","url":"Joydebpur.gazipur.gov.bd"},
+    {"id":"320exm","district_id":"41","name":"Tongi","bn_name":"টঙ্গী","url":"Tongi.gazipur.gov.bd"},
     {"id":"321","district_id":"41","name":"Sreepur","bn_name":"শ্রীপুর","url":"sreepur.gazipur.gov.bd"},
     {"id":"322","district_id":"42","name":"Shariatpur Sadar","bn_name":"শরিয়তপুর সদর","url":"sadar.shariatpur.gov.bd"},
     {"id":"323","district_id":"42","name":"Naria","bn_name":"নড়িয়া","url":"naria.shariatpur.gov.bd"},

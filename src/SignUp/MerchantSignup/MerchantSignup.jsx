@@ -61,6 +61,7 @@ const [DEmail, setDuplicateEmail] = useState("");
   { "id": "25", "division_id": "3", "name": "Kushtia", "bn_name": "কুষ্টিয়া", "lat": "23.901258", "lon": "89.120482", "url": "www.kushtia.gov.bd" },
   { "id": "26", "division_id": "3", "name": "Magura", "bn_name": "মাগুরা", "lat": "23.487337", "lon": "89.419956", "url": "www.magura.gov.bd" },
   { "id": "27", "division_id": "3", "name": "Khulna", "bn_name": "খুলনা", "lat": "22.815774", "lon": "89.568679", "url": "www.khulna.gov.bd" },
+  
   { "id": "28", "division_id": "3", "name": "Bagerhat", "bn_name": "বাগেরহাট", "lat": "22.651568", "lon": "89.785938", "url": "www.bagerhat.gov.bd" },
   { "id": "29", "division_id": "3", "name": "Jhenaidah", "bn_name": "ঝিনাইদহ", "lat": "23.5448176", "lon": "89.1539213", "url": "www.jhenaidah.gov.bd" },
   { "id": "30", "division_id": "4", "name": "Jhalakathi", "bn_name": "ঝালকাঠি", "lat": "22.6422689", "lon": "90.2003932", "url": "www.jhalakathi.gov.bd" },
@@ -444,6 +445,7 @@ const Areas =[
   {"id":"319","district_id":"41","name":"Kapasia","bn_name":"কাপাসিয়া","url":"kapasia.gazipur.gov.bd"},
   {"id":"320","district_id":"41","name":"Gazipur Sadar","bn_name":"গাজীপুর সদর","url":"sadar.gazipur.gov.bd"},
   {"id":"320ex","district_id":"41","name":"Joydebpur","bn_name":"জয়দেবপুর","url":"Joydebpur.gazipur.gov.bd"},
+  {"id":"320exm","district_id":"41","name":"Tongi","bn_name":"টঙ্গী","url":"Tongi.gazipur.gov.bd"},
   {"id":"321","district_id":"41","name":"Sreepur","bn_name":"শ্রীপুর","url":"sreepur.gazipur.gov.bd"},
   {"id":"322","district_id":"42","name":"Shariatpur Sadar","bn_name":"শরিয়তপুর সদর","url":"sadar.shariatpur.gov.bd"},
   {"id":"323","district_id":"42","name":"Naria","bn_name":"নড়িয়া","url":"naria.shariatpur.gov.bd"},
