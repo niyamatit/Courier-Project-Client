@@ -76,6 +76,7 @@ const AddBaranchStaff = () => {
     { "id": "48", "division_id": "6", "name": "Munshiganj", "bn_name": "মুন্সিগঞ্জ", "lat": "23.5435742", "lon": "90.5354327", "url": "www.munshiganj.gov.bd" },
     { "id": "49", "division_id": "6", "name": "Rajbari", "bn_name": "রাজবাড়ী", "lat": "23.7574305", "lon": "89.6444665", "url": "www.rajbari.gov.bd" },
     { "id": "50", "division_id": "6", "name": "Madaripur", "bn_name": "মাদারীপুর", "lat": "23.164102", "lon": "90.1896805", "url": "www.madaripur.gov.bd" },
+    
     { "id": "51", "division_id": "6", "name": "Gopalganj", "bn_name": "গোপালগঞ্জ", "lat": "23.0050857", "lon": "89.8266059", "url": "www.gopalganj.gov.bd" },
     { "id": "52", "division_id": "6", "name": "Faridpur", "bn_name": "ফরিদপুর", "lat": "23.6070822", "lon": "89.8429406", "url": "www.faridpur.gov.bd" },
     { "id": "53", "division_id": "7", "name": "Panchagarh", "bn_name": "পঞ্চগড়", "lat": "26.3411", "lon": "88.5541606", "url": "www.panchagarh.gov.bd" },
@@ -567,6 +568,7 @@ const AddBaranchStaff = () => {
     {"id":"379","district_id":"49","name":"Baliakandi","bn_name":"বালিয়াকান্দি","url":"baliakandi.rajbari.gov.bd"},
     {"id":"380","district_id":"49","name":"Kalukhali","bn_name":"কালুখালী","url":"kalukhali.rajbari.gov.bd"},
     {"id":"381","district_id":"50","name":"Madaripur Sadar","bn_name":"মাদারীপুর সদর","url":"sadar.madaripur.gov.bd"},
+    {"id":"381ex","district_id":"50","name":"Takerhat ","bn_name":"তাকেরহাট","url":"takerhat.madaripur.gov.bd"},
     {"id":"382","district_id":"50","name":"Shibchar","bn_name":"শিবচর","url":"shibchar.madaripur.gov.bd"},
     {"id":"383","district_id":"50","name":"Kalkini","bn_name":"কালকিনি","url":"kalkini.madaripur.gov.bd"},
     {"id":"384","district_id":"50","name":"Rajoir","bn_name":"রাজৈর","url":"rajoir.madaripur.gov.bd"},
