@@ -225,6 +225,7 @@ export const Areas =[
     {"id":"136","district_id":"15","name":"Mohonpur","bn_name":"মোহনপুর","url":"mohonpur.rajshahi.gov.bd"},
     {"id":"137","district_id":"15","name":"Charghat","bn_name":"চারঘাট","url":"charghat.rajshahi.gov.bd"},
     {"id":"137ex","district_id":"15","name":"Bannersor","bn_name":"ব্যানার্সোড়","url":"Bannersor.rajshahi.gov.bd"},
+    {"id":"137exm","district_id":"15","name":"Rajshahi Sadar","bn_name":"রাজশাহী সদর","url":"sadar.rajshahi.gov.bd"},
     {"id":"138","district_id":"15","name":"Puthia","bn_name":"পুঠিয়া","url":"puthia.rajshahi.gov.bd"},
     {"id":"139","district_id":"15","name":"Bagha","bn_name":"বাঘা","url":"bagha.rajshahi.gov.bd"},
     {"id":"140","district_id":"15","name":"Godagari","bn_name":"গোদাগাড়ী","url":"godagari.rajshahi.gov.bd"},

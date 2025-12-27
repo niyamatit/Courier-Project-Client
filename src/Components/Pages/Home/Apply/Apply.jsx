@@ -247,6 +247,7 @@ const Areas =[
   {"id":"133","district_id":"14","name":"Shibganj","bn_name":"শিবগঞ্জ","url":"shibganj.bogra.gov.bd"},
   {"id":"134","district_id":"15","name":"Paba","bn_name":"পবা","url":"paba.rajshahi.gov.bd"},
   {"id":"137ex","district_id":"15","name":"Bannersor","bn_name":"ব্যানার্সোড়","url":"Bannersor.rajshahi.gov.bd"},
+  {"id":"137exm","district_id":"15","name":"Rajshahi Sadar","bn_name":"রাজশাহী সদর","url":"sadar.rajshahi.gov.bd"},
   {"id":"135","district_id":"15","name":"Durgapur","bn_name":"দুর্গাপুর","url":"durgapur.rajshahi.gov.bd"},
   {"id":"136","district_id":"15","name":"Mohonpur","bn_name":"মোহনপুর","url":"mohonpur.rajshahi.gov.bd"},
   {"id":"137","district_id":"15","name":"Charghat","bn_name":"চারঘাট","url":"charghat.rajshahi.gov.bd"},
