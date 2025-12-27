@@ -607,6 +607,7 @@ const Areas =[
   {"id":"410","district_id":"54","name":"Kaharol","bn_name":"কাহারোল","url":"kaharol.dinajpur.gov.bd"},
   {"id":"411","district_id":"54","name":"Fulbari","bn_name":"ফুলবাড়ী","url":"fulbari.dinajpur.gov.bd"},
   {"id":"412","district_id":"54","name":"Dinajpur Sadar","bn_name":"দিনাজপুর সদর","url":"dinajpursadar.dinajpur.gov.bd"},
+  {"id":"412ex","district_id":"54","name":"Bhaduria","bn_name":"ভাদুরিয়া","url":"Bhaduria.dinajpur.gov.bd"},
   {"id":"413","district_id":"54","name":"Hakimpur","bn_name":"হাকিমপুর","url":"hakimpur.dinajpur.gov.bd"},
   {"id":"414","district_id":"54","name":"Khansama","bn_name":"খানসামা","url":"khansama.dinajpur.gov.bd"},
   {"id":"415","district_id":"54","name":"Birol","bn_name":"বিরল","url":"birol.dinajpur.gov.bd"},

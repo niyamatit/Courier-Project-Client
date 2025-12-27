@@ -567,6 +567,7 @@ const Areas =[
   {"id":"380","district_id":"49","name":"Kalukhali","bn_name":"কালুখালী","url":"kalukhali.rajbari.gov.bd"},
   {"id":"381","district_id":"50","name":"Madaripur Sadar","bn_name":"মাদারীপুর সদর","url":"sadar.madaripur.gov.bd"},
   {"id":"381ex","district_id":"50","name":"Takerhat ","bn_name":"তাকেরহাট","url":"takerhat.madaripur.gov.bd"},
+  {"id":"412ex","district_id":"54","name":"Bhaduria","bn_name":"ভাদুরিয়া","url":"Bhaduria.dinajpur.gov.bd"},
   {"id":"382","district_id":"50","name":"Shibchar","bn_name":"শিবচর","url":"shibchar.madaripur.gov.bd"},
   {"id":"383","district_id":"50","name":"Kalkini","bn_name":"কালকিনি","url":"kalkini.madaripur.gov.bd"},
   {"id":"384","district_id":"50","name":"Rajoir","bn_name":"রাজৈর","url":"rajoir.madaripur.gov.bd"},
