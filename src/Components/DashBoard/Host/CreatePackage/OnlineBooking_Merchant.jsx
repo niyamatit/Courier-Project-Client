@@ -194,13 +194,35 @@ const OnlineBooking_Merchant = () => {
         }
         fetchOnlineCnNumber();
     }, [])
+const [senderInfo, setSenderInfo] = useState({
+  senderName: "",
+  senderMobile: "",
+  senderFullAdress: ""
+});
 
     const [selectedMerchant, setSelectedMerchant] = useState("");
+console.log(selectedMerchant,
+        "Selected Merchant"
+    );
+   const handleMerchantChange = (event) => {
+  const selectedMerchantEmail = event.target.value;
 
-    const handleMerchantChange = (event) => {
-        setSelectedMerchant(event.target.value);
-       
-    };
+  const merchant = users.find(user => user.email === selectedMerchantEmail);
+
+  if (!merchant) return;
+
+  setSelectedMerchant(selectedMerchantEmail);
+
+  setSearchQuery(`${merchant.name} (Merchant ID: ${merchant.merchantID})`);
+
+  setSenderInfo({
+    senderName: merchant.name || "",
+    senderMobile: merchant.email || "", 
+    senderFullAdress: merchant.Merchant_Area || ""
+  });
+};
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -398,7 +420,7 @@ const OnlineBooking_Merchant = () => {
         }
     };
     
-
+console.log(selectedMerchant,"Selected Merchant");
 
     const formRef = useRef();
 
@@ -469,24 +491,36 @@ const OnlineBooking_Merchant = () => {
                    
 <div className="form-control md:mr-4 md:w-1/2">
     <label className="label">
-        <span className="label-text font-rancho text-xl">Sender Mobile(Optional)</span>
+        <span className="label-text font-rancho text-xl">Sender Mobile/ID(Optional)</span>
     </label>
     <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile'
-    onChange={handleSenderMobileChange}
+    value={senderInfo.senderMobile}
+  onChange={(e) =>
+    setSenderInfo({ ...senderInfo, senderMobile: e.target.value })
+  }
      />
 </div>
 <div className="form-control md:w-1/2">
     <label className="label">
         <span className="label-text font-rancho text-xl">Sender Name(Optional)</span>
     </label>
-    <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName'  />
+    <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' 
+    value={senderInfo.senderName}
+  onChange={(e) =>
+    setSenderInfo({ ...senderInfo, senderName: e.target.value })
+  } />
 </div>
 </div>
 <div className="form-control md:w-full md:px-24 mt-1">
 <label className="label">
     <span className="label-text font-rancho text-xl">Sender Full Address(Optional)</span>
 </label>
-<input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress'  />
+<input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress'
+value={senderInfo.senderFullAdress}
+  onChange={(e) =>
+    setSenderInfo({ ...senderInfo, senderFullAdress: e.target.value })
+  } 
+ />
 </div>
 
 
