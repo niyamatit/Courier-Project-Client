@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 
@@ -337,6 +338,46 @@ const [senderInfo, setSenderInfo] = useState({
                     timer: 1500,
                 });
                 toast.success("Package Added!");
+
+                // -------------------------Send SMS-----------------
+                const SMS_API = "https://bulksmsbd.net/api/smsapi";
+                const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+                const SENDER_ID = "8809617624950";
+                
+                // Build message
+              
+                // const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
+                const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac: ${CnNumber}) is Successful.
+                Thanks Niyamat Express
+                For Tracking visit: https://www.niyamatexpress.com/tracking 
+                `;
+                // const receiverMessage = `Hello ${Bookinginfo.receiverName}, Your Parcel : ${bookingInfo?.product}, Your parcel booking (CN: ${Bookinginfo.CnNumber}) is successful.`;
+                
+                // Build URLs
+              
+                const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+                      const [senderRes, receiverRes] = await Promise.all([
+                    
+                    axios.get(receiverUrl)
+                  ]);    
+                
+                
+                const MessageInfo = {
+                    senderMessage: 'N/A'|| '',
+                    receiverMessage:receiverMessage || '',
+                    SMS_Staus: {
+                      Sender:  'N/A',
+                        Receiver: receiverRes?.data  || 'N/A', 
+                    },
+                    senderMobile: senderMobile || 'N/A',
+                    recipientMobile: recipientMobile || 'N/A',
+                    CnNumber: CnNumber,
+                    Purpuse: "Merchant Online Booking",
+                    Branch_Email: verifiedUser?.email,
+                    Branch_Name: verifiedUser?.name,
+                    date : new Date().toISOString(),
+                }
+                const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
             }
         } catch (error) {
             console.error("Error:", error.message);
