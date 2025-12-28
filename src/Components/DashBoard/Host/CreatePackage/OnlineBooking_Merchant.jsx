@@ -86,7 +86,37 @@ const OnlineBooking_Merchant = () => {
         setDeliveryOption(event.target.value);
     };
 
+const fetchDeliveryRetrunData = async (recipientMobile)=>{
+        try{
+           const res = await axiosSecure.get(`package/search/for/info/again/and/again/${recipientMobile}`)
+           const data = res.data
+        console.log(data,"data");
+           const Total_Delivey_Complete = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+           const Total_Returned = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
 
+const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
+
+setDeliveryComplete(Total_Delivey_Complete)
+setDeliveryPending(DeliveryPending)
+setReturned(Total_Returned)
+console.log(DeliveryComplete,"Delivery complete");
+console.log(TotalReturned,"retun complete");
+
+           console.log(data,"Receiver  Data");
+        }catch(err){
+console.log(err);
+        }
+    }
 
     // Balance and Booking Button Logic
     useEffect(() => {
@@ -458,8 +488,10 @@ const [senderInfo, setSenderInfo] = useState({
     
     const handleReceiverMobileChange = (e) => {
         const recipientMobile = e.target.value;
+        SetNumber(recipientMobile)
         if (recipientMobile.length === 11) { 
             fetchUserDataReceiver(recipientMobile);
+            fetchDeliveryRetrunData(recipientMobile);
         }
     };
     
