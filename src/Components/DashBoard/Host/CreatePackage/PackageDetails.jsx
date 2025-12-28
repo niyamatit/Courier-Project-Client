@@ -67,7 +67,10 @@ export const PackageDetails = ({ bookingInfo }) => (
             <div className="contact-details">
 
                 <div className="sender-details text-left ml-20">
-                    <h3 className='text-bold text-xs'><strong>Sender: {bookingInfo?.senderName}</strong></h3>
+                    <h3 className='text-bold text-xs'><strong>Sender: {
+                    bookingInfo?.Merchant_ID ? `${bookingInfo?.senderName} (Merchant)` : bookingInfo?.senderName 
+                    
+                    }</strong></h3>
                     <p className='text-xs'> <strong>Contact:{bookingInfo?.senderMobile} </strong></p>
                     <p className='text-xs'><strong>Address: </strong>{bookingInfo?.sender_Full_Adress}</p>
                 </div>

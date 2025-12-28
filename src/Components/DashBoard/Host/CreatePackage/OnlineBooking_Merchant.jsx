@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import UseStaffVerify from "../../../../hooks/UseStaffVerify/UseStaffVerify";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 
@@ -54,6 +55,12 @@ const OnlineBooking_Merchant = () => {
     const [allDistricts, setAllDistricts] = useState([]);
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
+    const [isEditingCod, setIsEditingCod] = useState(false);
+
+    const [DeliveryComplete, setDeliveryComplete] = useState(0);
+        const [DeliveryPending, setDeliveryPending] = useState(0);
+        const [ReNumber, SetNumber] = useState(0);
+        const [TotalReturned, setReturned] = useState(0);
     const { data: users = [] } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -81,7 +88,37 @@ const OnlineBooking_Merchant = () => {
         setDeliveryOption(event.target.value);
     };
 
+const fetchDeliveryRetrunData = async (recipientMobile)=>{
+        try{
+           const res = await axiosSecure.get(`package/search/for/info/again/and/again/${recipientMobile}`)
+           const data = res.data
+        console.log(data,"data");
+           const Total_Delivey_Complete = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
+           const Total_Returned = data.reduce((total, booking) => {
+  if (booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned) {
+    return total + 1; 
+  }
+  return total; 
+}, 0);
 
+const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
+
+setDeliveryComplete(Total_Delivey_Complete)
+setDeliveryPending(DeliveryPending)
+setReturned(Total_Returned)
+console.log(DeliveryComplete,"Delivery complete");
+console.log(TotalReturned,"retun complete");
+
+           console.log(data,"Receiver  Data");
+        }catch(err){
+console.log(err);
+        }
+    }
 
     // Balance and Booking Button Logic
     useEffect(() => {
@@ -194,20 +231,40 @@ const OnlineBooking_Merchant = () => {
         }
         fetchOnlineCnNumber();
     }, [])
+const [senderInfo, setSenderInfo] = useState({
+  senderName: "",
+  senderMobile: "",
+  senderFullAdress: ""
+});
 
     const [selectedMerchant, setSelectedMerchant] = useState("");
 
-    const handleMerchantChange = (event) => {
-        setSelectedMerchant(event.target.value);
-       
-    };
+   const handleMerchantChange = (event) => {
+  const selectedMerchantEmail = event.target.value;
+
+  const merchant = users.find(user => user.email === selectedMerchantEmail);
+
+  if (!merchant) return;
+
+  setSelectedMerchant(selectedMerchantEmail);
+
+  setSearchQuery(`${merchant.name} (Merchant ID: ${merchant.merchantID})`);
+
+  setSenderInfo({
+    senderName: merchant.name || "",
+    senderMobile: merchant.email || "", 
+    senderFullAdress: merchant.Merchant_Area || ""
+  });
+};
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (parseFloat(amount) < 80) {
-            setAmountError("Value must be greater than or equal to 80");
-            toast.error("Amount must be at least 80!");
+        if (parseFloat(amount) < 60) {
+            setAmountError("Value must be greater than or equal to 60");
+            toast.error("Amount must be at least 60!");
             return;
         }
     
@@ -317,6 +374,46 @@ const OnlineBooking_Merchant = () => {
                     timer: 1500,
                 });
                 toast.success("Package Added!");
+
+                // -------------------------Send SMS-----------------
+                const SMS_API = "https://bulksmsbd.net/api/smsapi";
+                const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+                const SENDER_ID = "8809617624950";
+                
+                // Build message
+              
+                // const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
+                const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac: ${CnNumber}) is Successful.
+                Thanks Niyamat Express
+                For Tracking visit: https://www.niyamatexpress.com/tracking 
+                `;
+                // const receiverMessage = `Hello ${Bookinginfo.receiverName}, Your Parcel : ${bookingInfo?.product}, Your parcel booking (CN: ${Bookinginfo.CnNumber}) is successful.`;
+                
+                // Build URLs
+              
+                const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
+                      const [senderRes, receiverRes] = await Promise.all([
+                    
+                    axios.get(receiverUrl)
+                  ]);    
+                
+                
+                const MessageInfo = {
+                   
+                    receiverMessage:receiverMessage || '',
+                    SMS_Staus: {
+                      Sender:  senderRes?.data || '' || {} ,
+                        Receiver: receiverRes?.data  || 'N/A', 
+                    },
+                    senderMobile: senderMobile || 'N/A',
+                    recipientMobile: recipientMobile || 'N/A',
+                    CnNumber: CnNumber,
+                    Purpuse: "Merchant Online Booking",
+                    Branch_Email: verifiedUser?.email,
+                    Branch_Name: verifiedUser?.name,
+                    date : new Date().toISOString(),
+                }
+                const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
             }
         } catch (error) {
             console.error("Error:", error.message);
@@ -393,12 +490,14 @@ const OnlineBooking_Merchant = () => {
     
     const handleReceiverMobileChange = (e) => {
         const recipientMobile = e.target.value;
+        SetNumber(recipientMobile)
         if (recipientMobile.length === 11) { 
             fetchUserDataReceiver(recipientMobile);
+            fetchDeliveryRetrunData(recipientMobile);
         }
     };
     
-
+console.log(selectedMerchant,"Selected Merchant");
 
     const formRef = useRef();
 
@@ -469,24 +568,36 @@ const OnlineBooking_Merchant = () => {
                    
 <div className="form-control md:mr-4 md:w-1/2">
     <label className="label">
-        <span className="label-text font-rancho text-xl">Sender Mobile(Optional)</span>
+        <span className="label-text font-rancho text-xl">Sender Mobile/ID(Optional)</span>
     </label>
     <input type="text" placeholder="Enter Sender Mobile Number" className="input input-bordered" name='senderMobile'
-    onChange={handleSenderMobileChange}
+    value={senderInfo.senderMobile}
+  onChange={(e) =>
+    setSenderInfo({ ...senderInfo, senderMobile: e.target.value })
+  }
      />
 </div>
 <div className="form-control md:w-1/2">
     <label className="label">
         <span className="label-text font-rancho text-xl">Sender Name(Optional)</span>
     </label>
-    <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName'  />
+    <input type="text" placeholder="Enter Sender name" className="input input-bordered" name='senderName' 
+    value={senderInfo.senderName}
+  onChange={(e) =>
+    setSenderInfo({ ...senderInfo, senderName: e.target.value })
+  } />
 </div>
 </div>
 <div className="form-control md:w-full md:px-24 mt-1">
 <label className="label">
     <span className="label-text font-rancho text-xl">Sender Full Address(Optional)</span>
 </label>
-<input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress'  />
+<input type="text" placeholder="Enter Sender Address" className="input input-bordered" name='senderFullAdress'
+value={senderInfo.senderFullAdress}
+  onChange={(e) =>
+    setSenderInfo({ ...senderInfo, senderFullAdress: e.target.value })
+  } 
+ />
 </div>
 
 
@@ -543,15 +654,26 @@ const OnlineBooking_Merchant = () => {
 </div>
 
 <div className='md:flex gap-5 md:px-24'>
-<div className="form-control md:w-1/2">
-    <label className="label">
-        <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
-    </label>
-    <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
-    onChange={handleReceiverMobileChange}
-    required />
-
-</div>
+ <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
+                        </label>
+                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
+                        onChange={handleReceiverMobileChange}
+                        minLength={11}
+                        //minLength={11}={11}
+                        ////minLength={11}={11}
+                        required />
+{
+   ReNumber.length > 10 &&
+        <div className="flex gap-2">
+        <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
+        <p className="text-yellow-800 mt-1"> Delivery Pending: {DeliveryPending}</p>
+        <p className="text-red-800 mt-1"> Returned: {TotalReturned}</p>
+        </div>
+    
+}
+                    </div>
 <div className="form-control md:w-1/2">
     <label className="label">
         <span className="label-text font-rancho text-xl">Receiver Name</span>
@@ -603,9 +725,32 @@ const OnlineBooking_Merchant = () => {
 </div>
 
 <div className="flex md:px-24 mt-5 mb-5 justify-between">
-<div className=''>
+{/* <div className=''>
     <p className="text-xl">Condition + charge : {cod || 0}</p>
+</div> */}
+<div className="">
+  {!isEditingCod ? (
+    <p
+      className="text-xl cursor-pointer"
+      title="Click to edit"
+      onClick={() => setIsEditingCod(true)}
+    >
+      Condition + charge : {cod || 0}
+    </p>
+  ) : (
+    <input
+      type="number"
+      className="text-xl border-b border-gray-400 outline-none bg-transparent w-40"
+      value={cod || ""}
+      autoFocus
+      onChange={(e) => setCod(Number(e.target.value))}
+      onBlur={() => setIsEditingCod(false)}
+      onKeyDown={(e) => e.key === "Enter" && setIsEditingCod(false)}
+    />
+  )}
 </div>
+
+
 
 </div>
 
