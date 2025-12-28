@@ -201,9 +201,7 @@ const [senderInfo, setSenderInfo] = useState({
 });
 
     const [selectedMerchant, setSelectedMerchant] = useState("");
-console.log(selectedMerchant,
-        "Selected Merchant"
-    );
+
    const handleMerchantChange = (event) => {
   const selectedMerchantEmail = event.target.value;
 
