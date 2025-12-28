@@ -363,10 +363,10 @@ const [senderInfo, setSenderInfo] = useState({
                 
                 
                 const MessageInfo = {
-                    senderMessage: 'N/A'|| '',
+                   
                     receiverMessage:receiverMessage || '',
                     SMS_Staus: {
-                      Sender:  'N/A',
+                      Sender:  senderRes?.data || '' || {} ,
                         Receiver: receiverRes?.data  || 'N/A', 
                     },
                     senderMobile: senderMobile || 'N/A',
