@@ -55,6 +55,8 @@ const OnlineBooking_Merchant = () => {
     const [allDistricts, setAllDistricts] = useState([]);
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
+    const [isEditingCod, setIsEditingCod] = useState(false);
+
     const [DeliveryComplete, setDeliveryComplete] = useState(0);
         const [DeliveryPending, setDeliveryPending] = useState(0);
         const [ReNumber, SetNumber] = useState(0);
@@ -723,9 +725,32 @@ value={senderInfo.senderFullAdress}
 </div>
 
 <div className="flex md:px-24 mt-5 mb-5 justify-between">
-<div className=''>
+{/* <div className=''>
     <p className="text-xl">Condition + charge : {cod || 0}</p>
+</div> */}
+<div className="">
+  {!isEditingCod ? (
+    <p
+      className="text-xl cursor-pointer"
+      title="Click to edit"
+      onClick={() => setIsEditingCod(true)}
+    >
+      Condition + charge : {cod || 0}
+    </p>
+  ) : (
+    <input
+      type="number"
+      className="text-xl border-b border-gray-400 outline-none bg-transparent w-40"
+      value={cod || ""}
+      autoFocus
+      onChange={(e) => setCod(Number(e.target.value))}
+      onBlur={() => setIsEditingCod(false)}
+      onKeyDown={(e) => e.key === "Enter" && setIsEditingCod(false)}
+    />
+  )}
 </div>
+
+
 
 </div>
 
