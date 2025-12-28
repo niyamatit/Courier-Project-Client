@@ -226,9 +226,9 @@ const [senderInfo, setSenderInfo] = useState({
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (parseFloat(amount) < 80) {
-            setAmountError("Value must be greater than or equal to 80");
-            toast.error("Amount must be at least 80!");
+        if (parseFloat(amount) < 60) {
+            setAmountError("Value must be greater than or equal to 60");
+            toast.error("Amount must be at least 60!");
             return;
         }
     
