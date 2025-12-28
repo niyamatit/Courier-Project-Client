@@ -55,6 +55,10 @@ const OnlineBooking_Merchant = () => {
     const [allDistricts, setAllDistricts] = useState([]);
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
+    const [DeliveryComplete, setDeliveryComplete] = useState(0);
+        const [DeliveryPending, setDeliveryPending] = useState(0);
+        const [ReNumber, SetNumber] = useState(0);
+        const [TotalReturned, setReturned] = useState(0);
     const { data: users = [] } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -616,15 +620,26 @@ value={senderInfo.senderFullAdress}
 </div>
 
 <div className='md:flex gap-5 md:px-24'>
-<div className="form-control md:w-1/2">
-    <label className="label">
-        <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
-    </label>
-    <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
-    onChange={handleReceiverMobileChange}
-    required />
-
-</div>
+ <div className="form-control md:w-1/2">
+                        <label className="label">
+                            <span className="label-text font-rancho text-xl">Receiver Mobile Number</span>
+                        </label>
+                        <input type="text" placeholder="Enter Recipient Mobile Number" className="input input-bordered" name='recipientMobile'
+                        onChange={handleReceiverMobileChange}
+                        minLength={11}
+                        //minLength={11}={11}
+                        ////minLength={11}={11}
+                        required />
+{
+   ReNumber.length > 10 &&
+        <div className="flex gap-2">
+        <p className="text-green-500 mt-1"> Delivery Completed: {DeliveryComplete},</p>
+        <p className="text-yellow-800 mt-1"> Delivery Pending: {DeliveryPending}</p>
+        <p className="text-red-800 mt-1"> Returned: {TotalReturned}</p>
+        </div>
+    
+}
+                    </div>
 <div className="form-control md:w-1/2">
     <label className="label">
         <span className="label-text font-rancho text-xl">Receiver Name</span>
