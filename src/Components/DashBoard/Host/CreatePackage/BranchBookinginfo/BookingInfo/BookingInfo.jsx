@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../../../../../hooks/useAuth";
 import { getAllPackage, getPackage, updateBooking } from "../../../../../../api/auth";
-import BookingModal from "../BookingModal";
+
 import TableBooking from "../TableBooking";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUsersData from "../../../../../../hooks/useUsersData/useUsersData";
