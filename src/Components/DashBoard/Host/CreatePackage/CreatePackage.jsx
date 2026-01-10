@@ -310,7 +310,7 @@ const handleDivisionChange = (e) => {
             try {
                 const res = await axiosSecure.get("/number");
                 if (res.data && res.data?.length > 0 && res.data[0].Online_CnNumber) {
-                    SetCnNumber(res.data[0].Online_CnNumber)
+                    // SetCnNumber(res.data[0].Online_CnNumber)
                 } else {
                     console.error("Error", res.data)
                 }
@@ -427,8 +427,9 @@ const handleDivisionChange = (e) => {
             setIsOpen(true);
     
             const response = await addPackage(packageData);
-            
+            console.log(response,"Respposne");
             if (response?.insertedId) {
+                SetCnNumber(response.CnNumber);
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
                 SetCnNumber(cnUpdateResponse.data.nextNumber);
 
