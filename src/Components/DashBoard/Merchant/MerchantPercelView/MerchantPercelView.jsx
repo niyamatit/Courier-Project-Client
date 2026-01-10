@@ -26,7 +26,7 @@ const fetchParcels = async () => {
       const response = await axiosSecure.patch(`/parcels/${id}`, updatedData);
       return response.data;
     } catch (error) {
-      console.error('Error updating parcel:', error);
+      // console.error('Error updating parcel:', error);
       // Handle the error gracefully, e.g., by showing an alert or returning a specific error message
       throw new Error(error.response?.data?.message || 'Failed to update parcel');
     }
