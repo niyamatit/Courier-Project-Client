@@ -95,9 +95,9 @@ useEffect(() => {
   setWeightCharge(deliveryPrice + ExraCharge);
 }, [deliveryOption, qty, selectedProduct,deliveryPrice,ExraCharge]);
 
-console.log(weightCharge,"weightCharge");
-console.log(deliveryPrice,"deliveryPrice");
-console.log(ExraCharge,"ExraCharge");
+// console.log(weightCharge,"weightCharge");
+// console.log(deliveryPrice,"deliveryPrice");
+// console.log(ExraCharge,"ExraCharge");
 
   // Change quantity
   
@@ -312,11 +312,11 @@ const handleDivisionChange = (e) => {
                 if (res.data && res.data?.length > 0 && res.data[0].Online_CnNumber) {
                     // SetCnNumber(res.data[0].Online_CnNumber)
                 } else {
-                    console.error("Error", res.data)
+                    // console.error("Error", res.data)
                 }
 
             } catch (error) {
-                console.error("Error Fetching CN Number", error)
+                // console.error("Error Fetching CN Number", error)
             }
         }
         fetchOnlineCnNumber();
@@ -427,7 +427,7 @@ const handleDivisionChange = (e) => {
             setIsOpen(true);
     
             const response = await addPackage(packageData);
-            console.log(response,"Respposne");
+            // console.log(response,"Respposne");
             if (response?.insertedId) {
                 SetCnNumber(response.CnNumber);
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
@@ -525,7 +525,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
         try{
            const res = await axiosSecure.get(`package/search/for/info/again/and/again/${recipientMobile}`)
            const data = res.data
-        console.log(data,"data");
+        // console.log(data,"data");
            const Total_Delivey_Complete = data.reduce((total, booking) => {
   if (booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful) {
     return total + 1; 
@@ -544,12 +544,12 @@ const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
 setDeliveryComplete(Total_Delivey_Complete)
 setDeliveryPending(DeliveryPending)
 setReturned(Total_Returned)
-console.log(DeliveryComplete,"Delivery complete");
-console.log(TotalReturned,"retun complete");
+// console.log(DeliveryComplete,"Delivery complete");
+// console.log(TotalReturned,"retun complete");
 
-           console.log(data,"Receiver  Data");
+        //    console.log(data,"Receiver  Data");
         }catch(err){
-console.log(err);
+// console.log(err);
         }
     }
     const fetchUserData = async (senderMobile) => {
@@ -563,7 +563,7 @@ console.log(err);
                 toast.error("User not found!");
             }
         } catch (error) {
-            console.error("Error fetching user data:", error);
+            // console.error("Error fetching user data:", error);
             toast.error("Failed to fetch user data.");
         }
     };
@@ -587,7 +587,7 @@ console.log(err);
                 toast.error("User not found!");
             }
         } catch (error) {
-            console.error("Error fetching user data:", error);
+            // console.error("Error fetching user data:", error);
             toast.error("Failed to fetch user data.");
         }
     };
