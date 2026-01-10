@@ -92,7 +92,7 @@ const fetchDeliveryRetrunData = async (recipientMobile)=>{
         try{
            const res = await axiosSecure.get(`package/search/for/info/again/and/again/${recipientMobile}`)
            const data = res.data
-        console.log(data,"data");
+        // console.log(data,"data");
            const Total_Delivey_Complete = data.reduce((total, booking) => {
   if (booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful) {
     return total + 1; 
@@ -111,12 +111,12 @@ const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
 setDeliveryComplete(Total_Delivey_Complete)
 setDeliveryPending(DeliveryPending)
 setReturned(Total_Returned)
-console.log(DeliveryComplete,"Delivery complete");
-console.log(TotalReturned,"retun complete");
+// console.log(DeliveryComplete,"Delivery complete");
+// console.log(TotalReturned,"retun complete");
 
-           console.log(data,"Receiver  Data");
+        //    console.log(data,"Receiver  Data");
         }catch(err){
-console.log(err);
+// console.log(err);
         }
     }
 
@@ -220,13 +220,13 @@ console.log(err);
             try {
                 const res = await axiosSecure.get("/number");
                 if (res.data && res.data?.length > 0 && res.data[0].Online_CnNumber) {
-                    SetCnNumber(res.data[0].Online_CnNumber)
+                    // SetCnNumber(res.data[0].Online_CnNumber)
                 } else {
-                    console.error("Error", res.data)
+                    // console.error("Error", res.data)
                 }
 
             } catch (error) {
-                console.error("Error Fetching CN Number", error)
+                // console.error("Error Fetching CN Number", error)
             }
         }
         fetchOnlineCnNumber();
@@ -363,6 +363,7 @@ const [senderInfo, setSenderInfo] = useState({
             const response = await addPackage(packageData);
     
             if (response?.insertedId) {
+                SetCnNumber(response.CnNumber);
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
                 SetCnNumber(cnUpdateResponse.data.nextNumber);
     
@@ -416,7 +417,7 @@ const [senderInfo, setSenderInfo] = useState({
                 const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
             }
         } catch (error) {
-            console.error("Error:", error.message);
+            // console.error("Error:", error.message);
             const errorMessage = 
                 error.response?.data?.error ||
                 error.response?.data?.message ||
@@ -461,7 +462,7 @@ const [senderInfo, setSenderInfo] = useState({
                 toast.error("User not found!");
             }
         } catch (error) {
-            console.error("Error fetching user data:", error);
+            // console.error("Error fetching user data:", error);
             toast.error("Failed to fetch user data.");
         }
     };
@@ -483,7 +484,7 @@ const [senderInfo, setSenderInfo] = useState({
                 toast.error("User not found!");
             }
         } catch (error) {
-            console.error("Error fetching user data:", error);
+            // console.error("Error fetching user data:", error);
             toast.error("Failed to fetch user data.");
         }
     };
@@ -497,7 +498,7 @@ const [senderInfo, setSenderInfo] = useState({
         }
     };
     
-console.log(selectedMerchant,"Selected Merchant");
+// console.log(selectedMerchant,"Selected Merchant");
 
     const formRef = useRef();
 
