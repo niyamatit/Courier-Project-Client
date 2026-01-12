@@ -16,9 +16,7 @@ const Add_Account_Merchant = () => {
   const paymentMethod = watch("paymentMethod");
   const [verifiedUser] = useUsersData();
 
-  /* ============================
-        LOAD MERCHANT ACCOUNT
-  ============================ */
+ 
   const {
     data: accounts = [],
     refetch,
@@ -62,9 +60,7 @@ const Add_Account_Merchant = () => {
     }
   };
 
-  /* ============================
-              DELETE
-  ============================ */
+
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -246,7 +242,7 @@ const Add_Account_Merchant = () => {
   );
 };
 
-/* ================= REUSABLE INPUT ================= */
+
 const Input = ({
   label,
   name,
