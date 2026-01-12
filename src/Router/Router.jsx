@@ -122,6 +122,7 @@ import Cost_History from "../Components/DashBoard/Admin/AllBranch/Cost_History";
 import Booking_Rate_International from "../Components/DashBoard/Admin/Booking_Rate_International";
 import Booking_Rate_For_All from "../Components/DashBoard/Admin/Booking_Rate_For_All";
 import InterNational_Booking_Branch_Admin from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch_Admin";
+import Add_Account_Merchant from "../Components/DashBoard/Merchant/AddAccount/Add_Account_Merchant";
 
 
 
@@ -504,6 +505,10 @@ export const router = createBrowserRouter([
       {
         path: "MerchantDashboard",
         element: <MerchantDashboard />,
+      },
+      {
+        path: "add_account",
+        element: <Add_Account_Merchant/>,
       },
       {
         path: "MerchantAddPercel",

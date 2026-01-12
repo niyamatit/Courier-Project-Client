@@ -1,15 +1,36 @@
+/* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
 import axiosSecure from "../../../api/axiosSecure";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const Merchant_recharge_apply = () => {
     const [verifiedUser, isLoading, refetch] = useUsersData(); // Assuming useUsersData returns refetch too
     const { register, handleSubmit, reset } = useForm();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [mobile, setMobile] = useState("");
+     const {
+    data: accounts = [],
+   
+  } = useQuery({
+    queryKey: ["merchantAccounts", verifiedUser?.email],
+    enabled: !!verifiedUser?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `/merchant-accounts?email=${verifiedUser.email}`
+      );
+      return res.data;
+    },
+  });
+  const account = accounts?.[0]; // only one account allowed
+
+const autoMobile =
+  account?.personalNumber ||
+  account?.accountNo ||
+  "";
    const onSubmit = async () => {
     if (verifiedUser?.Merchant_Balance < 0) return;
 
@@ -34,7 +55,8 @@ const Merchant_recharge_apply = () => {
             merchantID: verifiedUser?.merchantID,
             Merchant_email: verifiedUser?.email,
             Merchant_Name: verifiedUser?.name,
-            Mobile_Number: mobile,
+            Mobile_Number: autoMobile,
+            Account_Total_info: accounts,
             Note: `Apply Recharge ${verifiedUser?.name}`,
             transaction_date: new Date(),
             transaction_type: "recharge",
@@ -72,7 +94,7 @@ Thank you for choosing Niyamat Express Courier & Parcel Service.
 
 
 // Build URLs
-const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(mobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
+const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(autoMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
 // const receiverUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(recipientMobile)}&senderid=${SENDER_ID}&message=${encodeURIComponent(receiverMessage)}`;
       const [senderRes, receiverRes] = await Promise.all([
     axios.get(senderUrl),
@@ -85,7 +107,7 @@ const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(mobil
       Sender: senderRes.data,
         Receiver: receiverRes?.data || '' || {}  
     },
-    senderMobile: mobile,
+    senderMobile: autoMobile,
     
     
     Purpuse: "Merchant Recharge Apply",
@@ -111,7 +133,8 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
 
     if (isLoading) return <div className="text-center py-8">Loading merchant data...</div>;
 
-    const isButtonDisabled = verifiedUser?.Merchant_Balance < 0 || verifiedUser?.Merchant_Balance <= 0 || isSubmitting;
+    const isButtonDisabled = verifiedUser?.Merchant_Balance < 0 || verifiedUser?.Merchant_Balance <= 0 || !autoMobile || isSubmitting;
+
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -137,19 +160,25 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                         )}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                           Mobile Number
-                        </label>
-                        <input
-                            type="number"
-                            //minLength={11}={11}
-                            minLength={11}
-                            value={mobile}
-          onChange={(e) => setMobile(e.target.value)}
-                            className="w-full px-4 py-2 border border-blue-200 rounded-lg bg-gray-100"
-                        />
-                       
-                    </div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Mobile Number
+  </label>
+
+  <input
+    type="text"
+    value={autoMobile}
+    readOnly
+    required
+    className="w-full px-4 py-2 border border-blue-200 rounded-lg bg-gray-100"
+  />
+
+  {!autoMobile && (
+    <p className="text-red-500 text-sm mt-1">
+      No mobile number found in account
+    </p>
+  )}
+</div>
+
 
                     {/* Submit Button */}
                     <button
