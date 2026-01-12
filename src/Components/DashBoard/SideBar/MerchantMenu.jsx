@@ -133,6 +133,11 @@ const MerchantMenu = () => {
         address='/dashboard/balance_history'
       />
       <MenuItem
+        icon={MdAddBox}
+        label='Add Account'
+        address='/dashboard/add_account'
+      />
+      <MenuItem
         icon={CircleDollarSign}
         label='Recharge Apply'
         address='/dashboard/recharge_apply'
