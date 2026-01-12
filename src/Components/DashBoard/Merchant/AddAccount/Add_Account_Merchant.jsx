@@ -86,8 +86,8 @@ const Add_Account_Merchant = () => {
       {/* ================= FORM ================= */}
       <div className="max-w-xl mx-auto bg-white rounded-xl shadow-lg border border-blue-100">
         <div className="bg-blue-400 text-white px-6 py-4 rounded-t-xl">
-          <h1 className="text-xl font-semibold">Add Merchant Account</h1>
-          <p className="text-sm text-blue-100">
+          <h1 className="text-xl font-semibold">Add  Account</h1>
+          <p className="text-sm text-red-200">
             Only one account is allowed
           </p>
         </div>
