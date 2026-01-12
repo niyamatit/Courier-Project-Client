@@ -207,37 +207,63 @@ const Add_Account_Merchant = () => {
 
       {/* ================= ACCOUNT LIST ================= */}
       <div className="max-w-xl mx-auto mt-6 bg-white rounded-xl shadow p-4">
-        <h2 className="font-semibold mb-3">Added Account</h2>
+  <h2 className="font-semibold mb-4 text-gray-700">
+    Added Account Details
+  </h2>
 
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : accounts.length === 0 ? (
-          <p className="text-sm text-gray-500">No account added yet</p>
-        ) : (
-          accounts.map((acc) => (
-            <div
-              key={acc._id}
-              className="flex justify-between items-center border rounded-lg p-3 mb-2"
-            >
-              <div>
-                <p className="font-medium capitalize">
-                  {acc.paymentMethod}
-                </p>
-                <p className="text-sm text-gray-500">
-                  {acc.personalNumber || acc.bankName}
-                </p>
-              </div>
+  {isLoading ? (
+    <p>Loading...</p>
+  ) : accounts.length === 0 ? (
+    <p className="text-sm text-gray-500">No account added yet</p>
+  ) : (
+    accounts.map((acc) => (
+      <div
+        key={acc._id}
+        className="border rounded-lg p-4 mb-4 bg-gray-50"
+      >
+        {/* Header */}
+        <div className="flex justify-between items-center mb-2">
+          <p className="font-semibold capitalize text-blue-500">
+            {acc.paymentMethod} Account
+          </p>
 
-              <button
-                onClick={() => handleDelete(acc._id)}
-                className="text-red-500 text-sm hover:text-red-600"
-              >
-                Delete
-              </button>
-            </div>
-          ))
+          <button
+            onClick={() => handleDelete(acc._id)}
+            className="text-red-500 text-sm hover:text-red-600"
+          >
+            Delete
+          </button>
+        </div>
+
+        {/* BANK DETAILS */}
+        {acc.paymentMethod === "bank" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
+            <p><span className="font-medium">Bank Name:</span> {acc.bankName}</p>
+            <p><span className="font-medium">Branch:</span> {acc.branchName}</p>
+            <p><span className="font-medium">Account No:</span> {acc.accountNo}</p>
+            <p><span className="font-medium">Account Name:</span> {acc.accountName}</p>
+            <p><span className="font-medium">Routing No:</span> {acc.routingNo}</p>
+          </div>
         )}
+
+        {/* MOBILE WALLET DETAILS */}
+        {(acc.paymentMethod === "bkash" ||
+          acc.paymentMethod === "nagad" ||
+          acc.paymentMethod === "rocket") && (
+          <div className="text-sm text-gray-700">
+            <p>
+              <span className="font-medium">Personal Number:</span>{" "}
+              {acc.personalNumber}
+            </p>
+          </div>
+        )}
+
+        
       </div>
+    ))
+  )}
+</div>
+
     </div>
   );
 };
