@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
@@ -17,7 +16,9 @@ const Add_Account_Merchant = () => {
   const paymentMethod = watch("paymentMethod");
   const [verifiedUser] = useUsersData();
 
-
+  /* ============================
+        LOAD MERCHANT ACCOUNT
+  ============================ */
   const {
     data: accounts = [],
     refetch,
@@ -33,19 +34,26 @@ const Add_Account_Merchant = () => {
     },
   });
 
- 
+  const isDisabled = accounts.length >= 1;
+
+  
   const onSubmit = async (data) => {
     try {
       const payload = {
-        paymentMethod,
-        ...data,
+        paymentMethod: data.paymentMethod || null,
+        bankName: data.bankName || null,
+        branchName: data.branchName || null,
+        accountNo: data.accountNo || null,
+        accountName: data.accountName || null,
+        routingNo: data.routingNo || null,
+        personalNumber: data.personalNumber || null,
         addedBy: verifiedUser?.email,
         addedByName: verifiedUser?.name,
         date: new Date().toISOString(),
       };
 
-      await axiosSecure.post("/merchant-accounts", payload);
-
+      await axiosSecure.post("/merchant-add-accounts", payload);
+      
       Swal.fire("Success", "Account added successfully", "success");
       reset();
       refetch();
@@ -54,33 +62,33 @@ const Add_Account_Merchant = () => {
     }
   };
 
-
+  /* ============================
+              DELETE
+  ============================ */
   const handleDelete = async (id) => {
-    const confirm = await Swal.fire({
+    const result = await Swal.fire({
       title: "Are you sure?",
-      text: "This account will be deleted",
+      text: "This account will be permanently deleted",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
+      confirmButtonText: "Yes, delete it",
     });
 
-    if (!confirm.isConfirmed) return;
+    if (!result.isConfirmed) return;
 
     try {
       await axiosSecure.delete(`/merchant-accounts/${id}`);
-      Swal.fire("Deleted", "Account removed", "success");
+      Swal.fire("Deleted!", "Account removed", "success");
       refetch();
     } catch {
       Swal.fire("Error", "Delete failed", "error");
     }
   };
 
-  const isDisabled = accounts.length >= 1;
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
+      {/* ================= FORM ================= */}
       <div className="max-w-xl mx-auto bg-white rounded-xl shadow-lg border border-blue-100">
-        {/* Header */}
         <div className="bg-blue-400 text-white px-6 py-4 rounded-t-xl">
           <h1 className="text-xl font-semibold">Add Merchant Account</h1>
           <p className="text-sm text-blue-100">
@@ -88,59 +96,122 @@ const Add_Account_Merchant = () => {
           </p>
         </div>
 
-        {/* FORM */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-5">
-          <select
-            {...register("paymentMethod", { required: true })}
-            disabled={isDisabled}
-            className="w-full rounded-lg border px-3 py-2"
-          >
-            <option value="">Select Method</option>
-            <option value="bank">Bank</option>
-            <option value="bkash">bKash</option>
-            <option value="nagad">Nagad</option>
-            <option value="rocket">Rocket</option>
-          </select>
+          {/* Payment Method */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Payment Method
+            </label>
+            <select
+              {...register("paymentMethod", {
+                required: "Payment method is required",
+              })}
+              disabled={isDisabled}
+              className={`w-full rounded-lg border px-3 py-2
+                ${
+                  errors.paymentMethod
+                    ? "border-red-400"
+                    : "border-gray-300 focus:border-blue-400"
+                }
+              `}
+            >
+              <option value="">Select Method</option>
+              <option value="bank">Bank</option>
+              <option value="bkash">bKash</option>
+              <option value="nagad">Nagad</option>
+              <option value="rocket">Rocket</option>
+            </select>
+            {errors.paymentMethod && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.paymentMethod.message}
+              </p>
+            )}
+          </div>
 
+          {/* BANK FIELDS */}
           {paymentMethod === "bank" && (
-            <div className="grid grid-cols-2 gap-4">
-              <Input label="Bank Name" register={register("bankName", { required: true })} />
-              <Input label="Branch Name" register={register("branchName", { required: true })} />
-              <Input label="Account No" register={register("accountNo", { required: true })} />
-              <Input label="Account Name" register={register("accountName", { required: true })} />
-              <Input label="Routing No" register={register("routingNo", { required: true })} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label="Bank Name"
+                name="bankName"
+                register={register}
+                errors={errors}
+                rules={{ required: "Bank name is required" }}
+              />
+
+              <Input
+                label="Branch Name"
+                name="branchName"
+                register={register}
+                errors={errors}
+                rules={{ required: "Branch name is required" }}
+              />
+
+              <Input
+                label="Account No"
+                name="accountNo"
+                register={register}
+                errors={errors}
+                rules={{ required: "Account number is required" }}
+              />
+
+              <Input
+                label="Account Name"
+                name="accountName"
+                register={register}
+                errors={errors}
+                rules={{ required: "Account name is required" }}
+              />
+
+              <Input
+                label="Routing No"
+                name="routingNo"
+                register={register}
+                errors={errors}
+                rules={{ required: "Routing number is required" }}
+              />
             </div>
           )}
 
+          {/* MOBILE WALLET */}
           {(paymentMethod === "bkash" ||
             paymentMethod === "nagad" ||
             paymentMethod === "rocket") && (
-            <input
-              {...register("personalNumber", { required: true })}
+            <Input
+              label="Personal Number"
+              name="personalNumber"
+              register={register}
+              errors={errors}
+              rules={{
+                required: "Personal number is required",
+                pattern: {
+                  value: /^[0-9]{11}$/,
+                  message: "Must be a valid 11-digit number",
+                },
+              }}
               placeholder="01XXXXXXXXX"
-              className="w-full border rounded-lg px-3 py-2"
             />
           )}
 
+          {/* SUBMIT */}
           <button
             disabled={isDisabled}
-            className={`w-full py-2.5 rounded-lg font-semibold text-white transition
+            className={`w-full py-2.5 rounded-lg font-semibold text-white
               ${
                 isDisabled
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-blue-400 hover:bg-blue-500"
-              }`}
+              }
+            `}
           >
             Save Account
           </button>
         </form>
       </div>
 
-     
+      {/* ================= ACCOUNT LIST ================= */}
       <div className="max-w-xl mx-auto mt-6 bg-white rounded-xl shadow p-4">
-        <h2 className="font-semibold mb-3 text-gray-700">
-          Added Account
-        </h2>
+        <h2 className="font-semibold mb-3">Added Account</h2>
 
         {isLoading ? (
           <p>Loading...</p>
@@ -153,7 +224,9 @@ const Add_Account_Merchant = () => {
               className="flex justify-between items-center border rounded-lg p-3 mb-2"
             >
               <div>
-                <p className="font-medium capitalize">{acc.paymentMethod}</p>
+                <p className="font-medium capitalize">
+                  {acc.paymentMethod}
+                </p>
                 <p className="text-sm text-gray-500">
                   {acc.personalNumber || acc.bankName}
                 </p>
@@ -161,7 +234,7 @@ const Add_Account_Merchant = () => {
 
               <button
                 onClick={() => handleDelete(acc._id)}
-                className="text-red-500 hover:text-red-600 text-sm"
+                className="text-red-500 text-sm hover:text-red-600"
               >
                 Delete
               </button>
@@ -173,14 +246,35 @@ const Add_Account_Merchant = () => {
   );
 };
 
-/* Reusable Input */
-const Input = ({ label, register }) => (
+/* ================= REUSABLE INPUT ================= */
+const Input = ({
+  label,
+  name,
+  register,
+  errors,
+  rules,
+  placeholder,
+}) => (
   <div>
-    <label className="text-sm text-gray-600">{label}</label>
+    <label className="block text-sm font-medium mb-1">
+      {label}
+    </label>
     <input
-      {...register}
-      className="w-full border rounded-lg px-3 py-2"
+      {...register(name, rules)}
+      placeholder={placeholder}
+      className={`w-full rounded-lg border px-3 py-2 outline-none
+        ${
+          errors?.[name]
+            ? "border-red-400 focus:ring-red-200"
+            : "border-gray-300 focus:border-blue-400 focus:ring-blue-200"
+        }
+      `}
     />
+    {errors?.[name] && (
+      <p className="text-red-500 text-xs mt-1">
+        {errors[name].message}
+      </p>
+    )}
   </div>
 );
 
