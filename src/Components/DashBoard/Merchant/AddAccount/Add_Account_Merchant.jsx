@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const Add_Account_Merchant = () => {
   const {
@@ -9,7 +10,7 @@ const Add_Account_Merchant = () => {
   } = useForm();
 
   const paymentMethod = watch("paymentMethod");
-
+const [verifiedUser] =  useUsersData();
   const onSubmit = (data) => {
     console.log(data);
   };
