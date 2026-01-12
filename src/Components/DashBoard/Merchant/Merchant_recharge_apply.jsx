@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
 import axiosSecure from "../../../api/axiosSecure";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
@@ -24,6 +25,12 @@ const Merchant_recharge_apply = () => {
       return res.data;
     },
   });
+  const account = accounts?.[0]; // only one account allowed
+
+const autoMobile =
+  account?.personalNumber ||
+  account?.accountNo ||
+  "";
    const onSubmit = async () => {
     if (verifiedUser?.Merchant_Balance < 0) return;
 
@@ -126,13 +133,8 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
 
     if (isLoading) return <div className="text-center py-8">Loading merchant data...</div>;
 
-    const isButtonDisabled = verifiedUser?.Merchant_Balance < 0 || verifiedUser?.Merchant_Balance <= 0 || isSubmitting;
-const account = accounts?.[0]; // only one account allowed
+    const isButtonDisabled = verifiedUser?.Merchant_Balance < 0 || verifiedUser?.Merchant_Balance <= 0 || !autoMobile || isSubmitting;
 
-const autoMobile =
-  account?.personalNumber ||
-  account?.accountNo ||
-  "";
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -166,6 +168,7 @@ const autoMobile =
     type="text"
     value={autoMobile}
     readOnly
+    required
     className="w-full px-4 py-2 border border-blue-200 rounded-lg bg-gray-100"
   />
 

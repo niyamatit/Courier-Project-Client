@@ -139,7 +139,7 @@ const MerchantMenu = () => {
       />
       <MenuItem
         icon={CircleDollarSign}
-        label='Recharge Apply'
+        label='Withdraw Balance'
         address='/dashboard/recharge_apply'
       />
       <MenuItem
