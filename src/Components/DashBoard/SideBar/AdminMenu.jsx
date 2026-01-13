@@ -82,6 +82,10 @@ const AdminMenu = () => {
         label='All Merchant List'
         address='AllMerchnatList' />
 
+        <MenuItem icon={FaUserCog}
+        label='All Merchant Account List'
+        address='AllMerchantAccountList' />
+
       <MenuItem icon={CircleDollarSign}
         label='Merchant Recharge Pending'
         address='Merchant-Recharge-Apply' />
