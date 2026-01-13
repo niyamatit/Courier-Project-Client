@@ -48,7 +48,7 @@ const AllMerchantAccountList_Admin = () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold text-blue-600 mb-6">
-        All Merchant Accounts (Admin)
+        All Merchant Accounts
       </h1>
 
       <div className="overflow-x-auto bg-white rounded-lg shadow">
