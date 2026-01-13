@@ -339,7 +339,7 @@ const [senderInfo, setSenderInfo] = useState({
                 condition,
                 Receiver_Full_Adress,
                 sender_Full_Adress,
-                CnNumber: CnNumber,
+             
                 districtName: districtName,
                 email: verifiedUser?.email,
                 Branch_Name:verifiedUser?.name,
@@ -364,6 +364,13 @@ const [senderInfo, setSenderInfo] = useState({
     
             if (response?.insertedId) {
                 SetCnNumber(response.CnNumber);
+                const finalBookingInfo = {
+    ...packageData,
+    CnNumber: response.CnNumber,
+  };
+
+  setBookingInfo(finalBookingInfo);
+  setIsOpen(true);
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
                 SetCnNumber(cnUpdateResponse.data.nextNumber);
     
@@ -764,7 +771,13 @@ value={senderInfo.senderFullAdress}
                 }
             </form>
 
-            <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
+           {isOpen && bookingInfo?.CnNumber && (
+             <PrintModal
+               closeModal={closeModal}
+               isOpen={isOpen}
+               bookingInfo={bookingInfo}
+             />
+           )}
 
 
 

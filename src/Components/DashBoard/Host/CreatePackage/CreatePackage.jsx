@@ -358,7 +358,7 @@ const handleDivisionChange = (e) => {
                     });
                     return;
                   }
-            const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
+            const CurrentBalance = Branch_Balance?.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
             // console.log(CurrentBalance, "Current Balance");
             const CodAmount = parseFloat(weightCharge || 0);
     // console.log(CodAmount, "Cod Amount");
@@ -409,7 +409,7 @@ const handleDivisionChange = (e) => {
                 condition,
                 Receiver_Full_Adress,
                 sender_Full_Adress,
-                CnNumber: CnNumber,
+                
                 districtName: districtName,
                 email: verifiedUser?.email,
                 Branch_Name:verifiedUser?.name,
@@ -427,9 +427,16 @@ const handleDivisionChange = (e) => {
             setIsOpen(true);
     
             const response = await addPackage(packageData);
-            // console.log(response,"Respposne");
+            console.log(response,"Respposne");
             if (response?.insertedId) {
                 SetCnNumber(response.CnNumber);
+                const finalBookingInfo = {
+    ...packageData,
+    CnNumber: response.CnNumber,
+  };
+
+  setBookingInfo(finalBookingInfo);
+  setIsOpen(true); // ✅ now open modal
                 const cnUpdateResponse = await axiosSecure.put("/Online/CnNmber");
                 SetCnNumber(cnUpdateResponse.data.nextNumber);
 
@@ -539,7 +546,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
   return total; 
 }, 0);
 
-const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
+const DeliveryPending = data?.length - (Total_Delivey_Complete + Total_Returned)
 
 setDeliveryComplete(Total_Delivey_Complete)
 setDeliveryPending(DeliveryPending)
@@ -948,7 +955,14 @@ useEffect(() => {
                 
             </form>
 
-            <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} />
+            {/* <PrintModal closeModal={closeModal} isOpen={isOpen} bookingInfo={bookingInfo} /> */}
+{isOpen && bookingInfo?.CnNumber && (
+  <PrintModal
+    closeModal={closeModal}
+    isOpen={isOpen}
+    bookingInfo={bookingInfo}
+  />
+)}
 
 
 
