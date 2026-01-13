@@ -58,7 +58,6 @@ const AllMerchantAccountList_Admin = () => {
               <th className="px-4 py-2 text-left text-sm">Merchant</th>
               <th className="px-4 py-2 text-left text-sm">Method</th>
               <th className="px-4 py-2 text-left text-sm">Account Details</th>
-             
               <th className="px-4 py-2 text-center text-sm">Actions</th>
             </tr>
           </thead>
@@ -75,7 +74,7 @@ const AllMerchantAccountList_Admin = () => {
                 <tr key={acc._id} className="border-t hover:bg-gray-50">
                   <td className="px-4 py-2 text-sm">
                     <p className="font-medium">{acc.addedByName}</p>
-                    <p className="text-xs text-gray-500">{acc.addedBy}</p>
+                    <p className="text-sm text-gray-500">{acc.addedBy}</p>
                   </td>
 
                   <td className="px-4 py-2 text-sm capitalize">
