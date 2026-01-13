@@ -65,7 +65,7 @@ const [autoRateOverride, setAutoRateOverride] = useState(false);
  const handleProductChange = (productId) => {
     const product = AllfindProducts.find((p) => p.products === productId);
     setSelectedProduct(product);
-    console.log(product.products, "Selected Product");
+    // console.log(product.products, "Selected Product");
     setDeliveryOption(null); // reset option
     setDeliveryPrice(0);
     setQuantity(1); // reset quantity
@@ -427,7 +427,7 @@ const handleDivisionChange = (e) => {
             setIsOpen(true);
     
             const response = await addPackage(packageData);
-            console.log(response,"Respposne");
+            // console.log(response,"Respposne");
             if (response?.insertedId) {
                 SetCnNumber(response.CnNumber);
                 const finalBookingInfo = {
