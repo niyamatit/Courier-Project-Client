@@ -123,6 +123,7 @@ import Booking_Rate_International from "../Components/DashBoard/Admin/Booking_Ra
 import Booking_Rate_For_All from "../Components/DashBoard/Admin/Booking_Rate_For_All";
 import InterNational_Booking_Branch_Admin from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch_Admin";
 import Add_Account_Merchant from "../Components/DashBoard/Merchant/AddAccount/Add_Account_Merchant";
+import AllMerchantAccountList_Admin from "../Components/DashBoard/Merchant/AllMerchantAccountList/AllMerchantAccountList_Admin";
 
 
 
@@ -801,6 +802,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <AdminRoute>
             <ManageUsers />
+          </AdminRoute>
+        </PrivateRoute>
+      },
+       {
+        path: "AllMerchantAccountList",
+        element: <PrivateRoute>
+          <AdminRoute>
+            <AllMerchantAccountList_Admin />
           </AdminRoute>
         </PrivateRoute>
       },
