@@ -1,8 +1,9 @@
 import { useState } from "react";
+import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 
 const BookingModal = ({ booking, onClose, onSave }) => {
     if (!booking) return null;
-
+    const [verifiedUser] = useUsersData();
     const [editableBooking, setEditableBooking] = useState({ ...booking });
     const [isEditing, setIsEditing] = useState(false); // Track edit mode
 
@@ -141,7 +142,7 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                         <p><strong>Sender Mobile:</strong> {booking.senderMobile}</p>
                         <p><strong>Recipient Mobile:</strong> {booking.recipientMobile}</p>
                         <p><strong>Product Details:</strong> {booking.productDetails}</p>
-                        <p><strong>Booking ID:</strong> {booking._id}</p>
+                        {/* <p><strong>Booking ID:</strong> {booking._id}</p> */}
                         <p><strong>Package Tracking Number:</strong> {booking.CnNumber}</p>
                         <p><strong>Package Quantity:</strong> {booking.qty}</p>
                         <p><strong>District:</strong> {booking.districtName}</p>
@@ -369,12 +370,14 @@ const BookingModal = ({ booking, onClose, onSave }) => {
                             </button>
                         </>
                     ) : (
-                        <button
+                        
+                            verifiedUser?.role === 'admin' && <button
                             onClick={() => setIsEditing(true)}
                             className="px-4 py-2 bg-yellow-500 text-white rounded mr-2"
                         >
                             Edit
                         </button>
+                        
                     )}
                     <button
                         onClick={onClose}

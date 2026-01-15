@@ -46,13 +46,7 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <p className='text-gray-900 whitespace-no-wrap'>{formatTime(booking?.booking)}</p>
                 </td>
-                {/* <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <div className='flex items-center'>
-                        <p className='text-gray-900 whitespace-no-wrap'>
-                            {booking?.senderName}
-                        </p>
-                    </div>
-                </td> */}
+                
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 
                     {/* Button to print StickerDetails */}
@@ -81,7 +75,7 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                 </td>
                {
                 verifiedUser?.role === 'admin' &&  <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    {/* <p className='text-gray-900 whitespace-no-wrap'>{booking?.requestStatus || 'No Request'}</p> */}
+                   
                     {
     booking?.requestStatus === "pending" ? 
     <button
@@ -115,16 +109,7 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                     </button>
                 </td>
 
-                {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-
-                   
-                    <button
-                        onClick={print}
-                        className='text-blue-500 hover:underline'
-                    >
-                        Print
-                    </button>
-                </td> */}
+                
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <div className='flex items-center'>
                         <p className='text-gray-900 whitespace-no-wrap'>
@@ -132,17 +117,7 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                         </p>
                     </div>
                 </td>
-                
-                {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-
-                   
-                    {
-                      booking?.Tracking_Admin_Select_Online_MotherHub_Branch_email ? <h1 className="text-green-400">Already Selected</h1> :  <button onClick={openHubModal} className="text-blue-500">
-                      Select MotherHub
-                  </button>
-                    }
-                   
-                </td> */}
+              
             </tr>
             <MotherHubModal
                 isOpen={isHubModalOpen}

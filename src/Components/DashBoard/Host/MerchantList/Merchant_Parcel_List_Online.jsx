@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../../api/axiosSecure";
+import BookingModal from "../CreatePackage/BranchBookinginfo/BookingModal";
 
 
 
@@ -23,7 +24,7 @@ const Merchant_Parcel_List_Online = () => {
       return res.data;
     }
   });
-
+const handleCloseModal = () => setSelectedPackage(null);
   const { data: Verify_Admin_MotherHub = [], refetch } = useQuery({
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
@@ -172,24 +173,29 @@ const Merchant_Parcel_List_Online = () => {
 
       {/* Modal for Viewing Package */}
       {showViewModal && (
-        <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-4">Package Details</h2>
-          <ul className="list-disc pl-6">
-            {Object.entries(selectedPackage).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded mt-4"
-            onClick={() => setShowViewModal(false)}
-          >
-            Close
-          </button>
-        </div>
-      </div>
+      //   <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+      //   <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      //     <h2 className="text-2xl font-bold mb-4">Package Details</h2>
+      //     <ul className="list-disc pl-6">
+      //       {Object.entries(selectedPackage).map(([key, value]) => (
+      //         <li key={key}>
+      //           <strong>{key}:</strong> {value}
+      //         </li>
+      //       ))}
+      //     </ul>
+      //     <button
+      //       className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+      //       onClick={() => setShowViewModal(false)}
+      //     >
+      //       Close
+      //     </button>
+      //   </div>
+      // </div>
+      <BookingModal
+                    booking={selectedPackage}
+                    onClose={handleCloseModal}
+                    onSave={''}
+                />
       
       )}
 
