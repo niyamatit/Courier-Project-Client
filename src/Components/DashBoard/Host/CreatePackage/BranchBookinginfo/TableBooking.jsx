@@ -46,12 +46,22 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <p className='text-gray-900 whitespace-no-wrap'>{formatTime(booking?.booking)}</p>
                 </td>
-                <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                {/* <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <div className='flex items-center'>
                         <p className='text-gray-900 whitespace-no-wrap'>
                             {booking?.senderName}
                         </p>
                     </div>
+                </td> */}
+                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+
+                    {/* Button to print StickerDetails */}
+                    <button
+                        onClick={print}
+                        className='text-blue-500 hover:underline'
+                    >
+                        Print
+                    </button>
                 </td>
                 
                 <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -115,23 +125,14 @@ const TableBooking = ({ booking, onView ,onSave }) => {
                         Print
                     </button>
                 </td> */}
-                {/* <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <div className='flex items-center'>
                         <p className='text-gray-900 whitespace-no-wrap'>
                             {booking?.senderName}
                         </p>
                     </div>
-                </td> */}
-                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-
-                    {/* Button to print StickerDetails */}
-                    <button
-                        onClick={print}
-                        className='text-blue-500 hover:underline'
-                    >
-                        Print
-                    </button>
                 </td>
+                
                 {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 
                    
