@@ -391,7 +391,7 @@ const [senderInfo, setSenderInfo] = useState({
                 // Build message
               
                 // const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
-                const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac: ${CnNumber}) is Successful.
+                const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac: ${response?.CnNumber}) is Successful.
                 Thanks Niyamat Express
                 For Tracking visit: https://www.niyamatexpress.com/tracking 
                 `;
