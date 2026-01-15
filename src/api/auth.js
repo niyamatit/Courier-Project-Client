@@ -44,8 +44,8 @@ export const getPackage = async () => {
     return data;
 };
 
-export const getPackagesAdmin = async () => {
-    const { data } = await axiosSecure.get(`/packagfhgudieormbncdmnn44gegdhgfjkhdjj`);
+export const getPackagesAdmin = async (page=1, limit=20) => {
+    const { data } = await axiosSecure.get(`/packagfhgudieormbncdmnn44gegdhgfjkhdjj?page=${page}&limit=${limit}`);
     return data;
 };
 

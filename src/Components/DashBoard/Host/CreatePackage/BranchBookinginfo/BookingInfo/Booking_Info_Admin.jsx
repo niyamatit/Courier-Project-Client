@@ -2,7 +2,7 @@ import { useState } from "react";
 import useAuth from "../../../../../../hooks/useAuth";
 import useUsersData from "../../../../../../hooks/useUsersData/useUsersData";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getPackage, updateBooking } from "../../../../../../api/auth";
+import { getPackage, getPackagesAdmin, updateBooking } from "../../../../../../api/auth";
 import TableBooking from "../TableBooking";
 import BookingModal from "../BookingModal";
 
@@ -15,18 +15,19 @@ const Booking_Info_Admin = () => {
     const [searchStartDate, setSearchStartDate] = useState("");
     const [searchEndDate, setSearchEndDate] = useState("");
     const [verifiedUser] = useUsersData();
+const [page, setPage] = useState(1);
+const limit = 30;
 
-    const {
-        data: bookings = [],
-        isLoading,
-    } = useQuery({
-        queryKey: ['bookings',],
-        enabled: !loading,
-        queryFn: async () => await getPackage(),
-        onSuccess: (data) => {
-            setInitialBooking(data);
-        },
-    });
+   const {
+  data,
+  isLoading,
+} = useQuery({
+  queryKey: ['bookings', page],
+  enabled: !loading,
+  queryFn: () => getPackagesAdmin(page, limit),
+  keepPreviousData: true,
+});
+
 
     const mutation = useMutation({
         mutationFn: updateBooking,
@@ -44,6 +45,8 @@ const Booking_Info_Admin = () => {
     const handleSave = (updatedBooking) => {
         mutation.mutate(updatedBooking);
     };
+const bookings = data?.data || [];
+const totalPages = data?.totalPages || 1;
 
     const filteredOfflines = bookings.filter((booking) => {
         const bookingDate = new Date(booking.booking).toISOString().split("T")[0];
@@ -145,6 +148,27 @@ const Booking_Info_Admin = () => {
                     </div>
                 </div>
             </div>
+<div className="flex justify-center gap-4 mt-6">
+  <button
+    disabled={page === 1}
+    onClick={() => setPage(p => p - 1)}
+    className="px-4 py-2 border disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  <span className="font-semibold">
+    Page {page} of {totalPages}
+  </span>
+
+  <button
+    disabled={page === totalPages}
+    onClick={() => setPage(p => p + 1)}
+    className="px-4 py-2 border disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
 
             {selectedBooking && (
                 <BookingModal
