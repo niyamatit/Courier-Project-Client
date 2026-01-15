@@ -44,6 +44,11 @@ export const getPackage = async () => {
     return data;
 };
 
+export const getPackagesAdmin = async () => {
+    const { data } = await axiosSecure.get(`/packagfhgudieormbncdmnn44gegdhgfjkhdjj`);
+    return data;
+};
+
 export const getAllPackage = async (email) => {
     const { data } = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${email}`);
     
