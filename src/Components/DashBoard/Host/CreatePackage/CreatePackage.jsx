@@ -457,12 +457,12 @@ const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
 
 // Build message
-const senderMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac: ${CnNumber}) is Successful.
+const senderMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac: ${response?.CnNumber}) is Successful.
 Thanks Niyamat Express
 For Tracking visit: https://www.niyamatexpress.com/tracking 
 `;
 // const senderMessage = `Your  booking is confirmed! CN Number: ${Bookinginfo.CnNumber}`;
-const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac: ${CnNumber}) is Successful.
+const receiverMessage = `Your Parcel ${verifiedUser?.name} Booking (Trac: ${response?.CnNumber}) is Successful.
 Thanks Niyamat Express
 For Tracking visit: https://www.niyamatexpress.com/tracking 
 `;
