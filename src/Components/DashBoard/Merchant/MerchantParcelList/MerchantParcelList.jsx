@@ -27,7 +27,7 @@ const MerchantParcelList = () => {
     queryKey: ['parcels', merchantEmail],
     queryFn: fetchParcels,
   });
- console.log(parcels,"parcels");
+//  console.log(parcels,"parcels");
   const mutation = useMutation({
     mutationFn: updateParcel,
     onSuccess: () => {
@@ -255,7 +255,7 @@ View Details
           <p><span className="font-bold">District:</span> {selectedParcel.Customer_District_Name}</p>
           <p><span className="font-bold">Store:</span> {selectedParcel.Store_Name}</p>
           <p><span className="font-bold">Parcel Weight:</span> {selectedParcel.Parcel_Weight} kg</p>
-          <p><span className="font-bold">Total Collection:</span> ${selectedParcel.Total_Collection_Amount}</p>
+          <p><span className="font-bold">Total Collection:</span> ৳{selectedParcel.Total_Collection_Amount}</p>
           <p><span className="font-bold">Service Type:</span> {selectedParcel.Service_Type}</p>
           <p><span className="font-bold">Item Type:</span> {selectedParcel.Item_Type}</p>
           <p><span className="font-bold">Product Value:</span> ৳{selectedParcel.Product_Value}</p>
