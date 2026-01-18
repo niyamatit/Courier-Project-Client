@@ -16,6 +16,8 @@ const MerchantInvoices = () => {
     enabled: !!verifiedUser?.email,
   });
 
+  const filteredInvoices = InvoiceData.filter(invoice => invoice.Merchant_email === verifiedUser?.email);
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-semibold mb-4">All Invoices</h1>
@@ -50,7 +52,7 @@ const MerchantInvoices = () => {
                 </tr>
               </thead>
               <tbody>
-                {InvoiceData.map((invoice, index) => (
+                {filteredInvoices.map((invoice, index) => (
                   <tr key={index}>
                     <td className="py-4 px-4 border-b">{invoice.Date}</td>
                     <td className="py-4 px-4 border-b">{invoice._id.slice(-6)}</td>
@@ -62,8 +64,8 @@ const MerchantInvoices = () => {
                     <td className="py-4 px-8 border-b">{invoice.Total_Charge}</td>
                     <td className="py-4 px-8 border-b">{invoice.Total_Collection_Amount - invoice.Total_Charge}</td>
                     <td className="py-4 px-6 border-b">
-                      <span className={`px-2 py-1 rounded ${invoice.deliveryStatus === "Delivered" ? "bg-green-200 text-green-800" : invoice.deliveryStatus === "Ongoing" ? "bg-yellow-200 text-yellow-800" : "bg-gray-200 text-gray-800"}`}>
-                        {invoice.deliveryStatus || "Pending"}
+                      <span className={`px-2 py-1 rounded ${invoice.Tracking_Rider_Merchant_Delivary_Update_Successful  ? "bg-green-200 text-green-800" : invoice.deliveryStatus === "Ongoing" ? "bg-yellow-200 text-yellow-800" : "bg-gray-200 text-gray-800"}`}>
+                        {invoice.Tracking_Rider_Merchant_Delivary_Update_Successful || "Pending"}
                       </span>
                     </td>
                     <td className="py-2 px-4 border-b">
