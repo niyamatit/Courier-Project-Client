@@ -40,22 +40,34 @@ const MerchantInvoices = () => {
             <table className="min-w-full bg-white">
               <thead className="bg-blue-600">
                 <tr>
+                  <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">SL</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">DATE</th>
-                  <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">PAYMENT ID</th>
+                  {/* <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">PAYMENT ID</th> */}
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">TOTAL PARCEL</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">AMOUNT TO BE COLLECT</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">COLLECTED</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">TOTAL CHARGE</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">PAYMENT AMOUNT</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">STATUS</th>
-                  <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">ACTIONS</th>
+                  {/* <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">ACTIONS</th> */}
                 </tr>
               </thead>
               <tbody>
                 {filteredInvoices.map((invoice, index) => (
                   <tr key={index}>
-                    <td className="py-4 px-4 border-b">{invoice.Date}</td>
-                    <td className="py-4 px-4 border-b">{invoice._id.slice(-6)}</td>
+                    <td className="py-4 px-4 border-b">{index+1}</td>
+                    <td className="py-4 px-4 border-b">
+  {new Date(invoice.Date).toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}
+</td>
+
+                    {/* <td className="py-4 px-4 border-b">{invoice._id.slice(-6)}</td> */}
                     <td className="py-4 px-8 border-b">{invoice.Parcel_Weight} kg</td>
                     <td className="py-4 px-8 border-b">
                       {invoice.Total_Collection_Amount}
@@ -68,11 +80,11 @@ const MerchantInvoices = () => {
                         {invoice.Tracking_Rider_Merchant_Delivary_Update_Successful || "Pending"}
                       </span>
                     </td>
-                    <td className="py-2 px-4 border-b">
+                    {/* <td className="py-2 px-4 border-b">
                       <button className="px-4 py-2 bg-blue-600 text-white rounded">
                         View
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
