@@ -16,6 +16,8 @@ const MerchantInvoices = () => {
     enabled: !!verifiedUser?.email,
   });
 
+  const filteredInvoices = InvoiceData.filter(invoice => invoice.Merchant_email === verifiedUser?.email);
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-semibold mb-4">All Invoices</h1>
@@ -38,22 +40,34 @@ const MerchantInvoices = () => {
             <table className="min-w-full bg-white">
               <thead className="bg-blue-600">
                 <tr>
+                  <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">SL</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">DATE</th>
-                  <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">PAYMENT ID</th>
+                  {/* <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">PAYMENT ID</th> */}
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">TOTAL PARCEL</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">AMOUNT TO BE COLLECT</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">COLLECTED</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">TOTAL CHARGE</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">PAYMENT AMOUNT</th>
                   <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">STATUS</th>
-                  <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">ACTIONS</th>
+                  {/* <th className="py-3 px-6 text-left text-sm border-b font-semibold text-white">ACTIONS</th> */}
                 </tr>
               </thead>
               <tbody>
-                {InvoiceData.map((invoice, index) => (
+                {filteredInvoices.map((invoice, index) => (
                   <tr key={index}>
-                    <td className="py-4 px-4 border-b">{invoice.Date}</td>
-                    <td className="py-4 px-4 border-b">{invoice._id.slice(-6)}</td>
+                    <td className="py-4 px-4 border-b">{index+1}</td>
+                    <td className="py-4 px-4 border-b">
+  {new Date(invoice.Date).toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}
+</td>
+
+                    {/* <td className="py-4 px-4 border-b">{invoice._id.slice(-6)}</td> */}
                     <td className="py-4 px-8 border-b">{invoice.Parcel_Weight} kg</td>
                     <td className="py-4 px-8 border-b">
                       {invoice.Total_Collection_Amount}
@@ -62,15 +76,15 @@ const MerchantInvoices = () => {
                     <td className="py-4 px-8 border-b">{invoice.Total_Charge}</td>
                     <td className="py-4 px-8 border-b">{invoice.Total_Collection_Amount - invoice.Total_Charge}</td>
                     <td className="py-4 px-6 border-b">
-                      <span className={`px-2 py-1 rounded ${invoice.deliveryStatus === "Delivered" ? "bg-green-200 text-green-800" : invoice.deliveryStatus === "Ongoing" ? "bg-yellow-200 text-yellow-800" : "bg-gray-200 text-gray-800"}`}>
-                        {invoice.deliveryStatus || "Pending"}
+                      <span className={`px-2 py-1 rounded ${invoice.Tracking_Rider_Merchant_Delivary_Update_Successful  ? "bg-green-200 text-green-800" : invoice.deliveryStatus === "Ongoing" ? "bg-yellow-200 text-yellow-800" : "bg-gray-200 text-gray-800"}`}>
+                        {invoice.Tracking_Rider_Merchant_Delivary_Update_Successful || "Pending"}
                       </span>
                     </td>
-                    <td className="py-2 px-4 border-b">
+                    {/* <td className="py-2 px-4 border-b">
                       <button className="px-4 py-2 bg-blue-600 text-white rounded">
                         View
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
