@@ -743,7 +743,7 @@ value={senderInfo.senderFullAdress}
       title="Click to edit"
       onClick={() => setIsEditingCod(true)}
     >
-      Condition + charge : {cod || 0}
+      Condition : {cod || 0}
     </p>
   ) : (
     <input
