@@ -43,6 +43,11 @@ const OnlineBooking_Merchant = () => {
     const [amountError, setAmountError] = useState('');
     const [paymentOption, setPaymentOption] = useState('');
     const [cod, setCod] = useState(null);
+    const [senderInfo, setSenderInfo] = useState({
+  senderName: "",
+  senderMobile: "",
+  senderFullAdress: ""
+});
     const [condition, setCondition] = useState('')
     const [balance, setBalance] = useState(20000); 
     const [isBookingDisabled, setIsBookingDisabled] = useState(false);
@@ -56,7 +61,7 @@ const OnlineBooking_Merchant = () => {
     const [allAreas, setAllAreas] = useState([]);
     const [selectedArea, setSelectedArea] = useState("");
     const [isEditingCod, setIsEditingCod] = useState(false);
-
+const [collectionAmount, setCollectionAmount] = useState("");
     const [DeliveryComplete, setDeliveryComplete] = useState(0);
         const [DeliveryPending, setDeliveryPending] = useState(0);
         const [ReNumber, SetNumber] = useState(0);
@@ -69,8 +74,14 @@ const OnlineBooking_Merchant = () => {
         }
       })
       const [verifiedUser] = useUsersData();
+    const FilterCodPercentage = Number(
+  users.find(user => user.email === senderInfo.senderMobile)
+    ?.subDistrictCharge || 0
+);
+
+    const Merchant_Cod_Percentage_Amount = cod ? (FilterCodPercentage / 100) * cod : 0;
     
-    const queryClient = useQueryClient();
+    const queryClient = useQueryClient()
     // Amount 
     const { data: Branch_Balance = [] } = useQuery({
         queryKey: ['Branch_Balance', verifiedUser?.email],
@@ -150,30 +161,51 @@ setReturned(Total_Returned)
         });
     }, []);
 
+    // useEffect(() => {
+    //     if (condition && parseInt(condition) !== 0) {
+    //         const conditionValue = parseInt(condition);
+    //         let calculatedCod = 0;
+
+    //         if (conditionValue <= 1000) {
+    //             calculatedCod = conditionValue + 20;
+    //         } else {
+    //             const first1000Cod = 20;
+    //             const remaining = conditionValue - 1000;
+
+
+    //             const Extra1000 = Math.ceil(remaining / 1000);
+    //             const extraCod = Extra1000 * 10;
+    //             calculatedCod = conditionValue + first1000Cod + extraCod;
+    //         }
+
+    //         setCod(calculatedCod);
+    //     } else {
+    //         setCod(null);
+    //     }
+    // }, [condition]);
+
+// ---------------------------New Update Logic COD -->25/01/26---------------
     useEffect(() => {
-        if (condition && parseInt(condition) !== 0) {
-            const conditionValue = parseInt(condition);
-            let calculatedCod = 0;
+  if (condition && Merchant_Cod_Percentage_Amount >= 0) {
+    const newCod =
+      Number(condition) + Number(Merchant_Cod_Percentage_Amount);
 
-            if (conditionValue <= 1000) {
-                calculatedCod = conditionValue + 20;
-            } else {
-                const first1000Cod = 20;
-                const remaining = conditionValue - 1000;
+    setCod(Math.round(newCod));
+  } else {
+    setCod(null);
+  }
+}, [condition, Merchant_Cod_Percentage_Amount]);
 
+useEffect(() => {
+  if (cod && Merchant_Cod_Percentage_Amount >= 0) {
+    const newCondition =
+      Number(cod) - Number(Merchant_Cod_Percentage_Amount);
 
-                const Extra1000 = Math.ceil(remaining / 1000);
-                const extraCod = Extra1000 * 10;
-                calculatedCod = conditionValue + first1000Cod + extraCod;
-            }
+    setCondition(Math.round(newCondition).toString());
+  }
+}, [cod, Merchant_Cod_Percentage_Amount]);
 
-            setCod(calculatedCod);
-        } else {
-            setCod(null);
-        }
-    }, [condition]);
-
-
+// ---------------------------End New Update Logic COD ----------------------------
     const update = 'Processing';
 
     const handleAmountChange = (e) => {
@@ -231,11 +263,7 @@ setReturned(Total_Returned)
         }
         fetchOnlineCnNumber();
     }, [])
-const [senderInfo, setSenderInfo] = useState({
-  senderName: "",
-  senderMobile: "",
-  senderFullAdress: ""
-});
+
 
     const [selectedMerchant, setSelectedMerchant] = useState("");
 
@@ -272,6 +300,8 @@ const [senderInfo, setSenderInfo] = useState({
         const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
         const Merchant_ID = selectedMerchant;
+        const Merchant_Cod_Percentage = FilterCodPercentage || 0;
+        const Merchant_Cod_Percentage_Amount = Merchant_Cod_Percentage_Amount || 0;
         const recipientName = form.recipientName.value;
         const senderMobile = form.senderMobile.value;
         const sender_Full_Adress = form.senderFullAdress.value;
@@ -327,6 +357,8 @@ const [senderInfo, setSenderInfo] = useState({
                 recipientMobile,
                 productDetails,
                 qty,
+                Merchant_Cod_Percentage,
+                Merchant_Cod_Percentage_Amount,
                 selectedArea,
                 amount,
                 wordAmount,
