@@ -74,13 +74,23 @@ const [collectionAmount, setCollectionAmount] = useState("");
         }
       })
       const [verifiedUser] = useUsersData();
-    const FilterCodPercentage = Number(
-  users.find(user => user.email === senderInfo.senderMobile)
-    ?.subDistrictCharge || 0
-);
+      const codTimer = useRef(null);
 
-    const Merchant_Cod_Percentage_Amount = cod ? (FilterCodPercentage / 100) * cod : 0;
-    
+//     const FilterCodPercentage = Number(
+//   users.find(user => user.email === senderInfo.senderMobile)
+//     ?.subDistrictCharge || 0
+// );
+const FilterCodPercentage = parseFloat(
+  users.find(user => user.email === senderInfo.senderMobile)
+    ?.subDistrictCharge
+) || 0;
+
+    // const Merchant_Cod_Percentage_Amount = cod ? (FilterCodPercentage / 100) * cod : 0;
+    const Merchant_Cod_Percentage_Amount =
+  cod && FilterCodPercentage
+    ? (FilterCodPercentage / 100) * Number(cod)
+    : 0;
+console.log(Merchant_Cod_Percentage_Amount,"COD Amount");
     const queryClient = useQueryClient()
     // Amount 
     const { data: Branch_Balance = [] } = useQuery({
@@ -185,25 +195,61 @@ setReturned(Total_Returned)
     // }, [condition]);
 
 // ---------------------------New Update Logic COD -->25/01/26---------------
-    useEffect(() => {
-  if (condition && Merchant_Cod_Percentage_Amount >= 0) {
-    const newCod =
-      Number(condition) + Number(Merchant_Cod_Percentage_Amount);
+//     useEffect(() => {
+//   if (condition && Merchant_Cod_Percentage_Amount >= 0) {
+//     const newCod =
+//       Number(condition) + Number(Merchant_Cod_Percentage_Amount);
 
-    setCod(Math.round(newCod));
-  } else {
-    setCod(null);
-  }
-}, [condition, Merchant_Cod_Percentage_Amount]);
+//     setCod(Number(parseFloat(newCod).toFixed(2)));
 
+//   } else {
+//     setCod(null);
+//   }
+// }, [condition, Merchant_Cod_Percentage_Amount]);
+
+// useEffect(() => {
+//   if (cod && Merchant_Cod_Percentage_Amount >= 0) {
+//     const newCondition =
+//       Number(cod) - Number(Merchant_Cod_Percentage_Amount);
+
+//     setCondition(Math.round(newCondition).toString());
+//   }
+// }, [cod, Merchant_Cod_Percentage_Amount]);
+// useEffect(() => {
+//   const conditionNum = Number(condition);
+
+//   if (!condition || isNaN(conditionNum)) {
+//     setCod(0);
+//     return;
+//   }
+
+//   const fee =
+//     (FilterCodPercentage / 100) * conditionNum;
+
+//   const newCod = conditionNum + fee;
+
+//   if (!isNaN(newCod) && isFinite(newCod)) {
+//     setCod(Math.round(newCod));
+//   }
+// }, [condition, FilterCodPercentage]);
 useEffect(() => {
-  if (cod && Merchant_Cod_Percentage_Amount >= 0) {
-    const newCondition =
-      Number(cod) - Number(Merchant_Cod_Percentage_Amount);
+  const conditionNum = Number(condition);
 
-    setCondition(Math.round(newCondition).toString());
+  if (!condition || isNaN(conditionNum)) {
+    setCod(0);
+    return;
   }
-}, [cod, Merchant_Cod_Percentage_Amount]);
+
+  const fee =
+    (FilterCodPercentage / 100) * conditionNum;
+
+  const newCod = conditionNum + fee;
+
+  if (isFinite(newCod)) {
+    setCod(Math.round(newCod));
+  }
+}, [condition, FilterCodPercentage]);
+
 
 // ---------------------------End New Update Logic COD ----------------------------
     const update = 'Processing';
@@ -301,7 +347,7 @@ useEffect(() => {
         const senderName = form.senderName.value;
         const Merchant_ID = selectedMerchant;
         const Merchant_Cod_Percentage = FilterCodPercentage || 0;
-        const Merchant_Cod_Percentage_Amount = Merchant_Cod_Percentage_Amount || 0;
+        const Merchant_Cod_Percentage_Taka = Merchant_Cod_Percentage_Amount || 0;
         const recipientName = form.recipientName.value;
         const senderMobile = form.senderMobile.value;
         const sender_Full_Adress = form.senderFullAdress.value;
@@ -358,7 +404,7 @@ useEffect(() => {
                 productDetails,
                 qty,
                 Merchant_Cod_Percentage,
-                Merchant_Cod_Percentage_Amount,
+                Merchant_Cod_Percentage_Taka,
                 selectedArea,
                 amount,
                 wordAmount,
@@ -388,7 +434,7 @@ useEffect(() => {
             setBookingInfo(packageData);
             setIsOpen(true);
             setTimeout(() => {
-  naviGate('/dashboard/booking-info');
+//   naviGate('/dashboard/booking-info');
 }, 2000);
 
             
@@ -775,18 +821,92 @@ value={senderInfo.senderFullAdress}
       title="Click to edit"
       onClick={() => setIsEditingCod(true)}
     >
-      Condition : {cod || 0}
+      Condition : {cod || 0}<br/>
+      {/* <span className="text-red-500">Note: If you edit condition value, Please Press Enter to Save</span> */}
     </p>
   ) : (
-    <input
-      type="number"
-      className="text-xl border-b border-gray-400 outline-none bg-transparent w-40"
-      value={cod || ""}
-      autoFocus
-      onChange={(e) => setCod(Number(e.target.value))}
-      onBlur={() => setIsEditingCod(false)}
-      onKeyDown={(e) => e.key === "Enter" && setIsEditingCod(false)}
-    />
+//     <input
+//   type="number"
+//   className="text-xl border-b border-gray-400 outline-none bg-transparent w-40"
+//   value={cod ?? ""}
+//   autoFocus
+
+//   onChange={(e) => {
+//     const value = e.target.value;
+
+    
+//     if (value === "") {
+//       setCod("");
+//       return;
+//     }
+
+//     const num = Number(value);
+
+//     if (!isNaN(num) && isFinite(num)) {
+//       setCod(num); 
+//     }
+//   }}
+
+//   onBlur={() => {
+    
+//     if (cod && FilterCodPercentage) {
+//       const fee = (FilterCodPercentage / 100) * cod;
+//       const newCondition = cod - fee;
+
+//       if (isFinite(newCondition)) {
+//         setCondition(Math.round(newCondition).toString());
+//       }
+//     }
+
+//     setIsEditingCod(false);
+//   }}
+
+//   onKeyDown={(e) => {
+//     if (e.key === "Enter") {
+//       e.target.blur(); 
+//     }
+//   }}
+// />
+<input
+  type="number"
+  className="text-xl border-b border-gray-400 outline-none bg-transparent w-40"
+  value={cod ?? ""}
+  autoFocus
+
+  onChange={(e) => {
+    const value = e.target.value;
+
+    // Allow empty
+    if (value === "") {
+      setCod("");
+      return;
+    }
+
+    const num = Number(value);
+
+    if (!isNaN(num) && isFinite(num)) {
+      setCod(num);
+
+      // ✅ Debounce sync (auto, delayed)
+      clearTimeout(codTimer.current);
+
+      codTimer.current = setTimeout(() => {
+        if (FilterCodPercentage) {
+          const fee = (FilterCodPercentage / 100) * num;
+          const newCondition = num - fee;
+
+          if (isFinite(newCondition)) {
+            setCondition(Math.round(newCondition).toString());
+          }
+        }
+      }, 400); // 400ms after stop typing
+    }
+  }}
+
+  onBlur={() => setIsEditingCod(false)}
+/>
+
+
   )}
 </div>
 
