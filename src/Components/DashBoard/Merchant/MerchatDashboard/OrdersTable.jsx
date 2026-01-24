@@ -46,25 +46,95 @@ const OrdersTable = ({ parcels }) => {
                             <td className="p-4">{order.Customer_Name}</td>
                             <td className="p-4">{order.Customer_Contact_Number}</td>
                             <td className="p-4">
-                                <span
-                                    className={`hidden lg:inline-block px-3 py-1 rounded-full text-white ${
-                                        (!order.Tracking_Rider_Merchant_Delivary_Update_Return_Time ||
-                                        !order?.Tracking_Rider_Merchant_Delivary_Update_Time)
-                                            ? 'bg-blue-500'
-                                            : order.status === 'Out For Delivery'
-                                            ? 'bg-green-500'
-                                            : 'bg-gray-500'
-                                    }`}
-                                >
-                                    <div>
-                                        {(!order.Tracking_Rider_Merchant_Delivary_Update_Return_Time ||
-                                          !order?.Tracking_Rider_Merchant_Delivary_Update_Time) &&
-                                          "Pending"}
-                                        {order?.Tracking_Rider_Merchant_Delivary_Update_Time && "Delivered"}
-                                        {order?.Tracking_Rider_Merchant_Delivary_Update_Return_Time && "Returned"}
-                                    </div>
-                                </span>
-                            </td>
+  <span
+    className={`hidden lg:inline-block px-3 py-1 rounded-full text-white ${
+      // Returned
+      order?.Tracking_Rider_Merchant_Delivary_Update_Return_Time ||
+      order?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time ||
+      order?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time ||
+      order?.Tracking_Destination_Branch_Returned_Parcel
+        ? "bg-red-500"
+
+        // Delivered
+        : order?.Tracking_Rider_Merchant_Delivary_Update_Time ||
+          order?.Tracking_Rider_Online_Booking_Delivary_Update_Time ||
+          order?.Tracking_Rider_Offline_Booking_Delivary_Update_Time ||
+          order?.Tracking_Destination_Branch_Delivery_Parcel
+        ? "bg-green-500"
+
+        // Out For Delivery
+        : order?.Tracking_Destination_Branch_Select_Rider
+        ? "bg-blue-500"
+
+        // Received Destination Branch
+        : order?.Tracking_Destination_Branch_Received_Parcel
+        ? "bg-indigo-500"
+
+        // Sent to Destination Branch
+        : order?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name
+        ? "bg-purple-500"
+
+        // Received MotherHub
+        : order?.Tracking_MotherHub_Received_Parcel
+        ? "bg-teal-500"
+
+        // Sent to MotherHub
+        : order?.Tracking_Booking_Branch_Select_MotherHub
+        ? "bg-yellow-500"
+
+        // Received by Branch
+        : order?.Tracking_Booking_Branch_Received_Parcel_Time
+        ? "bg-gray-600"
+
+        // Pending
+        : "bg-gray-400"
+    }`}
+  >
+    {
+      // Returned
+      order?.Tracking_Rider_Merchant_Delivary_Update_Return_Time ||
+      order?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time ||
+      order?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time ||
+      order?.Tracking_Destination_Branch_Returned_Parcel
+        ? "Returned"
+
+        // Delivered
+        : order?.Tracking_Rider_Merchant_Delivary_Update_Time ||
+          order?.Tracking_Rider_Online_Booking_Delivary_Update_Time ||
+          order?.Tracking_Rider_Offline_Booking_Delivary_Update_Time ||
+          order?.Tracking_Destination_Branch_Delivery_Parcel
+        ? "Delivered"
+
+        // Out For Delivery
+        : order?.Tracking_Destination_Branch_Select_Rider
+        ? "Out For Delivery"
+
+        // Received Destination Branch
+        : order?.Tracking_Destination_Branch_Received_Parcel
+        ? "Received at Destination Branch"
+
+        // Sent to Destination Branch
+        : order?.Tracking_MotherHub_Branch_Select_Dest_Branch_Name
+        ? "Sent to Destination Branch"
+
+        // Received MotherHub
+        : order?.Tracking_MotherHub_Received_Parcel
+        ? "Received at MotherHub"
+
+        // Sent to MotherHub
+        : order?.Tracking_Booking_Branch_Select_MotherHub
+        ? "Sent to MotherHub"
+
+        // Received by Branch
+        : order?.Tracking_Booking_Branch_Received_Parcel_Time
+        ? "Received by Branch"
+
+        // Pending
+        : "Pending"
+    }
+  </span>
+</td>
+
                         </tr>
                     ))}
                 </tbody>
