@@ -94,26 +94,21 @@ const[verifiedUser] = useUsersData();
             text: 'Enter the amount you want to add (BDT)',
             input: 'number',
             inputAttributes: {
-                min: 0.01,
-                step: '0.01',
+              
+                
                 inputmode: 'decimal',
             },
             showCancelButton: true,
             confirmButtonText: 'Add',
             preConfirm: (value) => {
                 const amount = parseFloat(value);
-                if (isNaN(amount) || amount <= 0) {
-                    Swal.showValidationMessage('Please enter a valid positive amount');
-                }
+                
                 return amount;
             }
         }).then((result) => {
             if (result.isConfirmed) {
                 const amount = result.value;
-                if (!amount || isNaN(amount) || amount <= 0) {
-                    Swal.fire('Invalid amount', 'Please enter a positive number.', 'error');
-                    return;
-                }
+               
 
 
                 // optional: ask for a note/reference
