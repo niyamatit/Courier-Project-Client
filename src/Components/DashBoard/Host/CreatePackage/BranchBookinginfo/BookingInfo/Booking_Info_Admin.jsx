@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import useAuth from "../../../../../../hooks/useAuth";
 import useUsersData from "../../../../../../hooks/useUsersData/useUsersData";
