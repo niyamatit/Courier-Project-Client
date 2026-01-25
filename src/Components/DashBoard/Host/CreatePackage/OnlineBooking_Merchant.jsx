@@ -90,7 +90,7 @@ const FilterCodPercentage = parseFloat(
   cod && FilterCodPercentage
     ? (FilterCodPercentage / 100) * Number(cod)
     : 0;
-console.log(Merchant_Cod_Percentage_Amount,"COD Amount");
+// console.log(Merchant_Cod_Percentage_Amount,"COD Amount");
     const queryClient = useQueryClient()
     // Amount 
     const { data: Branch_Balance = [] } = useQuery({
