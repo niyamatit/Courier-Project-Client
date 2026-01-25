@@ -15,6 +15,18 @@ const BookingModal = ({ booking, onClose, onSave }) => {
             [name]: value,
         }));
     };
+const InputField = ({ label, name, value, onChange }) => (
+  <label className="block mb-2">
+    <span className="text-gray-700">{label}:</span>
+    <input
+      type="text"
+      name={name}
+      value={value || ""}
+      onChange={onChange}
+      className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+    />
+  </label>
+);
 
     const handleSave = () => {
         onSave(editableBooking); // Call the save function with the updated booking
@@ -44,98 +56,146 @@ const BookingModal = ({ booking, onClose, onSave }) => {
 
                 {isEditing ? (
                     <>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Sender Name:</span>
-                            <input
-                                type="text"
-                                name="senderName"
-                                value={editableBooking.senderName}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Recipient Name:</span>
-                            <input
-                                type="text"
-                                name="recipientName"
-                                value={editableBooking.recipientName}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Sender Mobile:</span>
-                            <input
-                                type="text"
-                                name="senderMobile"
-                                value={editableBooking.senderMobile}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Recipient Mobile:</span>
-                            <input
-                                type="text"
-                                name="recipientMobile"
-                                value={editableBooking.recipientMobile}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Product Details:</span>
-                            <input
-                                type="text"
-                                name="productDetails"
-                                value={editableBooking.productDetails}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Product _id:</span>
-                            <input
-                                type="text"
-                                name="product_id"
-                                value={editableBooking._id}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Package Tracking Number:</span>
-                            <input
-                                type="text"
-                                name="CnNumber"
-                                value={editableBooking.CnNumber}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Product qty:</span>
-                            <input
-                                type="text"
-                                name="qty"
-                                value={editableBooking.qty}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
-                        <label className="block mb-2">
-                            <span className="text-gray-700">Product Details:</span>
-                            <input
-                                type="text"
-                                name="productDetails"
-                                value={editableBooking.productDetails}
-                                onChange={handleChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md"
-                            />
-                        </label>
+    <InputField
+      label="Sender Name"
+      name="senderName"
+      value={editableBooking.senderName}
+      onChange={handleChange}
+    />
 
-                    </>
+    <InputField
+      label="Recipient Name"
+      name="recipientName"
+      value={editableBooking.recipientName}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Sender Mobile"
+      name="senderMobile"
+      value={editableBooking.senderMobile}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Recipient Mobile"
+      name="recipientMobile"
+      value={editableBooking.recipientMobile}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Product Details"
+      name="productDetails"
+      value={editableBooking.productDetails}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Tracking Number"
+      name="CnNumber"
+      value={editableBooking.CnNumber}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Quantity"
+      name="qty"
+      value={editableBooking.qty}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="District"
+      name="districtName"
+      value={editableBooking.districtName}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Area"
+      name="selectedArea"
+      value={editableBooking.selectedArea}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Amount"
+      name="amount"
+      value={editableBooking.amount}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Word Amount"
+      name="wordAmount"
+      value={editableBooking.wordAmount}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Delivery Option"
+      name="deliveryOption"
+      value={editableBooking.deliveryOption}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Payment Option"
+      name="paymentOption"
+      value={editableBooking.paymentOption}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Condition"
+      name="condition"
+      value={editableBooking.condition}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Branch Name"
+      name="Branch_Name"
+      value={editableBooking.Branch_Name}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Branch Number"
+      name="Branch_Number"
+      value={editableBooking.Branch_Number}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Branch District"
+      name="Branch_District_Name"
+      value={editableBooking.Branch_District_Name}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Branch Area"
+      name="Branch_Area"
+      value={editableBooking.Branch_Area}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Branch Address"
+      name="Branch_Address"
+      value={editableBooking.Branch_Address}
+      onChange={handleChange}
+    />
+
+    <InputField
+      label="Branch Email"
+      name="email"
+      value={editableBooking.email}
+      onChange={handleChange}
+    />
+  </>
                 ) : (
                     <>
                         <p><strong>Sender Name:</strong> {booking.senderName}</p>

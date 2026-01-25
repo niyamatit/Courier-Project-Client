@@ -411,10 +411,10 @@ useEffect(() => {
                 Merchant_ID,
                 booking: bookingTimestamp,
                 update,
-                conditionCharge: cod,
+                conditionCharge: condition,
                 deliveryOption,
                 paymentOption,
-                condition,
+                condition:cod,
                 Receiver_Full_Adress,
                 sender_Full_Adress,
              
