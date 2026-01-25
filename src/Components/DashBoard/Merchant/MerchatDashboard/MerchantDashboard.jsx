@@ -122,59 +122,6 @@ const Total_Return_COD = parcels.reduce((total, booking) => {
 
 
 
-//   useEffect(() => {
-//     if (parcels.length > 0) {
-//     const filteredData = parcels.filter((item) => {
-//       const itemDate = new Date(item?.Date).toISOString().split("T")[0]; // parcel date (YYYY-MM-DD)
-//       const startDate = fromDate ? new Date(fromDate).toISOString().split("T")[0] : null;
-//       const endDate = toDate ? new Date(toDate).toISOString().split("T")[0] : null;
-
-//       const isAfterStartDate = startDate ? itemDate >= startDate : true;
-//       const isBeforeEndDate = endDate ? itemDate <= endDate : true;
-
-//       return isAfterStartDate && isBeforeEndDate;
-//     });
-
-//     setFilteredChartData(filteredData);
-  
-     
-  
-//       const chartData = {
-//          labels: filteredData.map(item => {
-//         const d = new Date(item.Date);
-//         const day = d.getDate().toString().padStart(2, "0");
-//         const month = (d.getMonth() + 1).toString().padStart(2, "0");
-//         const year = d.getFullYear().toString().slice(-2); // last 2 digits
-//         return `${day}-${month}-${year}`; // Example: 25-08-25
-//       }),
-//         pickup: parcels.map(item =>   !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
-//     !item?.Tracking_Rider_Merchant_Delivary_Update_Time),
-//         delivered: parcels.map(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time),
-//       };
-  
-//       setFilteredChartData(chartData);
-  
-//       const pieData = {
-//   parcelBooking: parcels.length,
-//   delivered: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Time).length,
-//   partiallyDelivered: parcels.filter(item => item.Tracking_MotherHub_Branch_Received_Parcel_Merchant).length,
-//   processing: parcels.length,
-//   cancelled: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
-//   deleted: 0,
-//   pendingDeliveries: parcels.filter(item => 
-//     !item.Tracking_Rider_Merchant_Delivary_Update_Return_Time || 
-//     !item?.Tracking_Rider_Merchant_Delivary_Update_Time
-//   ).length,
-//   returned: parcels.filter(item => item?.Tracking_Rider_Merchant_Delivary_Update_Return_Time).length,
-// };
-// setFilteredPieData(pieData);
-
-  
-      
-  
-      
-//     }
-//   }, [parcels, fromDate, toDate]);
   
 useEffect(() => {
   if (parcels.length > 0) {
