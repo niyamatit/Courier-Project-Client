@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
 import useUsersData from "../../../../../hooks/useUsersData/useUsersData";
 
@@ -350,6 +351,40 @@ const BookingModal = ({ booking, onClose, onSave }) => {
         </div>
     </div>
     }
+     {
+                  (booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Offline_Booking_Delivary_Update || booking?.Tracking_Rider_Merchant_Delivary_Update || booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Destination_Branch_Delivery_Parcel_Int || booking?.Tracking_Destination_Branch_Returned_Parcel_Int) && <div className="relative ">
+
+                    <div className="space-y-6">
+                      {/* Tracking Timeline */}
+                      <div className="mt-6">
+
+                        <div className="relative">
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${(booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || booking?.Tracking_Rider_Merchant_Delivary_Update_Successful || booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Destination_Branch_Delivery_Parcel_Int  || booking?.Tracking_Destination_Branch_Returned_Parcel_Int) ? 'bg-green-500 text-white' : 'bg-red-500 text-gray-500'}`}>
+                              {(booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || booking?.Tracking_Rider_Merchant_Delivary_Update_Successful || booking?.Tracking_Destination_Branch_Delivery_Parcel_Int  || booking?.Tracking_Destination_Branch_Returned_Parcel_Int) ? '✓' : '-'}
+                            </div>
+                            <div>
+                              <h1 className="text-gray-700 font-semibold">{(booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || booking?.Tracking_Rider_Merchant_Delivary_Update_Successful) || (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Returned || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned || booking?.Tracking_Rider_Merchant_Delivary_Update_Returned) || booking?.Tracking_Destination_Branch_Returned_Parcel || booking?.Tracking_Destination_Branch_Delivery_Parcel_Int  || booking?.Tracking_Destination_Branch_Returned_Parcel_Int}</ h1>
+                              <p className="text-gray-500 text-sm">
+                                {(booking?.Tracking_Destination_Branch_Delivery_Parcel_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Merchant_Delivary_Update_Time 
+                                  || booking?.Tracking_Destination_Branch_Returned_Parcel_Time || booking?.Tracking_Destination_Branch_Delivery_Parcel_Time_Int || booking?.Tracking_Destination_Branch_Returned_Parcel_Time_Int
+                                )
+                                  ? `Delivery Time: ${formatTime(booking.Tracking_Destination_Branch_Delivery_Parcel_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || booking?.Tracking_Rider_Merchant_Delivary_Update_Time || booking?.Tracking_Destination_Branch_Delivery_Parcel_Time_Int)}`
+                                  : (booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Merchant_Delivary_Update_Return_Time || booking?.Tracking_Destination_Branch_Delivery_Parcel_Time_Int)
+                                    ? `Returned Time: ${formatTime(booking.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || booking?.Tracking_Rider_Merchant_Delivary_Update_Return_Time) || booking?.Tracking_Destination_Branch_Returned_Parcel_Time || booking?.Tracking_Destination_Branch_Returned_Parcel_Time_Int}`
+                                    : 'Not Available'}
+                              </p>
+
+
+                              {/* <p className="text-gray-500 text-sm">Note: {booking?.Tracking_Rider_Online_Booking_Delivary_Update_Note || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p> */}
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
     
 </div>
 
