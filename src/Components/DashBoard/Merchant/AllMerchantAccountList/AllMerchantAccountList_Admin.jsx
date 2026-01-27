@@ -87,6 +87,8 @@ const AllMerchantAccountList_Admin = () => {
                         <p><b>Bank:</b> {acc.bankName}</p>
                         <p><b>Acc No:</b> {acc.accountNo}</p>
                         <p><b>Routing:</b> {acc.routingNo}</p>
+                        <p><b>Acc Name:</b> {acc.accountName}</p>
+                        <p><b>Branch:</b> {acc.branchName}</p>
                       </>
                     ) : (
                       <p><b>Mobile:</b> {acc.personalNumber}</p>
