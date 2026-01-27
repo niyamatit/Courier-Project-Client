@@ -140,7 +140,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
         <div className="min-h-screen bg-gray-50 py-8 px-4">
             <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">
-                    Merchant Recharge Application
+                    Merchant Withdraw Balance 
                 </h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -161,7 +161,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                     </div>
                     <div>
   <label className="block text-sm font-medium text-gray-700 mb-2">
-    Mobile Number
+    Mobile Number/Bank Account Number
   </label>
 
   <input
@@ -188,7 +188,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                             isButtonDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
                         }`}
                     >
-                        {isSubmitting ? "Submitting..." : "Apply Recharge"}
+                        {isSubmitting ? "Submitting..." : "Withdraw Balance"}
                     </button>
                 </form>
 
