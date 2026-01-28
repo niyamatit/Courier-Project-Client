@@ -6,7 +6,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { FaTruck } from 'react-icons/fa';
 import { FaFileInvoice } from 'react-icons/fa';
 import { MdStore } from 'react-icons/md';
-import { History, Scale, Wallet, CalendarClock, LineChart,CircleDollarSign } from "lucide-react";
+import { History,CircleDollarSign } from "lucide-react";
 import { RiBox3Line } from 'react-icons/ri';
 
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
@@ -29,7 +29,14 @@ const MerchantMenu = () => {
       return res.data;
     }
   })
-
+const { data: Merchants_Parcels = [], } = useQuery({
+    queryKey: ["Merchants_Parcels", verifiedUser?.email],
+    enabled: !!verifiedUser?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/merchanthfjsdhfjshdf/hello/${verifiedUser?.email}`);
+      return Array.isArray(res.data) ? res.data : [res.data];
+    },
+  });
   useEffect(() => {
     const updateMerchantBalances = async () => {
       if (users.length && parcels.length) {
@@ -39,7 +46,7 @@ const MerchantMenu = () => {
           if (merchantParcels.length === 0) continue;
   
           let balance = parseFloat(merchant?.Merchant_Balance || 0);
-  
+          
           for (const parcel of merchantParcels) {
              if (parcel?.Tracking_Rider_Merchant_Delivary_Update_Successful === "Delivery Done" && !parcel?.isProcessed) {
               balance += parseFloat(parcel.Calculate_Charge_Merchant || 0);
@@ -69,6 +76,47 @@ const MerchantMenu = () => {
   
     updateMerchantBalances();
   }, [users, parcels]);
+  
+
+  // For Branch Booking Balance Update
+  useEffect(() => {
+    const updateMerchantBalances_Branch = async () => {
+      if (users.length && Merchants_Parcels.length) {
+        for (const merchant of users) {
+          const merchantParcels_Branch = Merchants_Parcels.filter(parcel_branch => parcel_branch.Merchant_ID === merchant?.email);
+  
+          if (merchantParcels_Branch.length === 0) continue;
+  
+          let balance = parseFloat(merchant?.Merchant_Balance || 0);
+  
+          for (const parcel_booking of merchantParcels_Branch) {
+             if ((Merchants_Parcels?.Tracking_Rider_Online_Booking_Delivary_Update_Successful|| Merchants_Parcels?.Tracking_Destination_Branch_Delivery_Parcel) && !Merchants_Parcels?.isProcessed) {
+              balance += parseFloat(Merchants_Parcels?.Calculate_Amount || 0);
+          
+  
+              
+              try {
+                await axiosSecure.put(`/parcels/updateBalanceFlag/branch/${parcel_booking._id}`, { isBalanceUpdated: true });
+              } catch (error) {
+                console.error(`Failed to update balance flag for parcel ${parcel_booking._id}`, error);
+              }
+            }
+          }
+  
+          try {
+            await axiosSecure.put(`/merchants/balance/mer/${merchant?.email}`, { balance });
+            // console.log(`Updated balance for ${merchant.email}: ${balance}`);
+          } catch (error) {
+            console.error(`Failed to update balance for ${merchant.email}`, error);
+          }
+        }
+        refetchUsers();
+        Merchants_Parcels();
+      }
+    };
+  
+    updateMerchantBalances_Branch();
+  }, [users, parcels,refetchUsers,Merchants_Parcels]);
   
 
 
