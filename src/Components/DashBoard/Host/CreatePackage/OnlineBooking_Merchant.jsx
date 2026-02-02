@@ -76,21 +76,18 @@ const [collectionAmount, setCollectionAmount] = useState("");
       const [verifiedUser] = useUsersData();
       const codTimer = useRef(null);
 
-//     const FilterCodPercentage = Number(
-//   users.find(user => user.email === senderInfo.senderMobile)
-//     ?.subDistrictCharge || 0
-// );
+//    
 const FilterCodPercentage = parseFloat(
   users.find(user => user.email === senderInfo.senderMobile)
     ?.subDistrictCharge
 ) || 0;
 
-    // const Merchant_Cod_Percentage_Amount = cod ? (FilterCodPercentage / 100) * cod : 0;
+    
     const Merchant_Cod_Percentage_Amount =
   cod && FilterCodPercentage
     ? (FilterCodPercentage / 100) * Number(cod)
     : 0;
-// console.log(Merchant_Cod_Percentage_Amount,"COD Amount");
+
     const queryClient = useQueryClient()
     // Amount 
     const { data: Branch_Balance = [] } = useQuery({
@@ -113,7 +110,7 @@ const fetchDeliveryRetrunData = async (recipientMobile)=>{
         try{
            const res = await axiosSecure.get(`package/search/for/info/again/and/again/${recipientMobile}`)
            const data = res.data
-        // console.log(data,"data");
+        
            const Total_Delivey_Complete = data.reduce((total, booking) => {
   if (booking?.Tracking_Destination_Branch_Delivery_Parcel || booking?.Tracking_Rider_Online_Booking_Delivary_Update_Successful) {
     return total + 1; 
@@ -132,10 +129,7 @@ const DeliveryPending = data.length - (Total_Delivey_Complete + Total_Returned)
 setDeliveryComplete(Total_Delivey_Complete)
 setDeliveryPending(DeliveryPending)
 setReturned(Total_Returned)
-// console.log(DeliveryComplete,"Delivery complete");
-// console.log(TotalReturned,"retun complete");
 
-        //    console.log(data,"Receiver  Data");
         }catch(err){
 // console.log(err);
         }
@@ -370,7 +364,7 @@ useEffect(() => {
                   }
             const CurrentBalance = Branch_Balance.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
             const CodAmount = parseFloat(amount || 0);
-    
+           
             if (paymentOption === "Cash") {
                 const newBalance = CurrentBalance - CodAmount;
     
@@ -407,7 +401,9 @@ useEffect(() => {
                 Merchant_Cod_Percentage_Taka,
                 selectedArea,
                 amount,
+                Calculate_Amount: paymentOption === "Credit" && -parseFloat(amount || 0) || 0,
                 wordAmount,
+                isProcessed: false,
                 Merchant_ID,
                 booking: bookingTimestamp,
                 update,
@@ -417,7 +413,7 @@ useEffect(() => {
                 condition:cod,
                 Receiver_Full_Adress,
                 sender_Full_Adress,
-             
+                
                 districtName: districtName,
                 email: verifiedUser?.email,
                 Branch_Name:verifiedUser?.name,
@@ -432,6 +428,7 @@ useEffect(() => {
             };
     
             setBookingInfo(packageData);
+            console.log(packageData,"Booking Info");
             setIsOpen(true);
             setTimeout(() => {
 //   naviGate('/dashboard/booking-info');
