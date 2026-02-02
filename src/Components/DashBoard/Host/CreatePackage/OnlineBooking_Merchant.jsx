@@ -410,7 +410,7 @@ useEffect(() => {
                 conditionCharge: condition,
                 deliveryOption,
                 paymentOption,
-                condition:cod,
+                condition_With_Charge_Last:cod,
                 Receiver_Full_Adress,
                 sender_Full_Adress,
                 
