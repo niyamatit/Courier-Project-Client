@@ -101,7 +101,7 @@ export const PackageDetails = ({ bookingInfo }) => (
                
 
                 <div className=''>
-                    condition+charge: {bookingInfo?.conditionCharge || 0}
+                    condition+charge: {bookingInfo?.condition || bookingInfo?.condition_With_Charge_Last || 0}
                 </div>
                 <div>
                    
