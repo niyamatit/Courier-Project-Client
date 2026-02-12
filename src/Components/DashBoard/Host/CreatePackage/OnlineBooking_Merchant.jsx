@@ -63,6 +63,8 @@ const OnlineBooking_Merchant = () => {
     const [isEditingCod, setIsEditingCod] = useState(false);
 const [collectionAmount, setCollectionAmount] = useState("");
 // const [collectionAmount, setCollectionAmount] = useState("");
+// const [collectionAmount, setCollectionAmount] = useState("");
+// const [collectionAmount, setCollectionAmount] = useState("");
     const [DeliveryComplete, setDeliveryComplete] = useState(0);
         const [DeliveryPending, setDeliveryPending] = useState(0);
         const [ReNumber, SetNumber] = useState(0);
