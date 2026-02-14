@@ -62,8 +62,8 @@ const OnlineBooking_Merchant = () => {
     const [selectedArea, setSelectedArea] = useState("");
     const [isEditingCod, setIsEditingCod] = useState(false);
 const [collectionAmount, setCollectionAmount] = useState("");
-const [collectionAmountagain, setCollectionAmountagain] = useState("");
-
+// const [collectionAmountagain, setCollectionAmountagain] = useState("");
+// DevRolingTitle("Merchant Online Booking");
     const [DeliveryComplete, setDeliveryComplete] = useState(0);
         const [DeliveryPending, setDeliveryPending] = useState(0);
         const [ReNumber, SetNumber] = useState(0);
