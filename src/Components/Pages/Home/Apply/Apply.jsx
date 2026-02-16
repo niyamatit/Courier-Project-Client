@@ -408,6 +408,7 @@ const Areas =[
   {"id":"290","district_id":"37","name":"Sreemangal","bn_name":"শ্রীমঙ্গল","url":"sreemangal.moulvibazar.gov.bd"},
   {"id":"291","district_id":"37","name":"Juri","bn_name":"জুড়ী","url":"juri.moulvibazar.gov.bd"},
   {"id":"292","district_id":"38","name":"Nabiganj","bn_name":"নবীগঞ্জ","url":"nabiganj.habiganj.gov.bd"},
+  {"id":"292dfdfdf","district_id":"38","name":"Shahestaganj Upazila","bn_name":"শায়েস্তাগঞ্জ উপজেলা","url":"Shahestaganj Upazila.habiganj.gov.bd"},
   {"id":"293","district_id":"38","name":"Bahubal","bn_name":"বাহুবল","url":"bahubal.habiganj.gov.bd"},
   {"id":"294","district_id":"38","name":"Ajmiriganj","bn_name":"আজমিরীগঞ্জ","url":"ajmiriganj.habiganj.gov.bd"},
   {"id":"295","district_id":"38","name":"Baniachong","bn_name":"বানিয়াচং","url":"baniachong.habiganj.gov.bd"},
