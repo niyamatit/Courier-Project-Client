@@ -14,7 +14,7 @@ const MerchantSignup = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
+
 const [showOtpModal, setShowOtpModal] = useState(false);
 const [tempFormData, setTempFormData] = useState(null);
 const [serverOtpID, setServerOtpID] = useState(null);

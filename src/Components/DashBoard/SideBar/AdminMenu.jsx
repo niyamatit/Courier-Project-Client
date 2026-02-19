@@ -81,6 +81,9 @@ const AdminMenu = () => {
         <MenuItem icon={FaUserCog}
         label='All Merchant List'
         address='AllMerchnatList' />
+        <MenuItem icon={FaHistory}
+        label='All Merchant Balance History'
+        address='AllMerchantBalanceHistory' />
 
         <MenuItem icon={FaUserCog}
         label='All Merchant Account List'
