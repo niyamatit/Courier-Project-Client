@@ -124,6 +124,7 @@ import Booking_Rate_For_All from "../Components/DashBoard/Admin/Booking_Rate_For
 import InterNational_Booking_Branch_Admin from "../Components/DashBoard/Host/CreatePackage/InterNational_Booking_Branch_Admin";
 import Add_Account_Merchant from "../Components/DashBoard/Merchant/AddAccount/Add_Account_Merchant";
 import AllMerchantAccountList_Admin from "../Components/DashBoard/Merchant/AllMerchantAccountList/AllMerchantAccountList_Admin";
+import All_Merchant_Balance_History_Admin from "../Components/DashBoard/Admin/Merchant_Part/All_Merchant_Balance_History_Admin";
 
 
 
@@ -390,6 +391,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <ManageUsers />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "AllMerchantBalanceHistory",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <All_Merchant_Balance_History_Admin />
             </AdminRoute>
           </PrivateRoute>
         ),
