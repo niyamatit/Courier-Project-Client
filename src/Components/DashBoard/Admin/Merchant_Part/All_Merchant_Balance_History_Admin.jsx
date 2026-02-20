@@ -24,7 +24,7 @@ const All_Merchant_Balance_History_Admin = () => {
     },
   });
 
-  // Handle Delete
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -60,7 +60,7 @@ const All_Merchant_Balance_History_Admin = () => {
         <table className="table w-full">
           <thead className="bg-blue-600 text-white">
             <tr>
-              <th>#</th>
+              <th>SL</th>
               <th>Merchant</th>
               <th>Amount</th>
               <th>Note</th>
