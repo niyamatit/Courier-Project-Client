@@ -19,7 +19,7 @@ const All_Merchant_Balance_History_Admin = () => {
     },
   });
 
-  // Delete Mutation
+ 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
       return await axiosSecure.delete(`mer-add-balance-admin/${id}`);
@@ -45,7 +45,7 @@ const All_Merchant_Balance_History_Admin = () => {
     });
   };
 
-  // Filter Logic
+
   const filteredData = history.filter((item) => {
     const searchMatch =
       item.Merchant_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -67,10 +67,10 @@ const All_Merchant_Balance_History_Admin = () => {
         Merchant Balance History
       </h1>
 
-      {/* Filters */}
+    
       <div className="bg-white p-4 rounded-xl shadow border border-blue-100 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Search */}
+       
           <input
             type="text"
             placeholder="Search by name or email..."
@@ -79,7 +79,7 @@ const All_Merchant_Balance_History_Admin = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          {/* From Date */}
+          
           <input
             type="date"
             className="input input-bordered w-full focus:border-blue-500"
@@ -87,7 +87,7 @@ const All_Merchant_Balance_History_Admin = () => {
             onChange={(e) => setFromDate(e.target.value)}
           />
 
-          {/* To Date */}
+        
           <input
             type="date"
             className="input input-bordered w-full focus:border-blue-500"
@@ -97,12 +97,12 @@ const All_Merchant_Balance_History_Admin = () => {
         </div>
       </div>
 
-      {/* Table */}
+    
       <div className="overflow-x-auto bg-white shadow-lg rounded-xl border border-blue-100">
         <table className="table w-full min-w-[800px]">
           <thead className="bg-blue-600 text-white">
             <tr>
-              <th>#</th>
+              <th>SL</th>
               <th>Merchant</th>
               <th>Amount</th>
               <th>Note</th>
