@@ -10,7 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
 import { useState } from "react";
 import './HostMenu.css'
-import { MdStore } from 'react-icons/md';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import UseStaffVerify from "../../../hooks/UseStaffVerify/UseStaffVerify";
 
@@ -122,10 +121,15 @@ const HostMenu = () => {
 
 
 
-      <MenuItem
+      {/* <MenuItem
         icon={IoHome}
         label='Return Parcel'
         address='return-parcel'
+      /> */}
+      <MenuItem
+        icon={IoHome}
+        label='Print Parcel Summary'
+        address='print-parcel-summary'
       />
       <div className="dropdown">
         <div tabIndex={0} role="button" className="w-[200px] items-center flex gap-3  text-center m-1"><BsHouseAddFill className="ml-3" /> Booking</div>

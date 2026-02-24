@@ -125,6 +125,7 @@ import InterNational_Booking_Branch_Admin from "../Components/DashBoard/Host/Cre
 import Add_Account_Merchant from "../Components/DashBoard/Merchant/AddAccount/Add_Account_Merchant";
 import AllMerchantAccountList_Admin from "../Components/DashBoard/Merchant/AllMerchantAccountList/AllMerchantAccountList_Admin";
 import All_Merchant_Balance_History_Admin from "../Components/DashBoard/Admin/Merchant_Part/All_Merchant_Balance_History_Admin";
+import PrintParcelSummary from "../Components/DashBoard/Host/PrintParcelSummary/PrintParcelSummary";
 
 
 
@@ -607,10 +608,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "return-parcel",
+        path: "print-parcel-summary",
         element: (
           <PrivateRoute>
-            <ReturnPercel></ReturnPercel>
+            <PrintParcelSummary></PrintParcelSummary>
           </PrivateRoute>
         ),
       },
