@@ -35,7 +35,7 @@ export const Merchant_Booking_details = ({ bookingInfo }) => (
                     <div className='justify-center text-sm'>
                         <p>web:https://niyamatexpress.com/</p>
                         <p>email:support@niyamatexpress.com</p>
-                        <p>Tel - 09697687401, 09638840680
+                        <p>Tel - 09617179001, 09617179177
                         </p>
                     </div>
                     {/* <div className="logo border flex-1">

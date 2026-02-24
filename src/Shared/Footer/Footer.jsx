@@ -85,7 +85,7 @@ const Footer = () => {
     <div>
       <span className="font-semibold">Tel:</span>{" "}
       <span className="block sm:inline">
-        09697687401, 09638840680
+        09617179001, 09617179177
       </span>
     </div>
   </div>
