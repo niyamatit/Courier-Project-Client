@@ -1,6 +1,6 @@
 import { BsHouseAddFill } from "react-icons/bs";
 import MenuItem from "./MenuItem";
-import { IoHome } from "react-icons/io5";
+import { IoHome, IoPrint } from "react-icons/io5";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { FaBiking, FaWpforms } from "react-icons/fa";
 import { FaMoneyBill } from "react-icons/fa";
@@ -127,7 +127,7 @@ const HostMenu = () => {
         address='return-parcel'
       /> */}
       <MenuItem
-        icon={IoHome}
+        icon={IoPrint}
         label='Print Parcel Summary'
         address='print-parcel-summary'
       />
