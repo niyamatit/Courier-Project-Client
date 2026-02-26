@@ -110,6 +110,11 @@ const AdminMenu = () => {
       {
          verifiedUser?.permissions?.includes('Branch_Section') && <>
          <MenuItem
+        icon={FaHistory}
+        label='Print Parcel Summary '
+        address='parcel-summary'
+      />
+         <MenuItem
         icon={FaUserAlt}
         label='Rider Add'
         address='rider-add'
