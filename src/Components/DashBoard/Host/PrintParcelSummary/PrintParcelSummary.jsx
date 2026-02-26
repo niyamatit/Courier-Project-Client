@@ -40,8 +40,8 @@ const PrintParcelSummary = () => {
   // ✅ Summary
   const summary = useMemo(() => {
     let totalBookings = filteredParcels.length;
-    let totalDelivered = 0;
-    let totalPending = 0;
+    // let totalDelivered = 0;
+    // let totalPending = 0;
     let totalReturn = 0;
     let totalAmount = 0;
     let totalCondition = 0;
@@ -56,16 +56,16 @@ const PrintParcelSummary = () => {
       totalCondition += condition;
       totalConditionCharge += condition + conditionCharge;
 
-      if (p.done === "done") totalDelivered++;
-      else totalPending++;
+      // if (p.done === "done") totalDelivered++;
+      // else totalPending++;
 
-      if (p.update === "Return") totalReturn++;
+      // if (p.update === "Return") totalReturn++;
     });
 
     return {
       totalBookings,
-      totalDelivered,
-      totalPending,
+      // totalDelivered,
+      // totalPending,
       totalReturn,
       totalAmount,
       totalCondition,
@@ -75,26 +75,75 @@ const PrintParcelSummary = () => {
 
   // ✅ Print
   const handlePrint = () => {
-    const printContent = printRef.current.innerHTML;
-    const win = window.open("", "", "width=900,height=700");
+  const printContent = printRef.current.innerHTML;
 
-    win.document.write(`
-      <html>
-        <head>
-          <title>Parcel Summary</title>
-          <style>
-            body { font-family: Arial; padding:20px }
-            table { width:100%; border-collapse: collapse }
-            td, th { border:1px solid #000; padding:8px; text-align:left }
-          </style>
-        </head>
-        <body>${printContent}</body>
-      </html>
-    `);
+  const win = window.open("", "", "width=900,height=700");
 
-    win.document.close();
+  win.document.write(`
+    <html>
+      <head>
+        <title>Parcel Summary</title>
+
+        <style>
+
+          @page {
+            size: A4;
+            margin: 10mm;
+          }
+
+          body {
+            font-family: Arial, sans-serif;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            margin: 0;
+            padding: 0;
+          }
+
+          .print-wrapper {
+            width: 800px;
+            margin: auto;
+            position: relative;
+          }
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+
+          td, th {
+            border: 1px solid #000;
+            padding: 8px;
+            font-size: 14px;
+          }
+
+          img {
+            max-width: 100%;
+          }
+
+          /* WATERMARK FIX */
+          .absolute {
+            position: absolute !important;
+          }
+
+        </style>
+
+      </head>
+
+      <body>
+        <div class="print-wrapper">
+          ${printContent}
+        </div>
+      </body>
+    </html>
+  `);
+
+  win.document.close();
+
+  setTimeout(() => {
     win.print();
-  };
+    win.close();
+  }, 500);
+};
 
   return (
     <div className="p-6">
@@ -157,6 +206,9 @@ const PrintParcelSummary = () => {
           <p className="mb-4">
             <strong>Date:</strong> {fromDate || "All"} — {toDate || "All"}
           </p>
+          <p className="mb-4">
+            <strong>Number:</strong> {searchMobile}
+          </p>
 
           {/* Summary Table */}
           <table className="w-full border">
@@ -165,18 +217,7 @@ const PrintParcelSummary = () => {
                 <td>Total Booking</td>
                 <td>{summary.totalBookings}</td>
               </tr>
-              <tr>
-                <td>Total Delivered</td>
-                <td>{summary.totalDelivered}</td>
-              </tr>
-              <tr>
-                <td>Total Pending</td>
-                <td>{summary.totalPending}</td>
-              </tr>
-              <tr>
-                <td>Total Return</td>
-                <td>{summary.totalReturn}</td>
-              </tr>
+             
               <tr>
                 <td>Total Amount</td>
                 <td>{summary.totalAmount}</td>
