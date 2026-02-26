@@ -73,7 +73,7 @@ const PrintParcelSummary = () => {
     };
   }, [filteredParcels]);
 
-  // ✅ Print
+ 
   const handlePrint = () => {
   const printContent = printRef.current.innerHTML;
 
