@@ -387,6 +387,16 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "parcel-summary",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <PrintParcelSummary/>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "manage-users",
         element: (
           <PrivateRoute>
