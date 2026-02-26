@@ -225,8 +225,13 @@ const PrintParcelSummary = () => {
           </p>
 
           <p className="mb-4">
-            <strong>Number:</strong> {searchMobile || "All"}
+            <strong>Number:</strong> {searchMobile || "N/A"}
           </p>
+          {
+            branchName && <p className="mb-4">
+            <strong>Branch:</strong> {branchName || "All"}
+          </p>
+          }
 
           {/* Summary Table */}
           <table className="w-full border">
