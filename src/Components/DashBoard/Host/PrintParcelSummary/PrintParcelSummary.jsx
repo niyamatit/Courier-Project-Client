@@ -5,6 +5,7 @@ import logoImg from "../../../../assets/nexp-update.png";
 
 const PrintParcelSummary = () => {
   const [searchMobile, setSearchMobile] = useState("");
+  const [branchName, setBranchName] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
@@ -18,10 +19,22 @@ const PrintParcelSummary = () => {
     },
   });
 
-  // ✅ Filter by mobile + date
+
+  const branchList = useMemo(() => {
+    const names = All_Parcels.map((p) => p.Branch_Name).filter(Boolean);
+    return [...new Set(names)];
+  }, [All_Parcels]);
+
+
   const filteredParcels = useMemo(() => {
     return All_Parcels.filter((p) => {
-      const mobileMatch = p.senderMobile === searchMobile;
+      const mobileMatch = searchMobile
+        ? p.senderMobile === searchMobile
+        : true;
+
+      const branchMatch = branchName
+        ? p.Branch_Name === branchName
+        : true;
 
       const bookingDate = new Date(p.booking);
 
@@ -33,16 +46,13 @@ const PrintParcelSummary = () => {
         ? bookingDate <= new Date(toDate)
         : true;
 
-      return mobileMatch && fromMatch && toMatch;
+      return mobileMatch && branchMatch && fromMatch && toMatch;
     });
-  }, [All_Parcels, searchMobile, fromDate, toDate]);
+  }, [All_Parcels, searchMobile, branchName, fromDate, toDate]);
 
-  // ✅ Summary
+
   const summary = useMemo(() => {
     let totalBookings = filteredParcels.length;
-    // let totalDelivered = 0;
-    // let totalPending = 0;
-    let totalReturn = 0;
     let totalAmount = 0;
     let totalCondition = 0;
     let totalConditionCharge = 0;
@@ -55,18 +65,10 @@ const PrintParcelSummary = () => {
       totalAmount += amount;
       totalCondition += condition;
       totalConditionCharge += condition + conditionCharge;
-
-      // if (p.done === "done") totalDelivered++;
-      // else totalPending++;
-
-      // if (p.update === "Return") totalReturn++;
     });
 
     return {
       totalBookings,
-      // totalDelivered,
-      // totalPending,
-      totalReturn,
       totalAmount,
       totalCondition,
       totalConditionCharge,
@@ -75,75 +77,74 @@ const PrintParcelSummary = () => {
 
  
   const handlePrint = () => {
-  const printContent = printRef.current.innerHTML;
+    const printContent = printRef.current.innerHTML;
 
-  const win = window.open("", "", "width=900,height=700");
+    const win = window.open("", "", "width=900,height=700");
 
-  win.document.write(`
-    <html>
-      <head>
-        <title>Parcel Summary</title>
+    win.document.write(`
+      <html>
+        <head>
+          <title>Parcel Summary</title>
 
-        <style>
+          <style>
 
-          @page {
-            size: A4;
-            margin: 10mm;
-          }
+            @page {
+              size: A4;
+              margin: 10mm;
+            }
 
-          body {
-            font-family: Arial, sans-serif;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-            margin: 0;
-            padding: 0;
-          }
+            body {
+              font-family: Arial, sans-serif;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+              margin: 0;
+              padding: 0;
+            }
 
-          .print-wrapper {
-            width: 800px;
-            margin: auto;
-            position: relative;
-          }
+            .print-wrapper {
+              width: 800px;
+              margin: auto;
+              position: relative;
+            }
 
-          table {
-            width: 100%;
-            border-collapse: collapse;
-          }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
 
-          td, th {
-            border: 1px solid #000;
-            padding: 8px;
-            font-size: 14px;
-          }
+            td, th {
+              border: 1px solid #000;
+              padding: 8px;
+              font-size: 14px;
+            }
 
-          img {
-            max-width: 100%;
-          }
+            img {
+              max-width: 100%;
+            }
 
-          /* WATERMARK FIX */
-          .absolute {
-            position: absolute !important;
-          }
+            .absolute {
+              position: absolute !important;
+            }
 
-        </style>
+          </style>
 
-      </head>
+        </head>
 
-      <body>
-        <div class="print-wrapper">
-          ${printContent}
-        </div>
-      </body>
-    </html>
-  `);
+        <body>
+          <div class="print-wrapper">
+            ${printContent}
+          </div>
+        </body>
+      </html>
+    `);
 
-  win.document.close();
+    win.document.close();
 
-  setTimeout(() => {
-    win.print();
-    win.close();
-  }, 500);
-};
+    setTimeout(() => {
+      win.print();
+      win.close();
+    }, 500);
+  };
 
   return (
     <div className="p-6">
@@ -152,6 +153,7 @@ const PrintParcelSummary = () => {
 
       {/* Filters */}
       <div className="flex gap-3 mb-4 flex-wrap">
+
         <input
           type="text"
           placeholder="Sender Mobile"
@@ -159,6 +161,20 @@ const PrintParcelSummary = () => {
           onChange={(e) => setSearchMobile(e.target.value)}
           className="border p-2 rounded"
         />
+
+        {/* Branch Filter */}
+        <select
+          value={branchName}
+          onChange={(e) => setBranchName(e.target.value)}
+          className="border p-2 rounded"
+        >
+          <option value="">All Branch</option>
+          {branchList.map((name, index) => (
+            <option key={index} value={name}>
+              {name}
+            </option>
+          ))}
+        </select>
 
         <input
           type="date"
@@ -173,6 +189,7 @@ const PrintParcelSummary = () => {
           onChange={(e) => setToDate(e.target.value)}
           className="border p-2 rounded"
         />
+
       </div>
 
       {/* Printable Area */}
@@ -202,12 +219,13 @@ const PrintParcelSummary = () => {
             </div>
           </div>
 
-          {/* Date */}
-          <p className="mb-4">
+          {/* Date & Number */}
+          <p className="mb-2">
             <strong>Date:</strong> {fromDate || "All"} — {toDate || "All"}
           </p>
+
           <p className="mb-4">
-            <strong>Number:</strong> {searchMobile}
+            <strong>Number:</strong> {searchMobile || "All"}
           </p>
 
           {/* Summary Table */}
@@ -215,23 +233,26 @@ const PrintParcelSummary = () => {
             <tbody>
               <tr>
                 <td>Total Booking</td>
-                <td>{summary.totalBookings}</td>
+                <td>{summary?.totalBookings || 0}</td>
               </tr>
-             
+
               <tr>
                 <td>Total Amount</td>
-                <td>{summary.totalAmount}</td>
+                <td>{summary?.totalAmount || 0}</td>
               </tr>
+
               <tr>
                 <td>Total Condition</td>
-                <td>{summary.totalCondition}</td>
+                <td>{summary?.totalCondition || 0}</td>
               </tr>
+
               <tr>
                 <td>Total Condition + Charge</td>
-                <td>{summary.totalConditionCharge}</td>
+                <td>{summary?.totalConditionCharge || 0}</td>
               </tr>
             </tbody>
           </table>
+
         </div>
       </div>
 
@@ -242,6 +263,7 @@ const PrintParcelSummary = () => {
       >
         Print Summary
       </button>
+
     </div>
   );
 };
