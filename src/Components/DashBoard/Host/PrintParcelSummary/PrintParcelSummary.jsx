@@ -114,7 +114,7 @@ const PrintParcelSummary = () => {
             padding: 8px;
           }
 
-          /* ✅ LOGO FIX */
+         
           img {
             height: 60px !important;
             width: auto !important;
