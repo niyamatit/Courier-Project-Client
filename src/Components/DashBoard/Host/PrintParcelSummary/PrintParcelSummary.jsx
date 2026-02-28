@@ -19,17 +19,14 @@ const PrintParcelSummary = () => {
     },
   });
 
-  // Branch List
   const branchList = useMemo(() => {
     const names = All_Parcels.map((p) => p.Branch_Name).filter(Boolean);
     return [...new Set(names)];
   }, [All_Parcels]);
 
-  // Detect filter applied
   const isFilterApplied =
     searchMobile || branchName || fromDate || toDate;
 
-  // Filter Data
   const filteredParcels = useMemo(() => {
     if (!isFilterApplied) return [];
 
@@ -70,7 +67,7 @@ const PrintParcelSummary = () => {
 
       totalAmount += amount;
       totalCondition += condition;
-      totalConditionCharge += condition + conditionCharge;
+      totalConditionCharge +=  conditionCharge;
     });
 
     return {
@@ -81,63 +78,77 @@ const PrintParcelSummary = () => {
     };
   }, [filteredParcels]);
 
+  // Table Totals
+  const tableTotals = useMemo(() => {
+    let totalAmount = 0;
+    let totalCondition = 0;
+    let totalCharge = 0;
+
+    filteredParcels.forEach((p) => {
+      totalAmount += Number(p.amount || 0);
+      totalCondition += Number(p.condition || 0);
+      totalCharge += Number(p.conditionCharge || 0);
+    });
+
+    return {
+      totalAmount,
+      totalCondition,
+      totalCharge,
+      grandTotal: totalAmount + totalCondition + totalCharge,
+    };
+  }, [filteredParcels]);
+
   // Print
- const handlePrint = () => {
-  const printContent = printRef.current.innerHTML;
+  const handlePrint = () => {
+    const printContent = printRef.current.innerHTML;
 
-  const win = window.open("", "", "width=900,height=700");
+    const win = window.open("", "", "width=900,height=700");
 
-  win.document.write(`
-    <html>
-      <head>
-        <title>Parcel Summary</title>
+    win.document.write(`
+      <html>
+        <head>
+          <title>Parcel Summary</title>
+          <style>
+            @page { size: A4; margin: 10mm; }
 
-        <style>
+            body {
+              font-family: Arial;
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+              margin: 0;
+              padding: 0;
+            }
 
-          @page { size: A4; margin: 10mm; }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
 
-          body {
-            font-family: Arial;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-            margin: 0;
-            padding: 0;
-          }
+            td, th {
+              border: 1px solid black;
+              padding: 8px;
+            }
 
-          table {
-            width: 100%;
-            border-collapse: collapse;
-          }
+            img {
+              height: 60px !important;
+              width: auto !important;
+              max-width: 200px !important;
+            }
+          </style>
+        </head>
+        <body>
+          ${printContent}
+        </body>
+      </html>
+    `);
 
-          td, th {
-            border: 1px solid black;
-            padding: 8px;
-          }
+    win.document.close();
 
-         
-          img {
-            height: 60px !important;
-            width: auto !important;
-            max-width: 200px !important;
-          }
-
-        </style>
-
-      </head>
-
-      <body>
-        ${printContent}
-      </body>
-    </html>
-  `);
-
-  win.document.close();
-
-  setTimeout(() => {
-    win.print();
-    win.close();
-  }, 500);
-};
+    setTimeout(() => {
+      win.print();
+      win.close();
+    }, 500);
+  };
 
   return (
     <div className="p-6">
@@ -184,17 +195,18 @@ const PrintParcelSummary = () => {
 
       </div>
 
-      {/* Printable Area */}
-      <div ref={printRef} className="relative bg-white p-6 max-w-[800px]">
+      {/* PRINT AREA */}
+      <div ref={printRef} className="bg-white p-6 max-w-[800px]">
 
-        <div className="flex items-center justify-between mb-4">
+        {/* Header */}
+        {/* <div className="flex items-center justify-between mb-4">
           <img src={logoImg} className="h-16" />
           <div className="text-center">
             <h2 className="text-xl font-bold">Niyamat Express</h2>
             <p>Chittagong Road, Narayanganj</p>
             <p>09617179001</p>
           </div>
-        </div>
+        </div> */}
 
         <p className="mb-2">
           <strong>Date:</strong> {fromDate || "All"} — {toDate || "All"}
@@ -211,7 +223,7 @@ const PrintParcelSummary = () => {
         )}
 
         {/* Summary Table */}
-        <table className="w-full border">
+        <table className="w-full border mb-6">
           <tbody>
             <tr>
               <td>Total Booking</td>
@@ -232,6 +244,82 @@ const PrintParcelSummary = () => {
           </tbody>
         </table>
 
+        {/* Parcel Table */}
+        <table className="w-full border">
+
+          <thead className="bg-blue-600 text-white text-sm">
+            <tr>
+              <th className="p-2 border">SL</th>
+              <th className="p-2 border">Date</th>
+              <th className="p-2 border">Parcel Code</th>
+              <th className="p-2 border">Sender Phone</th>
+              <th className="p-2 border">Receiver Name</th>
+              <th className="p-2 border">Receiver Phone</th>
+              <th className="p-2 border">Booking Branch</th>
+              <th className="p-2 border">Payment Mode</th>
+              <th className="p-2 border">Amount</th>
+              <th className="p-2 border">Condition Amt</th>
+              <th className="p-2 border">Condition + Charge</th>
+              <th className="p-2 border">Total</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            {!isFilterApplied && (
+              <tr>
+                <td colSpan="12" className="text-center p-4">
+                  Please apply filter to see data
+                </td>
+              </tr>
+            )}
+
+            {filteredParcels.map((p, index) => {
+
+              const amount = Number(p.amount || 0);
+              const condition = Number(p.condition || 0);
+              const charge = Number(p.conditionCharge || 0);
+
+              return (
+                <tr key={p._id}>
+                  <td className="border p-2">{index + 1}</td>
+                  <td className="border p-2">
+                    {new Date(p.booking).toLocaleDateString()}
+                  </td>
+                  <td className="border p-2">{p.CnNumber}</td>
+                  <td className="border p-2">{p.senderMobile}</td>
+                  <td className="border p-2">{p.recipientName}</td>
+                  <td className="border p-2">{p.recipientMobile}</td>
+                  <td className="border p-2">{p.Branch_Name}</td>
+                  <td className="border p-2">{p.paymentOption}</td>
+                  <td className="border p-2">{amount}</td>
+                  <td className="border p-2">{condition}</td>
+                  <td className="border p-2">{charge}</td>
+                  <td className="border p-2">
+                    {amount + condition + charge}
+                  </td>
+                </tr>
+              );
+            })}
+
+            {/* TOTAL ROW */}
+            {isFilterApplied && filteredParcels.length > 0 && (
+              <tr className="bg-gray-200 font-bold">
+                <td colSpan="8" className="border p-2 text-right">
+                  Total
+                </td>
+
+                <td className="border p-2">{tableTotals.totalAmount}</td>
+                <td className="border p-2">{tableTotals.totalCondition}</td>
+                <td className="border p-2">{tableTotals.totalCharge}</td>
+                <td className="border p-2">{tableTotals.grandTotal}</td>
+              </tr>
+            )}
+
+          </tbody>
+
+        </table>
+
       </div>
 
       {/* Print Button */}
@@ -241,81 +329,6 @@ const PrintParcelSummary = () => {
       >
         Print Summary
       </button>
-
-
-      {/* Parcel Table */}
-      <div className="border rounded mt-5">
-
-        <div className="bg-gray-100 px-3 py-2 font-semibold">
-          Parcel List
-        </div>
-
-        <div className="overflow-x-auto">
-
-          <table className="w-full border">
-
-            <thead className="bg-blue-600 text-white text-sm">
-              <tr>
-                <th className="p-2 border">SL</th>
-                <th className="p-2 border">Date</th>
-                <th className="p-2 border">Parcel Code</th>
-                <th className="p-2 border">Sender Phone</th>
-                <th className="p-2 border">Receiver Name</th>
-                <th className="p-2 border">Receiver Phone</th>
-                <th className="p-2 border">Booking Branch</th>
-                <th className="p-2 border">Payment Mode</th>
-                <th className="p-2 border">Amount</th>
-                <th className="p-2 border">Condition Amt</th>
-                <th className="p-2 border">Condition + Charge</th>
-                <th className="p-2 border">Total</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              {!isFilterApplied && (
-                <tr>
-                  <td colSpan="12" className="text-center p-4">
-                    Please apply filter to see data
-                  </td>
-                </tr>
-              )}
-
-              {filteredParcels.map((p, index) => {
-
-                const amount = Number(p.amount || 0);
-                const condition = Number(p.condition || 0);
-                const charge = Number(p.conditionCharge || 0);
-
-                return (
-                  <tr key={p._id}>
-                    <td className="border p-2">{index + 1}</td>
-                    <td className="border p-2">
-                      {new Date(p.booking).toLocaleDateString()}
-                    </td>
-                    <td className="border p-2">{p.CnNumber}</td>
-                    <td className="border p-2">{p.senderMobile}</td>
-                    <td className="border p-2">{p.recipientName}</td>
-                    <td className="border p-2">{p.recipientMobile}</td>
-                    <td className="border p-2">{p.Branch_Name}</td>
-                    <td className="border p-2">{p.paymentOption}</td>
-                    <td className="border p-2">{amount}</td>
-                    <td className="border p-2">{condition}</td>
-                    <td className="border p-2">{charge}</td>
-                    <td className="border p-2">
-                      {amount + condition + charge}
-                    </td>
-                  </tr>
-                );
-              })}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
 
     </div>
   );
