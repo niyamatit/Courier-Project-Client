@@ -822,6 +822,7 @@ const handleSignUp = async (data) => {
   
   Thanks Niyamat Express. 
   `;
+
   const senderUrl = `${SMS_API}?api_key=${API_KEY}&type=text&number=${Number(data.email)}&senderid=${SENDER_ID}&message=${encodeURIComponent(senderMessage)}`;
 
   try {
@@ -919,12 +920,16 @@ const handleOtpSubmit = async (otpEntered) => {
       if (res.status === 201) {
         Swal.fire("Success", "Signup successful!", "success");
         localStorage.setItem("email", tempFormData.email);
-        navigate('/');
+        setShowOtpModal(false); 
+        setTimeout(() => {
+  navigate('/dashboard');
+}, 100);
+window.location.href = "/dashboard";
       } else {
         Swal.fire("Error", "Failed to register", "error");
       }
 
-      await axiosSecure.delete(`/otp/remove/${serverOtpID}`);
+      // await axiosSecure.delete(`/otp/remove/${serverOtpID}`);
       setShowOtpModal(false);
     } else {
       Swal.fire("Error", "Invalid OTP", "error");
