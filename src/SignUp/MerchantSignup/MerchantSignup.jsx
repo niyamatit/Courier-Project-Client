@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Link, useNavigate } from 'react-router-dom';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import React, { useEffect, useState } from 'react'; 
