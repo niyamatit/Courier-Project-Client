@@ -709,7 +709,7 @@ useEffect(() => {
   } else {
     setFilteredAreas([]);
   }
-}, [selectedDistrict, Areas]);
+}, [selectedDistrict]);
 
 const getDistrictName = (id) => {
   const district = Districts.find(district => district.id === id);
