@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
-import logoImg from "../../../../assets/nexp-update.png";
+
 
 const PrintParcelSummary = () => {
   const [searchMobile, setSearchMobile] = useState("");
