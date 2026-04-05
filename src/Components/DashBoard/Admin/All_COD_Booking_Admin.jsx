@@ -5,7 +5,6 @@ import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import axios from "axios";
-import OTP_Modal from "../../Pages/Home/SpoonserSlider/OTP_Modal";
 import OTP_Modal_Admin_COD from "./OTP_Modal_Admin_COD";
 
 const All_COD_Booking_Admin = () => {
@@ -25,8 +24,6 @@ const All_COD_Booking_Admin = () => {
 
   const [searchStartDate, setSearchStartDate] = useState("");
   const [searchEndDate, setSearchEndDate] = useState("");
-
-  // Payment & OTP states
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [note, setNote] = useState("");
   const [enteredNumber, setEnteredNumber] = useState("");
@@ -35,8 +32,6 @@ const All_COD_Booking_Admin = () => {
 const [isVerifying, setIsVerifying] = useState(false);
   const [showNumberModal, setShowNumberModal] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
-
-  // Filter by date
   const filteredOfflines = allBookings.filter((booking) => {
     const bookingDate = booking.booking
       ? new Date(booking.booking).toISOString().split("T")[0]
@@ -59,53 +54,113 @@ const [isVerifying, setIsVerifying] = useState(false);
     return true;
   });
 
-  // Step 1: Start payment → ask for number
+  
   const handleSave = () => {
     if (!selectedBooking) return;
     setShowNumberModal(true);
   };
+  // const handleSendOtp = async () => {
+  //   const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
+  //   const SMS_API = "https://bulksmsbd.net/api/smsapi";
+  //   const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+  //   const SENDER_ID = "8809617624950";
 
-  // Step 2: Send OTP
-  const handleSendOtp = async () => {
-    const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
-    const SMS_API = "https://bulksmsbd.net/api/smsapi";
-    const API_KEY = "VSkytluAnQbG0vsCEbHQ";
-    const SENDER_ID = "8809617624950";
+  //   const senderMessage = `Your COD Amount ${selectedBooking.condition ||
+  //                 selectedBooking.senderReceive} TK.\nYour OTP is ${otpGenerated}\n Niyamat Express Courier and Parcel Service`;
 
-    const senderMessage = `Your COD Amount ${selectedBooking.condition ||
-                  selectedBooking.senderReceive} TK.\nYour OTP is ${otpGenerated}\n Niyamat Express Courier and Parcel Service`;
+  //   try {
+  //     await axios.get(
+  //       `${SMS_API}?api_key=${API_KEY}&type=text&number=${selectedBooking.senderMobile || selectedBooking.senderContactNo}&senderid=${SENDER_ID}&message=${encodeURIComponent(
+  //         senderMessage
+  //       )}`
+  //     );
 
-    try {
-      await axios.get(
-        `${SMS_API}?api_key=${API_KEY}&type=text&number=${selectedBooking.senderMobile || selectedBooking.senderContactNo}&senderid=${SENDER_ID}&message=${encodeURIComponent(
-          senderMessage
-        )}`
-      );
+  //     const res = await axiosSecure.post("/otp/save", {
+  //       otp: otpGenerated,
+  //       number: selectedBooking.senderMobile || selectedBooking.senderContactNo,
+  //     });
+  //  console.log(otpEntered, 'Otp Generated');
+  //     setServerOtpID(res.data.id);
+  //     setShowNumberModal(false);
+  //     setShowOtpModal(true);
+  //   } catch (error) {
+  //     console.error("OTP Error:", error);
+  //     Swal.fire("Failed", "Could not send OTP. Try again.", "error");
+  //   }
+  // };
+ 
+ 
+ const handleSendOtp = async () => {
+  const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
 
-      const res = await axiosSecure.post("/otp/save", {
-        otp: otpGenerated,
-        number: selectedBooking.senderMobile || selectedBooking.senderContactNo,
-      });
+  const number =
+    selectedBooking.senderMobile || selectedBooking.senderContactNo;
 
-      setServerOtpID(res.data.id);
-      setShowNumberModal(false);
-      setShowOtpModal(true);
-    } catch (error) {
-      console.error("OTP Error:", error);
-      Swal.fire("Failed", "Could not send OTP. Try again.", "error");
-    }
-  };
+  // ✅ Important: set number for verify
+  setEnteredNumber(String(number).trim());
 
-  // Step 3: Verify OTP & Save Payment
+  const SMS_API = "https://bulksmsbd.net/api/smsapi";
+  const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+  const SENDER_ID = "8809617624950";
+
+  const senderMessage = `Your COD Amount ${
+    selectedBooking.condition || selectedBooking.senderReceive
+  } TK.\nYour OTP is ${otpGenerated}\nNiyamat Express Courier`;
+
+  try {
+    // ✅ Send SMS
+    await axios.get(
+      `${SMS_API}?api_key=${API_KEY}&type=text&number=${number}&senderid=${SENDER_ID}&message=${encodeURIComponent(
+        senderMessage
+      )}`
+    );
+
+    // ✅ Save OTP to backend
+    const res = await axiosSecure.post("/otp/save", {
+      otp: otpGenerated,
+      number: String(number).trim(),
+    });
+
+    console.log("Generated OTP:", otpGenerated);
+    console.log("Saved OTP ID:", res.data.id);
+
+    // ✅ Save server OTP id (optional)
+    setServerOtpID(res.data.id);
+
+    // ✅ UI control
+    setShowNumberModal(false);
+    setShowOtpModal(true);
+
+    // ✅ Reset previous OTP input
+    setOtpEntered("");
+
+    Swal.fire({
+      icon: "success",
+      title: "OTP Sent!",
+      text: "Check your phone",
+    });
+
+  } catch (error) {
+    console.error("OTP Error:", error);
+
+    Swal.fire({
+      icon: "error",
+      title: "Failed!",
+      text: "Could not send OTP. Try again.",
+    });
+  }
+};
   const handleOtpSubmit = async () => {
-  setIsVerifying(true); // loader শুরু
+  setIsVerifying(true);
   try {
     const response = await axiosSecure.post("/otp/verify/cod/admin", {
       otp: otpEntered,
       number: enteredNumber,
     });
 
-    if (response.data.valid) {
+    console.log('Verify Otp', otpEntered);
+
+    if (response.data.valid){
       const paymentData = {
         id: selectedBooking._id,
         cnNumber: selectedBooking.CnNumber,
@@ -142,7 +197,7 @@ const [isVerifying, setIsVerifying] = useState(false);
     console.error("OTP Verify Error:", error);
     Swal.fire("Error!", "OTP verification failed", "error");
   } finally {
-    setIsVerifying(false); // loader বন্ধ
+    setIsVerifying(false); 
     setShowOtpModal(false);
   }
 };
