@@ -19,6 +19,15 @@ const PrintParcelSummary = () => {
     },
   });
 
+  // ✅ DATE FORMAT FUNCTION (ADDED)
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   const branchList = useMemo(() => {
     const names = All_Parcels.map((p) => p.Branch_Name).filter(Boolean);
     return [...new Set(names)];
@@ -53,7 +62,6 @@ const PrintParcelSummary = () => {
     });
   }, [All_Parcels, searchMobile, branchName, fromDate, toDate, isFilterApplied]);
 
-  // Summary
   const summary = useMemo(() => {
     let totalBookings = filteredParcels.length;
     let totalAmount = 0;
@@ -67,7 +75,7 @@ const PrintParcelSummary = () => {
 
       totalAmount += amount;
       totalCondition += condition;
-      totalConditionCharge +=  conditionCharge;
+      totalConditionCharge += conditionCharge;
     });
 
     return {
@@ -78,7 +86,6 @@ const PrintParcelSummary = () => {
     };
   }, [filteredParcels]);
 
-  // Table Totals
   const tableTotals = useMemo(() => {
     let totalAmount = 0;
     let totalCondition = 0;
@@ -98,7 +105,6 @@ const PrintParcelSummary = () => {
     };
   }, [filteredParcels]);
 
-  // Print
   const handlePrint = () => {
     const printContent = printRef.current.innerHTML;
 
@@ -155,7 +161,6 @@ const PrintParcelSummary = () => {
 
       <h1 className="text-xl font-bold mb-4">Parcel Summary</h1>
 
-      {/* Filters */}
       <div className="flex gap-3 mb-4 flex-wrap">
 
         <input
@@ -195,21 +200,11 @@ const PrintParcelSummary = () => {
 
       </div>
 
-      {/* PRINT AREA */}
       <div ref={printRef} className="bg-white p-6 max-w-[800px]">
 
-        {/* Header */}
-        {/* <div className="flex items-center justify-between mb-4">
-          <img src={logoImg} className="h-16" />
-          <div className="text-center">
-            <h2 className="text-xl font-bold">Niyamat Express</h2>
-            <p>Chittagong Road, Narayanganj</p>
-            <p>09617179001</p>
-          </div>
-        </div> */}
-
         <p className="mb-2">
-          <strong>Date:</strong> {fromDate || "All"} — {toDate || "All"}
+          <strong>Date: </strong> 
+                   {fromDate ? formatDate(fromDate) : "All"} — {toDate ? formatDate(toDate) : "All"}
         </p>
 
         <p className="mb-2">
@@ -222,7 +217,6 @@ const PrintParcelSummary = () => {
           </p>
         )}
 
-        {/* Summary Table */}
         <table className="w-full border mb-6">
           <tbody>
             <tr>
@@ -244,7 +238,6 @@ const PrintParcelSummary = () => {
           </tbody>
         </table>
 
-        {/* Parcel Table */}
         <table className="w-full border">
 
           <thead className="bg-blue-600 text-white text-sm">
@@ -283,9 +276,12 @@ const PrintParcelSummary = () => {
               return (
                 <tr key={p._id}>
                   <td className="border p-2">{index + 1}</td>
+
+                  {/* ✅ UPDATED DATE HERE */}
                   <td className="border p-2">
-                    {new Date(p.booking).toLocaleDateString()}
+                    {formatDate(p.booking)}
                   </td>
+
                   <td className="border p-2">{p.CnNumber}</td>
                   <td className="border p-2">{p.senderMobile}</td>
                   <td className="border p-2">{p.recipientName}</td>
@@ -302,7 +298,6 @@ const PrintParcelSummary = () => {
               );
             })}
 
-            {/* TOTAL ROW */}
             {isFilterApplied && filteredParcels.length > 0 && (
               <tr className="bg-gray-200 font-bold">
                 <td colSpan="8" className="border p-2 text-right">
@@ -322,7 +317,6 @@ const PrintParcelSummary = () => {
 
       </div>
 
-      {/* Print Button */}
       <button
         onClick={handlePrint}
         className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
