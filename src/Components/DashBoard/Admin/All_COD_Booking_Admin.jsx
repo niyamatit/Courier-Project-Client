@@ -56,10 +56,43 @@ const [isVerifying, setIsVerifying] = useState(false);
   });
 
   
-  const handleSave = () => {
-    if (!selectedBooking) return;
-    setShowNumberModal(true);
+  const handleSave = async () => {
+  if (!selectedBooking) return;
+
+  const paymentData = {
+    id: selectedBooking._id,
+    cnNumber: selectedBooking.CnNumber,
+    Admin_Accept_Payment_Amount:
+      parseFloat(selectedBooking.condition) ||
+      selectedBooking.senderReceive ||
+      0,
+    note: note,
+    Received_Payment_Admin_Name: verifiedUser?.name,
+    Received_Payment_Admin_Email: verifiedUser?.email,
+    Admin_Accept_Payment_Time: new Date(),
   };
+
+  try {
+    const res = await axiosSecure.patch(
+      "/update-payment/hello/bhai/kaj/kor",
+      paymentData
+    );
+
+    if (res.status === 200) {
+      await queryClient.invalidateQueries(["OnlineBookings"]);
+      await queryClient.invalidateQueries(["OfflineBookings"]);
+
+      Swal.fire("Success!", "Payment updated!", "success");
+
+      setSelectedBooking(null);
+      setNote("");
+    } else {
+      Swal.fire("Error!", "Failed!", "error");
+    }
+  } catch (error) {
+    Swal.fire("Error!", "Something went wrong!", "error");
+  }
+};
   // const handleSendOtp = async () => {
   //   const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
   //   const SMS_API = "https://bulksmsbd.net/api/smsapi";
@@ -91,117 +124,117 @@ const [isVerifying, setIsVerifying] = useState(false);
   // };
  
  
- const handleSendOtp = async () => {
-  const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
+//  const handleSendOtp = async () => {
+//   const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
 
-  const number =
-    selectedBooking.senderMobile || selectedBooking.senderContactNo;
+//   const number =
+//     selectedBooking.senderMobile || selectedBooking.senderContactNo;
 
-  // ✅ Important: set number for verify
-  setEnteredNumber(String(number).trim());
+//   // ✅ Important: set number for verify
+//   setEnteredNumber(String(number).trim());
 
-  const SMS_API = "https://bulksmsbd.net/api/smsapi";
-  const API_KEY = "VSkytluAnQbG0vsCEbHQ";
-  const SENDER_ID = "8809617624950";
+//   const SMS_API = "https://bulksmsbd.net/api/smsapi";
+//   const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+//   const SENDER_ID = "8809617624950";
 
-  const senderMessage = `Your COD Amount ${
-    selectedBooking.condition || selectedBooking.senderReceive
-  } TK.\nYour OTP is ${otpGenerated}\nNiyamat Express Courier`;
+//   const senderMessage = `Your COD Amount ${
+//     selectedBooking.condition || selectedBooking.senderReceive
+//   } TK.\nYour OTP is ${otpGenerated}\nNiyamat Express Courier`;
 
-  try {
-    // ✅ Send SMS
-    await axios.get(
-      `${SMS_API}?api_key=${API_KEY}&type=text&number=${number}&senderid=${SENDER_ID}&message=${encodeURIComponent(
-        senderMessage
-      )}`
-    );
+//   try {
+//     // ✅ Send SMS
+//     await axios.get(
+//       `${SMS_API}?api_key=${API_KEY}&type=text&number=${number}&senderid=${SENDER_ID}&message=${encodeURIComponent(
+//         senderMessage
+//       )}`
+//     );
 
-    // ✅ Save OTP to backend
-    const res = await axiosSecure.post("/otp/save", {
-      otp: otpGenerated,
-      number: String(number).trim(),
-    });
+//     // ✅ Save OTP to backend
+//     const res = await axiosSecure.post("/otp/save", {
+//       otp: otpGenerated,
+//       number: String(number).trim(),
+//     });
 
-    // console.log("Generated OTP:", otpGenerated);
-    // console.log("Saved OTP ID:", res.data.id);
+//     // console.log("Generated OTP:", otpGenerated);
+//     // console.log("Saved OTP ID:", res.data.id);
 
-    // ✅ Save server OTP id (optional)
-    setServerOtpID(res.data.id);
+//     // ✅ Save server OTP id (optional)
+//     setServerOtpID(res.data.id);
 
-    // ✅ UI control
-    setShowNumberModal(false);
-    setShowOtpModal(true);
+//     // ✅ UI control
+//     setShowNumberModal(false);
+//     setShowOtpModal(true);
 
-    // ✅ Reset previous OTP input
-    setOtpEntered("");
+//     // ✅ Reset previous OTP input
+//     setOtpEntered("");
 
-    Swal.fire({
-      icon: "success",
-      title: "OTP Sent!",
-      text: "Check your phone",
-    });
+//     Swal.fire({
+//       icon: "success",
+//       title: "OTP Sent!",
+//       text: "Check your phone",
+//     });
 
-  } catch (error) {
-    console.error("OTP Error:", error);
+//   } catch (error) {
+//     console.error("OTP Error:", error);
 
-    Swal.fire({
-      icon: "error",
-      title: "Failed!",
-      text: "Could not send OTP. Try again.",
-    });
-  }
-};
-  const handleOtpSubmit = async () => {
-  setIsVerifying(true);
-  try {
-    const response = await axiosSecure.post("/otp/verify/cod/admin", {
-      otp: otpEntered,
-      number: enteredNumber,
-    });
+//     Swal.fire({
+//       icon: "error",
+//       title: "Failed!",
+//       text: "Could not send OTP. Try again.",
+//     });
+//   }
+// };
+//   const handleOtpSubmit = async () => {
+//   setIsVerifying(true);
+//   try {
+//     const response = await axiosSecure.post("/otp/verify/cod/admin", {
+//       otp: otpEntered,
+//       number: enteredNumber,
+//     });
 
-    // console.log('Verify Otp', otpEntered);
+//     // console.log('Verify Otp', otpEntered);
 
-    if (response.data.valid){
-      const paymentData = {
-        id: selectedBooking._id,
-        cnNumber: selectedBooking.CnNumber,
-        Admin_Accept_Payment_Amount:
-          parseFloat(selectedBooking.condition) ||
-          selectedBooking.senderReceive ||
-          0,
-        note: note,
-        Received_Payment_Admin_Name: verifiedUser?.name,
-        Received_Payment_Admin_Email: verifiedUser?.email,
-        Admin_Accept_Payment_Time: new Date(),
-      };
+//     if (response.data.valid){
+//       const paymentData = {
+//         id: selectedBooking._id,
+//         cnNumber: selectedBooking.CnNumber,
+//         Admin_Accept_Payment_Amount:
+//           parseFloat(selectedBooking.condition) ||
+//           selectedBooking.senderReceive ||
+//           0,
+//         note: note,
+//         Received_Payment_Admin_Name: verifiedUser?.name,
+//         Received_Payment_Admin_Email: verifiedUser?.email,
+//         Admin_Accept_Payment_Time: new Date(),
+//       };
 
-      const res = await axiosSecure.patch(
-        "/update-payment/hello/bhai/kaj/kor",
-        paymentData
-      );
+//       const res = await axiosSecure.patch(
+//         "/update-payment/hello/bhai/kaj/kor",
+//         paymentData
+//       );
 
-      if (res.status === 200) {
-        await queryClient.invalidateQueries(["OnlineBookings"]);
-        await queryClient.invalidateQueries(["OfflineBookings"]);
+//       if (res.status === 200) {
+//         await queryClient.invalidateQueries(["OnlineBookings"]);
+//         await queryClient.invalidateQueries(["OfflineBookings"]);
 
-        Swal.fire("Success!", "Payment updated successfully!", "success");
+//         Swal.fire("Success!", "Payment updated successfully!", "success");
 
-        setSelectedBooking(null);
-        setNote("");
-      } else {
-        Swal.fire("Error!", "Failed to update payment!", "error");
-      }
-    } else {
-      Swal.fire("Error!", "Invalid OTP", "error");
-    }
-  } catch (error) {
-    console.error("OTP Verify Error:", error);
-    Swal.fire("Error!", "OTP verification failed", "error");
-  } finally {
-    setIsVerifying(false); 
-    setShowOtpModal(false);
-  }
-};
+//         setSelectedBooking(null);
+//         setNote("");
+//       } else {
+//         Swal.fire("Error!", "Failed to update payment!", "error");
+//       }
+//     } else {
+//       Swal.fire("Error!", "Invalid OTP", "error");
+//     }
+//   } catch (error) {
+//     console.error("OTP Verify Error:", error);
+//     Swal.fire("Error!", "OTP verification failed", "error");
+//   } finally {
+//     setIsVerifying(false); 
+//     setShowOtpModal(false);
+//   }
+// };
 
 
   return (
@@ -442,7 +475,7 @@ const [isVerifying, setIsVerifying] = useState(false);
       )}
 
       {/* OTP Modal */}
-      {showOtpModal && (
+      {/* {showOtpModal && (
         <OTP_Modal_Admin_COD
           show={showOtpModal}
           onClose={() => setShowOtpModal(false)}
@@ -451,7 +484,7 @@ const [isVerifying, setIsVerifying] = useState(false);
           setOtpEntered={setOtpEntered}
           isVerifying={isVerifying} 
         />
-      )}
+      )} */}
     </div>
   );
 };
