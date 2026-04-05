@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getOffline, getPackage } from "../../../api/auth";
 import { useState } from "react";
@@ -12,7 +13,7 @@ const All_COD_Booking_Admin = () => {
     queryKey: ["OnlineBookings"],
     queryFn: async () => await getPackage(),
   });
-  const [verifiedUser, isLoading] = useUsersData();
+  const [verifiedUser] = useUsersData();
 
   const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
     queryKey: ["OfflineBookings"],
@@ -202,7 +203,7 @@ const [isVerifying, setIsVerifying] = useState(false);
   }
 };
 
-const ReturnStatus = allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_Returned || allBookings?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned || allBookings?.Tracking_Rider_Merchant_Delivary_Update_Returned || allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_Successful_Int || allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int ||  allBookings?.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int
+
   return (
     <div className="p-4">
       <h2 className="text-3xl font-bold mb-10 text-center mt-5">
