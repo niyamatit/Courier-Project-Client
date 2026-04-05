@@ -121,8 +121,8 @@ const [isVerifying, setIsVerifying] = useState(false);
       number: String(number).trim(),
     });
 
-    console.log("Generated OTP:", otpGenerated);
-    console.log("Saved OTP ID:", res.data.id);
+    // console.log("Generated OTP:", otpGenerated);
+    // console.log("Saved OTP ID:", res.data.id);
 
     // ✅ Save server OTP id (optional)
     setServerOtpID(res.data.id);
@@ -158,7 +158,7 @@ const [isVerifying, setIsVerifying] = useState(false);
       number: enteredNumber,
     });
 
-    console.log('Verify Otp', otpEntered);
+    // console.log('Verify Otp', otpEntered);
 
     if (response.data.valid){
       const paymentData = {
