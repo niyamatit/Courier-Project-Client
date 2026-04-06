@@ -30,13 +30,13 @@ const DashboardLayout = () => {
     return (
       <div className="flex items-center justify-center h-screen text-center">
         <div>
-          <h2 className="text-2xl font-bold text-red-600">Access Denied</h2>
+          <h2 className="text-2xl font-bold text-red-600">Server Down.</h2>
           
           {
             currentBranch?.status === 'suspend' ? (
               <p className="text-lg mt-2">Your are <strong className="text-red-500">Suspended</strong>.</p>
             ) : (
-              <p className="text-lg mt-2">Now <strong className="text-red-600">Server Off</strong>. Please try again later.</p>
+              <p className="text-lg mt-2">Now <strong className="text-red-600">Server Down</strong>. Please Wait a Few Minutes. We Are Working Sloved as soon as possible.</p>
             )
           }
          
