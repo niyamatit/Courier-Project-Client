@@ -36,10 +36,10 @@ const DashboardLayout = () => {
             currentBranch?.status === 'suspend' ? (
               <p className="text-lg mt-2">Your are <strong className="text-red-500">Suspended</strong>.</p>
             ) : (
-              <p className="text-lg mt-2">Now <strong className="text-red-600">Server Down</strong>. Please Wait a Few Minutes. We Are Working Sloved as soon as possible.</p>
+              <p className="text-lg mt-2">Now <strong className="text-red-600">Server Down</strong>. Please Wait a Few Minutes. We Are Working on it as soon as possible.</p>
             )
           }
-         
+          
           <Link to="/"><p className="text-green-500">Back to Home</p></Link>
         </div>
       </div>
