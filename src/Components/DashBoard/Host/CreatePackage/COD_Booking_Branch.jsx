@@ -7,6 +7,10 @@ import axiosSecure from "../../../../api/axiosSecure";
 import { getAllOffline, getAllPackage } from "../../../../api/auth";
 
 const COD_Booking_Branch = () => {
+    const [showOtpModal, setShowOtpModal] = useState(false);
+const [otpEntered, setOtpEntered] = useState("");
+const [enteredNumber, setEnteredNumber] = useState("");
+const [isVerifying, setIsVerifying] = useState(false);
     const [verifiedUser] = useUsersData();
     const { data: OnlineBookings = [], isLoading: isOnlineLoading } = useQuery({
         queryKey: ["OnlineBookings",verifiedUser?.email],
