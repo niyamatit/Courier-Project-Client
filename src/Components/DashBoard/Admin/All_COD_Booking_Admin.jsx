@@ -464,7 +464,7 @@ const [isVerifying, setIsVerifying] = useState(false);
                 Cancel
               </button>
               <button
-                onClick={handleSendOtp}
+                // onClick={handleSendOtp}
                 className="px-4 py-2 bg-blue-500 text-white rounded"
               >
                 Send OTP

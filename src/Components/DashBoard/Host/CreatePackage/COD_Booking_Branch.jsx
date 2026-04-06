@@ -5,6 +5,8 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import { useState } from "react";
 import axiosSecure from "../../../../api/axiosSecure";
 import { getAllOffline, getAllPackage } from "../../../../api/auth";
+import OTP_Modal_Admin_COD from "../../Admin/OTP_Modal_Admin_COD";
+import axios from "axios";
 
 const COD_Booking_Branch = () => {
     const [showOtpModal, setShowOtpModal] = useState(false);
@@ -28,7 +30,7 @@ const [isVerifying, setIsVerifying] = useState(false);
     const [searchStartDate, setSearchStartDate] = useState("");
     const [searchEndDate, setSearchEndDate] = useState("");
     const [selectedBooking, setSelectedBooking] = useState(null);
-    const [notesdfdfsf, setNotfsfsfsfse] = useState("");
+   
     const [note, setNote] = useState("");
     
 
@@ -54,44 +56,112 @@ const [isVerifying, setIsVerifying] = useState(false);
         }
         return true;
     });
-    const handleSave = async () => {
+    const handleSendOtp = async () => {
+  const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
 
-        if(!selectedBooking){
-            return 
-        }
-        const paymentData = {
-            id: selectedBooking._id,
-            cnNumber: selectedBooking.CnNumber,
-            Admin_Accept_Payment_Amount: (parseFloat(selectedBooking.condition)) || selectedBooking.senderReceive || 0,
-            note: note,
-            Received_Payment_Admin_Name:verifiedUser?.name,
-            Received_Payment_Admin_Email:verifiedUser?.email,
-            Admin_Accept_Payment_Time: new Date(),
-            Accept_By_Branch_Email:verifiedUser?.email,
-            Accept_By_Branch_Name:verifiedUser?.name,
-            Branch_Payment:true
-
-        };
-        try {
-             const response = await axiosSecure.patch("/update-payment/hello/bhai/kaj/kor", paymentData);
-            if (response.status === 200) {
-                await queryClient.invalidateQueries(["OnlineBookings"]);
-      await queryClient.invalidateQueries(["OfflineBookings"]);
-                Swal.fire("Success!", "Payment updated successfully!!!", "success");
-                setSelectedBooking(null);
-                setNote("");
-            } else {
-                Swal.fire("Error!", "Failed to update payment!!", "error");
-            }
-        } catch (error) {
-            console.error("Error updating payment:", error);
-            Swal.fire("Error!", "An error occurred while updating payment.", "error");
-        }
+  const number =
+    selectedBooking.senderMobile || selectedBooking.senderContactNo;
 
 
+  setEnteredNumber(String(number).trim());
 
+  const SMS_API = "https://bulksmsbd.net/api/smsapi";
+  const API_KEY = "VSkytluAnQbG0vsCEbHQ";
+  const SENDER_ID = "8809617624950";
+
+  const message = `Your COD Amount ${
+    selectedBooking.condition || selectedBooking.senderReceive
+  } TK.\nYour OTP is ${otpGenerated}\nNiyamat Express Courier`;
+
+  try {
+ 
+    await axios.get(
+      `${SMS_API}?api_key=${API_KEY}&type=text&number=${number}&senderid=${SENDER_ID}&message=${encodeURIComponent(
+        message
+      )}`
+    );
+
+ 
+    await axiosSecure.post("/otp/save", {
+      otp: otpGenerated,
+      number: String(number).trim(),
+    });
+
+  
+    setShowOtpModal(true);
+    setOtpEntered("");
+
+    Swal.fire({
+      icon: "success",
+      title: "OTP Sent!",
+      text: "Check your phone",
+    });
+
+  } catch (error) {
+    console.error("OTP Error:", error);
+
+    Swal.fire({
+      icon: "error",
+      title: "Failed!",
+      text: "Could not send OTP",
+    });
+  }
+};
+    const handleSave = () => {
+  if (!selectedBooking) return;
+
+  handleSendOtp();
+};
+const handleOtpSubmit = async () => {
+  setIsVerifying(true);
+
+  try {
+    const response = await axiosSecure.post("/otp/verify/cod/admin", {
+      otp: otpEntered.trim(),
+      number: enteredNumber,
+    });
+
+    if (response.data.valid) {
+      const paymentData = {
+        id: selectedBooking._id,
+        cnNumber: selectedBooking.CnNumber,
+        Admin_Accept_Payment_Amount:
+          parseFloat(selectedBooking.condition) ||
+          selectedBooking.senderReceive ||
+          0,
+        note: note,
+        Received_Payment_Admin_Name: verifiedUser?.name,
+        Received_Payment_Admin_Email: verifiedUser?.email,
+        Admin_Accept_Payment_Time: new Date(),
+        Accept_By_Branch_Email: verifiedUser?.email,
+        Accept_By_Branch_Name: verifiedUser?.name,
+        Branch_Payment: true,
+      };
+
+      const res = await axiosSecure.patch(
+        "/update-payment/hello/bhai/kaj/kor",
+        paymentData
+      );
+
+      if (res.status === 200) {
+        await queryClient.invalidateQueries(["OnlineBookings"]);
+        await queryClient.invalidateQueries(["OfflineBookings"]);
+
+        Swal.fire("Success!", "Payment Done!", "success");
+
+        setSelectedBooking(null);
+        setNote("");
+      }
+    } else {
+      Swal.fire("Error", "Invalid OTP", "error");
     }
-
+  } catch (error) {
+    Swal.fire("Error", "OTP failed", "error");
+  } finally {
+    setIsVerifying(false);
+    setShowOtpModal(false);
+  }
+};
     return (
         <div className="p-4">
             <h2 className="text-3xl font-bold mb-10 text-center mt-5 ">All COD Bookings Branch</h2>
@@ -235,6 +305,16 @@ const [isVerifying, setIsVerifying] = useState(false);
             </div>
         </div>
     </div>
+)}
+{showOtpModal && (
+  <OTP_Modal_Admin_COD
+    show={showOtpModal}
+    onClose={() => setShowOtpModal(false)}
+    onSubmit={handleOtpSubmit}
+    otpEntered={otpEntered}
+    setOtpEntered={setOtpEntered}
+    isVerifying={isVerifying}
+  />
 )}
         </div>
     );
