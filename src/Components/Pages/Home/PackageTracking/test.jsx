@@ -660,6 +660,7 @@ const Areas =[
   {"id":"415","district_id":"54","name":"Birol","bn_name":"বিরল","url":"birol.dinajpur.gov.bd"},
   {"id":"416","district_id":"54","name":"Chirirbandar","bn_name":"চিরিরবন্দর","url":"chirirbandar.dinajpur.gov.bd"},
   {"id":"417","district_id":"55","name":"Lalmonirhat Sadar","bn_name":"লালমনিরহাট সদর","url":"sadar.lalmonirhat.gov.bd"},
+  {"id":"420dsfdsfsdfdfd","district_id":"55","name":"Tushbhandar","bn_name":"তুষভান্ডার","url":"Tushbhandar.lalmonirhat.gov.bd"},
   {"id":"418","district_id":"55","name":"Kaliganj","bn_name":"কালীগঞ্জ","url":"kaliganj.lalmonirhat.gov.bd"},
   {"id":"419","district_id":"55","name":"Hatibandha","bn_name":"হাতীবান্ধা","url":"hatibandha.lalmonirhat.gov.bd"},
   {"id":"420","district_id":"55","name":"Patgram","bn_name":"পাটগ্রাম","url":"patgram.lalmonirhat.gov.bd"},
