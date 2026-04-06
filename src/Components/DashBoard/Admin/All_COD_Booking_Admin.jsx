@@ -5,8 +5,7 @@ import { useState } from "react";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
-import axios from "axios";
-import OTP_Modal_Admin_COD from "./OTP_Modal_Admin_COD";
+
 
 const All_COD_Booking_Admin = () => {
   const { data: OnlineBookings = [], isLoading: isOnlineLoading } = useQuery({

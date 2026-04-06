@@ -490,6 +490,7 @@ const AddBaranchStaff = () => {
     {"id":"365ex","district_id":"47","name":"AbdullahPur","bn_name":"আব্দুল্লাহপুর","url":"AbdullahPur.dhaka.gov.bd"},
     {"id":"365exm","district_id":"47","name":"Airport","bn_name":"এয়ারপোর্ট","url":"Airport.dhaka.gov.bd"},
     {"id":"367","district_id":"47","name":"Keraniganj","bn_name":"কেরাণীগঞ্জ","url":"keraniganj.dhaka.gov.bd"},
+    {"id":"367sdfahdfj","district_id":"47","name":"Kamrangirchar","bn_name":"কামরাঙ্গীরচর","url":"Kamrangirchar.dhaka.gov.bd"},
     {"id":"368","district_id":"47","name":"Nawabganj","bn_name":"নবাবগঞ্জ","url":"nawabganj.dhaka.gov.bd"},
     {"id":"369","district_id":"47","name":"Dohar","bn_name":"দোহার","url":"dohar.dhaka.gov.bd"},
     
