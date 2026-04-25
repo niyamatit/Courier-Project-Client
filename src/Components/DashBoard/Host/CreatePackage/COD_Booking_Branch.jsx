@@ -9,8 +9,8 @@ import OTP_Modal_Admin_COD from "../../Admin/OTP_Modal_Admin_COD";
 import axios from "axios";
 
 const COD_Booking_Branch = () => {
-    const [showOtpModal, setShowOtpModal] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+const [showOtpModal, setShowOtpModal] = useState(false);
+const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 20;
 const [otpEntered, setOtpEntered] = useState("");
 const [enteredNumber, setEnteredNumber] = useState("");

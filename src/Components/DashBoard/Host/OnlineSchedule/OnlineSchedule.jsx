@@ -24,7 +24,8 @@ const OnlineSchedule = () => {
   const [startDate, setStartDate] = useState("");
   // State for end date in the date filter
   const [endDate, setEndDate] = useState("");
-
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 20;
   // Fetch all users from the backend
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
@@ -120,7 +121,12 @@ const OnlineSchedule = () => {
 
     return matchesSearch && matchesDate;
   });
+const totalPages = Math.ceil(filteredPackages.length / itemsPerPage);
 
+const paginatedData = filteredPackages.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
   return (
     <div className="p-4">
       {/* Page Title */}
@@ -173,7 +179,7 @@ const OnlineSchedule = () => {
             </thead>
             <tbody>
               {/* Map through filtered packages to display them in the table */}
-              {filteredPackages.map((pkg, idx) => (
+              {paginatedData.map((pkg, idx) => (
                 <tr key={pkg._id} className={`hover:bg-blue-100 ${ pkg.Merchant_ID ? 'bg-green-100' : ''}`}>
                   <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
                   <td className="border border-blue-500 px-4 py-2">
@@ -316,6 +322,37 @@ const OnlineSchedule = () => {
           </div>
         </div>
       )}
+      <div className="flex justify-center mt-4 space-x-2">
+  <button
+    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+    disabled={currentPage === 1}
+    className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  {[...Array(totalPages)].map((_, i) => (
+    <button
+      key={i}
+      onClick={() => setCurrentPage(i + 1)}
+      className={`px-3 py-1 rounded ${
+        currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+      }`}
+    >
+      {i + 1}
+    </button>
+  ))}
+
+  <button
+    onClick={() =>
+      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+    }
+    disabled={currentPage === totalPages}
+    className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
     </div>
   );
 };
