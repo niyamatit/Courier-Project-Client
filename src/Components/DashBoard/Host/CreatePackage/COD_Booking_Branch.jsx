@@ -30,12 +30,8 @@ const [isVerifying, setIsVerifying] = useState(false);
     const [searchStartDate, setSearchStartDate] = useState("");
     const [searchEndDate, setSearchEndDate] = useState("");
     const [selectedBooking, setSelectedBooking] = useState(null);
-   
     const [note, setNote] = useState("");
-    
-
     const filteredOfflines = allBookings.filter((booking) => {
-        // Ensure correct date field is used
         const bookingDate = booking.booking
             ? new Date(booking.booking).toISOString().split("T")[0]  
             : booking.bookingDate
