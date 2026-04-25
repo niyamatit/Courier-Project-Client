@@ -10,6 +10,8 @@ import axios from "axios";
 
 const COD_Booking_Branch = () => {
     const [showOtpModal, setShowOtpModal] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 20;
 const [otpEntered, setOtpEntered] = useState("");
 const [enteredNumber, setEnteredNumber] = useState("");
 const [isVerifying, setIsVerifying] = useState(false);
@@ -52,6 +54,12 @@ const [isVerifying, setIsVerifying] = useState(false);
         }
         return true;
     });
+    const totalPages = Math.ceil(filteredOfflines.length / itemsPerPage);
+
+const paginatedData = filteredOfflines.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
     const handleSendOtp = async () => {
   const otpGenerated = Math.floor(1000 + Math.random() * 9000).toString();
 
@@ -209,9 +217,11 @@ const handleOtpSubmit = async () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredOfflines.map((booking, index) => (
+                        {paginatedData.map((booking, index) => (
                             <tr key={booking._id} className="border">
-                                <td className="border px-4 py-2">{index + 1}</td>
+                                <td className="border px-4 py-2">
+  {(currentPage - 1) * itemsPerPage + index + 1}
+</td>
                                 <td className="border px-4 py-2">
                                     {booking?.booking
                                         ? new Date(booking.booking).toLocaleString()
@@ -254,6 +264,7 @@ const handleOtpSubmit = async () => {
                         ))}
                     </tbody>
                 </table>
+                
             )}
             {/* Payment Modal */}
             {selectedBooking && (
@@ -312,6 +323,37 @@ const handleOtpSubmit = async () => {
     isVerifying={isVerifying}
   />
 )}
+<div className="flex justify-center mt-4 space-x-2">
+  <button
+    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+    disabled={currentPage === 1}
+    className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  {[...Array(totalPages)].map((_, i) => (
+    <button
+      key={i}
+      onClick={() => setCurrentPage(i + 1)}
+      className={`px-3 py-1 rounded ${
+        currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+      }`}
+    >
+      {i + 1}
+    </button>
+  ))}
+
+  <button
+    onClick={() =>
+      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+    }
+    disabled={currentPage === totalPages}
+    className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
         </div>
     );
 };
