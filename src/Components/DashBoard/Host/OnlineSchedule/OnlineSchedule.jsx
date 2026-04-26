@@ -25,7 +25,7 @@ const OnlineSchedule = () => {
   // State for end date in the date filter
   const [endDate, setEndDate] = useState("");
 const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 20;
+const itemsPerPage = 30;
   // Fetch all users from the backend
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
@@ -36,7 +36,7 @@ const itemsPerPage = 20;
   });
 
   // Fetch online parcels specific to the verified user (MotherHub Admin)
-  const { data: Verify_Admin_MotherHub = [], refetch } = useQuery({
+  const { data: Verify_Admin_MotherHub = [], refetch , isLoading } = useQuery({
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     // Only enable this query if verifiedUser.email exists
     enabled: !!verifiedUser?.email,
@@ -127,6 +127,42 @@ const paginatedData = filteredPackages.slice(
   (currentPage - 1) * itemsPerPage,
   currentPage * itemsPerPage
 );
+const getPagination = () => {
+  const pages = [];
+  // const maxVisible = 5; // how many middle pages you want
+
+  if (totalPages <= 7) {
+    // show all if small
+    return [...Array(totalPages)].map((_, i) => i + 1);
+  }
+
+  // always show first
+  pages.push(1);
+
+  if (currentPage > 4) {
+    pages.push("...");
+  }
+
+  // middle pages
+  const start = Math.max(2, currentPage - 1);
+  const end = Math.min(totalPages - 1, currentPage + 1);
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+
+  if (currentPage < totalPages - 3) {
+    pages.push("...");
+  }
+
+  // always show last
+  pages.push(totalPages);
+
+  return pages;
+};
+if (isLoading) {
+  return <div>Loading...</div>;
+}
   return (
     <div className="p-4">
       {/* Page Title */}
@@ -322,7 +358,7 @@ const paginatedData = filteredPackages.slice(
           </div>
         </div>
       )}
-      <div className="flex justify-center mt-4 space-x-2">
+      <div className="flex justify-center mt-4 space-x-2 flex-wrap">
   <button
     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
     disabled={currentPage === 1}
@@ -331,17 +367,25 @@ const paginatedData = filteredPackages.slice(
     Prev
   </button>
 
-  {[...Array(totalPages)].map((_, i) => (
-    <button
-      key={i}
-      onClick={() => setCurrentPage(i + 1)}
-      className={`px-3 py-1 rounded ${
-        currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
-      }`}
-    >
-      {i + 1}
-    </button>
-  ))}
+  {getPagination().map((page, index) =>
+    page === "..." ? (
+      <span key={index} className="px-2 py-1">
+        ...
+      </span>
+    ) : (
+      <button
+        key={index}
+        onClick={() => setCurrentPage(page)}
+        className={`px-3 py-1 rounded ${
+          currentPage === page
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200"
+        }`}
+      >
+        {page}
+      </button>
+    )
+  )}
 
   <button
     onClick={() =>
