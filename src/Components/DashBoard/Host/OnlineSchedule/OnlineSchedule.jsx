@@ -217,7 +217,9 @@ if (isLoading) {
               {/* Map through filtered packages to display them in the table */}
               {paginatedData.map((pkg, idx) => (
                 <tr key={pkg._id} className={`hover:bg-blue-100 ${ pkg.Merchant_ID ? 'bg-green-100' : ''}`}>
-                  <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
+                   <td className="border px-4 py-2">
+  {(currentPage - 1) * itemsPerPage + idx + 1}
+</td>
                   <td className="border border-blue-500 px-4 py-2">
                     {new Date(pkg.booking).toLocaleDateString()}
                   </td>
