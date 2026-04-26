@@ -10,6 +10,8 @@ const Pending_Parcel_List_Merchant = () => {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 30;
   const [note, setNote] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
   const { data: users = [] } = useQuery({
@@ -20,7 +22,7 @@ const Pending_Parcel_List_Merchant = () => {
     }
   });
 
-   const { data: Verify_Admin_MotherHub = [], refetch } = useQuery({
+   const { data: Verify_Admin_MotherHub = [], refetch,isLoading } = useQuery({
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     enabled: !!verifiedUser?.email,
     queryFn: async () => {
@@ -78,7 +80,48 @@ const Pending_Parcel_List_Merchant = () => {
       });
     }
   };
+ const totalPages = Math.ceil(Verify_Admin_MotherHub.length / itemsPerPage);
 
+const paginatedData = Verify_Admin_MotherHub.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
+const getPagination = () => {
+  const pages = [];
+  // const maxVisible = 5; // how many middle pages you want
+
+  if (totalPages <= 7) {
+    // show all if small
+    return [...Array(totalPages)].map((_, i) => i + 1);
+  }
+
+  // always show first
+  pages.push(1);
+
+  if (currentPage > 4) {
+    pages.push("...");
+  }
+
+  // middle pages
+  const start = Math.max(2, currentPage - 1);
+  const end = Math.min(totalPages - 1, currentPage + 1);
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+
+  if (currentPage < totalPages - 3) {
+    pages.push("...");
+  }
+
+  // always show last
+  pages.push(totalPages);
+
+  return pages;
+};
+if (isLoading) {
+  return <div>Loading...Please Wait....</div>;
+}
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Select Rider For Merchant Parcels {verifiedUser?.name}</h1>
@@ -100,9 +143,11 @@ const Pending_Parcel_List_Merchant = () => {
               </tr>
             </thead>
             <tbody>
-              {Verify_Admin_MotherHub.map((pkg, idx) => (
+              {paginatedData.map((pkg, idx) => (
                 <tr key={pkg._id} className="hover:bg-blue-100">
-                  <td className="border border-blue-500 px-4 py-2">{idx + 1}</td>
+                   <td className="border px-4 py-2">
+  {(currentPage - 1) * itemsPerPage + idx + 1}
+</td>
                   <td className="border border-blue-500 px-4 py-2">
                     {new Date(pkg.Date).toLocaleDateString()}
                   </td>
@@ -240,6 +285,45 @@ const Pending_Parcel_List_Merchant = () => {
           </div>
         </div>
       )}
+      <div className="flex justify-center mt-4 space-x-2 flex-wrap">
+  <button
+    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+    disabled={currentPage === 1}
+    className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  {getPagination().map((page, index) =>
+    page === "..." ? (
+      <span key={index} className="px-2 py-1">
+        ...
+      </span>
+    ) : (
+      <button
+        key={index}
+        onClick={() => setCurrentPage(page)}
+        className={`px-3 py-1 rounded ${
+          currentPage === page
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200"
+        }`}
+      >
+        {page}
+      </button>
+    )
+  )}
+
+  <button
+    onClick={() =>
+      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+    }
+    disabled={currentPage === totalPages}
+    className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
     </div>
   );
 };
