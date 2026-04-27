@@ -939,7 +939,7 @@ useEffect(() => {
                 <div className=" md:px-24 mt-5 mb-5 justify-between">
                     <div className=''>
                     <p className="text-xl">
-            Condition + Charge  = Total COD: {cod || 0} TK
+            Condition + Charge  = Total COD: {cod || 0} TK <br />
             Delivery Charge = {deliveryPrice} TK
         </p>
                     </div>
