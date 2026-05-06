@@ -15,6 +15,7 @@ const PrintParcelSummary = () => {
     queryKey: ["All_Parcels"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/packagfhguieormbncdmnn44ge`);
+      // const res = await axiosSecure.get(`/packaageForPrint`);
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
