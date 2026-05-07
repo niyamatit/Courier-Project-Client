@@ -1,46 +1,141 @@
 import { useState, useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
-
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 
 const PrintParcelSummary = () => {
-  const [searchMobile, setSearchMobile] = useState("");
-  const [branchName, setBranchName] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+
+  const [searchMobile, setSearchMobile] =
+    useState("");
+
+  const [branchName, setBranchName] =
+    useState("");
+
+  const [fromDate, setFromDate] =
+    useState("");
+
+  const [toDate, setToDate] =
+    useState("");
+
+  const [searchQuery, setSearchQuery] =
+    useState("");
+
+  const [selectedMerchant, setSelectedMerchant] =
+    useState(null);
+
+  const [isDropdownOpen, setIsDropdownOpen] =
+    useState(false);
 
   const printRef = useRef();
 
+  const [verifiedUser] = useUsersData();
+
+  // ================= PARCELS =================
+
   const { data: All_Parcels = [] } = useQuery({
     queryKey: ["All_Parcels"],
+
     queryFn: async () => {
-      const res = await axiosSecure.get(`/packagfhguieormbncdmnn44ge`);
-      // const res = await axiosSecure.get(`/packaageForPrint`);
-      return Array.isArray(res.data) ? res.data : [res.data];
+
+      const res = await axiosSecure.get(
+        `/packagfhguieormbncdmnn44ge`
+      );
+
+      return Array.isArray(res.data)
+        ? res.data
+        : res.data
+        ? [res.data]
+        : [];
     },
   });
 
-  // ✅ DATE FORMAT FUNCTION (ADDED)
+  // ================= USERS =================
+
+  const { data: users = [] } = useQuery({
+    queryKey: ["users"],
+
+    queryFn: async () => {
+
+      const res = await axiosSecure.get(
+        "/shfjksdhfjdjkfhxnbcnbc67437gch"
+      );
+
+      return res.data || [];
+    },
+  });
+
+  // ================= DATE FORMAT =================
+
   const formatDate = (date) => {
+
     const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0");
+
+    const day = String(
+      d.getDate()
+    ).padStart(2, "0");
+
+    const month = String(
+      d.getMonth() + 1
+    ).padStart(2, "0");
+
     const year = d.getFullYear();
+
     return `${day}-${month}-${year}`;
   };
 
+  // ================= BRANCH LIST =================
+
   const branchList = useMemo(() => {
-    const names = All_Parcels.map((p) => p.Branch_Name).filter(Boolean);
+
+    const names = All_Parcels
+      .map((p) => p.Branch_Name)
+      .filter(Boolean);
+
     return [...new Set(names)];
+
   }, [All_Parcels]);
 
+  // ================= MERCHANT FILTER =================
+
+  const filteredMerchants = users.filter(
+    (user) => {
+
+      const searchTerm =
+        searchQuery.toLowerCase();
+
+      return (
+        user?.role === "merchant" &&
+        (
+          user?.name
+            ?.toLowerCase()
+            .includes(searchTerm) ||
+
+          user?.merchantID
+            ?.toLowerCase()
+            .includes(searchTerm)
+        )
+      );
+    }
+  );
+
+  // ================= FILTER CHECK =================
+
   const isFilterApplied =
-    searchMobile || branchName || fromDate || toDate;
+    searchMobile ||
+    branchName ||
+    fromDate ||
+    toDate;
+
+  // ================= FILTERED PARCELS =================
 
   const filteredParcels = useMemo(() => {
+
     if (!isFilterApplied) return [];
 
     return All_Parcels.filter((p) => {
+
       const mobileMatch = searchMobile
         ? p.senderMobile === searchMobile
         : true;
@@ -49,33 +144,65 @@ const PrintParcelSummary = () => {
         ? p.Branch_Name === branchName
         : true;
 
-      const bookingDate = new Date(p.booking);
+      
+
+      const bookingDate =
+        new Date(p.booking);
 
       const fromMatch = fromDate
         ? bookingDate >= new Date(fromDate)
         : true;
 
       const toMatch = toDate
-        ? bookingDate <= new Date(toDate + "T23:59:59")
+        ? bookingDate <=
+          new Date(toDate + "T23:59:59")
         : true;
 
-      return mobileMatch && branchMatch && fromMatch && toMatch;
+      return (
+        mobileMatch &&
+        branchMatch &&
+        fromMatch &&
+        toMatch
+      );
     });
-  }, [All_Parcels, searchMobile, branchName, fromDate, toDate, isFilterApplied]);
+
+  }, [
+    All_Parcels,
+    searchMobile,
+    branchName,
+    fromDate,
+    toDate,
+    
+    isFilterApplied,
+  ]);
+
+  // ================= SUMMARY =================
 
   const summary = useMemo(() => {
+
     let totalBookings = filteredParcels.length;
+
     let totalAmount = 0;
+
     let totalCondition = 0;
+
     let totalConditionCharge = 0;
 
     filteredParcels.forEach((p) => {
-      const amount = Number(p.amount || 0);
-      const condition = Number(p.condition || 0);
-      const conditionCharge = Number(p.conditionCharge || 0);
+
+      const amount =
+        Number(p.amount || 0);
+
+      const condition =
+        Number(p.condition || 0);
+
+      const conditionCharge =
+        Number(p.conditionCharge || 0);
 
       totalAmount += amount;
+
       totalCondition += condition;
+
       totalConditionCharge += conditionCharge;
     });
 
@@ -85,45 +212,286 @@ const PrintParcelSummary = () => {
       totalCondition,
       totalConditionCharge,
     };
+
   }, [filteredParcels]);
 
+  // ================= TABLE TOTALS =================
+
   const tableTotals = useMemo(() => {
+
     let totalAmount = 0;
+
     let totalCondition = 0;
+
     let totalCharge = 0;
 
     filteredParcels.forEach((p) => {
-      totalAmount += Number(p.amount || 0);
-      totalCondition += Number(p.condition || 0);
-      totalCharge += Number(p.conditionCharge || 0);
+
+      totalAmount += Number(
+        p.amount || 0
+      );
+
+      totalCondition += Number(
+        p.condition || 0
+      );
+
+      totalCharge += Number(
+        p.conditionCharge || 0
+      );
     });
 
     return {
       totalAmount,
       totalCondition,
       totalCharge,
-      grandTotal: totalAmount + totalCondition + totalCharge,
+      grandTotal:
+        totalAmount +
+        totalCondition +
+        totalCharge,
     };
+
   }, [filteredParcels]);
 
-  const handlePrint = () => {
-    const printContent = printRef.current.innerHTML;
+  // ================= GENERATE PDF =================
 
-    const win = window.open("", "", "width=900,height=700");
+  const handleGenerateInvoice =
+    async () => {
+
+      try {
+
+        const pdf = new jsPDF(
+          "p",
+          "mm",
+          "a4"
+        );
+
+        pdf.setFontSize(18);
+
+        pdf.text(
+          "Parcel Summary Invoice",
+          14,
+          20
+        );
+
+        pdf.setFontSize(11);
+
+        pdf.text(
+          `Date: ${
+            fromDate || "All"
+          } - ${toDate || "All"}`,
+          14,
+          30
+        );
+
+        pdf.text(
+          `Branch: ${
+            branchName || "All"
+          }`,
+          14,
+          37
+        );
+
+        pdf.text(
+          `Mobile: ${
+            searchMobile || "N/A"
+          }`,
+          14,
+          44
+        );
+
+        pdf.text(
+          `Merchant: ${
+            selectedMerchant?.name || "All"
+          }`,
+          14,
+          51
+        );
+
+        pdf.text(
+          `Merchant ID: ${
+            selectedMerchant?.merchantID ||
+            "N/A"
+          }`,
+          14,
+          58
+        );
+
+        const tableData =
+          filteredParcels.map(
+            (p, index) => [
+
+              index + 1,
+
+              p.CnNumber,
+
+              p.senderMobile,
+
+              p.recipientName,
+
+              p.recipientMobile,
+
+              p.Branch_Name,
+
+              p.paymentOption,
+
+              p.amount,
+
+              p.condition,
+
+              p.conditionCharge,
+
+              Number(p.amount || 0) +
+                Number(p.condition || 0) +
+                Number(
+                  p.conditionCharge || 0
+                ),
+            ]
+          );
+
+        autoTable(pdf, {
+
+          startY: 70,
+
+          head: [[
+            "SL",
+            "Parcel",
+            "Sender",
+            "Receiver",
+            "Receiver Phone",
+            "Branch",
+            "Payment",
+            "Amount",
+            "Cond",
+            "Charge",
+            "Total",
+          ]],
+
+          body: tableData,
+
+          styles: {
+            fontSize: 8,
+          },
+
+          headStyles: {
+            fillColor: [37, 99, 235],
+          },
+        });
+
+        const finalY =
+          pdf.lastAutoTable.finalY + 10;
+
+        pdf.setFontSize(12);
+
+        pdf.text(
+          `Grand Total: ${tableTotals.grandTotal}`,
+          14,
+          finalY
+        );
+
+        // ================= PDF BLOB =================
+
+        const pdfBlob =
+          pdf.output("blob");
+
+        // ================= CLOUDINARY =================
+
+        const formData =
+          new FormData();
+
+        formData.append(
+          "file",
+          pdfBlob,
+          `invoice-${Date.now()}.pdf`
+        );
+
+        formData.append(
+          "upload_preset",
+          "Merchant_Invoice.pdf"
+        );
+
+        const cloudinaryRes =
+          await fetch(
+            "https://api.cloudinary.com/v1_1/dhhlztslk/image/upload",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+        const cloudinaryData =
+          await cloudinaryRes.json();
+
+        console.log(cloudinaryData);
+
+        const pdfUrl =
+          `https://res.cloudinary.com/dhhlztslk/image/upload/fl_attachment/${cloudinaryData.public_id}.pdf`;
+
+        // ================= SAVE DB =================
+
+        await axiosSecure.post(
+          "/save-invoice",
+          {
+            pdfUrl,
+
+            merchantName:
+              selectedMerchant?.name ||
+              null,
+
+            merchantID:
+              selectedMerchant?.merchantID ||
+              null,
+
+            createdAt:
+              new Date(),
+
+            Who_Added:
+              verifiedUser?.name ||
+              "Unknown",
+
+            Who_Added_Email:
+              verifiedUser?.email ||
+              "Unknown",
+          }
+        );
+
+        window.open(
+          pdfUrl,
+          "_blank",
+          "noopener,noreferrer"
+        );
+
+        alert(
+          "Invoice Generated Successfully"
+        );
+
+      } catch (error) {
+
+        console.log(error);
+      }
+    };
+
+  // ================= PRINT =================
+
+  const handlePrint = () => {
+
+    const printContent =
+      printRef.current.innerHTML;
+
+    const win = window.open(
+      "",
+      "",
+      "width=900,height=700"
+    );
 
     win.document.write(`
       <html>
         <head>
           <title>Parcel Summary</title>
+
           <style>
-            @page { size: A4; margin: 10mm; }
 
             body {
               font-family: Arial;
-              -webkit-print-color-adjust: exact;
-              print-color-adjust: exact;
-              margin: 0;
-              padding: 0;
             }
 
             table {
@@ -136,13 +504,9 @@ const PrintParcelSummary = () => {
               padding: 8px;
             }
 
-            img {
-              height: 60px !important;
-              width: auto !important;
-              max-width: 200px !important;
-            }
           </style>
         </head>
+
         <body>
           ${printContent}
         </body>
@@ -152,179 +516,491 @@ const PrintParcelSummary = () => {
     win.document.close();
 
     setTimeout(() => {
+
       win.print();
+
       win.close();
+
     }, 500);
   };
 
   return (
     <div className="p-6">
 
-      <h1 className="text-xl font-bold mb-4">Parcel Summary</h1>
+      <h1 className="text-xl font-bold mb-4">
+        Parcel Summary
+      </h1>
 
       <div className="flex gap-3 mb-4 flex-wrap">
+
+        {/* MOBILE */}
 
         <input
           type="text"
           placeholder="Sender Mobile"
           value={searchMobile}
-          onChange={(e) => setSearchMobile(e.target.value)}
+          onChange={(e) =>
+            setSearchMobile(e.target.value)
+          }
           className="border p-2 rounded"
         />
 
+        {/* BRANCH */}
+
         <select
           value={branchName}
-          onChange={(e) => setBranchName(e.target.value)}
+          onChange={(e) =>
+            setBranchName(e.target.value)
+          }
           className="border p-2 rounded"
         >
-          <option value="">All Branch</option>
-          {branchList.map((name, index) => (
-            <option key={index} value={name}>
-              {name}
-            </option>
-          ))}
+          <option value="">
+            All Branch
+          </option>
+
+          {branchList.map(
+            (name, index) => (
+              <option
+                key={index}
+                value={name}
+              >
+                {name}
+              </option>
+            )
+          )}
         </select>
+
+        {/* DATE */}
 
         <input
           type="date"
           value={fromDate}
-          onChange={(e) => setFromDate(e.target.value)}
+          onChange={(e) =>
+            setFromDate(e.target.value)
+          }
           className="border p-2 rounded"
         />
 
         <input
           type="date"
           value={toDate}
-          onChange={(e) => setToDate(e.target.value)}
+          onChange={(e) =>
+            setToDate(e.target.value)
+          }
           className="border p-2 rounded"
         />
 
+        {/* MERCHANT */}
+
+        <div className="relative min-w-[300px]">
+
+          <input
+            type="text"
+
+            placeholder="Search Merchant (Optional)"
+
+            value={searchQuery}
+
+            onChange={(e) => {
+
+              setSearchQuery(
+                e.target.value
+              );
+
+              setIsDropdownOpen(true);
+            }}
+
+            onClick={() =>
+              setIsDropdownOpen(true)
+            }
+
+            className="border p-2 rounded w-full"
+          />
+
+          {isDropdownOpen && (
+
+            <div className="absolute z-50 bg-white border w-full max-h-60 overflow-auto shadow rounded">
+
+              <div
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+
+                onClick={() => {
+
+                  setSelectedMerchant(
+                    null
+                  );
+
+                  setSearchQuery("");
+
+                  setIsDropdownOpen(
+                    false
+                  );
+                }}
+              >
+                All Merchants
+              </div>
+
+              {filteredMerchants.map(
+                (user) => (
+
+                  <div
+                    key={user._id}
+
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+
+                    onClick={() => {
+
+                      setSelectedMerchant(
+                        user
+                      );
+
+                      setSearchQuery(
+                        `${user?.name} (${user?.merchantID})`
+                      );
+
+                      setIsDropdownOpen(
+                        false
+                      );
+                    }}
+                  >
+                    {user?.name}
+                    {" "}
+                    (
+                    {user?.merchantID}
+                    )
+                  </div>
+                )
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div ref={printRef} className="bg-white p-6 max-w-[800px]">
+      {/* PRINT AREA */}
+
+      <div
+        ref={printRef}
+
+        className="p-6 max-w-[800px]"
+
+        style={{
+          backgroundColor: "#ffffff",
+          color: "#000000",
+        }}
+      >
 
         <p className="mb-2">
-          <strong>Date: </strong> 
-                   {fromDate ? formatDate(fromDate) : "All"} — {toDate ? formatDate(toDate) : "All"}
+          <strong>Date:</strong>
+
+          {" "}
+
+          {fromDate
+            ? formatDate(fromDate)
+            : "All"}
+
+          {" "}—
+
+          {" "}
+
+          {toDate
+            ? formatDate(toDate)
+            : "All"}
         </p>
 
         <p className="mb-2">
-          <strong>Number:</strong> {searchMobile || "N/A"}
+          <strong>Number:</strong>
+          {" "}
+          {searchMobile || "N/A"}
+        </p>
+
+        <p className="mb-2">
+          <strong>Merchant:</strong>
+          {" "}
+          {selectedMerchant?.name || "All"}
+        </p>
+
+        <p className="mb-4">
+          <strong>Merchant ID:</strong>
+          {" "}
+          {selectedMerchant?.merchantID || "N/A"}
         </p>
 
         {branchName && (
           <p className="mb-4">
-            <strong>Branch:</strong> {branchName}
+            <strong>Branch:</strong>
+            {" "}
+            {branchName}
           </p>
         )}
 
+        {/* SUMMARY */}
+
         <table className="w-full border mb-6">
+
           <tbody>
+
             <tr>
               <td>Total Booking</td>
-              <td>{summary.totalBookings}</td>
+              <td>
+                {summary.totalBookings}
+              </td>
             </tr>
+
             <tr>
               <td>Total Amount</td>
-              <td>{summary.totalAmount}</td>
+              <td>
+                {summary.totalAmount}
+              </td>
             </tr>
+
             <tr>
               <td>Total Condition</td>
-              <td>{summary.totalCondition}</td>
+              <td>
+                {summary.totalCondition}
+              </td>
             </tr>
+
             <tr>
-              <td>Total Condition + Charge</td>
-              <td>{summary.totalConditionCharge}</td>
+              <td>
+                Total Condition + Charge
+              </td>
+
+              <td>
+                {
+                  summary.totalConditionCharge
+                }
+              </td>
             </tr>
+
           </tbody>
         </table>
 
+        {/* TABLE */}
+
         <table className="w-full border">
 
-          <thead className="bg-blue-600 text-white text-sm">
+          <thead
+            style={{
+              backgroundColor: "#2563eb",
+              color: "#ffffff",
+            }}
+            className="text-sm"
+          >
+
             <tr>
-              <th className="p-2 border">SL</th>
-              <th className="p-2 border">Date</th>
-              <th className="p-2 border">Parcel Code</th>
-              <th className="p-2 border">Sender Phone</th>
-              <th className="p-2 border">Receiver Name</th>
-              <th className="p-2 border">Receiver Phone</th>
-              <th className="p-2 border">Booking Branch</th>
-              <th className="p-2 border">Payment Mode</th>
-              <th className="p-2 border">Amount</th>
-              <th className="p-2 border">Condition Amt</th>
-              <th className="p-2 border">Condition + Charge</th>
-              <th className="p-2 border">Total</th>
+
+              <th className="p-2 border">
+                SL
+              </th>
+
+              <th className="p-2 border">
+                Date
+              </th>
+
+              <th className="p-2 border">
+                Parcel Code
+              </th>
+
+              <th className="p-2 border">
+                Sender Phone
+              </th>
+
+              <th className="p-2 border">
+                Receiver Name
+              </th>
+
+              <th className="p-2 border">
+                Receiver Phone
+              </th>
+
+              <th className="p-2 border">
+                Booking Branch
+              </th>
+
+              <th className="p-2 border">
+                Payment Mode
+              </th>
+
+              <th className="p-2 border">
+                Amount
+              </th>
+
+              <th className="p-2 border">
+                Condition Amt
+              </th>
+
+              <th className="p-2 border">
+                Condition + Charge
+              </th>
+
+              <th className="p-2 border">
+                Total
+              </th>
             </tr>
           </thead>
 
           <tbody>
 
             {!isFilterApplied && (
+
               <tr>
-                <td colSpan="12" className="text-center p-4">
-                  Please apply filter to see data
+
+                <td
+                  colSpan="12"
+                  className="text-center p-4"
+                >
+                  Please apply filter
                 </td>
+
               </tr>
             )}
 
-            {filteredParcels.map((p, index) => {
+            {filteredParcels.map(
+              (p, index) => {
 
-              const amount = Number(p.amount || 0);
-              const condition = Number(p.condition || 0);
-              const charge = Number(p.conditionCharge || 0);
+                const amount =
+                  Number(
+                    p.amount || 0
+                  );
 
-              return (
-                <tr key={p._id}>
-                  <td className="border p-2">{index + 1}</td>
+                const condition =
+                  Number(
+                    p.condition || 0
+                  );
 
-                  {/* ✅ UPDATED DATE HERE */}
-                  <td className="border p-2">
-                    {formatDate(p.booking)}
-                  </td>
+                const charge =
+                  Number(
+                    p.conditionCharge || 0
+                  );
 
-                  <td className="border p-2">{p.CnNumber}</td>
-                  <td className="border p-2">{p.senderMobile}</td>
-                  <td className="border p-2">{p.recipientName}</td>
-                  <td className="border p-2">{p.recipientMobile}</td>
-                  <td className="border p-2">{p.Branch_Name}</td>
-                  <td className="border p-2">{p.paymentOption}</td>
-                  <td className="border p-2">{amount}</td>
-                  <td className="border p-2">{condition}</td>
-                  <td className="border p-2">{charge}</td>
-                  <td className="border p-2">
-                    {amount + condition + charge}
-                  </td>
-                </tr>
-              );
-            })}
+                return (
 
-            {isFilterApplied && filteredParcels.length > 0 && (
-              <tr className="bg-gray-200 font-bold">
-                <td colSpan="8" className="border p-2 text-right">
+                  <tr key={p._id}>
+
+                    <td className="border p-2">
+                      {index + 1}
+                    </td>
+
+                    <td className="border p-2">
+                      {formatDate(
+                        p.booking
+                      )}
+                    </td>
+
+                    <td className="border p-2">
+                      {p.CnNumber}
+                    </td>
+
+                    <td className="border p-2">
+                      {p.senderMobile}
+                    </td>
+
+                    <td className="border p-2">
+                      {p.recipientName}
+                    </td>
+
+                    <td className="border p-2">
+                      {p.recipientMobile}
+                    </td>
+
+                    <td className="border p-2">
+                      {p.Branch_Name}
+                    </td>
+
+                    <td className="border p-2">
+                      {p.paymentOption}
+                    </td>
+
+                    <td className="border p-2">
+                      {amount}
+                    </td>
+
+                    <td className="border p-2">
+                      {condition}
+                    </td>
+
+                    <td className="border p-2">
+                      {charge}
+                    </td>
+
+                    <td className="border p-2">
+                      {
+                        amount +
+                        condition +
+                        charge
+                      }
+                    </td>
+                  </tr>
+                );
+              }
+            )}
+
+            {isFilterApplied &&
+              filteredParcels.length > 0 && (
+
+              <tr
+                className="font-bold"
+
+                style={{
+                  backgroundColor:
+                    "#e5e7eb",
+                }}
+              >
+
+                <td
+                  colSpan="8"
+                  className="border p-2 text-right"
+                >
                   Total
                 </td>
 
-                <td className="border p-2">{tableTotals.totalAmount}</td>
-                <td className="border p-2">{tableTotals.totalCondition}</td>
-                <td className="border p-2">{tableTotals.totalCharge}</td>
-                <td className="border p-2">{tableTotals.grandTotal}</td>
+                <td className="border p-2">
+                  {
+                    tableTotals.totalAmount
+                  }
+                </td>
+
+                <td className="border p-2">
+                  {
+                    tableTotals.totalCondition
+                  }
+                </td>
+
+                <td className="border p-2">
+                  {
+                    tableTotals.totalCharge
+                  }
+                </td>
+
+                <td className="border p-2">
+                  {
+                    tableTotals.grandTotal
+                  }
+                </td>
+
               </tr>
             )}
-
           </tbody>
-
         </table>
-
       </div>
+
+      {/* BUTTONS */}
 
       <button
         onClick={handlePrint}
+
         className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
       >
         Print Summary
       </button>
 
+      <button
+        onClick={handleGenerateInvoice}
+
+        className="mt-4 ml-3 bg-green-600 text-white px-4 py-2 rounded"
+      >
+        Generate Invoice
+      </button>
     </div>
   );
 };
