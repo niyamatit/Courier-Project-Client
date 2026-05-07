@@ -4,7 +4,7 @@ import axiosSecure from "../../../../api/axiosSecure";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
-
+import logoImg from '../../../../assets/nexp-update.png';
 const PrintParcelSummary = () => {
 
   const [searchMobile, setSearchMobile] =
@@ -253,7 +253,25 @@ const PrintParcelSummary = () => {
   }, [filteredParcels]);
 
   // ================= GENERATE PDF =================
+const groupedParcels = useMemo(() => {
 
+  const groups = {};
+
+  filteredParcels.forEach((parcel) => {
+
+    const date =
+      formatDate(parcel.booking);
+
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+
+    groups[date].push(parcel);
+  });
+
+  return groups;
+
+}, [filteredParcels]);
  const handleGenerateInvoice =
   async () => {
 
@@ -265,24 +283,39 @@ const PrintParcelSummary = () => {
         "a4"
       );
 
-      // ================= WATERMARK =================
+      // ================= COMPANY LOGO =================
 
-      pdf.setTextColor(235);
+      const logo =
+        new Image();
 
-      pdf.setFontSize(55);
+      logo.src = logoImg;
 
-      pdf.setFont(
-        "helvetica",
-        "bold"
+      pdf.addImage(
+        logo,
+        "PNG",
+        14,
+        10,
+        28,
+        28
       );
 
-      pdf.text(
-        "NIYAMAT EXPRESS",
-        18,
-        150,
-        {
-          angle: 45,
-        }
+      // ================= WATERMARK IMAGE =================
+
+      const watermark =
+        new Image();
+
+      watermark.src =
+        "https://i.ibb.co.com/SD8pn0BD/text-logo.png";
+
+      pdf.addImage(
+        watermark,
+        "PNG",
+        25,
+        70,
+        160,
+        160,
+        "",
+        "FAST"
       );
 
       // ================= HEADER =================
@@ -342,7 +375,7 @@ const PrintParcelSummary = () => {
         52
       );
 
-      // ================= INVOICE TITLE =================
+      // ================= TITLE =================
 
       pdf.setFontSize(16);
 
@@ -418,45 +451,83 @@ const PrintParcelSummary = () => {
 
       // ================= TABLE DATA =================
 
-      const tableData =
-        filteredParcels.map(
-          (p, index) => [
+      const tableData = [];
 
-            index + 1,
+      Object.entries(
+        groupedParcels
+      ).forEach(
+        ([date, parcels]) => {
 
-            formatDate(
-              p.booking
-            ),
+          let dateTotal = 0;
 
-            p.CnNumber,
+          parcels.forEach(
+            (p, index) => {
 
-            p.senderMobile,
+              const total =
+                Number(
+                  p.amount || 0
+                ) +
+                Number(
+                  p.condition || 0
+                ) +
+                Number(
+                  p.conditionCharge || 0
+                );
 
-            p.recipientName,
+              dateTotal += total;
 
-            p.recipientMobile,
+              tableData.push([
+                index + 1,
+                date,
+                p.CnNumber,
+                p.senderMobile,
+                p.recipientName,
+                p.recipientMobile,
+                p.Branch_Name,
+                p.paymentOption,
+                p.amount,
+                p.condition,
+                p.conditionCharge,
+                total,
+              ]);
+            }
+          );
 
-            p.Branch_Name,
+          // DATE TOTAL
 
-            p.paymentOption,
+          tableData.push([
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Date Total",
+            `${dateTotal} TK`,
+          ]);
+        }
+      );
 
-            p.amount,
+      // GRAND TOTAL
 
-            p.condition,
-
-            p.conditionCharge,
-
-            Number(
-              p.amount || 0
-            ) +
-              Number(
-                p.condition || 0
-              ) +
-              Number(
-                p.conditionCharge || 0
-              ),
-          ]
-        );
+      tableData.push([
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Grand Total",
+        `${tableTotals.grandTotal} TK`,
+      ]);
 
       // ================= TABLE =================
 
@@ -494,37 +565,17 @@ const PrintParcelSummary = () => {
         },
       });
 
-      // ================= GRAND TOTAL =================
+      // ================= FOOTER =================
 
       const finalY =
         pdf.lastAutoTable.finalY + 10;
 
-      pdf.setFontSize(12);
-
-      pdf.setFont(
-        "helvetica",
-        "bold"
-      );
-
-      pdf.text(
-        `Grand Total: ${tableTotals.grandTotal} TK`,
-        14,
-        finalY
-      );
-
-      // ================= FOOTER =================
-
-      pdf.setFontSize(9);
-
-      pdf.setFont(
-        "helvetica",
-        "normal"
-      );
+      pdf.setFontSize(10);
 
       pdf.text(
         "Generated By Niyamat Express System",
         14,
-        finalY + 10
+        finalY
       );
 
       // ================= PDF BLOB =================
@@ -614,6 +665,7 @@ const PrintParcelSummary = () => {
       console.log(error);
     }
   };
+
 
   // ================= PRINT =================
 
