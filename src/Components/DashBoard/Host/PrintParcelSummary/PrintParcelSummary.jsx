@@ -254,221 +254,366 @@ const PrintParcelSummary = () => {
 
   // ================= GENERATE PDF =================
 
-  const handleGenerateInvoice =
-    async () => {
+ const handleGenerateInvoice =
+  async () => {
 
-      try {
+    try {
 
-        const pdf = new jsPDF(
-          "p",
-          "mm",
-          "a4"
+      const pdf = new jsPDF(
+        "p",
+        "mm",
+        "a4"
+      );
+
+      // ================= WATERMARK =================
+
+      pdf.setTextColor(235);
+
+      pdf.setFontSize(55);
+
+      pdf.setFont(
+        "helvetica",
+        "bold"
+      );
+
+      pdf.text(
+        "NIYAMAT EXPRESS",
+        18,
+        150,
+        {
+          angle: 45,
+        }
+      );
+
+      // ================= HEADER =================
+
+      pdf.setTextColor(0);
+
+      pdf.setFontSize(24);
+
+      pdf.setFont(
+        "helvetica",
+        "bold"
+      );
+
+      pdf.text(
+        "Niyamat Express",
+        60,
+        20
+      );
+
+      pdf.setFontSize(10);
+
+      pdf.setFont(
+        "helvetica",
+        "normal"
+      );
+
+      pdf.text(
+        "Chittagong Road, Narayanganj 1430",
+        55,
+        28
+      );
+
+      pdf.text(
+        "Web: https://niyamatexpress.com",
+        58,
+        34
+      );
+
+      pdf.text(
+        "Email: support@niyamatexpress.com",
+        50,
+        40
+      );
+
+      pdf.text(
+        "Tel: 09617179001, 09617179177",
+        54,
+        46
+      );
+
+      // ================= LINE =================
+
+      pdf.line(
+        14,
+        52,
+        195,
+        52
+      );
+
+      // ================= INVOICE TITLE =================
+
+      pdf.setFontSize(16);
+
+      pdf.setFont(
+        "helvetica",
+        "bold"
+      );
+
+      pdf.text(
+        "Parcel Summary Invoice",
+        14,
+        62
+      );
+
+      // ================= DATE =================
+
+      pdf.setFontSize(11);
+
+      pdf.setFont(
+        "helvetica",
+        "normal"
+      );
+
+      pdf.text(
+        `Invoice Date: ${new Date().toLocaleString()}`,
+        14,
+        70
+      );
+
+      pdf.text(
+        `Filter Date: ${
+          fromDate || "All"
+        } - ${toDate || "All"}`,
+        14,
+        77
+      );
+
+      pdf.text(
+        `Branch: ${
+          branchName || "All"
+        }`,
+        14,
+        84
+      );
+
+      pdf.text(
+        `Mobile: ${
+          searchMobile || "N/A"
+        }`,
+        14,
+        91
+      );
+
+      // ================= MERCHANT =================
+
+      pdf.text(
+        `Merchant Name: ${
+          selectedMerchant?.name ||
+          "N/A"
+        }`,
+        14,
+        98
+      );
+
+      pdf.text(
+        `Merchant ID: ${
+          selectedMerchant?.merchantID ||
+          "N/A"
+        }`,
+        14,
+        105
+      );
+
+      // ================= TABLE DATA =================
+
+      const tableData =
+        filteredParcels.map(
+          (p, index) => [
+
+            index + 1,
+
+            formatDate(
+              p.booking
+            ),
+
+            p.CnNumber,
+
+            p.senderMobile,
+
+            p.recipientName,
+
+            p.recipientMobile,
+
+            p.Branch_Name,
+
+            p.paymentOption,
+
+            p.amount,
+
+            p.condition,
+
+            p.conditionCharge,
+
+            Number(
+              p.amount || 0
+            ) +
+              Number(
+                p.condition || 0
+              ) +
+              Number(
+                p.conditionCharge || 0
+              ),
+          ]
         );
 
-        pdf.setFontSize(18);
+      // ================= TABLE =================
 
-        pdf.text(
-          "Parcel Summary Invoice",
-          14,
-          20
-        );
+      autoTable(pdf, {
 
-        pdf.setFontSize(11);
+        startY: 114,
 
-        pdf.text(
-          `Date: ${
-            fromDate || "All"
-          } - ${toDate || "All"}`,
-          14,
-          30
-        );
+        head: [[
+          "SL",
+          "Date",
+          "Parcel",
+          "Sender",
+          "Receiver",
+          "Receiver Phone",
+          "Branch",
+          "Payment",
+          "Amount",
+          "Cond",
+          "Charge",
+          "Total",
+        ]],
 
-        pdf.text(
-          `Branch: ${
-            branchName || "All"
-          }`,
-          14,
-          37
-        );
+        body: tableData,
 
-        pdf.text(
-          `Mobile: ${
-            searchMobile || "N/A"
-          }`,
-          14,
-          44
-        );
+        styles: {
+          fontSize: 7,
+        },
 
-        pdf.text(
-          `Merchant: ${
-            selectedMerchant?.name || "All"
-          }`,
-          14,
-          51
-        );
+        headStyles: {
+          fillColor: [
+            37,
+            99,
+            235,
+          ],
+        },
+      });
 
-        pdf.text(
-          `Merchant ID: ${
-            selectedMerchant?.merchantID ||
-            "N/A"
-          }`,
-          14,
-          58
-        );
+      // ================= GRAND TOTAL =================
 
-        const tableData =
-          filteredParcels.map(
-            (p, index) => [
+      const finalY =
+        pdf.lastAutoTable.finalY + 10;
 
-              index + 1,
+      pdf.setFontSize(12);
 
-              p.CnNumber,
+      pdf.setFont(
+        "helvetica",
+        "bold"
+      );
 
-              p.senderMobile,
+      pdf.text(
+        `Grand Total: ${tableTotals.grandTotal} TK`,
+        14,
+        finalY
+      );
 
-              p.recipientName,
+      // ================= FOOTER =================
 
-              p.recipientMobile,
+      pdf.setFontSize(9);
 
-              p.Branch_Name,
+      pdf.setFont(
+        "helvetica",
+        "normal"
+      );
 
-              p.paymentOption,
+      pdf.text(
+        "Generated By Niyamat Express System",
+        14,
+        finalY + 10
+      );
 
-              p.amount,
+      // ================= PDF BLOB =================
 
-              p.condition,
+      const pdfBlob =
+        pdf.output("blob");
 
-              p.conditionCharge,
+      // ================= CLOUDINARY =================
 
-              Number(p.amount || 0) +
-                Number(p.condition || 0) +
-                Number(
-                  p.conditionCharge || 0
-                ),
-            ]
-          );
+      const formData =
+        new FormData();
 
-        autoTable(pdf, {
+      formData.append(
+        "file",
+        pdfBlob,
+        `invoice-${Date.now()}.pdf`
+      );
 
-          startY: 70,
+      formData.append(
+        "upload_preset",
+        "Merchant_Invoice.pdf"
+      );
 
-          head: [[
-            "SL",
-            "Parcel",
-            "Sender",
-            "Receiver",
-            "Receiver Phone",
-            "Branch",
-            "Payment",
-            "Amount",
-            "Cond",
-            "Charge",
-            "Total",
-          ]],
-
-          body: tableData,
-
-          styles: {
-            fontSize: 8,
-          },
-
-          headStyles: {
-            fillColor: [37, 99, 235],
-          },
-        });
-
-        const finalY =
-          pdf.lastAutoTable.finalY + 10;
-
-        pdf.setFontSize(12);
-
-        pdf.text(
-          `Grand Total: ${tableTotals.grandTotal}`,
-          14,
-          finalY
-        );
-
-        // ================= PDF BLOB =================
-
-        const pdfBlob =
-          pdf.output("blob");
-
-        // ================= CLOUDINARY =================
-
-        const formData =
-          new FormData();
-
-        formData.append(
-          "file",
-          pdfBlob,
-          `invoice-${Date.now()}.pdf`
-        );
-
-        formData.append(
-          "upload_preset",
-          "Merchant_Invoice.pdf"
-        );
-
-        const cloudinaryRes =
-          await fetch(
-            "https://api.cloudinary.com/v1_1/dhhlztslk/image/upload",
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-
-        const cloudinaryData =
-          await cloudinaryRes.json();
-
-        console.log(cloudinaryData);
-
-        const pdfUrl =
-          `https://res.cloudinary.com/dhhlztslk/image/upload/fl_attachment/${cloudinaryData.public_id}.pdf`;
-
-        // ================= SAVE DB =================
-
-        await axiosSecure.post(
-          "/save-invoice",
+      const cloudinaryRes =
+        await fetch(
+          "https://api.cloudinary.com/v1_1/dhhlztslk/image/upload",
           {
-            pdfUrl,
-
-            merchantName:
-              selectedMerchant?.name ||
-              null,
-
-            merchantID:
-              selectedMerchant?.merchantID ||
-              null,
-
-            createdAt:
-              new Date(),
-
-            Who_Added:
-              verifiedUser?.name ||
-              "Unknown",
-
-            Who_Added_Email:
-              verifiedUser?.email ||
-              "Unknown",
+            method: "POST",
+            body: formData,
           }
         );
 
-        window.open(
+      const cloudinaryData =
+        await cloudinaryRes.json();
+
+      console.log(
+        cloudinaryData
+      );
+
+      // ================= PDF URL =================
+
+      const pdfUrl =
+        `https://res.cloudinary.com/dhhlztslk/image/upload/fl_attachment/${cloudinaryData.public_id}.pdf`;
+
+      // ================= SAVE DATABASE =================
+
+      await axiosSecure.post(
+        "/save-invoice",
+        {
           pdfUrl,
-          "_blank",
-          "noopener,noreferrer"
-        );
 
-        alert(
-          "Invoice Generated Successfully"
-        );
+          merchantName:
+            selectedMerchant?.name ||
+            null,
 
-      } catch (error) {
+          merchantID:
+            selectedMerchant?.merchantID ||
+            null,
 
-        console.log(error);
-      }
-    };
+          createdAt:
+            new Date(),
+
+          Who_Added:
+            verifiedUser?.name ||
+            "Unknown",
+
+          Who_Added_Email:
+            verifiedUser?.email ||
+            "Unknown",
+        }
+      );
+
+      // ================= OPEN PDF =================
+
+      window.open(
+        pdfUrl,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+      alert(
+        "Invoice Generated Successfully"
+      );
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
 
   // ================= PRINT =================
 
