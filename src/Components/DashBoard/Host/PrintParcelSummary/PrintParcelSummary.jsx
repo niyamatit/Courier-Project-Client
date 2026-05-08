@@ -9,7 +9,11 @@ const PrintParcelSummary = () => {
 
   const [searchMobile, setSearchMobile] =
     useState("");
+const [isGenerating, setIsGenerating] =
+  useState(false);
 
+const [isPrinting, setIsPrinting] =
+  useState(false);
   const [branchName, setBranchName] =
     useState("");
 
@@ -591,7 +595,7 @@ const groupedParcels = useMemo(() => {
       formData.append(
         "file",
         pdfBlob,
-        `invoice-${Date.now()}.pdf`
+        `Merchant_Invoice-${Date.now()}.pdf`
       );
 
       formData.append(
@@ -633,6 +637,9 @@ const groupedParcels = useMemo(() => {
 
           merchantID:
             selectedMerchant?.merchantID ||
+            null,
+             merchantEmail:
+            selectedMerchant?.email ||
             null,
 
           createdAt:
