@@ -11,7 +11,7 @@ const Merchant_Invoices_Admin = () => {
   const [currentPage, setCurrentPage] =
     useState(1);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 30;
 
   // ================= FETCH INVOICES =================
 
