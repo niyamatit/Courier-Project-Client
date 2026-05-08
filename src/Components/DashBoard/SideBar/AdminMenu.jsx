@@ -92,6 +92,9 @@ const AdminMenu = () => {
       <MenuItem icon={CircleDollarSign}
         label='Merchant Recharge Pending'
         address='Merchant-Recharge-Apply' />
+      <MenuItem icon={CircleDollarSign}
+        label='Merchant Invoices'
+        address='Merchant-Invoices-admin' />
 <MenuItem
         icon={MdBookOnline}
 

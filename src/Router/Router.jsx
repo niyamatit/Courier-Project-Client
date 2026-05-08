@@ -126,6 +126,7 @@ import Add_Account_Merchant from "../Components/DashBoard/Merchant/AddAccount/Ad
 import AllMerchantAccountList_Admin from "../Components/DashBoard/Merchant/AllMerchantAccountList/AllMerchantAccountList_Admin";
 import All_Merchant_Balance_History_Admin from "../Components/DashBoard/Admin/Merchant_Part/All_Merchant_Balance_History_Admin";
 import PrintParcelSummary from "../Components/DashBoard/Host/PrintParcelSummary/PrintParcelSummary";
+import Merchant_Invoices_Admin from "../Components/DashBoard/Admin/Merchant_Invoices_Admin/Merchant_Invoices_Admin";
 
 
 
@@ -841,6 +842,14 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <AdminRoute>
             <AdminStatistics />
+          </AdminRoute>
+        </PrivateRoute>
+      },
+      {
+        path: "Merchant-Invoices-admin",
+        element: <PrivateRoute>
+          <AdminRoute>
+            <Merchant_Invoices_Admin />
           </AdminRoute>
         </PrivateRoute>
       },
