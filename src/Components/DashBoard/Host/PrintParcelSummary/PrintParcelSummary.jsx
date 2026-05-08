@@ -5,6 +5,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import logoImg from '../../../../assets/nexp-update.png';
+import Swal from "sweetalert2";
 const PrintParcelSummary = () => {
 
   const [searchMobile, setSearchMobile] =
@@ -280,6 +281,34 @@ const groupedParcels = useMemo(() => {
   async () => {
 
     try {
+
+      setIsGenerating(true);
+
+      const result =
+        await Swal.fire({
+          title:
+            "Generate Invoice?",
+
+          text:
+            "Invoice PDF will be generated.",
+
+          icon: "question",
+
+          showCancelButton: true,
+
+          confirmButtonText:
+            "Generate",
+
+          cancelButtonText:
+            "Cancel",
+        });
+
+      if (!result.isConfirmed) {
+
+        setIsGenerating(false);
+
+        return;
+      }
 
       const pdf = new jsPDF(
         "p",
@@ -595,7 +624,7 @@ const groupedParcels = useMemo(() => {
       formData.append(
         "file",
         pdfBlob,
-        `Merchant_Invoice-${Date.now()}.pdf`
+        `${selectedMerchant?.name}-Invoice .pdf`
       );
 
       formData.append(
@@ -638,7 +667,8 @@ const groupedParcels = useMemo(() => {
           merchantID:
             selectedMerchant?.merchantID ||
             null,
-             merchantEmail:
+
+          merchantEmail:
             selectedMerchant?.email ||
             null,
 
@@ -663,17 +693,34 @@ const groupedParcels = useMemo(() => {
         "noopener,noreferrer"
       );
 
-      alert(
-        "Invoice Generated Successfully"
-      );
+      Swal.fire({
+        icon: "success",
+
+        title:
+          "Invoice Generated",
+
+        text:
+          "Invoice generated successfully.",
+      });
 
     } catch (error) {
 
       console.log(error);
+
+      Swal.fire({
+        icon: "error",
+
+        title: "Error",
+
+        text:
+          "Failed to generate invoice.",
+      });
+
+    } finally {
+
+      setIsGenerating(false);
     }
   };
-
-
   // ================= PRINT =================
 
   const handlePrint = () => {
@@ -1199,12 +1246,16 @@ const groupedParcels = useMemo(() => {
       </button>
 
       <button
-        onClick={handleGenerateInvoice}
+  onClick={handleGenerateInvoice}
 
-        className="mt-4 ml-3 bg-green-600 text-white px-4 py-2 rounded"
-      >
-        Generate Invoice
-      </button>
+  disabled={isGenerating}
+
+  className="mt-4 ml-3 bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
+>
+  {isGenerating
+    ? "Generating..."
+    : "Generate Invoice"}
+</button>
     </div>
   );
 };
