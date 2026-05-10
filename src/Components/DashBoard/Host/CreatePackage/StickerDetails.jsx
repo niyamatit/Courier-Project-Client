@@ -47,7 +47,11 @@ const StickerDetails = ({ bookingInfo }) => {
                 <div className="">
                     <p><strong>Receiver:</strong> {bookingInfo?.recipientName}</p>
                     <p><strong>Contact:</strong> {bookingInfo?.recipientMobile}</p>
-                    {/* <p><strong>Address:</strong> {bookingInfo?.Receiver_Full_Adress}</p> */}
+                      {bookingInfo?.Merchant_ID ? (
+    <p>
+      <strong>Merchant Name:</strong>{" "}{bookingInfo?.senderName}{" "}({bookingInfo?.Merchant_ID})
+    </p>
+  ) : null}
                 </div>
             </div>
 
