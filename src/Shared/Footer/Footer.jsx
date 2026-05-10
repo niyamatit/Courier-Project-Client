@@ -211,7 +211,7 @@ const Footer = () => {
 
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-white sm:text-center">
-            © 2025{" "}
+            © 2026{" "}
             <a
               href="https://niyamatexpress.com/"
               className="hover:underline"
