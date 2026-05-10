@@ -181,15 +181,30 @@ const Footer = () => {
           </div>
 
           {/* Japan Office */}
-          <div>
-            <h3 className="text-lg font-bold mb-2">
-              Japan Office:
-            </h3>
+          {/* Japan Office */}
+<div>
+  <h3 className="text-lg font-bold mb-2">
+    Japan Office:
+  </h3>
 
-            <p>Mobile: +81 7085287886</p>
+  <p>
+    APARTMEN : TAKARA DAIICHI SKY HEIGHTS 403,
+  </p>
 
-            <p>Japan</p>
-          </div>
+  <p>
+    1-17-4 CHIKAMADORI,
+    MINAMIKU,
+    NAGOYA-SHI,
+  </p>
+
+  <p>
+    457-0071
+  </p>
+
+  <p className="mt-2">
+    Mobile: +81 7085287886
+  </p>
+</div>
         </div>
 
         <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
