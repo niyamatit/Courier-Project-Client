@@ -345,7 +345,7 @@ const handleDivisionChange = (e) => {
         const weight_kg = parseFloat(form.weight.value) || "";
         const condition = form.condition.value;
         const Post_Code = form.postCode.value;
-        const wordAmount = numberToWords(parseInt(cod));
+        const wordAmount = numberToWords(parseInt(amount));
         const bookingTimestamp = new Date();
         const BookingAmoutEdit = form.amount.value;
     
