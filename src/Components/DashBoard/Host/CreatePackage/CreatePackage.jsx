@@ -360,7 +360,8 @@ const handleDivisionChange = (e) => {
                   }
             const CurrentBalance = Branch_Balance?.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
             // console.log(CurrentBalance, "Current Balance");
-            const CodAmount = parseFloat(weightCharge || 0);
+            const CodAmount = parseFloat(amount || 0);
+            // const CodAmount = parseFloat(weightCharge || 0);
     // console.log(CodAmount, "Cod Amount");
             if (paymentOption === "Cash") {
                 const newBalance = CurrentBalance - CodAmount;
@@ -626,7 +627,8 @@ useEffect(() => {
         setAutoRateOverride(true);
         setAmount(autoRate);
         setAmountError(''); // clear any old errors
-    } else {
+    } 
+    else {
         setAutoRateOverride(false);
     }
 }, [DeptOption, qty]);
