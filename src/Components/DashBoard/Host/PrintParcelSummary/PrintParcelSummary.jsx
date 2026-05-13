@@ -565,7 +565,7 @@ const groupedParcels = useMemo(() => {
         `${tableTotals.grandTotal} TK`,
       ]);
 
-      // ================= TABLE =================
+      
 
       autoTable(pdf, {
 
