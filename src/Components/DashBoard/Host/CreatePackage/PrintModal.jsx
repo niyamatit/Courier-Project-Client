@@ -59,7 +59,6 @@ const PrintModal = ({ closeModal, isOpen, bookingInfo }) => {
                                     <PackageDetails bookingInfo={bookingInfo} />
                                     <PackageDetails bookingInfo={bookingInfo} />
                                 </div>
-
                                 {/* StickerDetails to be printed */}
                                 <div ref={stickerRef} className="mt-2 text-center">
                                     <StickerDetails bookingInfo={bookingInfo} />

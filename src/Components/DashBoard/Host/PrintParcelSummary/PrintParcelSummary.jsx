@@ -519,6 +519,7 @@ const groupedParcels = useMemo(() => {
                 p.Branch_Name,
                 p.paymentOption,
                 p.amount,
+                p.qty,
                 p.condition,
                 p.conditionCharge,
                 total,
@@ -539,6 +540,7 @@ const groupedParcels = useMemo(() => {
             "",
             "",
             "",
+            "",
             "Date Total",
             `${dateTotal} TK`,
           ]);
@@ -548,6 +550,7 @@ const groupedParcels = useMemo(() => {
       // GRAND TOTAL
 
       tableData.push([
+        "",
         "",
         "",
         "",
@@ -578,6 +581,7 @@ const groupedParcels = useMemo(() => {
           "Branch",
           "Payment",
           "Amount",
+          "Quantity",
           "Cond",
           "Charge",
           "Total",
@@ -1003,6 +1007,7 @@ const groupedParcels = useMemo(() => {
                 {summary.totalAmount}
               </td>
             </tr>
+           
 
             <tr>
               <td>Total Condition</td>
@@ -1071,10 +1076,13 @@ const groupedParcels = useMemo(() => {
               <th className="p-2 border">
                 Payment Mode
               </th>
-
+<th className="p-2 border">
+                Quantity
+              </th>
               <th className="p-2 border">
                 Amount
               </th>
+              
 
               <th className="p-2 border">
                 Condition Amt
@@ -1161,10 +1169,13 @@ const groupedParcels = useMemo(() => {
                     <td className="border p-2">
                       {p.paymentOption}
                     </td>
-
+<td className="border p-2">
+                      {p.qty}
+                    </td>
                     <td className="border p-2">
                       {amount}
                     </td>
+                    
 
                     <td className="border p-2">
                       {condition}
@@ -1199,7 +1210,7 @@ const groupedParcels = useMemo(() => {
               >
 
                 <td
-                  colSpan="8"
+                  colSpan="9"
                   className="border p-2 text-right"
                 >
                   Total

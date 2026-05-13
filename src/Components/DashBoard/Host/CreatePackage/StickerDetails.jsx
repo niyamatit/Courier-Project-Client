@@ -1,8 +1,22 @@
 import Barcode from 'react-barcode';
 import QRCode from 'react-qr-code';
+import axiosSecure from '../../../../api/axiosSecure';
+import { useQuery } from '@tanstack/react-query';
 
 const StickerDetails = ({ bookingInfo }) => {
-    
+     const { data: users = [] } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+          const res = await axiosSecure.get("/shfjksdhfjdjkfhxnbcnbc67437gch");
+          return res.data;
+        }
+      })
+
+      const filterMerchant = users.find(user => user?.email === bookingInfo?.Merchant_ID)|| {};
+      
+   
+      const filteredMerchantID = filterMerchant.merchantID ? filterMerchant?.merchantID : null;
+      
     const bookingTime = new Date(bookingInfo?.booking);
     const userTimeZone = "Asia/Dhaka"; 
     const formattedBookingTime = bookingTime.toLocaleString("en-US", {
@@ -49,7 +63,7 @@ const StickerDetails = ({ bookingInfo }) => {
                     <p><strong>Contact:</strong> {bookingInfo?.recipientMobile}</p>
                       {bookingInfo?.Merchant_ID ? (
     <p>
-      <strong>Merchant Name:</strong>{" "}{bookingInfo?.senderName}{" "}({bookingInfo?.Merchant_ID})
+      <strong>Merchant Name:</strong>{" "}{bookingInfo?.senderName}{" "} (ID: {filteredMerchantID || "N/A"})
     </p>
   ) : null}
                 </div>

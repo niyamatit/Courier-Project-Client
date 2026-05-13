@@ -452,7 +452,7 @@ const handleDivisionChange = (e) => {
                 toast.success("Package Added!");
 // ----------------------------------------SMS Section-----------------------------------------
 
-        // Step 5: Send SMS using BulkSMSBD
+// Step 5: Send SMS using BulkSMSBD
 const SMS_API = "https://bulksmsbd.net/api/smsapi";
 const API_KEY = "VSkytluAnQbG0vsCEbHQ";
 const SENDER_ID = "8809617624950";
@@ -504,7 +504,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 error.message ||
                 "An error occurred while creating the package.";
         
-            if (error.response?.status === 425455) {  // CN conflict error
+            if (error.response?.status === 425455) { 
                 Swal.fire({
                     position: "top-end",
                     icon: "error",
