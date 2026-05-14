@@ -6,27 +6,17 @@ import axiosSecure from "../../../../api/axiosSecure";
 
 
 const OnlineSchedule = () => {
-  // Custom hook to fetch user data
-  const [verifiedUser] = useUsersData();
-  // State for the currently selected package for modals
-  const [selectedPackage, setSelectedPackage] = useState(null);
-  // State to control the visibility of the "Select Branch" modal
-  const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
-  // State to control the visibility of the "View Details" modal
-  const [showViewModal, setShowViewModal] = useState(false);
-  // State for the note in the "Select Branch" modal
-  const [note, setNote] = useState("");
-  // State for the selected branch email in the "Select Branch" modal
-  const [selectedBranch, setSelectedBranch] = useState("");
-  // State for search term in the filter
-  const [searchTerm, setSearchTerm] = useState("");
-  // State for start date in the date filter
-  const [startDate, setStartDate] = useState("");
-  // State for end date in the date filter
-  const [endDate, setEndDate] = useState("");
+const [verifiedUser] = useUsersData();
+const [selectedPackage, setSelectedPackage] = useState(null);
+const [showSelectBranchModal, setShowSelectBranchModal] = useState(false);
+const [showViewModal, setShowViewModal] = useState(false);
+const [note, setNote] = useState("");
+const [selectedBranch, setSelectedBranch] = useState("");
+const [searchTerm, setSearchTerm] = useState("");
+const [startDate, setStartDate] = useState("");
+const [endDate, setEndDate] = useState("");
 const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 30;
-  // Fetch all users from the backend
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
@@ -34,8 +24,6 @@ const itemsPerPage = 30;
       return res.data;
     }
   });
-
-  // Fetch online parcels specific to the verified user (MotherHub Admin)
   const { data: Verify_Admin_MotherHub = [], refetch , isLoading } = useQuery({
     queryKey: ["Verify_Admin_MotherHub", verifiedUser?.email],
     // Only enable this query if verifiedUser.email exists
@@ -46,8 +34,6 @@ const itemsPerPage = 30;
       return Array.isArray(res.data) ? res.data : [res.data];
     },
   });
-
-  // Handler for accepting a parcel
   const handleAccept = async (pkgId) => {
     try {
       await axiosSecure.post(`/online/accept/parcel/${pkgId}`);
@@ -65,8 +51,6 @@ const itemsPerPage = 30;
       });
     }
   };
-
-  // Handler for selecting a MotherHub branch for a package
   const handleSelectBranch = async () => {
     // Validate that both branch and note are filled
     if (!selectedBranch || !note) {
@@ -83,15 +67,15 @@ const itemsPerPage = 30;
       await axiosSecure.post(`/online/select-MotherHub/branch/${selectedPackage._id}`, {
         Tracking_Admin_Select_Online_MotherHub_Branch_email: selectedBranch,
         Tracking_Admin_Select_Online_MotherHub_Branch_Note: note,
-        Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date() // Record the current date
+        Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date() 
       });
       Swal.fire({
         icon: "success",
         title: "MotherHub Branch Selected",
         text: "MotherHub Branch has been successfully selected!",
       });
-      refetch(); // Refetch data to update the UI
-      setShowSelectBranchModal(false); // Close the modal
+      refetch(); 
+      setShowSelectBranchModal(false); 
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -100,62 +84,49 @@ const itemsPerPage = 30;
       });
     }
   };
-
-  // Filtered packages based on search term and date range
-  const filteredPackages = Verify_Admin_MotherHub.filter((pkg) => {
+const filteredPackages = Verify_Admin_MotherHub.filter((pkg) => {
     // Check if the package matches the search term (CN Number or mobile numbers)
     const matchesSearch =
       searchTerm === "" ||
       pkg.CnNumber.toLowerCase().trim().includes(searchTerm.toLowerCase().trim()) ||
       pkg.recipientMobile.trim().includes(searchTerm.trim()) ||
       pkg.senderMobile.trim().includes(searchTerm.trim());
-
     // Parse package booking date and filter dates
     const packageDate = new Date(pkg.booking);
     const start = startDate ? new Date(startDate) : null;
     const end = endDate ? new Date(endDate) : null;
-
     // Check if the package date falls within the selected date range
     const matchesDate =
       (!start || packageDate >= start) && (!end || packageDate <= end);
 
     return matchesSearch && matchesDate;
-  });
+});
 const totalPages = Math.ceil(filteredPackages.length / itemsPerPage);
-
 const paginatedData = filteredPackages.slice(
   (currentPage - 1) * itemsPerPage,
   currentPage * itemsPerPage
 );
 const getPagination = () => {
   const pages = [];
-  // const maxVisible = 5; // how many middle pages you want
+  // const maxVisible = 5; 
 
   if (totalPages <= 7) {
-    // show all if small
     return [...Array(totalPages)].map((_, i) => i + 1);
   }
-
-  // always show first
   pages.push(1);
 
   if (currentPage > 4) {
     pages.push("...");
   }
-
-  // middle pages
   const start = Math.max(2, currentPage - 1);
   const end = Math.min(totalPages - 1, currentPage + 1);
 
   for (let i = start; i <= end; i++) {
     pages.push(i);
   }
-
   if (currentPage < totalPages - 3) {
     pages.push("...");
   }
-
-  // always show last
   pages.push(totalPages);
 
   return pages;
@@ -165,12 +136,8 @@ if (isLoading) {
 }
   return (
     <div className="p-4">
-      {/* Page Title */}
       <h1 className="text-2xl font-bold mb-4">All Online Parcels of {verifiedUser?.name}</h1>
-
-      {/* Search and Filter Section */}
       <div className="mb-4 p-4  rounded-lg flex flex-col md:flex-row gap-4">
-        {/* Search input field */}
         <input
           type="text"
           placeholder="Search by CN Number or Mobile"
@@ -178,7 +145,6 @@ if (isLoading) {
           value={searchTerm.trim()}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {/* Date filter inputs */}
         <div className="flex flex-col sm:flex-row gap-4">
           <input
             type="date"
@@ -194,9 +160,6 @@ if (isLoading) {
           />
         </div>
       </div>
-      {/* End Search and Filter Section */}
-
-      {/* Conditional rendering for packages table or no packages message */}
       {Array.isArray(filteredPackages) && filteredPackages.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
@@ -214,7 +177,6 @@ if (isLoading) {
               </tr>
             </thead>
             <tbody>
-              {/* Map through filtered packages to display them in the table */}
               {paginatedData.map((pkg, idx) => (
                 <tr key={pkg._id} className={`hover:bg-blue-100 ${ pkg.Merchant_ID ? 'bg-green-100' : ''}`}>
                    <td className="border px-4 py-2">
@@ -230,7 +192,6 @@ if (isLoading) {
                   <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
-                    {/* Conditional rendering for Accept button */}
                     {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
                       <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
                     ) : (
@@ -241,8 +202,6 @@ if (isLoading) {
                         Accept
                       </button>
                     )}
-
-                    {/* Conditional rendering for Select MotherHub button */}
                     {pkg?.Tracking_Online_Booking_Branch_Received_Parcel ? (
                       pkg?.Tracking_Admin_Select_Online_MotherHub_Branch_email ? (
                         <h1 className="text-green-500 border p-1 border-green-500">
@@ -264,8 +223,6 @@ if (isLoading) {
                         Accept First
                       </button>
                     )}
-
-                    {/* View button */}
                     <button
                       className="bg-gray-500 text-white px-2 py-1 rounded"
                       onClick={() => {
@@ -282,11 +239,8 @@ if (isLoading) {
           </table>
         </div>
       ) : (
-        // Message displayed if no packages are found
         <div>No packages found!</div>
       )}
-
-      {/* Modal for Viewing Package Details */}
       {showViewModal && (
         <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
@@ -344,7 +298,6 @@ if (isLoading) {
                 onChange={(e) => setNote(e.target.value)}
               />
             </div>
-            {/* Submit and Cancel buttons for the modal */}
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               onClick={handleSelectBranch}
