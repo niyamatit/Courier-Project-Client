@@ -16,7 +16,9 @@ const [searchTerm, setSearchTerm] = useState("");
 const [startDate, setStartDate] = useState("");
 const [endDate, setEndDate] = useState("");
 const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 30;
+const itemsPerPage = 100;
+const [selectedParcels, setSelectedParcels] = useState([]);
+const [selectAll, setSelectAll] = useState(false);
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
@@ -80,7 +82,7 @@ const itemsPerPage = 30;
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Failed to select the rider. Please try again.",
+        text: "Failed to select MotherHub branch. Please try again.",
       });
     }
   };
@@ -131,9 +133,104 @@ const getPagination = () => {
 
   return pages;
 };
+
+// -------------------------Select All Parcel Section-------------------------
+
+const handleSelectAll = () => {
+  if (selectAll) {
+    setSelectedParcels([]);
+  } else {
+    setSelectedParcels(paginatedData.map((pkg) => pkg._id));
+  }
+
+  setSelectAll(!selectAll);
+};
+const handleSelectParcel = (id) => {
+  if (selectedParcels.includes(id)) {
+    setSelectedParcels(
+      selectedParcels.filter((parcelId) => parcelId !== id)
+    );
+  } else {
+    setSelectedParcels([...selectedParcels, id]);
+  }
+};
+
+const handleBulkAccept = async () => {
+  if (selectedParcels.length === 0) {
+    return Swal.fire({
+      icon: "warning",
+      title: "No Parcel Selected",
+    });
+  }
+
+  try {
+    await axiosSecure.post("/online/bulk/accept", {
+      ids: selectedParcels,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "All Parcels Accepted",
+    });
+
+    setSelectedParcels([]);
+    setSelectAll(false);
+
+    refetch();
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Bulk Accept Failed",
+    });
+  }
+};
+
+const handleBulkMotherHub = async () => {
+  if (!selectedBranch || !note) {
+    return Swal.fire({
+      icon: "warning",
+      title: "Select Branch & Note",
+    });
+  }
+
+  if (selectedParcels.length === 0) {
+    return Swal.fire({
+      icon: "warning",
+      title: "No Parcel Selected",
+    });
+  }
+
+  try {
+    await axiosSecure.post("/online/bulk/select-motherhub", {
+      ids: selectedParcels,
+      Tracking_Admin_Select_Online_MotherHub_Branch_email: selectedBranch,
+      Tracking_Admin_Select_Online_MotherHub_Branch_Note: note,
+      Tracking_Admin_Select_Online_MotherHub_Branch_Date: new Date(),
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "MotherHub Assigned Successfully",
+    });
+
+    setSelectedParcels([]);
+    setSelectAll(false);
+
+    refetch();
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Bulk MotherHub Failed",
+    });
+  }
+};
+
+
 if (isLoading) {
   return <div>Loading...</div>;
 }
+
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">All Online Parcels of {verifiedUser?.name}</h1>
@@ -159,12 +256,36 @@ if (isLoading) {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
+        <div className="flex flex-wrap gap-3 mb-4">
+
+  <button
+    onClick={handleBulkAccept}
+    className="bg-green-500 text-white px-4 py-2 rounded"
+  >
+    Accept Selected
+  </button>
+
+  <button
+    onClick={() => setShowSelectBranchModal(true)}
+    className="bg-blue-500 text-white px-4 py-2 rounded"
+  >
+    Set MotherHub Selected
+  </button>
+
+</div>
       </div>
       {Array.isArray(filteredPackages) && filteredPackages.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
             <thead className="bg-blue-500 text-white">
               <tr>
+                <th className="border px-4 py-2">
+  <input
+    type="checkbox"
+    checked={selectAll}
+    onChange={handleSelectAll}
+  />
+</th>
                 <th className="border border-blue-500 px-4 py-2">SL</th>
                 <th className="border border-blue-500 px-4 py-2">Date</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
@@ -179,6 +300,13 @@ if (isLoading) {
             <tbody>
               {paginatedData.map((pkg, idx) => (
                 <tr key={pkg._id} className={`hover:bg-blue-100 ${ pkg.Merchant_ID ? 'bg-green-100' : ''}`}>
+                  <td className="border px-4 py-2">
+  <input
+    type="checkbox"
+    checked={selectedParcels.includes(pkg._id)}
+    onChange={() => handleSelectParcel(pkg._id)}
+  />
+</td>
                    <td className="border px-4 py-2">
   {(currentPage - 1) * itemsPerPage + idx + 1}
 </td>
@@ -298,12 +426,24 @@ if (isLoading) {
                 onChange={(e) => setNote(e.target.value)}
               />
             </div>
-            <button
+            {/* <button
               className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               onClick={handleSelectBranch}
             >
               Submit
-            </button>
+            </button> */}
+            <button
+  className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
+  onClick={() => {
+    if (selectedParcels.length > 0) {
+      handleBulkMotherHub();
+    } else {
+      handleSelectBranch();
+    }
+  }}
+>
+  Submit
+</button>
             <button
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
               onClick={() => setShowSelectBranchModal(false)}
