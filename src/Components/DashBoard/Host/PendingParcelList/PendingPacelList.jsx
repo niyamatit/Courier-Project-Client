@@ -12,7 +12,7 @@ const PendingPacelList = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [note, setNote] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 30;
+const itemsPerPage = 100;
   const [selectedBranch, setSelectedBranch] = useState("");
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
