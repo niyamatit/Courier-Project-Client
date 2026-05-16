@@ -14,6 +14,8 @@ const PendingPacelList = () => {
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 100;
   const [selectedBranch, setSelectedBranch] = useState("");
+  const [selectedParcels, setSelectedParcels] = useState([]);
+const [selectAll, setSelectAll] = useState(false);
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
@@ -188,6 +190,177 @@ const getPagination = () => {
 
   return pages;
 };
+
+// ------------------------==Select All Handler--------------------------
+const handleSelectAll = () => {
+  if (selectAll) {
+    setSelectedParcels([]);
+  } else {
+    setSelectedParcels(
+      Verify_Admin_MotherHub_Online_Tracking.map((pkg) => pkg._id)
+    );
+  }
+
+  setSelectAll(!selectAll);
+};
+
+const handleSelectParcel = (id) => {
+  if (selectedParcels.includes(id)) {
+    setSelectedParcels(
+      selectedParcels.filter((parcelId) => parcelId !== id)
+    );
+  } else {
+    setSelectedParcels([...selectedParcels, id]);
+  }
+};
+
+const handleBulkAccept = async () => {
+  try {
+    await axiosSecure.post("/package/bulk/accept/destination", {
+      ids: selectedParcels,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "All Parcels Accepted",
+    });
+
+    setSelectedParcels([]);
+    setSelectAll(false);
+
+    refetch();
+
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Bulk Accept Failed",
+    });
+  }
+};
+
+const handleBulkDelivery = async () => {
+  try {
+    await axiosSecure.post("/package/bulk/delivery", {
+      ids: selectedParcels,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "All Parcels Delivered",
+    });
+
+    refetch();
+
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Bulk Delivery Failed",
+    });
+  }
+};
+
+const handleBulkHold = async () => {
+  try {
+    await axiosSecure.post("/package/bulk/hold", {
+      ids: selectedParcels,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "All Parcels Holded",
+    });
+
+    refetch();
+
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Bulk Hold Failed",
+    });
+  }
+};
+
+const handleBulkReturn = async () => {
+  try {
+    await axiosSecure.post("/package/bulk/return", {
+      ids: selectedParcels,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "All Parcels Returned",
+    });
+
+    refetch();
+
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Bulk Return Failed",
+    });
+  }
+};
+
+const handleBulkExchange = async () => {
+  try {
+    await axiosSecure.post("/package/bulk/exchange", {
+      ids: selectedParcels,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "All Parcels Exchanged",
+    });
+
+    refetch();
+
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Bulk Exchange Failed",
+    });
+  }
+};
+
+const handleBulkRider = async () => {
+
+  if (!selectedBranch || !note) {
+    return Swal.fire({
+      icon: "warning",
+      title: "Select Rider & Note",
+    });
+  }
+
+  try {
+    await axiosSecure.post("/package/bulk/select-rider", {
+      ids: selectedParcels,
+      Tracking_Destination_Branch_Select_Rider: selectedBranch,
+      Tracking_Destination_Branch_Note: note,
+      Tracking_Destination_Branch_Select_Rider_Date: new Date(),
+      done: "done",
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Rider Assigned",
+    });
+
+    setShowSelectBranchModal(false);
+
+    setSelectedBranch("");
+    setNote("");
+
+    refetch();
+
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Bulk Rider Assign Failed",
+    });
+  }
+};
+
+// --------------------------------------Select All Handler End------------------------------------------
 if (isLoading) {
   return <div>Loading...Please Wait....</div>;
 }
