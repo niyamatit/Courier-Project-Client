@@ -367,11 +367,49 @@ if (isLoading) {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Select Rider For The Parcels {verifiedUser?.name}</h1>
+      <div className="flex flex-wrap gap-2 mb-4">
+
+  <button onClick={handleBulkAccept} className="bg-green-500 text-white px-3 py-2 rounded">
+    Accept All
+  </button>
+
+  <button onClick={handleBulkDelivery} className="bg-blue-500 text-white px-3 py-2 rounded">
+    Delivery All
+  </button>
+
+  <button onClick={handleBulkHold} className="bg-yellow-500 text-white px-3 py-2 rounded">
+    Hold All
+  </button>
+
+  <button onClick={handleBulkReturn} className="bg-red-500 text-white px-3 py-2 rounded">
+    Return All
+  </button>
+
+  <button onClick={handleBulkExchange} className="bg-purple-500 text-white px-3 py-2 rounded">
+    Exchange All
+  </button>
+
+  <button
+    onClick={() => setShowSelectBranchModal(true)}
+    className="bg-indigo-500 text-white px-3 py-2 rounded"
+  >
+    Select Rider All
+  </button>
+
+</div>
       {Array.isArray(Verify_Admin_MotherHub_Online_Tracking) && Verify_Admin_MotherHub_Online_Tracking.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-blue-500 w-full text-sm md:text-base">
             <thead className="bg-blue-500 text-white">
+              
               <tr>
+                <th>
+  <input
+    type="checkbox"
+    checked={selectAll}
+    onChange={handleSelectAll}
+  />
+</th>
                 <th className="border border-blue-500 px-4 py-2">SL</th>
                 <th className="border border-blue-500 px-4 py-2">Date</th>
                 <th className="border border-blue-500 px-4 py-2">Sender Name</th>
@@ -386,6 +424,13 @@ if (isLoading) {
             <tbody>
               {paginatedData.map((pkg, idx) => (
                 <tr key={pkg._id} className="hover:bg-blue-100">
+                  <td>
+  <input
+    type="checkbox"
+    checked={selectedParcels.includes(pkg._id)}
+    onChange={() => handleSelectParcel(pkg._id)}
+  />
+</td>
                   <td className="border px-4 py-2">
   {(currentPage - 1) * itemsPerPage + idx + 1}
 </td>
