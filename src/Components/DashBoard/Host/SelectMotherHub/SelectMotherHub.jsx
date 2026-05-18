@@ -13,7 +13,8 @@ const SelectMotherHub = () => {
   const [selectedParcels, setSelectedParcels] = useState([]);
 const [selectAll, setSelectAll] = useState(false);
    const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 30;
+const itemsPerPage = 100
+;
   const [selectedBranch, setSelectedBranch] = useState("");
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
