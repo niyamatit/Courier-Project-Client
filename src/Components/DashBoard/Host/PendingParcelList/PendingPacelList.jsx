@@ -16,6 +16,9 @@ const itemsPerPage = 100;
   const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedParcels, setSelectedParcels] = useState([]);
 const [selectAll, setSelectAll] = useState(false);
+const [search, setSearch] = useState("");
+const [fromDate, setFromDate] = useState("");
+const [toDate, setToDate] = useState("");
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
@@ -151,9 +154,36 @@ const [selectAll, setSelectAll] = useState(false);
       });
     }
   };
-  const totalPages = Math.ceil(Verify_Admin_MotherHub_Online_Tracking.length / itemsPerPage);
+ const filteredData = Verify_Admin_MotherHub_Online_Tracking.filter((pkg) => {
 
-const paginatedData = Verify_Admin_MotherHub_Online_Tracking.slice(
+  const matchSearch =
+    pkg?.senderName
+      ?.toLowerCase()
+      ?.includes(search.toLowerCase()) ||
+    pkg?.CnNumber
+      ?.toString()
+      ?.toLowerCase()
+      ?.includes(search.toLowerCase());
+
+  const bookingDate = new Date(pkg.booking);
+
+  const matchFrom =
+    !fromDate || bookingDate >= new Date(fromDate);
+
+  const matchTo =
+    !toDate ||
+    bookingDate <= new Date(
+      new Date(toDate).setHours(23, 59, 59)
+    );
+
+  return matchSearch && matchFrom && matchTo;
+});
+
+const totalPages = Math.ceil(
+  filteredData.length / itemsPerPage
+);
+
+const paginatedData = filteredData.slice(
   (currentPage - 1) * itemsPerPage,
   currentPage * itemsPerPage
 );
@@ -368,7 +398,51 @@ if (isLoading) {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Select Rider For The Parcels {verifiedUser?.name}</h1>
       <div className="flex flex-wrap gap-2 mb-4">
+<div className="flex flex-wrap gap-3 mb-4">
 
+<input
+type="text"
+placeholder="Search Sender / CN Number"
+value={search}
+onChange={(e)=>{
+setSearch(e.target.value);
+setCurrentPage(1);
+}}
+className="border p-2 rounded"
+/>
+
+<input
+type="date"
+value={fromDate}
+onChange={(e)=>{
+setFromDate(e.target.value);
+setCurrentPage(1);
+}}
+className="border p-2 rounded"
+/>
+
+<input
+type="date"
+value={toDate}
+onChange={(e)=>{
+setToDate(e.target.value);
+setCurrentPage(1);
+}}
+className="border p-2 rounded"
+/>
+
+<button
+className="bg-red-500 text-white px-4 rounded"
+onClick={()=>{
+setSearch("");
+setFromDate("");
+setToDate("");
+}}
+>
+Clear
+</button>
+
+</div>
   <button onClick={handleBulkAccept} className="bg-green-500 text-white px-3 py-2 rounded">
     Accept All
   </button>
