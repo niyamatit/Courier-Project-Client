@@ -397,78 +397,102 @@ if (isLoading) {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Select Rider For The Parcels {verifiedUser?.name}</h1>
-      <div className="flex flex-wrap gap-2 mb-4">
-<div className="flex flex-wrap gap-3 mb-4">
+      <div className="mb-4">
 
-<input
-type="text"
-placeholder="Search Sender / CN Number"
-value={search}
-onChange={(e)=>{
-setSearch(e.target.value);
-setCurrentPage(1);
-}}
-className="border p-2 rounded"
-/>
+  {/* Search + Filter */}
+  <div className="flex flex-wrap items-center gap-3 mb-4">
 
-<input
-type="date"
-value={fromDate}
-onChange={(e)=>{
-setFromDate(e.target.value);
-setCurrentPage(1);
-}}
-className="border p-2 rounded"
-/>
+    <input
+      type="text"
+      placeholder="Search Sender / CN Number"
+      value={search}
+      onChange={(e) => {
+        setSearch(e.target.value);
+        setCurrentPage(1);
+      }}
+      className="border px-3 py-2 rounded w-full sm:w-[280px]"
+    />
 
-<input
-type="date"
-value={toDate}
-onChange={(e)=>{
-setToDate(e.target.value);
-setCurrentPage(1);
-}}
-className="border p-2 rounded"
-/>
+    <input
+      type="date"
+      value={fromDate}
+      onChange={(e) => {
+        setFromDate(e.target.value);
+        setCurrentPage(1);
+      }}
+      className="border px-3 py-2 rounded"
+    />
 
-<button
-className="bg-red-500 text-white px-4 rounded"
-onClick={()=>{
-setSearch("");
-setFromDate("");
-setToDate("");
-}}
->
-Clear
-</button>
+    <input
+      type="date"
+      value={toDate}
+      onChange={(e) => {
+        setToDate(e.target.value);
+        setCurrentPage(1);
+      }}
+      className="border px-3 py-2 rounded"
+    />
 
-</div>
-  <button onClick={handleBulkAccept} className="bg-green-500 text-white px-3 py-2 rounded">
-    Accept All
-  </button>
+    <button
+      onClick={() => {
+        setSearch("");
+        setFromDate("");
+        setToDate("");
+        setCurrentPage(1);
+      }}
+      className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+    >
+      Clear
+    </button>
 
-  <button onClick={handleBulkDelivery} className="bg-blue-500 text-white px-3 py-2 rounded">
-    Delivery All
-  </button>
+  </div>
 
-  <button onClick={handleBulkHold} className="bg-yellow-500 text-white px-3 py-2 rounded">
-    Hold All
-  </button>
+  {/* Bulk Actions */}
+  <div className="flex flex-wrap gap-2">
 
-  <button onClick={handleBulkReturn} className="bg-red-500 text-white px-3 py-2 rounded">
-    Return All
-  </button>
+    <button
+      onClick={handleBulkAccept}
+      className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+    >
+      Accept All
+    </button>
 
-  <button onClick={handleBulkExchange} className="bg-purple-500 text-white px-3 py-2 rounded">
-    Exchange All
-  </button>
+    <button
+      onClick={handleBulkDelivery}
+      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+    >
+      Delivery All
+    </button>
 
-  <button
-    onClick={() => setShowSelectBranchModal(true)}
-    className="bg-indigo-500 text-white px-3 py-2 rounded"
-  >
-    Select Rider All
-  </button>
+    <button
+      onClick={handleBulkHold}
+      className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+    >
+      Hold All
+    </button>
+
+    <button
+      onClick={handleBulkReturn}
+      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+    >
+      Return All
+    </button>
+
+    <button
+      onClick={handleBulkExchange}
+      className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded"
+    >
+      Exchange All
+    </button>
+
+    <button
+      onClick={() => setShowSelectBranchModal(true)}
+      className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded"
+    >
+      Select Rider All
+    </button>
+
+  </div>
 
 </div>
       {Array.isArray(Verify_Admin_MotherHub_Online_Tracking) && Verify_Admin_MotherHub_Online_Tracking.length > 0 ? (
