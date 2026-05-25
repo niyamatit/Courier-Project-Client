@@ -319,72 +319,78 @@ if (isLoading) {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Package Details</h1>
-      <div className="flex flex-wrap gap-3 mb-4">
-<div className="flex flex-wrap gap-3 mb-4">
+      <div className="mb-4">
 
-<input
-type="text"
-placeholder="Search Sender / CN Number"
-value={search}
-onChange={(e)=>{
-setSearch(
-e.target.value
-);
-setCurrentPage(1);
-}}
-className="border px-3 py-2 rounded w-full sm:w-[280px]"
-/>
+  {/* Search Filters */}
+  <div className="flex flex-col lg:flex-row lg:items-center gap-3 mb-4">
 
-<input
-type="date"
-value={fromDate}
-onChange={(e)=>{
-setFromDate(
-e.target.value
-);
-setCurrentPage(1);
-}}
-className="border px-3 py-2 rounded"
-/>
+    <input
+      type="text"
+      placeholder="Search Sender / CN Number"
+      value={search}
+      onChange={(e) => {
+        setSearch(e.target.value);
+        setCurrentPage(1);
+      }}
+      className="border px-3 py-2 rounded w-full lg:w-[300px]"
+    />
 
-<input
-type="date"
-value={toDate}
-onChange={(e)=>{
-setToDate(
-e.target.value
-);
-setCurrentPage(1);
-}}
-className="border px-3 py-2 rounded"
-/>
+    <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
 
-<button
-onClick={()=>{
-setSearch("");
-setFromDate("");
-setToDate("");
-setCurrentPage(1);
-}}
-className="bg-gray-500 text-white px-4 py-2 rounded"
->
-Clear
-</button>
+      <input
+        type="date"
+        value={fromDate}
+        onChange={(e) => {
+          setFromDate(e.target.value);
+          setCurrentPage(1);
+        }}
+        className="border px-3 py-2 rounded w-full"
+      />
 
-</div>
-  <button
-    onClick={handleBulkAccept}
-    className="bg-green-500 text-white px-4 py-2 rounded"
-  >
-    Accept All
-  </button>
+      <input
+        type="date"
+        value={toDate}
+        onChange={(e) => {
+          setToDate(e.target.value);
+          setCurrentPage(1);
+        }}
+        className="border px-3 py-2 rounded w-full"
+      />
 
-  <button
-    onClick={() => setShowSelectBranchModal(true)}
-    className="bg-blue-500 text-white px-4 py-2 rounded"
-  >
-    Select Destination Branch All
-  </button>
+    </div>
+
+    <button
+      onClick={() => {
+        setSearch("");
+        setFromDate("");
+        setToDate("");
+        setCurrentPage(1);
+      }}
+      className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+    >
+      Clear
+    </button>
+
+  </div>
+
+  {/* Action Buttons */}
+  <div className="flex flex-wrap gap-3">
+
+    <button
+      onClick={handleBulkAccept}
+      className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+    >
+      Accept All
+    </button>
+
+    <button
+      onClick={() => setShowSelectBranchModal(true)}
+      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+    >
+      Select Destination Branch All
+    </button>
+
+  </div>
 
 </div>
       {Array.isArray(Verify_Admin_MotherHub_Admin_Online_2) && Verify_Admin_MotherHub_Admin_Online_2.length > 0 ? (
@@ -408,7 +414,7 @@ Clear
                 <th className="border border-blue-500 px-4 py-2">Sender Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Recipient Mobile</th>
                 <th className="border border-blue-500 px-4 py-2">Product Details</th>
-                <th className="border border-blue-500 px-4 py-2">Dest. Branch</th>
+                <th className="border border-blue-500 px-4 py-2">CN Number</th>
                 <th className="border border-blue-500 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -435,7 +441,7 @@ Clear
                   <td className="border border-blue-500 px-4 py-2">{pkg.senderMobile}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.recipientMobile}</td>
                   <td className="border border-blue-500 px-4 py-2">{pkg.productDetails}</td>
-                  
+                  <td className="border border-blue-500 px-4 py-2">{pkg.CnNumber}</td>
                   <td className="border border-blue-500 px-4 py-2 flex flex-wrap gap-2">
                     {pkg?.Tracking_MotherHub_Received_Parcel ? (
                       <h1 className="text-green-500 border p-1 border-green-500">Accepted</h1>
