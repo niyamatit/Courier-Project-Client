@@ -354,39 +354,67 @@ const handleBulkExchange = async () => {
 
 const handleBulkRider = async () => {
 
+  if (selectedParcels.length === 0) {
+    return Swal.fire({
+      icon: "warning",
+      title: "Select parcel first"
+    });
+  }
+
   if (!selectedBranch || !note) {
     return Swal.fire({
       icon: "warning",
-      title: "Select Rider & Note",
+      title: "Select Rider & Note"
     });
   }
 
   try {
-    await axiosSecure.post("/package/bulk/select-rider", {
-      ids: selectedParcels,
-      Tracking_Destination_Branch_Select_Rider: selectedBranch,
-      Tracking_Destination_Branch_Note: note,
-      Tracking_Destination_Branch_Select_Rider_Date: new Date(),
-      done: "done",
-    });
+
+    const res =
+      await axiosSecure.post(
+        "/package/bulk/select-rider",
+        {
+          ids: selectedParcels,
+
+          Tracking_Destination_Branch_Select_Rider:
+            selectedBranch,
+
+          Tracking_Destination_Branch_Note:
+            note,
+
+          Tracking_Destination_Branch_Select_Rider_Date:
+            new Date(),
+
+          done: "done"
+        }
+      );
+
+    console.log(res.data);
 
     Swal.fire({
       icon: "success",
-      title: "Rider Assigned",
+      title: `${selectedParcels.length} Parcel Updated`
     });
 
-    setShowSelectBranchModal(false);
+    setSelectedParcels([]);
+    setSelectAll(false);
 
     setSelectedBranch("");
     setNote("");
 
+    setShowSelectBranchModal(false);
+
     refetch();
 
   } catch (error) {
+
+    console.log(error);
+
     Swal.fire({
       icon: "error",
-      title: "Bulk Rider Assign Failed",
+      title: "Bulk Rider Assign Failed"
     });
+
   }
 };
 
