@@ -696,11 +696,17 @@ if (isLoading) {
               />
             </div>
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-              onClick={handleSelectBranch}
-            >
-              Submit
-            </button>
+ className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+ onClick={() => {
+   if (selectedParcels.length > 0) {
+     handleBulkRider();
+   } else {
+     handleSelectBranch();
+   }
+ }}
+>
+ Submit
+</button>
             <button
               className="bg-red-500 text-white px-4 py-2 rounded"
               onClick={() => setShowSelectBranchModal(false)}
