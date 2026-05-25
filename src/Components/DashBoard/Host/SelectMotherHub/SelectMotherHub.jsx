@@ -15,6 +15,9 @@ const [selectAll, setSelectAll] = useState(false);
    const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 100
 ;
+const [search, setSearch] = useState("");
+const [fromDate, setFromDate] = useState("");
+const [toDate, setToDate] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
@@ -84,11 +87,71 @@ const itemsPerPage = 100
       });
     }
   };
-const totalPages = Math.ceil(Verify_Admin_MotherHub_Admin_Online_2.length / itemsPerPage);
+const filteredData =
+Verify_Admin_MotherHub_Admin_Online_2.filter(
+(pkg)=>{
 
-const paginatedData = Verify_Admin_MotherHub_Admin_Online_2.slice(
-  (currentPage - 1) * itemsPerPage,
-  currentPage * itemsPerPage
+const matchSearch =
+
+pkg?.senderName
+?.toLowerCase()
+.includes(
+search.toLowerCase()
+)
+
+||
+
+pkg?.CnNumber
+?.toString()
+?.toLowerCase()
+.includes(
+search.toLowerCase()
+);
+
+const bookingDate =
+new Date(pkg.booking);
+
+const matchFrom =
+!fromDate ||
+bookingDate >=
+new Date(fromDate);
+
+const matchTo =
+!toDate ||
+bookingDate <=
+new Date(
+new Date(toDate)
+.setHours(
+23,
+59,
+59
+)
+);
+
+return (
+matchSearch &&
+matchFrom &&
+matchTo
+);
+
+}
+);
+
+const totalPages =
+Math.ceil(
+filteredData.length /
+itemsPerPage
+);
+
+const paginatedData =
+filteredData.slice(
+(currentPage-1)
+*
+itemsPerPage,
+
+currentPage
+*
+itemsPerPage
 );
 const getPagination = () => {
   const pages = [];
@@ -257,7 +320,58 @@ if (isLoading) {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Package Details</h1>
       <div className="flex flex-wrap gap-3 mb-4">
+<div className="flex flex-wrap gap-3 mb-4">
 
+<input
+type="text"
+placeholder="Search Sender / CN Number"
+value={search}
+onChange={(e)=>{
+setSearch(
+e.target.value
+);
+setCurrentPage(1);
+}}
+className="border px-3 py-2 rounded w-full sm:w-[280px]"
+/>
+
+<input
+type="date"
+value={fromDate}
+onChange={(e)=>{
+setFromDate(
+e.target.value
+);
+setCurrentPage(1);
+}}
+className="border px-3 py-2 rounded"
+/>
+
+<input
+type="date"
+value={toDate}
+onChange={(e)=>{
+setToDate(
+e.target.value
+);
+setCurrentPage(1);
+}}
+className="border px-3 py-2 rounded"
+/>
+
+<button
+onClick={()=>{
+setSearch("");
+setFromDate("");
+setToDate("");
+setCurrentPage(1);
+}}
+className="bg-gray-500 text-white px-4 py-2 rounded"
+>
+Clear
+</button>
+
+</div>
   <button
     onClick={handleBulkAccept}
     className="bg-green-500 text-white px-4 py-2 rounded"
