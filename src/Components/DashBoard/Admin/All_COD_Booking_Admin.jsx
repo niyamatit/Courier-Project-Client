@@ -323,7 +323,7 @@ const paginatedBookings = filteredOfflines.slice(
               )
               .map((booking, index) => (
                 <tr key={booking._id} className="border">
-                  <td className="border px-4 py-2">{index + 1}</td>
+                  <td className="border px-4 py-2">{(currentPage - 1) * itemsPerPage + index + 1}</td>
                   <td className="border px-4 py-2">
                     {booking?.booking
                       ? new Date(booking.booking).toLocaleString()
