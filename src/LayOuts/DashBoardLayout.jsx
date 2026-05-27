@@ -52,9 +52,21 @@ const DashboardLayout = () => {
         {/* Sidebar Component */}
         <Sidebar></Sidebar>
         <div className='flex-1  md:ml-64'>
-          <div className='p-5'>
-            <Outlet></Outlet>
-          </div>
+          <div className='p-3 md:p-5 pb-24 md:pb-5'>
+
+  {/* Welcome Message */}
+  <div className='bg-white shadow rounded-xl p-4 md:p-5 mb-5 border-l-4 border-emerald-500'>
+    <h1 className='text-2xl font-bold text-gray-800'>
+      Welcome to Dashboard <span className='text-emerald-500'> {verifiedUser?.name || 'User'}</span>!
+    </h1>
+
+    <p className='text-gray-500 mt-1 text-sm md:text-base'>
+      Manage your Branch efficiently.
+    </p>
+  </div>
+
+  <Outlet></Outlet>
+</div>
         </div>
       </div>
     )

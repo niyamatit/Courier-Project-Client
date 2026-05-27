@@ -55,24 +55,41 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Top Navbar */}
-      <div className='bg-gray-100 flex justify-between items-center px-3 py-2 md:hidden'>
+      {/* Mobile Bottom Navbar */}
+<div className='fixed bottom-0 left-0 w-full bg-white border-t shadow-lg flex justify-around items-center py-2 z-50 md:hidden'>
 
-        {/* SMALL LOGO */}
-        <Link to='/'>
-          <img
-            src={logoImg}
-            alt='Logo'
-            className='h-12 w-auto object-contain'
-          />
-        </Link>
+  {/* Home */}
+  <Link
+    to='/'
+    className='flex flex-col items-center text-xs text-gray-700'
+  >
+    <img
+      src={logoImg}
+      alt='Logo'
+      className='h-8 w-auto object-contain'
+    />
+    <span>Home</span>
+  </Link>
 
-        <button
-          onClick={handleToggle}
-          className='p-2 rounded'
-        >
-          <AiOutlineBars className='w-6 h-6' />
-        </button>
-      </div>
+  {/* Dashboard */}
+  <Link
+    to='/dashboard'
+    className='flex flex-col items-center text-xs text-gray-700'
+  >
+    <FcSettings className='w-6 h-6' />
+    <span>Dashboard</span>
+  </Link>
+
+  {/* Menu Button */}
+  <button
+    onClick={handleToggle}
+    className='flex flex-col items-center text-xs text-gray-700'
+  >
+    <AiOutlineBars className='w-6 h-6' />
+    <span>Menu</span>
+  </button>
+
+</div>
 
       {/* Sidebar */}
       <div
