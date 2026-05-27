@@ -13,7 +13,8 @@ const All_COD_Booking_Admin = () => {
     queryFn: async () => await getPackage(),
   });
   const [verifiedUser] = useUsersData();
-
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 100;
   const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
     queryKey: ["OfflineBookings"],
     queryFn: async () => await getOffline(),
@@ -32,11 +33,14 @@ const All_COD_Booking_Admin = () => {
 const [isVerifying, setIsVerifying] = useState(false);
   const [showNumberModal, setShowNumberModal] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
-  const filteredOfflines = allBookings.filter((booking) => {
+  const filteredOfflines = allBookings
+  .filter((booking) => {
     const bookingDate = booking.booking
       ? new Date(booking.booking).toISOString().split("T")[0]
       : booking.bookingDate
-      ? new Date(booking.bookingDate + "T00:00:00").toISOString().split("T")[0]
+      ? new Date(booking.bookingDate + "T00:00:00")
+          .toISOString()
+          .split("T")[0]
       : null;
 
     if (!bookingDate) return false;
@@ -51,9 +55,22 @@ const [isVerifying, setIsVerifying] = useState(false);
     } else if (end) {
       return bookingDate <= end;
     }
-    return true;
-  });
 
+    return true;
+  })
+
+  // Latest date first
+  .sort((a, b) => {
+    const dateA = new Date(a.booking || a.bookingDate);
+    const dateB = new Date(b.booking || b.bookingDate);
+    return dateB - dateA;
+  });
+const totalPages = Math.ceil(filteredOfflines.length / itemsPerPage);
+
+const paginatedBookings = filteredOfflines.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
   
   const handleSave = async () => {
   if (!selectedBooking) return;
@@ -298,7 +315,7 @@ const [isVerifying, setIsVerifying] = useState(false);
             </tr>
           </thead>
           <tbody>
-            {filteredOfflines
+            {paginatedBookings
               .filter(
                 (booking) =>
                   (parseFloat(booking.condition) || booking.senderReceive || 0) >
@@ -386,6 +403,91 @@ const [isVerifying, setIsVerifying] = useState(false);
           </tbody>
         </table>
       )}
+      <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
+
+  {/* Prev */}
+  <button
+    disabled={currentPage === 1}
+    onClick={() => setCurrentPage(currentPage - 1)}
+    className="px-3 py-2 border rounded bg-white hover:bg-gray-100 disabled:opacity-40"
+  >
+    Prev
+  </button>
+
+  {/* First Page */}
+  <button
+    onClick={() => setCurrentPage(1)}
+    className={`px-4 py-2 rounded border ${
+      currentPage === 1
+        ? "bg-emerald-500 text-white"
+        : "bg-white"
+    }`}
+  >
+    1
+  </button>
+
+  {/* Left dots */}
+  {currentPage > 4 && (
+    <span className="px-2">...</span>
+  )}
+
+  {/* Middle Pages */}
+  {[...Array(totalPages)].map((_, index) => {
+    const page = index + 1;
+
+    if (
+      page !== 1 &&
+      page !== totalPages &&
+      page >= currentPage - 1 &&
+      page <= currentPage + 1
+    ) {
+      return (
+        <button
+          key={page}
+          onClick={() => setCurrentPage(page)}
+          className={`px-4 py-2 rounded border ${
+            currentPage === page
+              ? "bg-emerald-500 text-white"
+              : "bg-white"
+          }`}
+        >
+          {page}
+        </button>
+      );
+    }
+
+    return null;
+  })}
+
+  {/* Right dots */}
+  {currentPage < totalPages - 3 && (
+    <span className="px-2">...</span>
+  )}
+
+  {/* Last Page */}
+  {totalPages > 1 && (
+    <button
+      onClick={() => setCurrentPage(totalPages)}
+      className={`px-4 py-2 rounded border ${
+        currentPage === totalPages
+          ? "bg-emerald-500 text-white"
+          : "bg-white"
+      }`}
+    >
+      {totalPages}
+    </button>
+  )}
+
+  {/* Next */}
+  <button
+    disabled={currentPage === totalPages}
+    onClick={() => setCurrentPage(currentPage + 1)}
+    className="px-3 py-2 border rounded bg-white hover:bg-gray-100 disabled:opacity-40"
+  >
+    Next
+  </button>
+
+</div>
 
       {/* Payment Modal */}
       {selectedBooking && (
