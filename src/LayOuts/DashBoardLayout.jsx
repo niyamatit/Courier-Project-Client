@@ -65,10 +65,12 @@ const DashboardLayout = () => {
     </p>
   </div>
 
-  <Outlet></Outlet>
+ 
 </div>) 
           }
+          <Outlet></Outlet>
         </div>
+         
       </div>
     )
   }
