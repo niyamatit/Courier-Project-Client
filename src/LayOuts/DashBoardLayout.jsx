@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useLocation } from "react-router-dom"
 import Sidebar from "../Components/DashBoard/SideBar/SideBar"
 import useUsersData from "../hooks/useUsersData/useUsersData";
 import axiosSecure from "../api/axiosSecure";
@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const DashboardLayout = () => {
   const [verifiedUser] =  useUsersData();
+  const location = useLocation();
   // const [verifiedUser] =  useUsersData();
   const { data: Branches = [], isLoading } = useQuery({
     queryKey: ['Branches'],
@@ -52,7 +53,8 @@ const DashboardLayout = () => {
         {/* Sidebar Component */}
         <Sidebar></Sidebar>
         <div className='flex-1  md:ml-64'>
-          <div className='p-3 md:p-5 pb-24 md:pb-5'>
+          {
+            location.pathname === '/dashboard' && (<div className='p-3 md:p-5 pb-24 md:pb-5'>
   <div className='bg-white shadow rounded-xl p-4 md:p-5 mb-5 border-l-4 border-emerald-500'>
     <h1 className='text-2xl font-bold text-gray-800'>
       Welcome to Dashboard <span className='text-emerald-500'> {verifiedUser?.name || 'User'}</span>!
@@ -64,7 +66,8 @@ const DashboardLayout = () => {
   </div>
 
   <Outlet></Outlet>
-</div>
+</div>) 
+          }
         </div>
       </div>
     )
