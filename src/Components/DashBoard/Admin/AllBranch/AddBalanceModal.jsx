@@ -11,14 +11,14 @@ const AddBalanceModal = ({ show, onClose, branch, refetch }) => {
     const handleSubmit = async () => {
         const parsedAmount = parseFloat(amount);
 
-        if (!amount || isNaN(parsedAmount) || parsedAmount <= 0) {
-            Swal.fire({
-                title: "Invalid Amount!",
-                text: "Please enter a valid positive number.",
-                icon: "error",
-            });
-            return;
-        }
+        // if (!amount || isNaN(parsedAmount) || parsedAmount <= 0) {
+        //     Swal.fire({
+        //         title: "Invalid Amount!",
+        //         text: "Please enter a valid positive number.",
+        //         icon: "error",
+        //     });
+        //     return;
+        // }
 
         const updatedAmount = parseFloat(branch?.Branch_Balace || 0) + parsedAmount;
         
