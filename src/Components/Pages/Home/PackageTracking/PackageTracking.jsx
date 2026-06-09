@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import axiosSecure from "../../../../api/axiosSecure";
