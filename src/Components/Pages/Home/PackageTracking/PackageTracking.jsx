@@ -121,12 +121,12 @@ const PackageTracking = () => {
                       <h1 className="text-gray-700 font-semibold">
                         Received By: {searchResult?.Branch_Name || searchResult?.Merchant_Name || "N/A"}
                       </h1>
-                      <p className="text-gray-500 text-sm">
+                      {/* <p className="text-gray-500 text-sm">
                         Branch Received Time:{" "}
                         {(searchResult?.Tracking_Online_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Merchant_Booking_Received_Parcel || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time_Int)
                           ? formatTime(searchResult.Tracking_Online_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time || searchResult?.Tracking_Merchnat_Booking_Received_Parcel_Time || searchResult?.Tracking_Booking_Branch_Received_Parcel_Time_Int)
                           : "Not Available"}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </div>
@@ -148,14 +148,14 @@ const PackageTracking = () => {
                           Sent To MotherHub Branch
 
                         </h1>
-                        <p className="text-gray-500 text-sm">
+                        {/* <p className="text-gray-500 text-sm">
                           Sent Time:{" "}
                           {(searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date_Int )
                             ? formatTime(
                               searchResult.Tracking_Admin_Select_Online_MotherHub_Branch_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date || searchResult?.Tracking_Booking_Merchant_Select_MotherHub_Date || searchResult?.Tracking_Booking_Branch_Select_MotherHub_Date_Int
                             )
                             : "Not Available"}
-                        </p>
+                        </p> */}
                         {/* <p className="text-gray-500 text-sm">
                 Admin Note:{" "}
                 {searchResult?.Tracking_Admin_Select_Online_MotherHub_Branch_Note ||
@@ -182,14 +182,14 @@ const PackageTracking = () => {
                         <h1 className="text-gray-700 font-semibold">
                           Received MotherHub Branch
                         </h1>
-                        <p className="text-gray-500 text-sm">
+                        {/* <p className="text-gray-500 text-sm">
                           Received Time:{" "}
                           {searchResult?.Tracking_MotherHub_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant ||  searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Int
                             ? formatTime(
                               searchResult.Tracking_MotherHub_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time || searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Merchant ||  searchResult?.Tracking_MotherHub_Branch_Received_Parcel_Time_Int
                             )
                             : "Not Available"}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </div>
@@ -211,14 +211,14 @@ const PackageTracking = () => {
                         <h1 className="text-gray-700 font-semibold">
                           Sent to Destination Branch
                         </h1>
-                        <p className="text-gray-500 text-sm">
+                        {/* <p className="text-gray-500 text-sm">
                           Sent Time:{" "}
                           {searchResult?.Tracking_MotherHub_Branch_Select_Dest_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant
                             ? formatTime(
                               searchResult.Tracking_MotherHub_Branch_Select_Dest_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date || searchResult?.Tracking_MotherHub_Branch_Select_Destiantion_Branch_Date_Merchant
                             )
                             : "Not Available"}
-                        </p>
+                        </p> */}
                         {/* <p className="text-gray-500 text-sm">
                 Note:{" "}
                 {searchResult?.Tracking_MotherHub_Branch_Note || "Not Available"}
@@ -243,7 +243,7 @@ const PackageTracking = () => {
                             </div>
                             <div>
                               <h1 className="text-gray-700 font-semibold">Parcel Received Destination  Branch</h1>
-                              <p className="text-gray-500 text-sm">Received Time: {(searchResult?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant || searchResult?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int) ? formatTime(searchResult.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant || searchResult?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int) : 'Not Available'}</p>
+                              {/* <p className="text-gray-500 text-sm">Received Time: {(searchResult?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant || searchResult?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int) ? formatTime(searchResult.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Offline || searchResult?.Tracking_Destination_Branch_Received_Parcel_Time_Merchant || searchResult?.Tracking_Destination_Branch_MotherHub_Received_Parcel_Time_Int) : 'Not Available'}</p> */}
 
                             </div>
                           </div>
@@ -270,14 +270,14 @@ const PackageTracking = () => {
                           Branch Select Rider (
                           {searchResult?.Tracking_Destination_Branch_Select_Rider || searchResult?.Tracking_Destination_Branch_Select_Rider_Offline || searchResult?.Tracking_Destination_Branch_Select_Rider_Merchant})
                         </h1>
-                        <p className="text-gray-500 text-sm">
+                        {/* <p className="text-gray-500 text-sm">
                           Select Time:{" "}
                           {(searchResult?.Tracking_Destination_Branch_Select_Rider_Date || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Offline || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Merchant)
                             ? formatTime(
                               searchResult.Tracking_Destination_Branch_Select_Rider_Date || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Offline || searchResult?.Tracking_Destination_Branch_Select_Rider_Date_Merchant
                             )
                             : "Not Available"}
-                        </p>
+                        </p> */}
                         {/* <p className="text-gray-500 text-sm">
                 Note:{" "}
                 {searchResult?.Tracking_Destination_Branch_Note || "Not Available"}
@@ -302,13 +302,13 @@ const PackageTracking = () => {
                             </div>
                             <div>
                               <h1 className="text-gray-700 font-semibold">{(searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Successful || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Successful) || (searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Returned || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Returned) || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Successful_Int || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int ||  searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Returned_Int}</ h1>
-                              <p className="text-gray-500 text-sm">
+                              {/* <p className="text-gray-500 text-sm">
                                 {(searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Time || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int)
                                   ? `Delivery Time: ${formatTime(searchResult.Tracking_Rider_Online_Booking_Delivary_Update_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Time || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Time_Int) }`
                                   : (searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Return_Time ||searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time_Int)
                                     ? `Returned Time: ${formatTime(searchResult.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time_Int)}`
                                     : 'Not Available'}
-                              </p>
+                              </p> */}
 
 
                               
@@ -335,7 +335,7 @@ const PackageTracking = () => {
                             </div>
                             <div>
                               <h1 className="text-gray-700 font-semibold">{(searchResult?.Tracking_Destination_Branch_Delivery_Parcel || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Successful || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Successful) || (searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Returned || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Returned || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Returned) || searchResult?.Tracking_Destination_Branch_Returned_Parcel || searchResult?.Tracking_Destination_Branch_Delivery_Parcel_Int  || searchResult?.Tracking_Destination_Branch_Returned_Parcel_Int}</ h1>
-                              <p className="text-gray-500 text-sm">
+                              {/* <p className="text-gray-500 text-sm">
                                 {(searchResult?.Tracking_Destination_Branch_Delivery_Parcel_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Time 
                                   || searchResult?.Tracking_Destination_Branch_Returned_Parcel_Time || searchResult?.Tracking_Destination_Branch_Delivery_Parcel_Time_Int || searchResult?.Tracking_Destination_Branch_Returned_Parcel_Time_Int
                                 )
@@ -343,7 +343,7 @@ const PackageTracking = () => {
                                   : (searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Return_Time || searchResult?.Tracking_Destination_Branch_Delivery_Parcel_Time_Int)
                                     ? `Returned Time: ${formatTime(searchResult.Tracking_Rider_Online_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Offline_Booking_Delivary_Update_Return_Time || searchResult?.Tracking_Rider_Merchant_Delivary_Update_Return_Time) || searchResult?.Tracking_Destination_Branch_Returned_Parcel_Time || searchResult?.Tracking_Destination_Branch_Returned_Parcel_Time_Int}`
                                     : 'Not Available'}
-                              </p>
+                              </p> */}
 
 
                               {/* <p className="text-gray-500 text-sm">Note: {searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Note || searchResult?.Tracking_Rider_Online_Booking_Delivary_Update_Return_Note ||'Not Available'}</p> */}
