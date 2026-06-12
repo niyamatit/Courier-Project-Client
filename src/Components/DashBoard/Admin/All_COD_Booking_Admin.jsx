@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getOffline, getPackage } from "../../../api/auth";
+import { getAllPackage_Updated, getAllPackage_Updated_Admin, getOffline, getPackage } from "../../../api/auth";
 import { useState } from "react";
 import useUsersData from "../../../hooks/useUsersData/useUsersData";
 import axiosSecure from "../../../api/axiosSecure";
@@ -8,21 +8,40 @@ import Swal from "sweetalert2";
 
 
 const All_COD_Booking_Admin = () => {
-  const { data: OnlineBookings = [], isLoading: isOnlineLoading } = useQuery({
-    queryKey: ["OnlineBookings"],
-    queryFn: async () => await getPackage(),
-  });
-  const [verifiedUser] = useUsersData();
+    const [verifiedUser] = useUsersData();
 const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 100;
-  const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
-    queryKey: ["OfflineBookings"],
-    queryFn: async () => await getOffline(),
-  });
+const queryClient = useQueryClient();
+  // const { data: OnlineBookings = [], isLoading: isOnlineLoading } = useQuery({
+  //   queryKey: ["OnlineBookings"],
+  //   queryFn: async () => await getPackage(),
+  // });
 
-  const queryClient = useQueryClient();
-  const allBookings = [...OnlineBookings, ...OfflineBookings];
+  // const { data: OfflineBookings = [], isLoading: isOfflineLoading } = useQuery({
+  //   queryKey: ["OfflineBookings"],
+  //   queryFn: async () => await getOffline(),
+  // });
 
+  
+  // const allBookings = [...OnlineBookings, ...OfflineBookings];
+
+
+
+const {
+  data: packageResponse,
+  isLoading,
+} = useQuery({
+  queryKey: ["OnlineBookings", currentPage],
+  queryFn: () =>
+    getAllPackage_Updated_Admin(
+      null,
+      currentPage,
+      itemsPerPage
+    ),
+});
+
+const allBookings = packageResponse?.data || [];
+const totalPages = packageResponse?.totalPages || 0;
   const [searchStartDate, setSearchStartDate] = useState("");
   const [searchEndDate, setSearchEndDate] = useState("");
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -59,18 +78,18 @@ const [isVerifying, setIsVerifying] = useState(false);
     return true;
   })
 
-  // Latest date first
+  
   .sort((a, b) => {
     const dateA = new Date(a.booking || a.bookingDate);
     const dateB = new Date(b.booking || b.bookingDate);
     return dateB - dateA;
   });
-const totalPages = Math.ceil(filteredOfflines.length / itemsPerPage);
 
-const paginatedBookings = filteredOfflines.slice(
-  (currentPage - 1) * itemsPerPage,
-  currentPage * itemsPerPage
-);
+
+// const paginatedBookings = filteredOfflines.slice(
+//   (currentPage - 1) * itemsPerPage,
+//   currentPage * itemsPerPage
+// );
   
   const handleSave = async () => {
   if (!selectedBooking) return;
@@ -293,7 +312,7 @@ const paginatedBookings = filteredOfflines.slice(
         </div>
       </div>
 
-      {(isOnlineLoading || isOfflineLoading) ? (
+      {(isLoading) ? (
         <p>Loading...</p>
       ) : (
         <table className="min-w-full border border-gray-300">
@@ -315,7 +334,7 @@ const paginatedBookings = filteredOfflines.slice(
             </tr>
           </thead>
           <tbody>
-            {paginatedBookings
+            {filteredOfflines
               .filter(
                 (booking) =>
                   (parseFloat(booking.condition) || booking.senderReceive || 0) >

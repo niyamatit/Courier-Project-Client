@@ -58,6 +58,10 @@ export const getAllPackage_Updated = async (email,page = 1,limit = 50) => {
   const { data } = await axiosSecure.get(`/packages-online/${email}?page=${page}&limit=${limit}`);
   return data;
 };
+export const getAllPackage_Updated_Admin = async (email,page = 1,limit = 100) => {
+  const { data } = await axiosSecure.get(`/packages-online/?page=${page}&limit=${limit}`);
+  return data;
+};
 
 
 export const updateBooking = async (updatedBooking) => {
