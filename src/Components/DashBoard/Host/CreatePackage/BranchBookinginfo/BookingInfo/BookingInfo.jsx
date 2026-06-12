@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import useAuth from "../../../../../../hooks/useAuth";
-import { getAllPackage, getPackage, updateBooking } from "../../../../../../api/auth";
+import { getAllPackage, getAllPackage_Updated, getPackage, updateBooking } from "../../../../../../api/auth";
 
 import TableBooking from "../TableBooking";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,19 +16,22 @@ const BookingInfo = () => {
     const [searchStartDate, setSearchStartDate] = useState("");
     const [searchEndDate, setSearchEndDate] = useState("");
     const [verifiedUser] = useUsersData();
+    const [page, setPage] = useState(1);
+const [limit] = useState(100);
 
-    const {
-        data: bookings = [],
-        isLoading,
-    } = useQuery({
-        queryKey: ['bookings', verifiedUser?.email],
-        enabled: !loading && !!verifiedUser?.email,
-        queryFn: async () => await getAllPackage(verifiedUser?.email),
-        onSuccess: (data) => {
-            setInitialBooking(data);
-        },
+    const {data,isLoading} =useQuery({
+  queryKey: ['bookings', verifiedUser?.email, page],
+  enabled: !loading && !!verifiedUser?.email,
+  queryFn: () =>
+    getAllPackage_Updated(
+      verifiedUser?.email,
+      page,
+      limit
+    ),
     });
-
+const bookings = data?.data || [];
+const total = data?.total || 0;
+const totalPages = data?.totalPages || 0;
     const mutation = useMutation({
         mutationFn: updateBooking,
         onSuccess: () => {
@@ -50,19 +53,45 @@ const BookingInfo = () => {
         const bookingDate = new Date(booking.booking).toISOString().split("T")[0];
         const start = searchStartDate;
         const end = searchEndDate;
-
-        if (start && end) {
-            return bookingDate >= start && bookingDate <= end;
+if(start && end){
+return bookingDate >= start && bookingDate <= end;
         } else if (start) {
             return bookingDate >= start;
-        } else if (end) {
+        } else if (end){
             return bookingDate <= end;
         }
         return true;
     });
 
     if (isLoading) return <p>Loading...</p>;
+const getPagination = (currentPage, totalPages) => {
+  const pages = [];
 
+  if (totalPages <= 7) {
+    return [...Array(totalPages).keys()].map((i) => i + 1);
+  }
+
+  pages.push(1);
+
+  if (currentPage > 3) {
+    pages.push("...");
+  }
+
+  const start = Math.max(2, currentPage - 1);
+  const end = Math.min(totalPages - 1, currentPage + 1);
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+
+  if (currentPage < totalPages - 2) {
+    pages.push("...");
+  }
+
+  pages.push(totalPages);
+
+  return pages;
+};
     return (
         <div className='container mx-auto px-4 sm:px-8'>
             <h2 className='text-3xl font-bold text-gray-700 mb-4 text-center mt-5'>All Online Booking</h2>
@@ -142,6 +171,43 @@ const BookingInfo = () => {
                             </tbody>
                         </table>
                     </div>
+                    <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
+  <button
+    disabled={page === 1}
+    onClick={() => setPage((prev) => prev - 1)}
+    className="px-3 py-1 border rounded disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  {getPagination(page, totalPages).map((item, index) =>
+    item === "..." ? (
+      <span key={index} className="px-2">
+        ...
+      </span>
+    ) : (
+      <button
+        key={item}
+        onClick={() => setPage(item)}
+        className={`px-3 py-1 rounded border ${
+          page === item
+            ? "bg-blue-500 text-white"
+            : "bg-white"
+        }`}
+      >
+        {item}
+      </button>
+    )
+  )}
+
+  <button
+    disabled={page === totalPages}
+    onClick={() => setPage((prev) => prev + 1)}
+    className="px-3 py-1 border rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
                 </div>
             </div>
 
