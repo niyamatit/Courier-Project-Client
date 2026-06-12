@@ -105,6 +105,7 @@ const getPagination = (currentPage, totalPages) => {
 
   return pages;
 };
+
     return (
         <div className='container mx-auto px-4 sm:px-8'>
             <h2 className='text-3xl font-bold text-gray-700 mb-4 text-center mt-5'>All Online Booking</h2>

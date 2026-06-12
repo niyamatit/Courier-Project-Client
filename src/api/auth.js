@@ -174,7 +174,16 @@ export const getAllUsers = async () => {
 //     return data.users; // Adjust based on your actual API response structure
 // };
 
+export const getAllCodBookings = async (
+  page = 1,
+  limit = 100
+) => {
+  const { data } = await axiosSecure.get(
+    `/all-cod-bookings?page=${page}&limit=${limit}`
+  );
 
+  return data;
+};
 
 // Get all apply
 export const getPendingApply = async () => {

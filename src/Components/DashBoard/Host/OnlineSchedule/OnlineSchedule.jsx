@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import useUsersData from "../../../../hooks/useUsersData/useUsersData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
 import { getAllPackage_Updated } from "../../../../api/auth";
@@ -40,7 +40,9 @@ const [selectAll, setSelectAll] = useState(false);
 });
 const Verify_Admin_MotherHub_Online =
   packageResponse?.data || [];
-
+useEffect(() => {
+  setCurrentPage(1);
+}, [searchTerm, startDate, endDate]);
 const totalPages =
   packageResponse?.totalPages || 0;
 
