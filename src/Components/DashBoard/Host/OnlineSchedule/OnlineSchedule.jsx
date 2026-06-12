@@ -3,6 +3,7 @@ import useUsersData from "../../../../hooks/useUsersData/useUsersData";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../../api/axiosSecure";
+import { getAllPackage_Updated } from "../../../../api/auth";
 
 
 const OnlineSchedule = () => {
@@ -16,7 +17,8 @@ const [searchTerm, setSearchTerm] = useState("");
 const [startDate, setStartDate] = useState("");
 const [endDate, setEndDate] = useState("");
 const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 100;
+const itemsPerPage = 50;
+
 const [selectedParcels, setSelectedParcels] = useState([]);
 const [selectAll, setSelectAll] = useState(false);
   const { data: users = [] } = useQuery({
@@ -26,16 +28,24 @@ const [selectAll, setSelectAll] = useState(false);
       return res.data;
     }
   });
-  const { data: Verify_Admin_MotherHub_Online = [], refetch , isLoading } = useQuery({
-    queryKey: ["Verify_Admin_MotherHub_Online", verifiedUser?.email],
-    // Only enable this query if verifiedUser.email exists
-    enabled: !!verifiedUser?.email,
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/pacfkagetuinvnmxbnc422445/${verifiedUser?.email}`);
-      // Ensure the response is always an array
-      return Array.isArray(res.data) ? res.data : [res.data];
-    },
-  });
+ const {data: packageResponse,refetch,isLoading,} =useQuery({
+  queryKey: ["Verify_Admin_MotherHub_Online",verifiedUser?.email,currentPage,],
+  enabled: !!verifiedUser?.email,
+  queryFn: () =>
+    getAllPackage_Updated(
+      verifiedUser?.email,
+      currentPage,
+      itemsPerPage
+    ),
+});
+const Verify_Admin_MotherHub_Online =
+  packageResponse?.data || [];
+
+const totalPages =
+  packageResponse?.totalPages || 0;
+
+const total =
+  packageResponse?.total || 0;
   const handleAccept = async (pkgId) => {
     try {
       await axiosSecure.post(`/online/accept/parcel/${pkgId}`);
@@ -103,32 +113,45 @@ const filteredPackages = Verify_Admin_MotherHub_Online.filter((pkg) => {
 
     return matchesSearch && matchesDate;
 });
-const totalPages = Math.ceil(filteredPackages.length / itemsPerPage);
-const paginatedData = filteredPackages.slice(
-  (currentPage - 1) * itemsPerPage,
-  currentPage * itemsPerPage
-);
+
+const paginatedData = filteredPackages
 const getPagination = () => {
   const pages = [];
-  // const maxVisible = 5; 
 
   if (totalPages <= 7) {
-    return [...Array(totalPages)].map((_, i) => i + 1);
+    return Array.from(
+      { length: totalPages },
+      (_, i) => i + 1
+    );
   }
+
   pages.push(1);
 
   if (currentPage > 4) {
     pages.push("...");
   }
-  const start = Math.max(2, currentPage - 1);
-  const end = Math.min(totalPages - 1, currentPage + 1);
+
+  let start = Math.max(2, currentPage - 1);
+  let end = Math.min(totalPages - 1, currentPage + 1);
+
+  if (currentPage <= 3) {
+    start = 2;
+    end = 4;
+  }
+
+  if (currentPage >= totalPages - 2) {
+    start = totalPages - 3;
+    end = totalPages - 1;
+  }
 
   for (let i = start; i <= end; i++) {
     pages.push(i);
   }
+
   if (currentPage < totalPages - 3) {
     pages.push("...");
   }
+
   pages.push(totalPages);
 
   return pages;

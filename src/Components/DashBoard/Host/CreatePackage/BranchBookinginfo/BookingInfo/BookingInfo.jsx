@@ -17,7 +17,7 @@ const BookingInfo = () => {
     const [searchEndDate, setSearchEndDate] = useState("");
     const [verifiedUser] = useUsersData();
     const [page, setPage] = useState(1);
-const [limit] = useState(100);
+const [limit] = useState(50);
 
     const {data,isLoading} =useQuery({
   queryKey: ['bookings', verifiedUser?.email, page],
@@ -68,23 +68,36 @@ const getPagination = (currentPage, totalPages) => {
   const pages = [];
 
   if (totalPages <= 7) {
-    return [...Array(totalPages).keys()].map((i) => i + 1);
+    return Array.from(
+      { length: totalPages },
+      (_, i) => i + 1
+    );
   }
 
   pages.push(1);
 
-  if (currentPage > 3) {
+  if (currentPage > 4) {
     pages.push("...");
   }
 
-  const start = Math.max(2, currentPage - 1);
-  const end = Math.min(totalPages - 1, currentPage + 1);
+  let start = Math.max(2, currentPage - 1);
+  let end = Math.min(totalPages - 1, currentPage + 1);
+
+  if (currentPage <= 4) {
+    start = 2;
+    end = 5;
+  }
+
+  if (currentPage >= totalPages - 3) {
+    start = totalPages - 4;
+    end = totalPages - 1;
+  }
 
   for (let i = start; i <= end; i++) {
     pages.push(i);
   }
 
-  if (currentPage < totalPages - 2) {
+  if (currentPage < totalPages - 3) {
     pages.push("...");
   }
 
