@@ -16,23 +16,83 @@ import axios from "axios";
 
 
 // Function to convert numbers to words
+// const numberToWords = (num) => {
+//     const a = [
+//         '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+//         'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
+//     ];
+//     const b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+//     const inWords = (n) => {
+//         if (n < 20) return a[n];
+//         if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? '-' + a[n % 10] : '');
+//         if (n < 1000) return a[Math.floor(n / 100)] + ' hundred' + (n % 100 ? ' ' + inWords(n % 100) : '');
+//         return inWords(Math.floor(n / 1000)) + ' thousand' + (n % 1000 ? ' ' + inWords(n % 1000) : '');
+//     };
+
+//     return num === 0 ? 'zero' : inWords(num);
+// };
 const numberToWords = (num) => {
-    const a = [
-        '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
-        'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
-    ];
-    const b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+  if (!Number.isFinite(num)) return "";
+  if (num < 0) return "minus " + numberToWords(Math.abs(num));
+  if (num === 0) return "zero";
 
-    const inWords = (n) => {
-        if (n < 20) return a[n];
-        if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? '-' + a[n % 10] : '');
-        if (n < 1000) return a[Math.floor(n / 100)] + ' hundred' + (n % 100 ? ' ' + inWords(n % 100) : '');
-        return inWords(Math.floor(n / 1000)) + ' thousand' + (n % 1000 ? ' ' + inWords(n % 1000) : '');
-    };
+  const ones = [
+    "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+    "sixteen", "seventeen", "eighteen", "nineteen",
+  ];
 
-    return num === 0 ? 'zero' : inWords(num);
+  const tens = [
+    "", "", "twenty", "thirty", "forty", "fifty",
+    "sixty", "seventy", "eighty", "ninety",
+  ];
+
+  const convert = (n) => {
+    if (n < 20) {
+      return ones[n];
+    }
+
+    if (n < 100) {
+      return (
+        tens[Math.floor(n / 10)] +
+        (n % 10 ? `-${ones[n % 10]}` : "")
+      );
+    }
+
+    if (n < 1000) {
+      return (
+        ones[Math.floor(n / 100)] +
+        " hundred" +
+        (n % 100 ? ` ${convert(n % 100)}` : "")
+      );
+    }
+
+    if (n < 1000000) {
+      return (
+        convert(Math.floor(n / 1000)) +
+        " thousand" +
+        (n % 1000 ? ` ${convert(n % 1000)}` : "")
+      );
+    }
+
+    if (n < 1000000000) {
+      return (
+        convert(Math.floor(n / 1000000)) +
+        " million" +
+        (n % 1000000 ? ` ${convert(n % 1000000)}` : "")
+      );
+    }
+
+    return (
+      convert(Math.floor(n / 1000000000)) +
+      " billion" +
+      (n % 1000000000 ? ` ${convert(n % 1000000000)}` : "")
+    );
+  };
+
+  return convert(Math.floor(num));
 };
-
 const OnlineBooking_Merchant = () => {
     const [packageTrackingNumber, setPackageTrackingNumber] = useState([]);
     const naviGate = useNavigate();

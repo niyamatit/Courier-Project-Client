@@ -15,23 +15,83 @@ import axios from "axios";
 
 
 // Function to convert numbers to words
+// const numberToWords = (num) => {
+//     const a = [
+//         '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+//         'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
+//     ];
+//     const b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+//     const inWords = (n) => {
+//         if (n < 20) return a[n];
+//         if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? '-' + a[n % 10] : '');
+//         if (n < 1000) return a[Math.floor(n / 100)] + ' hundred' + (n % 100 ? ' ' + inWords(n % 100) : '');
+//         return inWords(Math.floor(n / 1000)) + ' thousand' + (n % 1000 ? ' ' + inWords(n % 1000) : '');
+//     };
+
+//     return num === 0 ? 'zero' : inWords(num);
+// };
 const numberToWords = (num) => {
-    const a = [
-        '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
-        'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
-    ];
-    const b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+  if (!Number.isFinite(num)) return "";
+  if (num < 0) return "minus " + numberToWords(Math.abs(num));
+  if (num === 0) return "zero";
 
-    const inWords = (n) => {
-        if (n < 20) return a[n];
-        if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? '-' + a[n % 10] : '');
-        if (n < 1000) return a[Math.floor(n / 100)] + ' hundred' + (n % 100 ? ' ' + inWords(n % 100) : '');
-        return inWords(Math.floor(n / 1000)) + ' thousand' + (n % 1000 ? ' ' + inWords(n % 1000) : '');
-    };
+  const ones = [
+    "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+    "sixteen", "seventeen", "eighteen", "nineteen",
+  ];
 
-    return num === 0 ? 'zero' : inWords(num);
+  const tens = [
+    "", "", "twenty", "thirty", "forty", "fifty",
+    "sixty", "seventy", "eighty", "ninety",
+  ];
+
+  const convert = (n) => {
+    if (n < 20) {
+      return ones[n];
+    }
+
+    if (n < 100) {
+      return (
+        tens[Math.floor(n / 10)] +
+        (n % 10 ? `-${ones[n % 10]}` : "")
+      );
+    }
+
+    if (n < 1000) {
+      return (
+        ones[Math.floor(n / 100)] +
+        " hundred" +
+        (n % 100 ? ` ${convert(n % 100)}` : "")
+      );
+    }
+
+    if (n < 1000000) {
+      return (
+        convert(Math.floor(n / 1000)) +
+        " thousand" +
+        (n % 1000 ? ` ${convert(n % 1000)}` : "")
+      );
+    }
+
+    if (n < 1000000000) {
+      return (
+        convert(Math.floor(n / 1000000)) +
+        " million" +
+        (n % 1000000 ? ` ${convert(n % 1000000)}` : "")
+      );
+    }
+
+    return (
+      convert(Math.floor(n / 1000000000)) +
+      " billion" +
+      (n % 1000000000 ? ` ${convert(n % 1000000000)}` : "")
+    );
+  };
+
+  return convert(Math.floor(num));
 };
-
 const CreatePackage = () => {
     const [packageTrackingNumber, setPackageTrackingNumber] = useState([]);
     const [bookingInfo, setBookingInfo] = useState(null);
@@ -331,7 +391,17 @@ const handleDivisionChange = (e) => {
             toast.error("Amount must be at least 100!");
             return;
         }
-    
+    const amountNumber = Number(amount);
+
+if (!Number.isFinite(amountNumber)) {
+  Swal.fire({
+    icon: "error",
+    title: "Invalid Amount",
+  });
+  return;
+}
+
+
         const form = e.target;
         const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
@@ -428,7 +498,7 @@ const handleDivisionChange = (e) => {
             setIsOpen(true);
     
             const response = await addPackage(packageData);
-            // console.log(response,"Respposne");
+            console.log(response,"Respposne");
             if (response?.insertedId) {
                 SetCnNumber(response.CnNumber);
                 const finalBookingInfo = {
@@ -494,7 +564,8 @@ const MessageInfo = {
     date : new Date().toISOString(),
 }
 const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
-
+ form.reset();
+        setAmount('');
             }
         } catch (error) {
             console.error("Error:", error.message);
@@ -503,7 +574,23 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
                 error.response?.data?.message ||
                 error.message ||
                 "An error occurred while creating the package.";
-        
+        if (error.response?.status === 429) {
+    Swal.fire({
+      icon: "warning",
+      title: "Duplicate Booking",
+      html: `
+        <p>
+          A booking with the same <b>Sender</b>, <b>Receiver</b> and
+          <b>Branch</b> was created recently.
+        </p>
+        <br/>
+        <b>Please wait 30 seconds and try again.</b>
+      `,
+      confirmButtonText: "OK",
+    });
+
+    return;
+  }
             if (error.response?.status === 425455) { 
                 Swal.fire({
                     position: "top-end",
@@ -525,8 +612,7 @@ const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
             setIsOpen(false);
         }
     
-        form.reset();
-        setAmount('');
+       
     };
 
     const fetchDeliveryRetrunData = async (recipientMobile)=>{
