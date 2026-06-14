@@ -160,6 +160,9 @@ const [toDate, setToDate] = useState("");
     pkg?.senderName
       ?.toLowerCase()
       ?.includes(search.toLowerCase()) ||
+    pkg?.recipientMobile
+      ?.toLowerCase()
+      ?.includes(search.toLowerCase()) ||
     pkg?.CnNumber
       ?.toString()
       ?.toLowerCase()
@@ -432,7 +435,7 @@ if (isLoading) {
 
     <input
       type="text"
-      placeholder="Search Sender / CN Number"
+      placeholder="Search Sender/Receiver / CN Number"
       value={search}
       onChange={(e) => {
         setSearch(e.target.value);
