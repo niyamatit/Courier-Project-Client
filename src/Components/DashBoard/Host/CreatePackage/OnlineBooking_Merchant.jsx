@@ -397,7 +397,15 @@ useEffect(() => {
             toast.error("Amount must be at least 60!");
             return;
         }
+     const amountNumber = Number(amount);
     
+    if (!Number.isFinite(amountNumber)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Amount",
+      });
+      return;
+    }
         const form = e.target;
         const districtName = getDistrictName(selectedDistrict);
         const senderName = form.senderName.value;
@@ -568,7 +576,23 @@ useEffect(() => {
                 error.response?.data?.message ||
                 error.message ||
                 "An error occurred while creating the package.";
+         if (error.response?.status === 429) {
+            Swal.fire({
+              icon: "warning",
+              title: "Duplicate Booking",
+              html: `
+                <p>
+                  A booking with the same <b>Sender</b>, <b>Receiver</b> and
+                  <b>Branch</b> was created recently.
+                </p>
+                <br/>
+                <b>Please wait 30 seconds and try again.</b>
+              `,
+              confirmButtonText: "OK",
+            });
         
+            return;
+          }
             if (error.response?.status === 409) {  
                 Swal.fire({
                     position: "top-end",
