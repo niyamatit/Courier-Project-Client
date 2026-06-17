@@ -113,6 +113,7 @@ const CreatePackage = () => {
     const [qty, setQty] = useState('');
 const [autoRateOverride, setAutoRateOverride] = useState(false);
     const [userModified, setUserModified] = useState(false);
+    const [isBookingLoading, setIsBookingLoading] = useState(false);
     const [DeliveryComplete, setDeliveryComplete] = useState(0);
     const [DeliveryPending, setDeliveryPending] = useState(0);
     const [ReNumber, SetNumber] = useState(0);
@@ -385,19 +386,22 @@ const handleDivisionChange = (e) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+     setIsBookingLoading(true);
         if (parseFloat(amount) < 100) {
             setAmountError("Value must be greater than or equal to 100");
             toast.error("Amount must be at least 100!");
+            setIsBookingLoading(false);
             return;
         }
     const amountNumber = Number(amount);
 
 if (!Number.isFinite(amountNumber)) {
+      setIsBookingLoading(false)
   Swal.fire({
     icon: "error",
     title: "Invalid Amount",
   });
+
   return;
 }
 
@@ -421,11 +425,13 @@ if (!Number.isFinite(amountNumber)) {
     
         try {
              if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
+                setIsBookingLoading(false)
                     Swal.fire({
                       icon: "error",
                       title: "Error",
                       text: "Branch balance data is not available. Please reload the page.",
                     });
+                    
                     return;
                   }
             const CurrentBalance = Branch_Balance?.length > 0 ? parseFloat(Branch_Balance[0].Amount || 0) : 0;
@@ -437,11 +443,13 @@ if (!Number.isFinite(amountNumber)) {
                 const newBalance = CurrentBalance - CodAmount;
     // console.log(newBalance, "New Balance after Cash Payment");    
                 if (CodAmount > CurrentBalance) {
+                    setIsBookingLoading(false)
                     Swal.fire({
                         icon: "error",
                         title: "Insufficient Balance",
                         text: "You do not have enough balance to process this booking. Please recharge.",
                     });
+                    
                     return;
                 }
     
@@ -566,8 +574,10 @@ const MessageInfo = {
 const SMSResponse = await axiosSecure.post("/sms", MessageInfo);
  form.reset();
         setAmount('');
+        setIsBookingLoading(false);
             }
         } catch (error) {
+              setIsBookingLoading(false)
             console.error("Error:", error.message);
             const errorMessage = 
                 error.response?.data?.error ||
@@ -1037,7 +1047,20 @@ useEffect(() => {
                 </div>
 
                 <div className="form-control md:px-24 w-full">
-                    <input className='btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary' type="submit" value="Booking Now" disabled={isBookingDisabled} />
+                    <button
+    type="submit"
+    disabled={isBookingDisabled || isBookingLoading}
+    className="btn mt-3 w-full mx-auto border-2 border-primary text-xl text-white hover:bg-primary bg-secondary disabled:opacity-70"
+>
+    {isBookingLoading ? (
+        <>
+            <span className="loading loading-spinner loading-sm"></span>
+            Booking Please Wait...
+        </>
+    ) : (
+        "Booking Now"
+    )}
+</button>
                     {isBookingDisabled && <p className="text-red-500 mt-2">Insufficient balance for Cash payment</p>}
                 </div>
                 
