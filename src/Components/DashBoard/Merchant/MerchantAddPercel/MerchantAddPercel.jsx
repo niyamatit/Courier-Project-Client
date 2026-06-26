@@ -861,14 +861,12 @@ const incrementCnNumber = (cnNumber) => {
       Delivary_Charge: deliveryCharge || 0,
       Total_Charge: finalCharge || 0,
       isProcessed:false,
-       Calculate_Charge_Merchant: parseFloat(finalCharge)  - parseFloat(formData?.totalAmount),
+      Calculate_Charge_Merchant:parseFloat(formData?.totalAmount)- parseFloat(finalCharge),
       deliveryCharge: deliveryPrice || 0,
       Delivery_Option: deliveryOption || "",
       Quantity: quantity || 1,
-     
       Merchant_Branch_Name: verifiedUser?.Merchant_Branch || "",
       Date: new Date() || ""
-
     }
     
     

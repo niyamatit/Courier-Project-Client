@@ -422,6 +422,8 @@ useEffect(() => {
         const condition = form.condition.value;
         const wordAmount = numberToWords(parseInt(amount));
         const bookingTimestamp = new Date();
+        const Total_Amount = parseFloat(Merchant_Cod_Percentage_Taka) + parseFloat(amount) 
+        const Calculate_Charge_Merchant = parseFloat(condition || 0) - parseFloat(Total_Amount)
     
         try {
              if (!Array.isArray(Branch_Balance) || Branch_Balance.length === 0) {
@@ -484,7 +486,7 @@ useEffect(() => {
                 condition_With_Charge_Last:cod,
                 Receiver_Full_Adress,
                 sender_Full_Adress,
-                
+                Calculate_Charge_Merchant,
                 districtName: districtName,
                 email: verifiedUser?.email,
                 Branch_Name:verifiedUser?.name,
