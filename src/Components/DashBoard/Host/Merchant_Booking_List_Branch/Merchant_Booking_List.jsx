@@ -10,11 +10,9 @@ const Merchant_Booking_List = () => {
   const [bookingInfo, setBookingInfo] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   
-  // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 50; // Number of items per page
+  const limit = 50; 
 
-  // Update queryKey to include currentPage so it refetches when the page changes
   const { data: queryData = {}, refetch, isLoading } = useQuery({
     queryKey: ['merchant-booking-parcels', verifiedUser?.name, currentPage],
     queryFn: async () => {
@@ -49,7 +47,7 @@ const Merchant_Booking_List = () => {
     });
   };
 
-  // --- PAGINATION LOGIC (1 2 3 ... 999 1000) ---
+
   const generatePagination = () => {
     const pages = [];
     if (totalPages <= 7) {
