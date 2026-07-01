@@ -12,6 +12,7 @@ import { useState } from "react";
 import './HostMenu.css'
 import { AiOutlineCalendar } from 'react-icons/ai';
 import UseStaffVerify from "../../../hooks/UseStaffVerify/UseStaffVerify";
+import { List, ListChecksIcon, ListFilter, ListOrdered } from "lucide-react";
 
 
 
@@ -318,7 +319,7 @@ const HostMenu = () => {
         address='merchant-list'
       />
       <MenuItem
-        icon={MdOutlineManageHistory}
+        icon={ListChecksIcon}
         label='Merchant Booking List'
         address='merchant-booking-list'
       />
