@@ -318,6 +318,11 @@ const HostMenu = () => {
         address='merchant-list'
       />
       <MenuItem
+        icon={MdOutlineManageHistory}
+        label='Merchant Booking List'
+        address='merchant-booking-list'
+      />
+      <MenuItem
         icon={FaList}
         label='All COD Booking'
         address='cod-booking-branch'

@@ -127,6 +127,7 @@ import AllMerchantAccountList_Admin from "../Components/DashBoard/Merchant/AllMe
 import All_Merchant_Balance_History_Admin from "../Components/DashBoard/Admin/Merchant_Part/All_Merchant_Balance_History_Admin";
 import PrintParcelSummary from "../Components/DashBoard/Host/PrintParcelSummary/PrintParcelSummary";
 import Merchant_Invoices_Admin from "../Components/DashBoard/Admin/Merchant_Invoices_Admin/Merchant_Invoices_Admin";
+import Merchant_Booking_List from "../Components/DashBoard/Host/Merchant_Booking_List_Branch/Merchant_Booking_List";
 
 
 
@@ -303,6 +304,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <HostRoute>
               <MerchantList />
+            </HostRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "merchant-booking-list",
+        element: (
+          <PrivateRoute>
+            <HostRoute>
+              <Merchant_Booking_List />
             </HostRoute>
           </PrivateRoute>
         ),
