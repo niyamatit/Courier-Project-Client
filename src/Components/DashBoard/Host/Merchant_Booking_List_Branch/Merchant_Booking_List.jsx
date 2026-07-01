@@ -7,50 +7,77 @@ import Merchant_Print_Modal from '../../Merchant/MerchantAddPercel/Merchant_Prin
 const Merchant_Booking_List = () => {
   const [verifiedUser] = useUsersData();
   const [selectedParcel, setSelectedParcel] = useState(null);
-const [bookingInfo, setBookingInfo] = useState(null);
-const [isOpen, setIsOpen] = useState(false);
-  const { data: Merchant_Booking_Parcels = [], refetch, isLoading } = useQuery({
-    queryKey: ['merchant-booking-parcels'],
+  const [bookingInfo, setBookingInfo] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 50; // Number of items per page
+
+  // Update queryKey to include currentPage so it refetches when the page changes
+  const { data: queryData = {}, refetch, isLoading } = useQuery({
+    queryKey: ['merchant-booking-parcels', verifiedUser?.name, currentPage],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/merchants/branch/${verifiedUser?.name}`);
-    //   setBookingInfo(res.data); 
+      // Pass page and limit as query parameters
+      const res = await axiosSecure.get(`/merchants/branch/${verifiedUser?.name}?page=${currentPage}&limit=${limit}`);
       return res.data;
-    }
+    },
+    // Don't run query until we have the user name
+    enabled: !!verifiedUser?.name, 
+    keepPreviousData: true // Keeps old data on screen while fetching the next page
   });
- const closeModal = () => {
+
+  const Merchant_Booking_Parcels = queryData.data || [];
+  const totalPages = queryData.totalPages || 1;
+  const totalCount = queryData.totalCount || 0;
+
+  const closeModal = () => {
     setIsOpen(false);
   };
- const print = (parcel) => {
+
+  const print = (parcel) => {
     setBookingInfo(parcel);
-    console.log("Booking Info for Printing:", parcel);
     setIsOpen(true);
-};
+  };
 
   const formatDateTime = (dateString) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     });
   };
 
-  if (isLoading) {
+  // --- PAGINATION LOGIC (1 2 3 ... 999 1000) ---
+  const generatePagination = () => {
+    const pages = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 4) {
+        pages.push(1, 2, 3, 4, 5, '...', totalPages);
+      } else if (currentPage >= totalPages - 3) {
+        pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+      }
+    }
+    return pages;
+  };
+
+  if (isLoading && Merchant_Booking_Parcels.length === 0) {
     return <div className="text-center mt-10">Loading parcels...</div>;
   }
 
   return (
-    // Increased max-width here to allow the table more space on large screens
     <div className="container mx-auto p-4 max-w-[95%]">
       <h1 className="text-3xl text-center mt-10 font-bold mb-8">
-        My Merchants Booking List <span className="text-blue-600">({Merchant_Booking_Parcels.length})</span>
+        My Merchants Booking List 
+        <span className="text-blue-600 block text-lg mt-2 font-medium">Total Bookings: {totalCount}</span>
       </h1>
 
-      <div className="overflow-x-auto shadow-md rounded-lg">
-        {/* Added min-w-[1400px] to force the table to be wider and trigger horizontal scrolling if needed */}
+      <div className="overflow-x-auto shadow-md rounded-lg mb-6">
         <table className="w-full min-w-[1400px] text-left bg-white border-collapse whitespace-nowrap">
           <thead className="bg-gray-800 text-white">
             <tr>
@@ -58,7 +85,6 @@ const [isOpen, setIsOpen] = useState(false);
               <th className="py-3 px-4 border-b">Date</th>
               <th className="py-3 px-4 border-b">CN Number</th>
               <th className="py-3 px-4 border-b">Item Type</th>
-              {/* <th className="py-3 px-4 border-b">Merchant Email</th> */}
               <th className="py-3 px-4 border-b">Merchant Name</th>
               <th className="py-3 px-4 border-b">Customer Contact</th>
               <th className="py-3 px-4 border-b">Customer Name</th>
@@ -69,39 +95,33 @@ const [isOpen, setIsOpen] = useState(false);
           <tbody>
             {Merchant_Booking_Parcels.map((parcel, index) => (
               <tr key={parcel._id} className="hover:bg-gray-100 transition duration-150">
-                <td className="py-3 px-4 border-b font-medium text-gray-700">{index + 1}</td>
+                {/* Calculate continuous serial number across pages */}
+                <td className="py-3 px-4 border-b font-medium text-gray-700">
+                  {(currentPage - 1) * limit + index + 1}
+                </td>
                 <td className="py-3 px-4 border-b">{formatDateTime(parcel.Date)}</td>
                 <td className="py-3 px-4 border-b font-semibold text-gray-800">{parcel.CnNumber}</td>
                 <td className="py-3 px-4 border-b">{parcel.Item_Type}</td>
-                {/* <td className="py-3 px-4 border-b">{parcel.Merchant_email}</td> */}
                 <td className="py-3 px-4 border-b">{parcel.Merchant_Name}</td>
                 <td className="py-3 px-4 border-b">{parcel.Customer_Contact_Number}</td>
                 <td className="py-3 px-4 border-b">{parcel.Customer_Name}</td>
                 <td className="py-3 px-4 border-b max-w-xs truncate" title={parcel.Customer_Address}>
                   {parcel.Customer_Address}
                 </td>
-                {/* Actions column made sticky so it stays visible when scrolling horizontally */}
                 <td className="py-3 px-4 border-b flex justify-center gap-2 sticky right-0 bg-white group-hover:bg-gray-100 shadow-[-5px_0_10px_rgba(0,0,0,0.05)]">
-                  {/* <button
-                    onClick={() => setSelectedParcel(parcel)}
-                    className="bg-blue-500 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-600 transition"
-                  >
-                    View
-                  </button> */}
                   <button
-  onClick={() => print(parcel)}
-  className="bg-emerald-500 text-white px-3 py-1.5 rounded text-sm hover:bg-emerald-600 transition"
->
-  Print
-</button>
-                  
+                    onClick={() => print(parcel)}
+                    className="bg-emerald-500 text-white px-3 py-1.5 rounded text-sm hover:bg-emerald-600 transition"
+                  >
+                    Print
+                  </button>
                 </td>
               </tr>
             ))}
             
             {Merchant_Booking_Parcels.length === 0 && (
                 <tr>
-                    <td colSpan="10" className="text-center py-6 text-gray-500">
+                    <td colSpan="9" className="text-center py-6 text-gray-500">
                         No bookings found.
                     </td>
                 </tr>
@@ -110,54 +130,45 @@ const [isOpen, setIsOpen] = useState(false);
         </table>
       </div>
 
-      {/* Modal for Viewing Full Data */}
-      {selectedParcel && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="flex justify-between items-center mb-4 border-b pb-3">
-              <h2 className="text-2xl font-bold text-gray-800">Parcel Details: {selectedParcel.CnNumber}</h2>
-              <button 
-                onClick={() => setSelectedParcel(null)}
-                className="text-gray-500 hover:text-red-500 font-bold text-xl"
-              >
-                &times;
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-6">
-              {Object.entries(selectedParcel).map(([key, value]) => (
-                <div key={key} className="flex flex-col bg-gray-50 p-3 rounded border border-gray-100">
-                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">
-                    {key.replace(/_/g, ' ')}
-                  </span>
-                  <span className="text-gray-800 font-medium mt-1 break-words">
-                    {key === 'Date' 
-                      ? formatDateTime(value) 
-                      : typeof value === 'boolean' 
-                        ? (value ? 'Yes' : 'No') 
-                        : String(value)}
-                  </span>
-                </div>
-              ))}
-            </div>
+      {/* Pagination UI */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 pb-10">
+          <button 
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Prev
+          </button>
 
-            <div className="mt-6 flex justify-end gap-3 border-t pt-4">
-              {/* <button
-                onClick={print}
-                className="bg-emerald-500 text-white px-5 py-2 rounded hover:bg-emerald-600 transition font-medium"
-              >
-                Print Details
-              </button> */}
-              <button
-                onClick={() => setSelectedParcel(null)}
-                className="bg-gray-800 text-white px-5 py-2 rounded hover:bg-gray-900 transition font-medium"
-              >
-                Close
-              </button>
-            </div>
-          </div>
+          {generatePagination().map((page, index) => (
+            <button
+              key={index}
+              onClick={() => typeof page === 'number' && setCurrentPage(page)}
+              disabled={page === '...'}
+              className={`px-4 py-2 border rounded ${
+                currentPage === page 
+                  ? 'bg-blue-600 text-white border-blue-600' 
+                  : page === '...' 
+                    ? 'bg-transparent border-none cursor-default' 
+                    : 'hover:bg-gray-100'
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button 
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
         </div>
       )}
+
+      {/* Modal / Print functionality stays unchanged */}
       <Merchant_Print_Modal
         closeModal={closeModal}
         isOpen={isOpen}
